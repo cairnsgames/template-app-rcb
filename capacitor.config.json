@@ -1,0 +1,13 @@
+{
+  "appId": "za.co.cairnsgames.app",
+  "appName": "Cairnsgames Mobile",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
+}

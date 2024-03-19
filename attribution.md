@@ -1,0 +1,2 @@
+Weather Icons: 
+<a href="https://www.freepik.com/free-vector/coloured-weather-icons-collection_895655.htm#query=weather%20symbols&position=7&from_view=keyword&track=ais&uuid=01d74e02-64cc-4d28-b237-85ab1071cbb4">Image by titusurya</a> on Freepik
