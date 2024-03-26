@@ -2,8 +2,8 @@ import React from 'react';
 import { Container, Table, Card, Row, Col } from "react-bootstrap";
 import { Check } from 'react-bootstrap-icons';
 
-const ExamplePricing = () => {
-    return (<Container>
+const Pricing = (props) => {
+    return (<div className="pb-5">
     <header>
       <div className="pricing-header p-3 pb-md-4 mx-auto text-center">
         <h1 className="display-4 fw-normal">Pricing</h1>
@@ -11,8 +11,7 @@ const ExamplePricing = () => {
       </div>
     </header>
   
-    <main>
-      <Row md={3} className="text-center">
+      <Row md={3} className="text-center pb-5">
         <Col>
           <Card>
             <Card.Header className="py-3">
@@ -121,10 +120,8 @@ const ExamplePricing = () => {
           </tbody>
         </Table>
       </div>
-    </main>
-
-    </Container>)
+    </div>)
 
 }
 
-export default ExamplePricing;
+export default Pricing;

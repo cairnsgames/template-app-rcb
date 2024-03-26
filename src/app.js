@@ -2,21 +2,20 @@ import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { Container } from "react-bootstrap";
 import "./app.scss";
-
-import NavPart from "./parts/nav";
-
 import Providers from "./providers/providers";
 import Routing from "./routing";
+import { ErrorBoundary } from "react-error-boundary";
+import SiteDown from "./sitedown";
 
 const App = () => {
-
   return (
-    <Providers>
-      <Container fluid>
-        <NavPart />
-        <Routing />
-      </Container>
-    </Providers>
+    <ErrorBoundary fallback={<SiteDown />}>
+      <Providers>
+        <Container fluid>
+          <Routing />
+        </Container>
+      </Providers>
+    </ErrorBoundary>
   );
 };
 const rootElement = document.getElementById("app");

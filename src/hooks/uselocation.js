@@ -61,6 +61,7 @@ export const useLocation = (valid) => {
 
   const param = (key) => {
     const item = details.params.find(i => i.key === key);
+    if (!item) return null;
     return item.value;
   }
 

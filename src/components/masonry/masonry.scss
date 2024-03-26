@@ -1,0 +1,57 @@
+.masonry { 
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: -8px; /* Adjustment for the gutter */
+    width: 100%;
+  }
+  
+  .masonry-brick {    
+    .card-img-overlay {
+        padding: 0;
+    }
+    .card-img-content {
+        color: white;
+        background-color: rgba(0, 0, 0, 0.4);
+        margin: 0;
+        padding: 10px;
+    }
+    flex: auto;
+    height: 250px;
+    min-width: 25%;
+    margin: 0 8px 8px 0; /* Some gutter */
+  }
+
+  @media (max-width: 768px) {
+    .masonry-brick {
+        .card-img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translateY(-50%) translateX(-50%);
+        }
+      height: 250px;
+      min-width: 100%;
+      max-width: 100%;
+    }
+  }
+  @media (min-width: 768px) {
+    .masonry-brick {
+      height: 250px;
+      min-width: 48%;
+      max-width: 98%;
+    }
+  }
+  @media (min-width: 992px) {
+    .masonry-brick {
+      height: 250px;
+      min-width: 30%;
+      max-width: 63%;
+    }
+  }
+  @media (min-width: 1200px) {
+    .masonry-brick {
+      height: 250px;
+      min-width: 24%;
+      max-width: 48%;
+    }
+  }

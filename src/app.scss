@@ -1,7 +1,7 @@
 @import "../node_modules/bootstrap/scss/functions";
 
 // set theme colors
-$primary: purple;
+$primary: green;
 
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/mixins";
@@ -46,4 +46,23 @@ body {
   border: 1px solid white;
   background-color: rgba(0, 0, 0, 0.2);
     padding: 1rem 2rem;
+}
+
+.border-bottom {
+  padding-bottom: 1rem;
+  border-bottom: 2px solid $primary !important;
+}
+
+hr {
+  border-top: 3px solid $primary;
+}
+
+.form-check-input:checked {
+  background-color: var(--bs-body-bg);
+  border-color: tint-color($primary, 50%);;
+}
+
+button.navbar-toggler {
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
