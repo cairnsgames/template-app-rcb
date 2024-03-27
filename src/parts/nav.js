@@ -10,9 +10,11 @@ import {
 import { useTheme } from "../providers/theme/usetheme";
 import { useAuth } from "../packages/auth/context/useauth";
 import DarkModeSwitch from "./darkmode";
+import { useUser } from "../packages/auth/context/useuser";
 
 function NavPart() {
   const { isLoggedIn, logout } = useAuth();
+  const { hasAccess } = useUser();
 
   return (
     <Navbar
@@ -27,17 +29,19 @@ function NavPart() {
         <Navbar.Collapse className="ms-2">
           <Nav className="me-auto">
             <NavDropdown className="bg-primary" title="System Pages">
-              <Nav.Link className="bg-primary" href="#tenant" bg="primary">
-                Tenant Summary
-              </Nav.Link>
+              {hasAccess("Tenant") && (
+                <Nav.Link className="bg-primary" href="#tenant" bg="primary">
+                  Tenant Summary
+                </Nav.Link>
+              )}
               <Nav.Link className="bg-primary" href="#auth" bg="primary">
                 Auth Summary
               </Nav.Link>
-              
+
               <Nav.Link className="bg-primary" href="#flags" bg="primary">
                 Flags Summary
               </Nav.Link>
-              
+
               <Nav.Link className="bg-primary" href="#settings" bg="primary">
                 Settings Summary
               </Nav.Link>

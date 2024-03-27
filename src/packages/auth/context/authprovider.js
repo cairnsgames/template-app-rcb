@@ -99,6 +99,7 @@ const AuthenticationProvider = (props) => {
             console.error("VALIDATE TOKEN ERRORS", data.errors);
           }
           settoken(data.token);
+          console.log("!!!! VALIDATE TOKEN", data);
           const userDetails = {
             email: data.email,
             lastname: data.lastname,
@@ -106,6 +107,7 @@ const AuthenticationProvider = (props) => {
             id: data.id,
             name: data.firstname + " " + data.lastname,
             picture: data.avatar,
+            permissions: data.permissions
           };
           setUser(userDetails);
           console.log("REMEMBER ME", userDetails);

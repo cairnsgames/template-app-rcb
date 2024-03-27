@@ -6,6 +6,7 @@ import Providers from "./providers/providers";
 import Routing from "./routing";
 import { ErrorBoundary } from "react-error-boundary";
 import SiteDown from "./sitedown";
+import Toasts from ".//packages/toasts/toasts";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Container fluid>
           <Routing />
         </Container>
+        <Toasts />
       </Providers>
     </ErrorBoundary>
   );

@@ -1,6 +1,6 @@
 import { Row } from "react-bootstrap";
-import PageWrapper from "../../../parts/pagewrapper";
-import RegistrationForm from "../forms/register";
+import PageWrapper from "../../parts/pagewrapper";
+import RegistrationForm from "../../packages/auth/forms/register";
 
 const RegisterPage = () => {
   return (

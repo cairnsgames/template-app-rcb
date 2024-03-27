@@ -1,12 +1,21 @@
 import { Row } from "react-bootstrap";
-import PageWrapper from "../../../parts/pagewrapper";
-import LoginForm from "../forms/login"
+import PageWrapper from "../../parts/pagewrapper";
+import LoginForm from "../../packages/auth/forms/login"
+import useToast from "../../packages/toasts/usetoast";
 
 const LoginPage = ({onSuccess}) => {
+  const { addToast } = useToast();
+
+  const onLogin = () => {
+    addToast("Login Successful", "", "success")
+    if (onSuccess) {
+      onSuccess()
+    } 
+  }
   return (
     <PageWrapper position="middle" >
       <Row className="border-bottom">
-        <LoginForm onSuccess={onSuccess}/>
+        <LoginForm onSuccess={onLogin}/>
       </Row>
       <Row className="mt-3">
         <div className="d-flex justify-content-evenly">
