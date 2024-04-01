@@ -1,11 +1,15 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require("dotenv-webpack");
 const deps = require("./package.json").dependencies;
+const path = require("path");
 
 module.exports = (_, argv) => ({
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
+    alias: {
+      "@cairnsgames": path.resolve(__dirname, "src/packages"),
+    },
   },
 
   devServer: {
@@ -57,6 +61,6 @@ module.exports = (_, argv) => ({
     new HtmlWebPackPlugin({
       template: "./src/index.html",
     }),
-    new Dotenv()
+    new Dotenv(),
   ],
 });

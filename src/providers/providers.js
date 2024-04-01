@@ -1,10 +1,10 @@
 import { MobileDeviceProvider } from "./theme/modiledeviceprovider";
 import { ThemeProvider } from "./theme/themeprovider";
-import { TenantProvider } from "../packages/tenant/context/tenantprovider";
-import { AuthenticationProvider } from "../packages/auth/context/authprovider";
-import { FeatureFlagProvider } from "../packages/featureflags/featureflag";
-import { SettingsProvider } from "../packages/settings/settingsprovider";
-import { ToastsProvider } from "../packages/toasts/toastsprovider";
+import { TenantProvider } from "@cairnsgames/tenant/context/tenantprovider";
+import { AuthenticationProvider } from "@cairnsgames/auth/context/authprovider";
+import { FeatureFlagProvider } from "@cairnsgames/featureflags/featureflag";
+import { SettingsProvider } from "@cairnsgames/settings/settingsprovider";
+import { ToastsProvider } from "@cairnsgames/toasts/toastsprovider";
 
 // import all providers here, so that in app.js only a single providers file need be imported
 const Providers = ({ children }) => {

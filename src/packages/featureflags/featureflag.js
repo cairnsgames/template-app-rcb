@@ -10,8 +10,6 @@ const FeatureFlagProvider = ( props ) => {
   const [featureFlags, setFeatureFlags] = useState([]);
   const { tenant } = useTenant();
   const { user } = useUser();
-  
-  console.log("process.env.REACT_APP_FLAGS_API", process.env.REACT_APP_FLAGS_API);
 
   if (!process.env.REACT_APP_FLAGS_API) {
     throw new Error("AuthProvider: REACT_APP_FLAGS_API environment variable is required");
@@ -31,7 +29,6 @@ const FeatureFlagProvider = ( props ) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("!!FLAGS!! data", data)
         setFeatureFlags(data.result);
       })
       .catch((err) => {

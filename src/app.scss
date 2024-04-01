@@ -23,6 +23,11 @@ body {
 body {
   overflow-y: scroll;
 }
+.container-fluid {
+  max-width: 100%;
+  overflow-y: scroll;
+}
+
 #app,
 .container-fluid {
   height: 100%;

@@ -6,7 +6,7 @@ import Providers from "./providers/providers";
 import Routing from "./routing";
 import { ErrorBoundary } from "react-error-boundary";
 import SiteDown from "./sitedown";
-import Toasts from ".//packages/toasts/toasts";
+import Toasts from "@cairnsgames/toasts/toasts";
 
 const App = () => {
   return (

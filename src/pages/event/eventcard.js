@@ -1,4 +1,5 @@
 import Card from "react-bootstrap/Card";
+import Tracker from "../../packages/tracker/tracker";
 
 function ImgOverlayExample(props) {
   return (
@@ -12,12 +13,13 @@ function ImgOverlayExample(props) {
         borderRadius: "2rem",
       }}
     >
-      <Card.Img
-        src={props.src ? `images/${props.src}` : "images/9.png"}
-        alt="Card image"
-        style={{ borderRadius: "2rem" }}
-      />
-      {/* <Card.ImgOverlay>
+      <Tracker itemtype="event" id={props.id}>
+        <Card.Img
+          src={props.src ? `images/${props.src}` : "images/9.png"}
+          alt="Card image"
+          style={{ borderRadius: "2rem" }}
+        />
+        {/* <Card.ImgOverlay>
         <div className="card-img-content">
         <Card.Title>{props.title}</Card.Title>
         <Card.Text>
@@ -27,6 +29,7 @@ function ImgOverlayExample(props) {
         <Card.Text>Last updated 3 mins ago</Card.Text>
         </div>
       </Card.ImgOverlay> */}
+      </Tracker>
     </Card>
   );
 }

@@ -19,7 +19,6 @@ const Summary = () => {
       <div>
         <h3>Tenant Properties</h3>
         {params.map((param) => {
-          console.log("Param", param);
           return (
             <div key={param.id}>
               {param.name}: {param.value}

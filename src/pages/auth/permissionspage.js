@@ -1,15 +1,16 @@
 import { Row } from "react-bootstrap";
 import PageWrapper from "../../parts/pagewrapper";
-import Summary from "@cairnsgames/auth/components/summary";
+import PermissionsSummary from "../../packages/membership/forms/application/permissions/summary";
 
-const AuthSummaryPage = () => {
+const AuthPermissionsPage = () => {
+  
   return (
     <PageWrapper position="middle" >
       <Row className="border-bottom">
-        <Summary />
+        <PermissionsSummary />
       </Row>
     </PageWrapper>
   );
 };
 
-export default AuthSummaryPage;
+export default AuthPermissionsPage;

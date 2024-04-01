@@ -14,10 +14,8 @@ export const useUser = () => {
   const { token, user } = context;
 
   const hasAccess = (permission) => {
-    console.log("!!!! PERMISSION", user)
     const access = user?.permissions?.find((p) => p.name === permission);
-    console.log("!!!! ACCESS", access)
-    return (access?.permission === "Yes")
+    return (access?.permission === "YES")
   }
 
   const isLoggedIn = !!user;

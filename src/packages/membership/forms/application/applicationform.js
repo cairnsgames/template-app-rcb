@@ -3,21 +3,20 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-import { useAuth } from "../../auth/context/useauth";
+import { useAuth } from "../../../auth/context/useauth";
+import { Col } from 'react-bootstrap';
 
 // interface ILoginProps {
 //   onLogin?: (result: any) => void;
 // }
 
-const LoginForm = ({onSuccess}) => {
+const ApplicationForm = ({id, application, onSuccess}) => {
   const [validated, setValidated] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [keep, setKeep] = useState(false);
-
-  const { login } = useAuth();
+  const [name, setName] = useState(application.name);
+  const [description, setDescription] = useState(application.description);
 
   const handleSubmit = (event) => {
+    console.log("Handling submit", email, password)
     const form = event.currentTarget;
     
     event.preventDefault();
@@ -27,6 +26,7 @@ const LoginForm = ({onSuccess}) => {
       return;
     }
 
+    console.log("Call Login function");
     const result = login(email, password)
     // .then((result: any) => {
       console.log("Logged in successfully", result);
@@ -45,12 +45,12 @@ const LoginForm = ({onSuccess}) => {
           <Form.Label>Email</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
-              type="email"
-              placeholder="name@domain.com"
+              type="test"
+              placeholder="application name"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoComplete="application-name"
             />
             <Form.Control.Feedback type="invalid">
               Your email address is required to login.
@@ -58,14 +58,14 @@ const LoginForm = ({onSuccess}) => {
           </InputGroup>
         </Form.Group>
         <Form.Group>
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Description</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
-              type="password"
+              type="text"
               required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              autoComplete="application-description"
             />
             <Form.Control.Feedback type="invalid">
               Please enter your password.
@@ -73,16 +73,9 @@ const LoginForm = ({onSuccess}) => {
           </InputGroup>
         </Form.Group>
       </Row>
-      <Form.Group className="mb-3">
-        <Form.Check
-          label="Keep me logged in"
-          checked={keep}
-          onChange={()=>{setKeep(!keep)}}
-        />
-      </Form.Group>
-      <Button type="submit">Submit form</Button>
+      <Button type="submit">Update</Button>
     </Form>
   );
 }
 
-export default LoginForm;
+export default ApplicationForm;

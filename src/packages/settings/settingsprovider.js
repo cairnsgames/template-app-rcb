@@ -22,7 +22,6 @@ export const SettingsProvider = ({ children }) => {
         })
         .then((res) => res.json())
         .then((res) => {
-          console.log("!!Settings!!",res)
           setSettings(res);
         })
         .catch((err) => {

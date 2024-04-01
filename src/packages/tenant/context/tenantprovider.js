@@ -30,7 +30,6 @@ const TenantProvider = (props) => {
   const { children, onError } = props;
 
   if (!props.applicationId) {
-    console.log("Env", process.env);
     throw new Error("TenantProvider: application prop is required");
   }
   if (!process.env.REACT_APP_TENANT_API) {
@@ -44,21 +43,19 @@ const TenantProvider = (props) => {
   const [params, setParams] = useState(props.params || []);
   const [application, setApplication] = useState();
 
-  useEffect(() => {
-    console.log("Params Updates", params);
-  }, [params]);
+  // useEffect(() => {
+  //   console.log("Params Updates", params);
+  // }, [params]);
 
   useEffect(() => {
     if (!tenant) {
       return;
     }
-    console.log("TENANT CHANGE", tenant);
     fetch(process.env.REACT_APP_TENANT_API + "tenant", {
       headers: { "Content-Type": "application/json", APP_ID: tenant },
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched Application", data);
         if (Array.isArray(data)) {
           setApplication(data[0]);
         } else {
@@ -75,7 +72,6 @@ const TenantProvider = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched Params", data);
         setParams(data);
       })
       .catch((err) => {

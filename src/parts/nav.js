@@ -4,13 +4,10 @@ import {
   Nav,
   Navbar,
   NavDropdown,
-  Form,
-  InputGroup,
 } from "react-bootstrap";
-import { useTheme } from "../providers/theme/usetheme";
-import { useAuth } from "../packages/auth/context/useauth";
+import { useAuth } from "@cairnsgames/auth/context/useauth";
+import { useUser } from "@cairnsgames/auth/context/useuser";
 import DarkModeSwitch from "./darkmode";
-import { useUser } from "../packages/auth/context/useuser";
 
 function NavPart() {
   const { isLoggedIn, logout } = useAuth();
@@ -37,7 +34,9 @@ function NavPart() {
               <Nav.Link className="bg-primary" href="#auth" bg="primary">
                 Auth Summary
               </Nav.Link>
-
+              <Nav.Link className="bg-primary" href="#permissions" bg="primary">
+                Permissions Summary
+              </Nav.Link>
               <Nav.Link className="bg-primary" href="#flags" bg="primary">
                 Flags Summary
               </Nav.Link>
@@ -85,6 +84,26 @@ function NavPart() {
                   Other Elements
                 </NavDropdown.Item>
               </NavDropdown>
+            )}
+            {isLoggedIn && hasAccess("MembershipAdministration") && (
+              <NavDropdown className="bg-primary" title="Administration">
+                <Nav.Link className="bg-primary" href="#admin/application" bg="primary">
+                  Applications
+                </Nav.Link>
+              <Nav.Link className="bg-primary" href="#auth" bg="primary">
+                Auth Summary
+              </Nav.Link>
+
+
+
+              <Nav.Link className="bg-primary" href="#flags" bg="primary">
+                Flags Summary
+              </Nav.Link>
+
+              <Nav.Link className="bg-primary" href="#settings" bg="primary">
+                Settings Summary
+              </Nav.Link>
+            </NavDropdown>
             )}
           </Nav>
           <Nav>

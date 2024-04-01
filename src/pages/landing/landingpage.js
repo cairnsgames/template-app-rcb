@@ -8,7 +8,7 @@ import Footer from "./footer";
 import { useRef } from "react";
 import Events from "./events";
 
-const LandingPage = () => {
+const LandingPage = ({subTitle}) => {
   const heroRef = useRef();
   const featureRef = useRef();
   const pricingRef = useRef();
@@ -18,6 +18,7 @@ const LandingPage = () => {
       <div ref={heroRef}>
         <Hero />
       </div>
+      {subTitle && <h2>SUBTITLE: {subTitle}</h2>}
       <div ref={featureRef}>
         <Features />
       </div>

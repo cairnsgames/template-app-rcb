@@ -1,7 +1,7 @@
 import { Row } from "react-bootstrap";
 import PageWrapper from "../../parts/pagewrapper";
-import LoginForm from "../../packages/auth/forms/login"
-import useToast from "../../packages/toasts/usetoast";
+import LoginForm from "@cairnsgames/auth/forms/login"
+import useToast from "@cairnsgames/toasts/usetoast";
 
 const LoginPage = ({onSuccess}) => {
   const { addToast } = useToast();

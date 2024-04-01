@@ -1,6 +1,6 @@
 import { Row } from "react-bootstrap";
 import PageWrapper from "../../parts/pagewrapper";
-import ForgotPasswordForm from "../../packages/auth/forms/forgot";
+import ForgotPasswordForm from "@cairnsgames/auth/forms/forgot";
 
 
 const ForgotPasswordPage = () => {

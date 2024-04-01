@@ -46,7 +46,7 @@ const Footer = (props) => {
               className="px-2 text-body-secondary"
               onClick={() =>scrollTo(albumRef)}
             >
-              Examples
+              Events
             </Button>
             <Button
                 size="sm"

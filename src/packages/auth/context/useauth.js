@@ -11,11 +11,11 @@ export const useAuth = () => {
     throw new Error("useAuth was used outside of its Provider");
   }
 
-  const { token, register, login, logout, forgot, user, setgoogleAccessToken, changePassword } = context;
+  const { token, register, login, logout, forgot, user, setgoogleAccessToken, changePassword, impersonate } = context;
 
   const isLoggedIn = !!user;
 
-  return { token, register, login, logout, forgot, user, isLoggedIn, setgoogleAccessToken, changePassword  };
+  return { token, register, login, logout, forgot, user, isLoggedIn, setgoogleAccessToken, changePassword, impersonate };
 };
 
 export default useAuth;

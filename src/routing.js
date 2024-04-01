@@ -7,46 +7,102 @@ import InstaClone from "./apps/instaclone/instaclone";
 import WhatsappClone from "./apps/whatsapp/whatsapp";
 import Examples from "./getbootstrapexamples/examples";
 import Container from "react-bootstrap/Container";
-import TenantSummaryPage from "./packages/tenant/pages/summarypage";
+import TenantSummaryPage from "@cairnsgames/tenant/pages/summarypage";
 import AuthSummaryPage from "./pages/auth/summarypage";
 import LandingPage from "./pages/landing/landingpage";
-import { useAuth } from "./packages/auth/context/useauth";
+import { useAuth } from "@cairnsgames/auth/context/useauth";
 import SiteDown from "./sitedown";
 import NavPart from "./parts/nav";
 import EventListPage from "./pages/event/eventlistpage";
-import FlagsSummaryPage from "./packages/featureflags/flagssummarypage";
-import SettingsSummaryPage from "./packages/settings/settingssummarypage";
+import FlagsSummaryPage from "@cairnsgames/featureflags/flagssummarypage";
+import SettingsSummaryPage from "@cairnsgames/settings/settingssummarypage";
+import HomePage from "./pages/home/home";
+import AdminRoutes from "./pages/admin/admin";
+import Router, { Route, Default } from "./packages/router/router";
+import AuthPermissionsPage from "./pages/auth/permissionspage";
 
 const Routing = () => {
   const { hash } = useLocation();
   const { isLoggedIn } = useAuth();
 
-  console.log("#### HASH", hash)
   if (hash.startsWith("sitedown")) {
-    console.log("Show SITEDOWN")
-    return <SiteDown />
+    console.log("Show SITEDOWN");
+    return <SiteDown />;
   }
   return (
     <>
-    
-    <NavPart />
-      {hash.startsWith("login") && <LoginPage onSuccess={()=>{ window.location.hash="home" }} />}
-      {hash.startsWith("register") && <RegisterPage onSuccess={()=>{ window.location.hash="home" }} />}
-      {hash.startsWith("forgot") && <ForgotPasswordPage onSuccess={()=>{ window.location.hash="" }} />}
-      {hash.startsWith("logout") && <LandingPage />}
-      {hash.startsWith("tenant") && <TenantSummaryPage/>}
-      {hash.startsWith("auth") && <AuthSummaryPage/>}
-      {hash.startsWith("flags") && <FlagsSummaryPage />}
-      {hash.startsWith("settings") && <SettingsSummaryPage />}
+      <NavPart />
+      <Router>
+        <Route is={"login"}>
+          <LoginPage
+            onSuccess={() => {
+              window.location.hash = "home";
+            }}
+          />
+        </Route>
+        <Route is={"register"}>
+          <RegisterPage
+            onSuccess={() => {
+              window.location.hash = "home";
+            }}
+          />
+        </Route>
+        <Route is={"forgot"}>
+          <ForgotPasswordPage
+            onSuccess={() => {
+              window.location.hash = "";
+            }}
+          />
+        </Route>
+        <Route is={"logout"}>
+          <LandingPage />
+        </Route>
 
-      {(!isLoggedIn || hash.length === 0) && <LandingPage />}
+        <Route is={"tenant"}>
+          <TenantSummaryPage />
+        </Route>
+        <Route is={"permissions"}>
+          <AuthPermissionsPage />
+        </Route>
+        <Route is={"auth"}>
+          <AuthSummaryPage />
+        </Route>
+        <Route is={"flags"}>
+          <FlagsSummaryPage />
+        </Route>
+        <Route is={"settings"}>
+          <SettingsSummaryPage />
+        </Route>
 
-      {hash.startsWith("design") && <Container className="mt-3"><DesignElements /></Container>}
+        <Route is={"landing"}>
+          <LandingPage />
+        </Route>
+        <Route is={""}>
+          {" "}
+          <HomePage />
+        </Route>
+
+        <Route if={!isLoggedIn}>
+          <LandingPage />
+        </Route>
+
+        <Route startsWith={"admin"}>
+          <AdminRoutes />
+        </Route>
+        
+        <Route startsWith={"event"}><EventListPage /></Route>
+        <LandingPage />
+      </Router>
+
+      {hash.startsWith("design") && (
+        <Container className="mt-3">
+          <DesignElements />
+        </Container>
+      )}
       {hash.startsWith("insta") && <InstaClone />}
       {hash.startsWith("whatsapp") && <WhatsappClone />}
       {hash.startsWith("examples") && <Examples />}
-      {hash.startsWith("home") && <AuthSummaryPage/>}
-      {hash.startsWith("event") && <EventListPage />}
+      {hash.startsWith("home") && <HomePage />}
     </>
   );
 };
