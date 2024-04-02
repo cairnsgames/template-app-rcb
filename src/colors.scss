@@ -1,15 +1,36 @@
-$primary: green;
-/* Define all colours */
-$white:    #fff;
-$black:    #000;
-$grey:     #ccc;
-// etc...
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+
+$primary:       $green;
+$secondary:     $gray-600 !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-100 !default;
+$dark:          $gray-900 !default;
+// scss-docs-end theme-color-variables
+
+// scss-docs-start theme-colors-map
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
 
 // Export the color palette to make it accessible to JS
 :export {
     primary: $primary;
-    white: $white;
-    black: $black;
-    grey: $grey;
-    // etc...
+    secondary: $secondary;
+    success: $success;
+    info: $info;
+    warning: $warning;
+    danger: $danger;
+    light: $light;
+    dark: $dark;
 }

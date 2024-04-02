@@ -1,6 +1,6 @@
 import { QRCode as QRCodeLogo } from "react-qrcode-logo";
 import "./qrcode.scss";
-import { Colors } from "../colors";
+import { Colors } from "../../colors";
 
 const QRCode = ({ link, allowCopyToClipboard = true }) => {
   console.log("!!!!!! COLORS", Colors);
@@ -9,7 +9,7 @@ const QRCode = ({ link, allowCopyToClipboard = true }) => {
       <div className="qrcodecontainer">
         <QRCodeLogo
           size={250}
-          value={`${link}&t=2`}
+          value={`${link}`}
           fgColor={Colors.primary}
           ecLevel="H"
           logoImage="favicon.png"
