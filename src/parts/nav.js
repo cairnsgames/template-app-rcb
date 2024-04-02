@@ -26,6 +26,13 @@ function NavPart() {
         <Navbar.Collapse className="ms-2">
           <Nav className="me-auto">
             <NavDropdown className="bg-primary" title="System Pages">
+              <Nav.Link className="bg-primary" href="#geolocation" bg="primary">
+                  Geo Location
+                </Nav.Link>
+                
+              <Nav.Link className="bg-primary" href="#qrcode" bg="primary">
+                  QR Code
+                </Nav.Link>
               {hasAccess("Tenant") && (
                 <Nav.Link className="bg-primary" href="#tenant" bg="primary">
                   Tenant Summary

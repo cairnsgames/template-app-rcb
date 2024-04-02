@@ -5,7 +5,7 @@ import useTenant from "../../tenant/context/usetenant";
 import useUser from "../../auth/context/useuser";
 import Tracker from "../../tracker/tracker";
 import Layout from "./layout";
-import useShareData from "../../tracker/useshare";
+import useShareData from "../../../hooks/useshare";
 
 const ContentDisplay = (props) => {
   const {

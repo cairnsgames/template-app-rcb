@@ -1,0 +1,15 @@
+$primary: green;
+/* Define all colours */
+$white:    #fff;
+$black:    #000;
+$grey:     #ccc;
+// etc...
+
+// Export the color palette to make it accessible to JS
+:export {
+    primary: $primary;
+    white: $white;
+    black: $black;
+    grey: $grey;
+    // etc...
+}

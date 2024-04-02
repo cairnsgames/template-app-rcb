@@ -22,6 +22,8 @@ import SettingsSummaryPage from "@cairnsgames/settings/settingssummarypage";
 import AuthPermissionsPage from "./pages/auth/permissionspage";
 import HomePage from "./pages/home/home";
 import ContentPage from "./pages/home/contentpage";
+import GeoLocationPage from "./pages/geolocation/geolocationpage";
+import QRCodePage from "./pages/qrcode/qrcodepage";
 
 const AdminRoutes = React.lazy(() => import("./pages/admin/admin"));
 
@@ -68,6 +70,13 @@ const Routing = () => {
 
         <Route is={"tenant"}>
           <TenantSummaryPage />
+        </Route>
+        
+        <Route is={"geolocation"}>
+          <GeoLocationPage />
+        </Route>
+        <Route is={"qrcode"}>
+          <QRCodePage />
         </Route>
         <Route is={"permissions"}>
           <AuthPermissionsPage />
