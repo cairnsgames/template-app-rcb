@@ -1,25 +1,29 @@
-import DesignElements from "./pages/design/designelements";
+import React, { Suspense } from "react";
+
+import NavPart from "./parts/nav";
+import Router, { Route, Default } from "./packages/router/router";
+import useAuth from "@cairnsgames/auth/context/useauth";
 import useLocation from "./hooks/uselocation";
+
+import DesignElements from "./pages/design/designelements";
 import LoginPage from "./pages/auth/loginpage";
 import RegisterPage from "./pages/auth/registerpage";
 import ForgotPasswordPage from "./pages/auth/forgotpasswordpage";
 import InstaClone from "./apps/instaclone/instaclone";
 import WhatsappClone from "./apps/whatsapp/whatsapp";
 import Examples from "./getbootstrapexamples/examples";
-import Container from "react-bootstrap/Container";
 import TenantSummaryPage from "@cairnsgames/tenant/pages/summarypage";
 import AuthSummaryPage from "./pages/auth/summarypage";
 import LandingPage from "./pages/landing/landingpage";
-import { useAuth } from "@cairnsgames/auth/context/useauth";
 import SiteDown from "./sitedown";
-import NavPart from "./parts/nav";
 import EventListPage from "./pages/event/eventlistpage";
 import FlagsSummaryPage from "@cairnsgames/featureflags/flagssummarypage";
 import SettingsSummaryPage from "@cairnsgames/settings/settingssummarypage";
-import HomePage from "./pages/home/home";
-import AdminRoutes from "./pages/admin/admin";
-import Router, { Route, Default } from "./packages/router/router";
 import AuthPermissionsPage from "./pages/auth/permissionspage";
+import HomePage from "./pages/home/home";
+import ContentPage from "./pages/home/contentpage";
+
+const AdminRoutes = React.lazy(() => import("./pages/admin/admin"));
 
 const Routing = () => {
   const { hash } = useLocation();
@@ -58,6 +62,10 @@ const Routing = () => {
           <LandingPage />
         </Route>
 
+        <Route is={"content/{id}"}>
+          <ContentPage />
+        </Route>
+
         <Route is={"tenant"}>
           <TenantSummaryPage />
         </Route>
@@ -78,7 +86,9 @@ const Routing = () => {
           <LandingPage />
         </Route>
         <Route is={""}>
-          {" "}
+          <HomePage />
+        </Route>
+        <Route is={"home"}>
           <HomePage />
         </Route>
 
@@ -87,22 +97,30 @@ const Routing = () => {
         </Route>
 
         <Route startsWith={"admin"}>
-          <AdminRoutes />
+          <Suspense fallback={<div>Loading...</div>}>
+            <AdminRoutes />
+          </Suspense>
         </Route>
-        
-        <Route startsWith={"event"}><EventListPage /></Route>
+
+        <Route startsWith={"event"}>
+          <EventListPage />
+        </Route>
+
+        <Route startsWith={"design"}>
+          <DesignElements />
+        </Route>
+        <Route startsWith={"insta"}>
+          <InstaClone />
+        </Route>
+        <Route startsWith={"whatsapp"}>
+          <WhatsappClone />
+        </Route>
+        <Route startsWith={"examples"}>
+          <Examples />
+        </Route>
+
         <LandingPage />
       </Router>
-
-      {hash.startsWith("design") && (
-        <Container className="mt-3">
-          <DesignElements />
-        </Container>
-      )}
-      {hash.startsWith("insta") && <InstaClone />}
-      {hash.startsWith("whatsapp") && <WhatsappClone />}
-      {hash.startsWith("examples") && <Examples />}
-      {hash.startsWith("home") && <HomePage />}
     </>
   );
 };

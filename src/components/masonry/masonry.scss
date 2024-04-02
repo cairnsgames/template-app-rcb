@@ -23,15 +23,10 @@
 
   @media (max-width: 768px) {
     .masonry-brick {
-        .card-img {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            -webkit-transform: translateY(-50%) translateX(-50%);
-        }
+
       height: 250px;
-      min-width: 100%;
-      max-width: 100%;
+      min-width: 47%;
+      max-width: 98%;
     }
   }
   @media (min-width: 768px) {

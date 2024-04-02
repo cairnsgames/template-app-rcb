@@ -8,6 +8,7 @@ import React, {
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useJwt } from "react-jwt";
 import useTenant from "../../tenant/context/usetenant";
+import useDeviceInfo from "../../device/usedeviceinfo";
 
 // type AuthType = {
 //   token?: string;
@@ -56,6 +57,7 @@ const AuthenticationProvider = (props) => {
   const { decodedToken } = useJwt(googleAccessToken || "");
 
   const { tenant } = useTenant();
+  const { deviceId } = useDeviceInfo();
 
   if (!process.env.REACT_APP_AUTH_API) {
     throw new Error(
@@ -73,7 +75,7 @@ const AuthenticationProvider = (props) => {
     const body = { token: token };
       fetch(process.env.REACT_APP_AUTH_API + "/validateToken.php?debug=true", {
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant },
+        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
         method: "POST",
       })
         .then((res) => res.json())
@@ -142,7 +144,7 @@ const AuthenticationProvider = (props) => {
       };
       await fetch(process.env.REACT_APP_AUTH_API + "/logingoogle.php", {
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant },
+        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
         method: "POST",
       })
         .then((res) => res.json())
@@ -192,7 +194,7 @@ const AuthenticationProvider = (props) => {
       process.env.REACT_APP_AUTH_API + "/registration.php?debug=true",
       {
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant },
+        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
         method: "POST",
       }
     )
@@ -230,7 +232,7 @@ const AuthenticationProvider = (props) => {
 
     return fetch(process.env.REACT_APP_AUTH_API + "/login.php?debug=true", {
       body: JSON.stringify(body),
-      headers: { "Content-Type": "application/json", APP_ID: tenant },
+      headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
       method: "POST",
     })
       .then((res) => res.json())
@@ -268,7 +270,7 @@ const AuthenticationProvider = (props) => {
       process.env.REACT_APP_AUTH_API + "/forgotpassword.php?debug=true",
       {
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant },
+        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
         method: "POST",
       }
     )
@@ -301,7 +303,7 @@ const AuthenticationProvider = (props) => {
       process.env.REACT_APP_AUTH_API + "/changepassword.php?debug=true",
       {
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant },
+        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
         method: "POST",
       }
     ).catch((err) => {
@@ -319,7 +321,8 @@ const AuthenticationProvider = (props) => {
         headers: {
           "Content-Type": "application/json",
           APP_ID: tenant,
-          token: token,
+          token: token, 
+          deviceid: deviceId,
         },
         method: "GET",
       }

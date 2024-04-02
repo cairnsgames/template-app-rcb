@@ -9,15 +9,15 @@ const Summary = () => {
   return (
     <>
       <h3>Summary: Auth</h3>
-      <div>isLoggedIn: {isLoggedIn ? "true" : "false"}</div>
+      {isLoggedIn &&<div>You are logged in</div>}
+      {!isLoggedIn && <Alert variant="danger">You are not logged in</Alert>}
       {isLoggedIn && (
         <div>
           <div>User: {user?.email}</div>
           <div>Id: {user?.id}</div>
           <div>Name: {user?.firstname}</div>
           <div>Surname: {user?.lastname}</div>
-          {user?.mastertoken && <AdminOnly variant="warning">Currently Impersonating the User</AdminOnly>}
-          
+          {user?.mastertoken && <AdminOnly variant="warning">You are currently Impersonating this User</AdminOnly>}          
         </div>
       )}
     </>

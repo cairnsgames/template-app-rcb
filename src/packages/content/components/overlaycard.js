@@ -1,21 +1,20 @@
 import Card from "react-bootstrap/Card";
-import Tracker from "../../packages/tracker/tracker";
 
-function ImgOverlayExample(props) {
+const OverlayCard = (props) => {
   return (
     <Card
-      className="masonry-brick bg-dark text-white"
+      className="bg-dark text-white"
       style={{
-        maxWidth: props.width,
-        maxHeight: props.height,
+        maxWidth: props.width ?? "100%",
+        maxHeight: props.height ?? "100%",
         overflowY: "hidden",
         border: "2px solid green",
         borderRadius: "2rem",
       }}
     >
-      <Tracker itemtype="event" id={props.id}>
+      
         <Card.Img
-          src={props.src ? `images/${props.src}` : "images/9.png"}
+          src={props.src ? props.src : "images/9.png"}
           alt="Card image"
           style={{ borderRadius: "2rem" }}
         />
@@ -29,9 +28,8 @@ function ImgOverlayExample(props) {
         <Card.Text>Last updated 3 mins ago</Card.Text>
         </div>
       </Card.ImgOverlay>
-      </Tracker>
     </Card>
   );
 }
 
-export default ImgOverlayExample;
+export default OverlayCard;

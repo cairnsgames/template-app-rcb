@@ -2,6 +2,8 @@ import { InView } from "react-intersection-observer";
 import { useUser } from "../auth/context/useuser";
 import useTenant from "../tenant/context/usetenant";
 
+import "./tracker.scss";
+
 const Tracker = ({ itemtype, id, itemid, children }) => {
   const { tenant } = useTenant();
   const { user, token } = useUser();
@@ -22,15 +24,16 @@ const Tracker = ({ itemtype, id, itemid, children }) => {
         "Content-Type": "application/json",
         APP_ID: tenant,
       },
-      body: JSON.stringify({ "user_id": user?.id ?? 0, id }),
+      body: JSON.stringify({ user_id: user?.id ?? 0, id }),
     });
   };
 
   return (
     <InView
+      className="tracker"
       key={id ?? itemid}
       onChange={(inView, entry) => {
-        if (inView) {
+        if (inView && user?.id) {
           seen();
         }
       }}

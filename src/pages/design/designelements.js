@@ -34,7 +34,7 @@ const DesignElements = () => {
   }
 
   return (
-    <>
+  <Container className="mt-3">
       <a href="#design/accordian">Accordians</a>
       <br />
       <a href="#design/alert">Alerts</a>
@@ -48,7 +48,7 @@ const DesignElements = () => {
       <a href="#design/cards">Card</a>
       <br />
       <a href="#design/carousela">Carousel</a>
-    </>
+    </Container>
   );
 };
 

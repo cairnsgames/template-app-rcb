@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MobileDeviceContext } from "./PushNotificationsprovider";
+import { MobileDeviceContext } from "./mobiledeviceprovider";
 
 export const usePushNotifications = () => {
     // get the context
@@ -13,3 +13,5 @@ export const usePushNotifications = () => {
   
     return { registrationToken };
   };
+
+  export default usePushNotifications;

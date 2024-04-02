@@ -1,4 +1,4 @@
-import { MobileDeviceProvider } from "./theme/modiledeviceprovider";
+import { MobileDeviceProvider } from "../packages/device/mobiledeviceprovider";
 import { ThemeProvider } from "./theme/themeprovider";
 import { TenantProvider } from "@cairnsgames/tenant/context/tenantprovider";
 import { AuthenticationProvider } from "@cairnsgames/auth/context/authprovider";

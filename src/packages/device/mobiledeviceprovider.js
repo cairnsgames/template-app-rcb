@@ -10,6 +10,7 @@ const MobileDeviceProvider = (props) => {
 
   const [registrationToken, setRegistrationToken] = useState();
   const [deviceInfo, setDeviceInfo] = useState();
+  const [deviceIdentifier, setDeviceIdentifier] = useState();
 
   useEffect(() => {
     // When token changes, make sure to store it on backend to allow sending of messages to the device in future. (Link token with userid for example)
@@ -56,10 +57,11 @@ const MobileDeviceProvider = (props) => {
 
   useEffect(() => {
     Device.getInfo().then((info) => {
-      console.log("#### Device Infp",JSON.stringify(info));
+      console.log("#### Device Info",JSON.stringify(info));
     });
     Device.getId().then((info) => {
         console.log("#### Device Id",JSON.stringify(info));
+        setDeviceIdentifier(info);
       });    
   }, []);
 
@@ -112,7 +114,7 @@ const MobileDeviceProvider = (props) => {
   };
 
   return (
-    <MobileDeviceContext.Provider value={{ registrationToken, deviceInfo }}>
+    <MobileDeviceContext.Provider value={{ registrationToken, deviceInfo, deviceIdentifier }}>
       {children}
     </MobileDeviceContext.Provider>
   );
