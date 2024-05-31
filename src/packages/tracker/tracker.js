@@ -9,6 +9,11 @@ const Tracker = ({ itemtype, id, itemid, children }) => {
   const { user, token } = useUser();
 
   const seen = () => {
+    if (!id && !itemid) {
+      // do not track items without ids.
+      return;
+    }
+
     let url = `${
       process.env.REACT_APP_TRACKER_API
     }/itemseen.php?type=${itemtype}&user_id=${user?.id ?? 0}&id=${
@@ -31,6 +36,7 @@ const Tracker = ({ itemtype, id, itemid, children }) => {
   return (
     <InView
       className="tracker"
+      style={{position:"relative"}}
       key={id ?? itemid}
       onChange={(inView, entry) => {
         if (inView && user?.id) {

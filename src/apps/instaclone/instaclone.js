@@ -1,5 +1,5 @@
 import React from "react";
-import PageWrapper from "../../parts/pagewrapper";
+import PageCentered from "../../parts/pagelayouts/pagecentered";
 import Header from "./header";
 import Footer from "./footer";
 import Post from "./post";
@@ -8,7 +8,7 @@ import "./instaclone.scss";
 
 const InstaClone = () => {
   return (
-    <PageWrapper className="wrapper">
+    <PageCentered className="wrapper">
       <Header />
       <Container
         fluid
@@ -24,7 +24,7 @@ const InstaClone = () => {
         <Post />
       </Container>
       <Footer />
-    </PageWrapper>
+    </PageCentered>
   );
 };
 

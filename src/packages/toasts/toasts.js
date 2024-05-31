@@ -1,6 +1,7 @@
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import useToast from "./usetoast";
+import FormattedText from "../utilities/formattedtext";
 
 function timeAgo(date) {
   const seconds = Math.floor((new Date() - date) / 1000);
@@ -67,7 +68,7 @@ function Toasts() {
                 <small className="text-muted">{timeAgo(t.time)}</small>
               )}
             </Toast.Header>
-            {t.message && <Toast.Body>{t.message}</Toast.Body>}
+            {t.message && <Toast.Body><FormattedText text={t.message} /></Toast.Body>}
           </Toast>
         ))}
       </ToastContainer>

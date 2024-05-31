@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Nav,
-  Navbar,
-  NavDropdown,
-} from "react-bootstrap";
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useAuth } from "@cairnsgames/auth/context/useauth";
 import { useUser } from "@cairnsgames/auth/context/useuser";
 import DarkModeSwitch from "./darkmode";
@@ -25,32 +20,79 @@ function NavPart() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse className="ms-2">
           <Nav className="me-auto">
-            <NavDropdown className="bg-primary" title="System Pages">
+            <NavDropdown className="bg-primary" title="Sample Pages">
+              <Nav.Link className="bg-primary" href="#review" bg="primary">
+                Reviews
+              </Nav.Link>
+              
+              <Nav.Link className="bg-primary" href="#wizard" bg="primary">
+                Wizard
+              </Nav.Link>
               <Nav.Link className="bg-primary" href="#geolocation" bg="primary">
-                  Geo Location
-                </Nav.Link>
-                
+                Geo Location
+              </Nav.Link>
+
+              <Nav.Link className="bg-primary" href="#map" bg="primary">
+                Map
+              </Nav.Link>
+              <Nav.Link className="bg-primary" href="#form" bg="primary">
+                Custom forms
+              </Nav.Link>
+              <Nav.Link className="bg-primary" href="#doc" bg="primary">
+                Custom Document
+              </Nav.Link>
+              <Nav.Link className="bg-primary" href="#apitest" bg="primary">
+                API Testing
+              </Nav.Link>
+
               <Nav.Link className="bg-primary" href="#qrcode" bg="primary">
-                  QR Code
-                </Nav.Link>
+                QR Code
+              </Nav.Link>
+              <Nav.Link className="bg-primary" href="#tour" bg="primary">
+                Tour
+              </Nav.Link>
+              <Nav.Link
+                className="bg-primary"
+                href="#pagecontent/4"
+                bg="primary"
+              >
+                Content Viewer
+              </Nav.Link>
+              <Nav.Link className="bg-primary" href="#newcontent" bg="primary">
+                New Content
+              </Nav.Link>
+            </NavDropdown>
+            <NavDropdown className="bg-primary" title="Auth Pages">
               {hasAccess("Tenant") && (
                 <Nav.Link className="bg-primary" href="#tenant" bg="primary">
                   Tenant Summary
                 </Nav.Link>
               )}
-              <Nav.Link className="bg-primary" href="#auth" bg="primary">
-                Auth Summary
-              </Nav.Link>
-              <Nav.Link className="bg-primary" href="#permissions" bg="primary">
-                Permissions Summary
-              </Nav.Link>
-              <Nav.Link className="bg-primary" href="#flags" bg="primary">
-                Flags Summary
+              <Nav.Link className="bg-primary" href="#user" bg="primary">
+                User Details
               </Nav.Link>
 
-              <Nav.Link className="bg-primary" href="#settings" bg="primary">
-                Settings Summary
-              </Nav.Link>
+              {hasAccess("Tenant") && (
+                <>
+                  <Nav.Link
+                    className="bg-primary"
+                    href="#permissions"
+                    bg="primary"
+                  >
+                    Permissions Summary
+                  </Nav.Link>
+                  <Nav.Link className="bg-primary" href="#flags" bg="primary">
+                    Flags Summary
+                  </Nav.Link>
+                  <Nav.Link
+                    className="bg-primary"
+                    href="#settings"
+                    bg="primary"
+                  >
+                    Settings Summary
+                  </Nav.Link>
+                </>
+              )}
             </NavDropdown>
 
             {isLoggedIn && (
@@ -94,23 +136,14 @@ function NavPart() {
             )}
             {isLoggedIn && hasAccess("MembershipAdministration") && (
               <NavDropdown className="bg-primary" title="Administration">
-                <Nav.Link className="bg-primary" href="#admin/application" bg="primary">
+                <Nav.Link
+                  className="bg-primary"
+                  href="#admin/application"
+                  bg="primary"
+                >
                   Applications
                 </Nav.Link>
-              <Nav.Link className="bg-primary" href="#auth" bg="primary">
-                Auth Summary
-              </Nav.Link>
-
-
-
-              <Nav.Link className="bg-primary" href="#flags" bg="primary">
-                Flags Summary
-              </Nav.Link>
-
-              <Nav.Link className="bg-primary" href="#settings" bg="primary">
-                Settings Summary
-              </Nav.Link>
-            </NavDropdown>
+              </NavDropdown>
             )}
           </Nav>
           <Nav>

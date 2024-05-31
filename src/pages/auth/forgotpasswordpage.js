@@ -1,11 +1,11 @@
 import { Row } from "react-bootstrap";
-import PageWrapper from "../../parts/pagewrapper";
+import PageCentered from "../../parts/pagelayouts/pagecentered";
 import ForgotPasswordForm from "@cairnsgames/auth/forms/forgot";
 
 
 const ForgotPasswordPage = () => {
   return (
-    <PageWrapper position="middle" >
+    <PageCentered position="middle" >
       <Row className="border-bottom">
         <ForgotPasswordForm />
       </Row>
@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
           <a href="#register" className="me-2">Create Account</a>
         </div>
       </Row>
-    </PageWrapper>
+    </PageCentered>
   );
 };
 

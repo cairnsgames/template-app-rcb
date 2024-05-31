@@ -1,14 +1,14 @@
 import { Row } from "react-bootstrap";
-import PageWrapper from "../../parts/pagewrapper";
+import PageCentered from "../../parts/pagelayouts/pagecentered";
 import Summary from "./summary";
 
 const FlagsSummaryPage = () => {
   return (
-    <PageWrapper position="middle" >
+    <PageCentered position="middle" >
       <Row className="border-bottom">
         <Summary />
       </Row>
-    </PageWrapper>
+    </PageCentered>
   );
 };
 

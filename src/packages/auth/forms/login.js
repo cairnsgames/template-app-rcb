@@ -1,38 +1,40 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import Row from "react-bootstrap/Row";
 import { useAuth } from "../../auth/context/useauth";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 // interface ILoginProps {
 //   onLogin?: (result: any) => void;
 // }
 
-const LoginForm = ({onSuccess}) => {
+const LoginForm = ({ onSuccess }) => {
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [keep, setKeep] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { login } = useAuth();
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
-    
+
     event.preventDefault();
     event.stopPropagation();
     if (form.checkValidity() === false) {
-      console.log("Not all values are entered correctly")
+      console.log("Not all values are entered correctly");
       return;
     }
 
-    const result = login(email, password)
+    const result = login(email, password);
     // .then((result: any) => {
-      console.log("Logged in successfully", result);
-      if (result && onSuccess) {
-        onSuccess(true);
-      }
+    console.log("Logged in successfully", result);
+    if (result && onSuccess) {
+      onSuccess(true);
+    }
     // });
 
     setValidated(true);
@@ -61,12 +63,15 @@ const LoginForm = ({onSuccess}) => {
           <Form.Label>Password</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
-              type="password"
+              type={showPassword ? "text" : "password"}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
+            <Button variant="outline-primary" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <EyeSlash /> : <Eye />}
+            </Button>
             <Form.Control.Feedback type="invalid">
               Please enter your password.
             </Form.Control.Feedback>
@@ -77,12 +82,14 @@ const LoginForm = ({onSuccess}) => {
         <Form.Check
           label="Keep me logged in"
           checked={keep}
-          onChange={()=>{setKeep(!keep)}}
+          onChange={() => {
+            setKeep(!keep);
+          }}
         />
       </Form.Group>
       <Button type="submit">Submit form</Button>
     </Form>
   );
-}
+};
 
 export default LoginForm;

@@ -1,11 +1,11 @@
-import ContentItem from "../../packages/content/components/contentitem";
+import ContentItem from "../../packages/content/contentitem";
 import EventList from "../event/eventlist";
 
 const HomePage = () => {
     return (
-        <div>
+        <div className="p-3">
             <h1>Home Page</h1>
-            <ContentItem id="13" style={{maxWidth:"90%",margin:"1rem"}} />
+            <ContentItem id="13" style={{}} />
             {/* <EventList /> */}
         </div>
     )

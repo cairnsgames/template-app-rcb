@@ -1,0 +1,92 @@
+.step-bar {
+    display: flex;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+  
+  .step-button {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    border: 1px solid #ccc;
+    background-color: lightgray;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    text-align: center;
+  }
+  
+  .step-button:last-child {
+    margin-right: 0;
+  }
+  
+  .step-button:first-child {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+  
+  .step-button:last-child {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+  
+  .step-button.completed {
+    background-color: var(--bs-primary);
+    color: #fff;
+  }
+  
+  .step-button.active {
+    background-color: var(--bs-info);
+    color: #fff;
+  }
+  
+  .step-button::after {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    right: -1rem;
+    width: 0;
+    height: 100%;
+    border-top: 0.4rem solid transparent;
+    border-bottom: 0.4rem solid transparent;
+    // border-left: 0.4rem solid transparent;
+    z-index: 2;
+  }
+  
+  .step-button.completed::after {
+    border-left-color: white;
+  }
+  
+  .step-button.active::after {
+    border-left-color: white;
+  }
+  
+  .step-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -1rem;
+    width: 0;
+    height: 100%;
+    border-top: 1rem solid transparent;
+    border-bottom: 1rem solid transparent;
+    border-left: 1rem solid transparent;
+    z-index: 1;
+  }
+  
+  .step-button.completed::before {
+    border-left-color: var(--bs-primary);
+  }
+  
+  .step-button.active::before {
+    border-left-color: var(--bs-info);
+  }
+  
+  .step-button:last-child::after, .step-button:last-child::before {
+    display: none;
+  }
+  

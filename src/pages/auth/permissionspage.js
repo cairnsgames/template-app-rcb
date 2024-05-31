@@ -1,15 +1,15 @@
 import { Row } from "react-bootstrap";
-import PageWrapper from "../../parts/pagewrapper";
+import PageCentered from "../../parts/pagelayouts/pagecentered";
 import PermissionsSummary from "../../packages/membership/forms/application/permissions/summary";
 
 const AuthPermissionsPage = () => {
   
   return (
-    <PageWrapper position="middle" >
+    <PageCentered position="middle" >
       <Row className="border-bottom">
         <PermissionsSummary />
       </Row>
-    </PageWrapper>
+    </PageCentered>
   );
 };
 

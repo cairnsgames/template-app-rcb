@@ -5,6 +5,7 @@ import { AuthenticationProvider } from "@cairnsgames/auth/context/authprovider";
 import { FeatureFlagProvider } from "@cairnsgames/featureflags/featureflag";
 import { SettingsProvider } from "@cairnsgames/settings/settingsprovider";
 import { ToastsProvider } from "@cairnsgames/toasts/toastsprovider";
+import MapProvider from "../packages/map/context/mapprovider";
 
 // import all providers here, so that in app.js only a single providers file need be imported
 const Providers = ({ children }) => {
@@ -21,7 +22,9 @@ const Providers = ({ children }) => {
           <AuthenticationProvider onError={onError}>
             <FeatureFlagProvider>
               <SettingsProvider>
-                <ToastsProvider>{children}</ToastsProvider>
+                <ToastsProvider>
+                  <MapProvider>{children}</MapProvider>
+                </ToastsProvider>
               </SettingsProvider>
             </FeatureFlagProvider>
           </AuthenticationProvider>

@@ -8,18 +8,6 @@ const ToastsProvider = (props) => {
   const [toasts, setToasts] = useState([]);
   const [counter, setCounter] = useState(0);
 
-  useEffect(() => {
-    // Load Toasts
-    // fetch(process.env.REACT_APP_Toasts_API + "params.php", {
-    //   headers: { "Content-Type": "application/json", "APP_ID": Toasts },
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setParams(data.params);
-    //   })
-    addToast("Welcome", "Welcome to SoloBoard", "info");
-  }, []);
-
   const getNextId = () => {
     setCounter(counter + 1);
     return counter;

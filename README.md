@@ -90,3 +90,9 @@ za.co.cairnsgames.app
 
 NOTE google-services is not copied on sync
 copy to adroid/app directory
+
+
+
+## Shared Colors SCSS and Javascript
+
+See the colors.js file in root

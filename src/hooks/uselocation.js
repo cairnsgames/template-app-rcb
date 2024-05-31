@@ -36,10 +36,10 @@ export const useLocation = (valid) => {
 
   const popstate = () => {
     setDetails(loadURLDetails(validParams));
-  }
+  };
   const locationchange = () => {
     setDetails(loadURLDetails(validParams));
-  }
+  };
 
   useEffect(() => {
     window.addEventListener("popstate", popstate);
@@ -47,12 +47,32 @@ export const useLocation = (valid) => {
     return () => {
       window.removeEventListener("popstate", popstate);
       window.removeEventListener("locationchange", locationchange);
-    }
+    };
   }, []);
 
-  const set = (url) => {
+  const set = (url, parms) => {
+    if (parms) {
+      url += "?" + new URLSearchParams(parms).toString();
+    }
     window.history.pushState(null, "", url);
     setDetails(loadURLDetails(validParams));
+  };
+
+  const setHash = (hash, parms) => {
+    let url = `#${hash}`;
+    if (parms) {
+      url += "?" + new URLSearchParams(parms).toString();
+    }
+    set(url);
+  };
+
+  // will go back 1 url, or go to the fallback if none available. use fallback to go to previous logical screen
+  const back = (fallback = "/") => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = fallback;
+    }
   };
 
   useEffect(() => {
@@ -60,12 +80,12 @@ export const useLocation = (valid) => {
   }, [validParams]);
 
   const param = (key) => {
-    const item = details.params.find(i => i.key === key);
+    const item = details.params.find((i) => i.key === key);
     if (!item) return null;
     return item.value;
-  }
+  };
 
-  return { ...details, set, param };
+  return { ...details, set, param, back, setHash };
 };
 
 export default useLocation;

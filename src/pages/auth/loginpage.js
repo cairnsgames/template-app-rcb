@@ -1,5 +1,5 @@
 import { Row } from "react-bootstrap";
-import PageWrapper from "../../parts/pagewrapper";
+import PageCentered from "../../parts/pagelayouts/pagecentered";
 import LoginForm from "@cairnsgames/auth/forms/login"
 import useToast from "@cairnsgames/toasts/usetoast";
 
@@ -13,7 +13,7 @@ const LoginPage = ({onSuccess}) => {
     } 
   }
   return (
-    <PageWrapper position="middle" >
+    <PageCentered position="middle" >
       <Row className="border-bottom">
         <LoginForm onSuccess={onLogin}/>
       </Row>
@@ -23,7 +23,7 @@ const LoginPage = ({onSuccess}) => {
           <a href="#forgot" className="ms-2">Forgot Password</a>
         </div>
       </Row>
-    </PageWrapper>
+    </PageCentered>
   );
 };
 

@@ -1,9 +1,8 @@
 import React from "react";
-import { Button, Container, Image } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Pricing from "./pricing";
 import Features from "./features";
 import Hero from "./hero";
-import Album from "./album";
 import Footer from "./footer";
 import { useRef } from "react";
 import Events from "./events";
@@ -14,7 +13,7 @@ const LandingPage = ({subTitle}) => {
   const pricingRef = useRef();
   const albumRef = useRef();
   return (
-    <Container className="px-2">
+    <Container fluid className="px-2" style={{ minHeight: "85%", maxHeight: "calc(100vh - 160px)", overflowY: "scroll" }}>
       <div ref={heroRef}>
         <Hero />
       </div>

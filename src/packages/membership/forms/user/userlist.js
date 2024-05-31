@@ -23,6 +23,7 @@ const UserList = () => {
     <Tracker itemtype="users" id={0}>
       <h1>Application Users</h1>
       <Table>
+        <tbody>
         {users.map((user) => (
           <tr key={user.id}>
             <td><a href={`#admin/user/${user.id}`}>{user.email}</a></td>
@@ -32,6 +33,7 @@ const UserList = () => {
             </td>
           </tr>
         ))}
+        </tbody>
       </Table>
     </Tracker>
   );

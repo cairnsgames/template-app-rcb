@@ -5,10 +5,10 @@ import AdminOnly from "../../../components/adminonly";
 
 const Summary = () => {
   const { isLoggedIn, token, mastertoken, user } = useAuth();
-  console.log("USER Summary", user);
+
   return (
     <>
-      <h3>Summary: Auth</h3>
+      <h3>Summary: User</h3>
       {isLoggedIn &&<div>You are logged in</div>}
       {!isLoggedIn && <Alert variant="danger">You are not logged in</Alert>}
       {isLoggedIn && (

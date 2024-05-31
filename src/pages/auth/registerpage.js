@@ -1,10 +1,10 @@
 import { Row } from "react-bootstrap";
-import PageWrapper from "../../parts/pagewrapper";
+import PageCentered from "../../parts/pagelayouts/pagecentered";
 import RegistrationForm from "@cairnsgames/auth/forms/register";
 
 const RegisterPage = () => {
   return (
-    <PageWrapper position="middle">
+    <PageCentered position="middle">
       <Row className="border-bottom">
         <RegistrationForm />
       </Row>
@@ -13,7 +13,7 @@ const RegisterPage = () => {
           <a href="#login">Login</a>
         </div>
       </Row>
-    </PageWrapper>
+    </PageCentered>
   );
 };
 

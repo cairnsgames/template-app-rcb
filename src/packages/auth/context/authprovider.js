@@ -98,6 +98,7 @@ const AuthenticationProvider = (props) => {
             mastertoken: data.mastertoken,
           };
           setUser(userDetails);
+          // Do not show the authentication screen when validating token
           if (window.location.hash.includes("auth")) {
             window.location.hash = "#";
           }

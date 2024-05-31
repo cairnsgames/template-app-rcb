@@ -1,9 +1,9 @@
 import Accordion from 'react-bootstrap/Accordion';
-import PageWrapper from '../../parts/pagewrapper';
+import PageCentered from '../../parts/pagelayouts/pagecentered';
 
 const Accordians = () => {
   return (
-    <PageWrapper>
+    <PageCentered>
     <h2>Accordian</h2>
     <Accordion defaultActiveKey="0">
       <Accordion.Item eventKey="0">
@@ -31,7 +31,7 @@ const Accordians = () => {
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>
-    </PageWrapper>
+    </PageCentered>
   );
 }
 

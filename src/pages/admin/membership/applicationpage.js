@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PageWrapper from "../../../parts/pagewrapper";
+import PageCentered from "../../../parts/pagelayouts/pagecentered";
 import ApplicationForm from "../../../packages/membership/forms/application/applicationform";
 import { useMembership } from "../../../packages/membership/context/usemembership";
 import { Tabs, Tab } from "react-bootstrap";
@@ -23,7 +23,7 @@ const ApplicationPage = (props) => {
   }, [id, applications]);
 
   return (
-    <PageWrapper>
+    <PageCentered>
       {application && (
         <>
           <div>
@@ -46,7 +46,7 @@ const ApplicationPage = (props) => {
         </>
       )}
       {!application && <div>Application not found</div>}
-    </PageWrapper>
+    </PageCentered>
   );
 };
 

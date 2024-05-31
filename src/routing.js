@@ -21,10 +21,19 @@ import FlagsSummaryPage from "@cairnsgames/featureflags/flagssummarypage";
 import SettingsSummaryPage from "@cairnsgames/settings/settingssummarypage";
 import AuthPermissionsPage from "./pages/auth/permissionspage";
 import HomePage from "./pages/home/home";
-import ContentPage from "./pages/home/contentpage";
+import ContentPage from "./pages/contentpage";
+import ContentPage2 from "./pages/contentpage2";
+import NewContentPage from "./pages/newcontentpage";
 import GeoLocationPage from "./pages/geolocation/geolocationpage";
 import QRCodePage from "./pages/qrcode/qrcodepage";
+import ReviewPage from "./pages/reviewpage";
+import TourPage from "./pages/tourpage";
+import FormPage from "./pages/form/formpage";
+import DocsPage from "./pages/doc/docspage";
+import APITestPage from "./pages/apitest/apitestpage";
+import WizardPage from "./pages/wizard/wizardpage.js";
 
+const MapPage = React.lazy(() => import("./pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("./pages/admin/admin"));
 
 const Routing = () => {
@@ -32,7 +41,6 @@ const Routing = () => {
   const { isLoggedIn } = useAuth();
 
   if (hash.startsWith("sitedown")) {
-    console.log("Show SITEDOWN");
     return <SiteDown />;
   }
   return (
@@ -68,12 +76,45 @@ const Routing = () => {
           <ContentPage />
         </Route>
 
+        <Route is={"tour"}>
+          <TourPage />
+        </Route>
+
+        <Route is={"pagecontent/{id}"}>
+          <ContentPage2 />
+        </Route>
+        <Route is={"newcontent"}>
+          <NewContentPage />
+        </Route>
+
+        <Route is={"wizard"}>
+          <WizardPage />
+        </Route>
         <Route is={"tenant"}>
           <TenantSummaryPage />
         </Route>
-        
+
+        <Route is={"form"}>
+          <FormPage />
+        </Route>
+        <Route is={"doc"}>
+          <DocsPage />
+        </Route>
         <Route is={"geolocation"}>
           <GeoLocationPage />
+        </Route>
+        <Route is={"review"}>
+          <ReviewPage />
+        </Route>
+        <Route is={"map"}>
+          <Suspense fallback={<div>Loading...</div>}>
+            <MapPage />
+          </Suspense>
+        </Route>
+        <Route is={"apitest"}>
+          <Suspense fallback={<div>Loading...</div>}>
+            <APITestPage />
+          </Suspense>
         </Route>
         <Route is={"qrcode"}>
           <QRCodePage />
@@ -81,7 +122,7 @@ const Routing = () => {
         <Route is={"permissions"}>
           <AuthPermissionsPage />
         </Route>
-        <Route is={"auth"}>
+        <Route is={"user"}>
           <AuthSummaryPage />
         </Route>
         <Route is={"flags"}>

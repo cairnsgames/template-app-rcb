@@ -1,4 +1,4 @@
-import PageWrapper from "../../parts/pagewrapper";
+import PageCentered from "../../parts/pagelayouts/pagecentered";
 import useGeoLocation from "../../hooks/usegeolocation";
 
 import { useState } from 'react';

@@ -1,4 +1,4 @@
-import PageWrapper from "../../parts/pagewrapper";
+import PageCentered from "../../parts/pagelayouts/pagecentered";
 import useGeoLocation from "../../hooks/usegeolocation";
 
 import { useState } from 'react';
@@ -11,10 +11,10 @@ import QRCodeSample from "../../packages/qrcode/qrcodesample";
 const QRCodePage = ({ id }) => {
   const [text, setText] = useState("This is an example");
   return (
-    <PageWrapper style={{ margin: "1rem" }}>
+    <PageCentered style={{ margin: "1rem" }}>
         <h1>QR Code</h1>
         <QRCodeSample />
-    </PageWrapper>
+    </PageCentered>
   );
 };
 
