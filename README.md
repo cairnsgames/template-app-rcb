@@ -80,7 +80,6 @@ Taken from: <https://getbootstrap.com/docs/5.0/examples/>
 
 Taken from: <https://react-bootstrap.github.io/>
 
-
 # Push Notifications
 
 <https://medium.com/@avilaatencioa/ionic-capacitor-push-notifications-9dc248e59357>
@@ -91,8 +90,12 @@ za.co.cairnsgames.app
 NOTE google-services is not copied on sync
 copy to adroid/app directory
 
-
-
 ## Shared Colors SCSS and Javascript
 
 See the colors.js file in root
+
+# Deployed directories
+
+http://cairnsgames.co.za/rcb has the main project
+http://cairnsgames.co.za/zharo has the shared Zharo libraries
+http://cairnsgames.co.za/zharo/test/ has the test file (TODO: Allow sharing of any content share file)
