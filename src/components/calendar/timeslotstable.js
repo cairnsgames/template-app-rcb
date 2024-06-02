@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import TimeSlotRow from './TimeSlotRow';
+import TimeSlotRow from './timeslotrow';
 
 const TimeSlotsTable = ({
   timeSlots,
