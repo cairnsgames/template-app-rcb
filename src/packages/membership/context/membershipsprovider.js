@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import useTenant from "../../tenant/context/usetenant";
-import useData from "../../datahooks/useData";
+import useData from "../../datahooks/usedata";
 
 const MembershipContext = createContext();
 
