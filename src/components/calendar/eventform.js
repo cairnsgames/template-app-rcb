@@ -52,6 +52,9 @@ const EventForm = ({ maxDuration, time, date, onSaveDetails, templates }) => {
       setErrors(newErrors);
     } else {
       setErrors({});
+      formData.time = time;
+      formData.date = date;
+      
       onSaveDetails(formData);
     }
   };

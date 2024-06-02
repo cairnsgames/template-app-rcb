@@ -13,7 +13,7 @@ const WizardSample = () => {
     { name: "Event 1", startingTime: "08:30", duration: "60" },
     { name: "Event 2", startingTime: "11:00", duration: "90" },
   ]);
-  
+
   const [selectedSlots, setSelectedSlots] = useState([]);
 
   const handleSave = () => {
@@ -31,11 +31,29 @@ const WizardSample = () => {
   };
 
   const selectTime = (time, maxDuration) => {
-    setSelectedTime({time: time, duration: maxDuration})
+    setSelectedTime({ time: time, duration: maxDuration });
     setLastStep(3);
-    // const newAppointment = { name: "New Event", startingTime: time, duration: maxDuration < 60 ? maxDuration : "60" };
-    // setAppointments([...appointments, newAppointment]);
   };
+
+  const onSaveDetails = (formData) => {
+    const { name, duration, time } = formData;
+    
+    // Create new appointments for each time
+    const newAppointments = time.map(startingTime => ({
+      name,
+      startingTime,
+      duration
+    }));
+    
+    // Update the state with new appointments
+    setAppointments(prevAppointments => [
+      ...prevAppointments,
+      ...newAppointments
+    ]);
+  
+    console.log("SAVE DETAILS", formData);
+  };
+  
 
   return (
     <Wizard onSave={handleSave} lastActiveStep={lastStep - 1}>
@@ -60,7 +78,7 @@ const WizardSample = () => {
           appointments={appointments}
           selectTime={selectTime}
           multiselect={true}
-          selectedSlots={selectedSlots} 
+          selectedSlots={selectedSlots}
           setSelectedSlots={setSelectedSlots}
         />
       </Wizard.Step>
@@ -72,11 +90,26 @@ const WizardSample = () => {
           </Wizard.StepTitle>
         }
       >
-        <EventForm maxDuration={selectedTime?.duration} time={selectedTime?.time} date={selectedDay} onSaveDetails={()=>{}} templates={
-          [{name: "Kizomba", description: "Kizomba dance class", duration: "60", location: "Dance Studio"},
-          {name: "Salsa", description: "Salsa dance class", duration: "60", location: "Dance Studio"},
-          ]
-        } />
+        <EventForm
+          maxDuration={selectedTime?.duration}
+          time={selectedTime?.time}
+          date={selectedDay}
+          onSaveDetails={onSaveDetails}
+          templates={[
+            {
+              name: "Kizomba",
+              description: "Kizomba dance class",
+              duration: "60",
+              location: "Dance Studio",
+            },
+            {
+              name: "Salsa",
+              description: "Salsa dance class",
+              duration: "60",
+              location: "Dance Studio",
+            },
+          ]}
+        />
       </Wizard.Step>
       <Wizard.Step
         title={

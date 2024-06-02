@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Dropdown,
-  DropdownButton,
-  Table,
-  Card,
-} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import SlotIntervalDropdown from "./slotintervaldropdown";
+import HourDropdown from "./hourdropdown";
+import TimeSlotsTable from "./timeslotstable";
 
-const CalendarDayView = ({ appointments = [], selectEvent, selectTime, multiselect = false, selectedSlots, setSelectedSlots }) => {
+const CalendarDayView = ({
+  appointments = [],
+  selectEvent,
+  selectTime,
+  multiselect = false,
+  selectedSlots,
+  setSelectedSlots,
+}) => {
   const [slotInterval, setSlotInterval] = useState(30);
   const [startHour, setStartHour] = useState(8);
   const [endHour, setEndHour] = useState(17);
@@ -153,110 +155,36 @@ const CalendarDayView = ({ appointments = [], selectEvent, selectTime, multisele
     <Container>
       <Row>
         <Col>
-          <DropdownButton
-            title="Slot Interval"
-            onSelect={(e) => handleSlotChange(Number(e))}
-          >
-            {slotIntervals
-              .filter((interval) =>
-                allowedIntervals.includes(interval.duration)
-              )
-              .map((interval) => (
-                <Dropdown.Item
-                  key={interval.duration}
-                  eventKey={interval.duration}
-                  active={interval.duration === slotInterval}
-                >
-                  {interval.name}
-                </Dropdown.Item>
-              ))}
-          </DropdownButton>
+          <SlotIntervalDropdown
+            slotIntervals={slotIntervals}
+            allowedIntervals={allowedIntervals}
+            slotInterval={slotInterval}
+            handleSlotChange={handleSlotChange}
+          />
         </Col>
         <Col>
-          <DropdownButton
+          <HourDropdown
             title="Start Hour"
-            onSelect={(e) => handleStartHourChange(Number(e))}
-          >
-            {[...Array(24).keys()].map((hour) => (
-              <Dropdown.Item key={hour} eventKey={hour}>
-                {hour}:00
-              </Dropdown.Item>
-            ))}
-          </DropdownButton>
+            selectedHour={startHour}
+            handleHourChange={handleStartHourChange}
+          />
         </Col>
         <Col>
-          <DropdownButton
+          <HourDropdown
             title="End Hour"
-            onSelect={(e) => handleEndHourChange(Number(e))}
-          >
-            {[...Array(24).keys()].map((hour) => (
-              <Dropdown.Item key={hour} eventKey={hour}>
-                {hour}:00
-              </Dropdown.Item>
-            ))}
-          </DropdownButton>
+            selectedHour={endHour}
+            handleHourChange={handleEndHourChange}
+          />
         </Col>
       </Row>
-      <Table bordered>
-        <tbody>
-          {timeSlots.map((slot, index) => {
-            const slotTime = formatTime(slot.hour, slot.minute);
-            const appointmentSpan = appointmentSpans[slotTime];
-            const isSelected = selectedSlots.includes(slotTime);
-            return (
-              <tr
-                key={index}
-                onClick={() =>
-                  appointmentSpan
-                    ? triggerSelectEvent(appointmentSpan.appointment)
-                    : triggerSelectTime(slotTime)
-                }
-                style={{
-                  backgroundColor: isSelected ? "darkgrey" : "transparent",
-                  color: isSelected ? "white" : "black",
-                  cursor: "pointer",
-                }}
-              >
-                <td
-                  style={{
-                    backgroundColor: isSelected ? "darkgrey" : "transparent",
-                    color: isSelected ? "white" : "black",
-                    cursor: "pointer",
-                  }}
-                >
-                  {slotTime}
-                </td>
-                {appointmentSpan && appointmentSpan.rowspan > 0 ? (
-                  <td
-                    rowSpan={appointmentSpan.rowspan}
-                    className="appointment"
-                    style={{ height: "1px", padding: "5px" }}
-                  >
-                    <Card className="h-100 w-100">
-                      <Card.Header>
-                        <Card.Title>
-                          {appointmentSpan.appointment.name}
-                        </Card.Title>
-                      </Card.Header>
-                      <Card.Body className="d-flex align-items-center justify-content-center">
-                        {appointmentSpan.appointment.name}
-                      </Card.Body>
-                    </Card>
-                  </td>
-                ) : !appointmentSpan ? (
-                  <td
-                    style={{
-                      backgroundColor: isSelected ? "darkgrey" : "transparent",
-                      color: isSelected ? "white" : "black",
-                      cursor: "pointer",
-                    }}
-                  ></td>
-                ) : null}
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+      <TimeSlotsTable
+        timeSlots={timeSlots}
+        appointmentSpans={appointmentSpans}
+        selectedSlots={selectedSlots}
+        triggerSelectEvent={triggerSelectEvent}
+        triggerSelectTime={triggerSelectTime}
+        formatTime={formatTime}
+      />
     </Container>
   );
 };
