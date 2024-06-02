@@ -17,7 +17,7 @@ jobs:
       - name: Build Main Site
         run: npm run build
       - name: Deploy Main Site
-        uses: SamKirkland/FTP-Deploy-Action@4.4.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
         with:
           server: ${{ vars.CG_SERVER }}
           username: ${{ vars.CG_FTP_USERNAME }}
@@ -41,7 +41,7 @@ jobs:
         run: npm run build
         working-directory: packages/zharo
       - name: Deploy Zharo
-        uses: SamKirkland/FTP-Deploy-Action@4.4.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
         with:
           server: ${{ vars.CG_SERVER }}
           username: ${{ vars.CG_FTP_USERNAME }}
@@ -60,7 +60,7 @@ jobs:
         run: |
           sed -i 's|../dist/zharo.js|https://cairnsgames.co.za/zharo/zharo.js|g' packages/zharo/test/index.html
       - name: Deploy Modified Test Directory
-        uses: SamKirkland/FTP-Deploy-Action@4.4.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
         with:
           server: ${{ vars.CG_SERVER }}
           username: ${{ vars.CG_FTP_USERNAME }}
