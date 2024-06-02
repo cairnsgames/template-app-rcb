@@ -67,6 +67,14 @@ jobs:
       run: npm ci
     - name: build library
       run: npm run build
+    - name: Change directory to mini project
+      run: cd packages/zharo
+    - name: Install dependencies for mini project
+      run: npm ci
+      working-directory: packages/zharo
+    - name: Build mini project
+      run: npm run build
+      working-directory: packages/zharo
     
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
@@ -76,3 +84,11 @@ jobs:
         password: ${{ secrets.CG_FTP_PASSWORD }}
         local-dir: ./dist/
         server-dir: ${{ vars.SERVER_DIR }}
+    - name: Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+        server: ${{ vars.CG_SERVER }}
+        username: ${{ vars.CG_FTP_USERNAME }}
+        password: ${{ secrets.CG_FTP_PASSWORD }}
+        local-dir: ./packages/zharo/dist/
+        server-dir: /zharo/        
