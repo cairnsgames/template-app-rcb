@@ -7,7 +7,7 @@ import {
   ProgressBar,
   ButtonGroup,
 } from "react-bootstrap";
-import CustomButton from "../wizard2/custombutton";
+import CustomButton from "./custombutton";
 
 const Wizard = ({ children, onSave, lastActiveStep }) => {
   const [currentStep, setCurrentStep] = useState(0);

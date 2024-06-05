@@ -19,6 +19,7 @@ const TimeSlotRow = ({
         backgroundColor: isSelected ? "darkgrey" : "transparent",
         color: isSelected ? "white" : "black",
         cursor: "pointer",
+        width: "100%",
       }}
     >
       <td

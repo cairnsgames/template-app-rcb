@@ -1,0 +1,29 @@
+.custom-button {
+    position: relative;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    margin-right: 10px;
+    padding-left: 30px;
+    height: 40px;
+    --arrow-color: currentColor; /* Default color, can be updated with JS */
+  }
+
+  .custom-button svg {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translate(-50%, -50%);
+    }
+  
+  .custom-button:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -7px;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 7px solid var(--arrow-color);
+    transform: translateY(-50%);
+  }

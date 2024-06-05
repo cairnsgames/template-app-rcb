@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './customStyles.css';
+import './customstyle.scss';
 import { Button } from 'react-bootstrap';
 import CustomButton from './custombutton';
 

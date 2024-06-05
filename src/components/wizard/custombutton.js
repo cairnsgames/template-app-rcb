@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
-import './customStyles.css'; // Make sure to import the CSS file
+import './customstyle.scss'; // Make sure to import the CSS file
 
 const CustomButton = (props) => {
   const { variant, children } = props;

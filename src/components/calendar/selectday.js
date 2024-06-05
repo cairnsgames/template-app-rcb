@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { ArrowRight, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 
 const SelectDay = ({
   highlightedDates = [],
@@ -92,13 +93,16 @@ const SelectDay = ({
     return (
       <div className="d-flex justify-content-between align-items-center mb-3">
         <Button
+          variant="outline-primary"
           onClick={prevMonth}
           disabled={disablePastDates && isSameMonth(currentMonth, new Date())}
         >
-          Prev
+          <ChevronLeft />
         </Button>
         <h3>{format(currentMonth, "monthYear")}</h3>
-        <Button onClick={nextMonth}>Next</Button>
+        <Button variant="outline-primary" onClick={nextMonth}>
+          <ChevronRight />
+        </Button>
       </div>
     );
   };
@@ -109,9 +113,13 @@ const SelectDay = ({
     const startDate = startOfWeek(new Date(currentMonth));
 
     for (let i = 0; i < 7; i++) {
+      const dayName = format(addDays(startDate, i), dateFormat).split(",")[0];
+      const shortDayName = dayName.slice(0, 3); // Get the first 3 letters of the day name
+  
       days.push(
         <Col key={i} className="border-bottom border-right p-2 text-center">
-          {format(addDays(startDate, i), dateFormat).split(",")[0]}
+          <span className="d-none d-sm-block">{dayName}</span>
+          <span className="d-block d-sm-none">{shortDayName}</span>
         </Col>
       );
     }
@@ -139,9 +147,15 @@ const SelectDay = ({
           isSameDay(parseISO(d), cloneDay)
         );
         const isDisabled = disablePastDates && cloneDay < new Date();
-        const style =  isSameDay(day, selectedDate) ? { border: "2px solid red" } : {};
-        if ( cloneDay < new Date()) {style.backgroundColor = "#EEEEEE";}
-        if (isDisabled) {style.backgroundColor = "lightgrey";}
+        const style = isSameDay(day, selectedDate)
+          ? { border: "2px solid red" }
+          : {};
+        if (cloneDay < new Date()) {
+          style.backgroundColor = "#EEEEEE";
+        }
+        if (isDisabled) {
+          style.backgroundColor = "lightgrey";
+        }
         days.push(
           <Col
             key={day}
@@ -195,8 +209,7 @@ const SelectDay = ({
           {renderCells()}
         </Card.Body>
         <Card.Footer>
-          
-        <h4>Selected Date: {format(selectedDate, "long")}</h4>
+          <h4>Selected Date: {format(selectedDate, "long")}</h4>
         </Card.Footer>
       </Card>
     </Container>

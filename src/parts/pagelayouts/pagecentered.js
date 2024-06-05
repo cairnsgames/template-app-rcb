@@ -6,10 +6,10 @@ import { Container, Row, Col } from "react-bootstrap";
 const PageCentered = ({ className = "", style = {}, position, children }) => {
     const classes = "pt-1";
   return (
-    <Container fluid style={{ ...style, minHeight: "85%", maxHeight: "calc(100vh - 160px)" }}
+    <Container fluid style={{ ...style, minHeight: "85%", maxHeight: "100%" }}
     >
       <Row
-        style={{ ...style, minHeight: "85%", maxHeight: "calc(100vh - 160px)" }}
+        style={{ ...style, minHeight: "85%", maxHeight: "100%" }}
         className={`${className} ${classes}`}
       >
         <Col xs={1} sm={2} md={3}></Col>

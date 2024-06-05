@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import SlotIntervalDropdown from "./slotintervaldropdown";
 import HourDropdown from "./hourdropdown";
 import TimeSlotsTable from "./timeslotstable";
+import SettingsModal from "./settingsmodal";
+import { Gear } from "react-bootstrap-icons";
 
 const CalendarDayView = ({
   appointments = [],
@@ -16,6 +18,7 @@ const CalendarDayView = ({
   const [startHour, setStartHour] = useState(8);
   const [endHour, setEndHour] = useState(17);
   const [allowedIntervals, setAllowedIntervals] = useState([15, 30, 60]);
+  const [showSettings, setShowSettings] = useState(false);
 
   const slotIntervals = [
     { duration: 15, name: "15 minutes" },
@@ -101,14 +104,19 @@ const CalendarDayView = ({
 
           let maxDuration = endHour * 60 - (hour * 60 + minute);
           for (const appointment of appointments) {
-            const [appointmentHour, appointmentMinute] = appointment.startingTime
-              .split(":")
-              .map(Number);
+            const [appointmentHour, appointmentMinute] =
+              appointment.startingTime.split(":").map(Number);
             const appointmentStartTime = new Date();
-            appointmentStartTime.setHours(appointmentHour, appointmentMinute, 0, 0);
+            appointmentStartTime.setHours(
+              appointmentHour,
+              appointmentMinute,
+              0,
+              0
+            );
 
             if (appointmentStartTime > slotStartTime) {
-              maxDuration = (appointmentStartTime - slotStartTime) / (1000 * 60);
+              maxDuration =
+                (appointmentStartTime - slotStartTime) / (1000 * 60);
               break;
             }
           }
@@ -118,7 +126,7 @@ const CalendarDayView = ({
       };
 
       const maxDuration = calculateMaxDuration(newSelection);
-      
+
       if (selectTime) {
         selectTime(newSelection, maxDuration);
       }
@@ -151,41 +159,50 @@ const CalendarDayView = ({
     }
   });
 
+  const handleShowSettings = () => setShowSettings(true);
+  const handleCloseSettings = () => setShowSettings(false);
+
   return (
-    <Container>
-      <Row>
-        <Col>
-          <SlotIntervalDropdown
-            slotIntervals={slotIntervals}
-            allowedIntervals={allowedIntervals}
-            slotInterval={slotInterval}
-            handleSlotChange={handleSlotChange}
-          />
-        </Col>
-        <Col>
-          <HourDropdown
-            title="Start Hour"
-            selectedHour={startHour}
-            handleHourChange={handleStartHourChange}
-          />
-        </Col>
-        <Col>
-          <HourDropdown
-            title="End Hour"
-            selectedHour={endHour}
-            handleHourChange={handleEndHourChange}
-          />
-        </Col>
-      </Row>
-      <TimeSlotsTable
-        timeSlots={timeSlots}
-        appointmentSpans={appointmentSpans}
-        selectedSlots={selectedSlots}
-        triggerSelectEvent={triggerSelectEvent}
-        triggerSelectTime={triggerSelectTime}
-        formatTime={formatTime}
+    <Card>
+      <Card.Header>
+        <Row>
+          <Col>
+            <h3>Select a Time</h3>
+          </Col>
+          <Col>
+            <Button
+              className="float-right"
+              variant="outline-primary"
+              onClick={handleShowSettings}
+            >
+              <Gear />
+            </Button>
+          </Col>
+        </Row>
+      </Card.Header>
+      <Card.Body>
+        <TimeSlotsTable
+          timeSlots={timeSlots}
+          appointmentSpans={appointmentSpans}
+          selectedSlots={selectedSlots}
+          triggerSelectEvent={triggerSelectEvent}
+          triggerSelectTime={triggerSelectTime}
+          formatTime={formatTime}
+        />
+      </Card.Body>
+      <SettingsModal
+        show={showSettings}
+        handleClose={handleCloseSettings}
+        slotIntervals={slotIntervals}
+        allowedIntervals={allowedIntervals}
+        slotInterval={slotInterval}
+        handleSlotChange={handleSlotChange}
+        startHour={startHour}
+        handleStartHourChange={handleStartHourChange}
+        endHour={endHour}
+        handleEndHourChange={handleEndHourChange}
       />
-    </Container>
+    </Card>
   );
 };
 

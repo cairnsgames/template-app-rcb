@@ -1,15 +1,20 @@
 import React from 'react';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 
 const HourDropdown = ({ title, selectedHour, handleHourChange }) => {
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+
   return (
-    <DropdownButton title={title} onSelect={(e) => handleHourChange(Number(e))}>
-      {[...Array(24).keys()].map((hour) => (
-        <Dropdown.Item key={hour} eventKey={hour} active={hour === selectedHour}>
-          {hour}:00
-        </Dropdown.Item>
-      ))}
-    </DropdownButton>
+    <InputGroup className="mb-3">
+      <InputGroup.Text>{title}</InputGroup.Text>
+      <Form.Select value={selectedHour} onChange={handleHourChange}>
+        {hours.map((hour) => (
+          <option key={hour} value={hour}>
+            {hour}:00
+          </option>
+        ))}
+      </Form.Select>
+    </InputGroup>
   );
 };
 

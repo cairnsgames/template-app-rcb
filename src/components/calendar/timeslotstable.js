@@ -11,7 +11,7 @@ const TimeSlotsTable = ({
   formatTime,
 }) => {
   return (
-    <Table bordered>
+    <Table bordered style={{width:"100%"}}>
       <tbody>
         {timeSlots.map((slot, index) => {
           const slotTime = formatTime(slot.hour, slot.minute);
