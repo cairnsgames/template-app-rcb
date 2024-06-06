@@ -4,21 +4,45 @@ import Wizard from "./wizard";
 import SelectDay from "../calendar/selectday";
 import CalendarDayView from "../calendar/calendardayview";
 import EventForm from "../calendar/eventform";
+import Confirm from "../calendar/confirm";
 
 const WizardSample = () => {
   const [lastStep, setLastStep] = useState(1);
   const [selectedDay, setSelectedDay] = useState();
   const [selectedTime, setSelectedTime] = useState();
   const [appointments, setAppointments] = useState([
-    { name: "Event 1", startingTime: "08:30", duration: "60" },
-    { name: "Event 2", startingTime: "11:00", duration: "90" },
+    { name: "Event 1", startingTime: "08:30", duration: "60", description: "A dance class", location: "Dance Studio" },
+    { name: "Event 2", startingTime: "11:00", duration: "90", description: "A dance class", location: "Dance Studio" },
+  ]);  
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    duration: '60',
+    location: '',
+  });
+  const [templates, setTemplates] = useState([
+    {
+      name: "Kizomba",
+      description: "Kizomba dance class",
+      duration: "60",
+      location: "Dance Studio",
+    },
+    {
+      name: "Salsa",
+      description: "Salsa dance class",
+      duration: "60",
+      location: "Dance Studio",
+    },
   ]);
 
   const [selectedSlots, setSelectedSlots] = useState([]);
 
-  const handleSave = () => {
-    alert("Wizard completed and data saved!");
-  };
+  useEffect(() => {
+    console.log("FORM DATA", formData)
+    if (formData.name && formData.location && formData.duration) {
+      setLastStep(4);
+    }
+  }, [formData]);
 
   useEffect(() => {
     if (selectedDay && lastStep < 2) {
@@ -31,16 +55,25 @@ const WizardSample = () => {
   };
 
   const selectTime = (time, maxDuration) => {
+    console.log("Selecting Time", { time: time, duration: maxDuration })
     setSelectedTime({ time: time, duration: maxDuration });
     setLastStep(3);
   };
 
-  const onSaveDetails = (formData) => {
+  useEffect(() => {
+    console.log("Last Step", lastStep)
+  }, [lastStep]);
+
+  const onSaveDetails = () => {
     const { name, duration, time } = formData;
+
+    console.log("SAVE DETAILS", name, duration, time);
     
     // Create new appointments for each time
     const newAppointments = time.map(startingTime => ({
       name,
+      description: formData.description,
+      location: formData.location,
       startingTime,
       duration
     }));
@@ -52,15 +85,23 @@ const WizardSample = () => {
     ]);
   
     console.log("SAVE DETAILS", formData);
+    setFormData({ 
+      name: '',
+      description: '',
+      duration: '60',
+      location: '',
+    });
+    setSelectedTime([]);
+    setSelectedSlots([]);
   };
   
 
   return (
-    <Wizard onSave={handleSave} lastActiveStep={lastStep - 1}>
+    <Wizard onSave={onSaveDetails} lastActiveStep={lastStep - 1}>
       <Wizard.Step
         title={
           <Wizard.StepTitle>
-            <Calendar className="me-2" /> Date
+            <Calendar className="d-none d-md-block me-2" /> Date 
           </Wizard.StepTitle>
         }
       >
@@ -69,7 +110,7 @@ const WizardSample = () => {
       <Wizard.Step
         title={
           <Wizard.StepTitle>
-            <CodeSquare className="me-2" />
+            <CodeSquare className="d-none d-md-block me-2" />
             Time
           </Wizard.StepTitle>
         }
@@ -85,7 +126,7 @@ const WizardSample = () => {
       <Wizard.Step
         title={
           <Wizard.StepTitle>
-            <CodeSquare className="me-2" />
+            <CodeSquare className="d-none d-md-block me-2" />
             Details
           </Wizard.StepTitle>
         }
@@ -95,31 +136,19 @@ const WizardSample = () => {
           time={selectedTime?.time}
           date={selectedDay}
           onSaveDetails={onSaveDetails}
-          templates={[
-            {
-              name: "Kizomba",
-              description: "Kizomba dance class",
-              duration: "60",
-              location: "Dance Studio",
-            },
-            {
-              name: "Salsa",
-              description: "Salsa dance class",
-              duration: "60",
-              location: "Dance Studio",
-            },
-          ]}
+          templates={templates}
+          formData={formData}
+           setFormData={setFormData}
         />
       </Wizard.Step>
       <Wizard.Step
         title={
           <Wizard.StepTitle>
-            <CheckCircle className="me-2" /> Confirm
+            <CheckCircle className="d-none d-md-block me-2" /> Confirm
           </Wizard.StepTitle>
         }
       >
-        <h3>Step 3 Content</h3>
-        <p>This is the content for step 3.</p>
+        <Confirm formData={formData} date={selectedDay} time={selectedTime} />
       </Wizard.Step>
     </Wizard>
   );

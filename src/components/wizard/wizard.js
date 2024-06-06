@@ -41,66 +41,74 @@ const Wizard = ({ children, onSave, lastActiveStep }) => {
   };
 
   return (
-    <>
-      <Row>
+    <div className="d-flex flex-column min-vh-100">
+      <Row className="flex-grow-1 overflow-auto">
         <Col>
-          <div className="button-group-container">
-            <ButtonGroup className="w-100">
-              {steps.map((step, index) => (
-                <CustomButton
-                  key={index}
-                  className={`step-button ${
-                    index === currentStep
-                      ? "active"
-                      : index <= currentStep || completedSteps.has(index)
-                      ? "completed"
-                      : ""
-                  }`}
-                  disabled={index+1 > lastActiveStep}
-                  onClick={() => goToStep(index)}
+          <Row>
+            <Col>
+              <div className="button-group-container">
+                <ButtonGroup className="w-100">
+                  {steps.map((step, index) => (
+                    <CustomButton
+                      key={index}
+                      className={`step-button ${
+                        index === currentStep
+                          ? "active"
+                          : index <= currentStep || completedSteps.has(index)
+                          ? "completed"
+                          : ""
+                      }`}
+                      disabled={index + 1 > lastActiveStep}
+                      onClick={() => goToStep(index)}
+                    >
+                      {step.props.title}
+                    </CustomButton>
+                  ))}
+                </ButtonGroup>
+              </div>
+            </Col>
+          </Row>
+          <Row className="mt-3">
+            <Col>
+              <ProgressBar
+                now={progressPercentage}
+                label={`${progressPercentage}%`}
+              />
+            </Col>
+          </Row>
+          <Row className="mt-3">
+            <Col>{currentStepComponent}</Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row className="mt-3">
+        <Col>
+          <div className="fixed-bottom p-2 bg-white border-top">
+            <ButtonGroup>
+              {currentStep > 0 && (
+                <Button variant="secondary" onClick={previousStep}>
+                  Back
+                </Button>
+              )}
+              {currentStep < totalSteps - 1 ? (
+                <Button
+                  variant="primary"
+                  onClick={nextStep}
+                  className="ml-2"
+                  disabled={Number(currentStep + 1) > Number(lastActiveStep)}
                 >
-                  {step.props.title}
-                </CustomButton>
-              ))}
+                  Next
+                </Button>
+              ) : (
+                <Button variant="success" onClick={onSave} className="ml-2">
+                  Save
+                </Button>
+              )}
             </ButtonGroup>
           </div>
         </Col>
       </Row>
-      <Row className="mt-3">
-        <Col>
-          <ProgressBar
-            now={progressPercentage}
-            label={`${progressPercentage}%`}
-          />
-        </Col>
-      </Row>
-      <Row className="mt-3">
-        <Col>{currentStepComponent}</Col>
-      </Row>
-      <Row className="mt-3">
-        <Col>
-          {currentStep > 0 && (
-            <Button variant="secondary" onClick={previousStep}>
-              Back
-            </Button>
-          )}
-          {currentStep < totalSteps - 1 ? (
-            <Button
-              variant="primary"
-              onClick={nextStep}
-              className="ml-2"
-              disabled={Number(currentStep+1) > Number(lastActiveStep)}
-            >
-              Next
-            </Button>
-          ) : (
-            <Button variant="success" onClick={onSave} className="ml-2">
-              Save
-            </Button>
-          )}
-        </Col>
-      </Row>
-    </>
+    </div>
   );
 };
 

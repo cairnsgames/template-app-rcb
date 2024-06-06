@@ -42,7 +42,7 @@ const TimeSlotRow = ({
               <Card.Title>{appointmentSpan.appointment.name}</Card.Title>
             </Card.Header>
             <Card.Body className="d-flex align-items-center justify-content-center">
-              {appointmentSpan.appointment.name}
+              {appointmentSpan.appointment.description}
             </Card.Body>
           </Card>
         </td>

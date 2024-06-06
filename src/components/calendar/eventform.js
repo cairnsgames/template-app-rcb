@@ -1,26 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { Form, Button } from "react-bootstrap";
 
-const EventForm = ({ maxDuration, time, date, onSaveDetails, templates }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    duration: '60',
-    location: '',
-  });
-
-  const [selectedTemplate, setSelectedTemplate] = useState('');
+const EventForm = ({
+  maxDuration,
+  time,
+  date,
+  templates,
+  formData,
+  setFormData,
+}) => {
+  const [selectedTemplate, setSelectedTemplate] = useState("");
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
+    setFormData({ ...formData, time: time, date: date });
+  }, [time, date]);
+
+  useEffect(() => {
     if (selectedTemplate) {
-      const template = templates.find(t => t.name === selectedTemplate);
+      const template = templates.find((t) => t.name === selectedTemplate);
       if (template) {
         setFormData({
           name: template.name,
           description: template.description,
           duration: template.duration,
           location: template.location,
+          date: formData.date ?? date,
+          time: formData.time ?? time,
         });
       }
     }
@@ -30,7 +36,11 @@ const EventForm = ({ maxDuration, time, date, onSaveDetails, templates }) => {
     const options = [];
     for (let i = 15; i <= Number(maxDuration); i += 15) {
       const label = i !== 60 ? `${i} minutes` : `${i / 60} hour`;
-      options.push(<option key={i} value={i}>{label}</option>);
+      options.push(
+        <option key={i} value={i}>
+          {label}
+        </option>
+      );
     }
     return options;
   };
@@ -42,27 +52,16 @@ const EventForm = ({ maxDuration, time, date, onSaveDetails, templates }) => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newErrors = {};
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.location) newErrors.location = 'Location is required';
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      setErrors({});
-      formData.time = time;
-      formData.date = date;
-      
-      onSaveDetails(formData);
-    }
-  };
-
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="template" className="p-3" style={{border:"1px solid var(--bs-primary)", borderRadius: "10px"}}>
-        <Form.Label><strong>Use a Template</strong></Form.Label>
+    <Form>
+      <Form.Group
+        controlId="template"
+        className="p-3"
+        style={{ border: "1px solid var(--bs-primary)", borderRadius: "10px" }}
+      >
+        <Form.Label>
+          <strong>Use a Template</strong>
+        </Form.Label>
         <Form.Control
           as="select"
           value={selectedTemplate}
@@ -86,7 +85,9 @@ const EventForm = ({ maxDuration, time, date, onSaveDetails, templates }) => {
           onChange={handleChange}
           isInvalid={!!errors.name}
         />
-        <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">
+          {errors.name}
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group controlId="description">
@@ -121,28 +122,20 @@ const EventForm = ({ maxDuration, time, date, onSaveDetails, templates }) => {
           onChange={handleChange}
           isInvalid={!!errors.location}
         />
-        <Form.Control.Feedback type="invalid">{errors.location}</Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">
+          {errors.location}
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group controlId="date">
         <Form.Label>Date</Form.Label>
-        <Form.Control
-          type="text"
-          value={date}
-          readOnly
-        />
+        <Form.Control type="text" value={date} readOnly />
       </Form.Group>
 
       <Form.Group controlId="startTime">
         <Form.Label>Start Time</Form.Label>
-        <Form.Control
-          type="text"
-          value={time}
-          readOnly
-        />
+        <Form.Control type="text" value={time} readOnly />
       </Form.Group>
-
-      <Button type="submit">Save</Button>
     </Form>
   );
 };
