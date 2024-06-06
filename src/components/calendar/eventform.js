@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
+import TemplateModal from "./templatemodal";
 
 const EventForm = ({
   maxDuration,
   time,
   date,
   templates,
+  setTemplates,
   formData,
   setFormData,
 }) => {
@@ -62,18 +64,21 @@ const EventForm = ({
         <Form.Label>
           <strong>Use a Template</strong>
         </Form.Label>
-        <Form.Control
-          as="select"
-          value={selectedTemplate}
-          onChange={(e) => setSelectedTemplate(e.target.value)}
-        >
-          <option value="">Select a template</option>
-          {templates.map((template) => (
-            <option key={template.name} value={template.name}>
-              {template.name}
-            </option>
-          ))}
-        </Form.Control>
+        <InputGroup>
+          <Form.Control
+            as="select"
+            value={selectedTemplate}
+            onChange={(e) => setSelectedTemplate(e.target.value)}
+          >
+            <option value="">Select a template</option>
+            {templates.map((template) => (
+              <option key={template.name} value={template.name}>
+                {template.name}
+              </option>
+            ))}
+          </Form.Control>
+          <TemplateModal templates={templates} setTemplates={setTemplates} />
+        </InputGroup>
       </Form.Group>
 
       <Form.Group controlId="name">

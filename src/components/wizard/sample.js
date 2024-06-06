@@ -22,12 +22,14 @@ const WizardSample = () => {
   });
   const [templates, setTemplates] = useState([
     {
+      id: 1,
       name: "Kizomba",
       description: "Kizomba dance class",
       duration: "60",
       location: "Dance Studio",
     },
     {
+      id: 2,
       name: "Salsa",
       description: "Salsa dance class",
       duration: "60",
@@ -137,6 +139,7 @@ const WizardSample = () => {
           date={selectedDay}
           onSaveDetails={onSaveDetails}
           templates={templates}
+          setTemplates={setTemplates}
           formData={formData}
            setFormData={setFormData}
         />
