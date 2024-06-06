@@ -171,7 +171,7 @@ const CalendarDayView = ({
           </Col>
           <Col>
             <Button
-              className="float-right"
+              className="float-end"
               variant="outline-primary"
               onClick={handleShowSettings}
             >

@@ -1,22 +1,28 @@
-const Confirm = ({ formData, date, time }) => {
-    console.log("confirm", time);
-    const options1 = { year: '4-digit', month: '2-digit', day: '2-digit' };
+import React from 'react';
+import Card from 'react-bootstrap/Card';
+
+const Confirm = ({ formData }) => {
+  console.log("confirm", formData);
+  const options1 = { year: '2-digit', month: '2-digit', day: '2-digit' };
 
   return (
     <div>
       <h1>Confirm</h1>
-      Creating the following events
-      {time?.time?.map((t, index) => (
-        <div key={index}>
-          <h2>
-            {date.toLocaleString()} {t.time}
-          </h2>
-          <p>{formData.name}</p>
-          <p>{formData.description}</p>
-          <p>{formData.location}</p>
-          <p>{formData.duration}</p>
-        </div>
-      ))}
+      <strong>The following events will be created:</strong>
+      {formData?.time?.map((time, index) => {
+        return (
+          <Card key={index} style={{ marginBottom: '20px' }}>
+            <Card.Header>{formData.name}</Card.Header>
+            <Card.Body>
+              <Card.Text><strong>Date and Time:</strong> {formData.date.toLocaleString(undefined, options1)} {time}</Card.Text>
+              <Card.Text><strong>Description:</strong> {formData.description}</Card.Text>
+              <Card.Text><strong>Location:</strong> {formData.location}</Card.Text>
+              <Card.Text><strong>Duration:</strong> {formData.duration}</Card.Text>
+              <Card.Text><strong>Max Participants:</strong> {formData.participants}</Card.Text>
+            </Card.Body>
+          </Card>
+        );
+      })}
     </div>
   );
 };
