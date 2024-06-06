@@ -5,7 +5,7 @@ import ArrowBar from "../../components/wizard/arrowbar";
 const WizardPage = () => {
   return (
     <PageFull>
-      <h1>Wizard Page</h1>
+      <h1>Create Schedule</h1>
       <WizardSample />
     </PageFull>
   );

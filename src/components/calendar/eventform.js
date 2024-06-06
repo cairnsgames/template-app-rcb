@@ -29,6 +29,7 @@ const EventForm = ({
           location: template.location,
           date: formData.date ?? date,
           time: formData.time ?? time,
+          participants: template.participants,
         });
       }
     }
@@ -55,7 +56,7 @@ const EventForm = ({
   };
 
   return (
-    <Form>
+    <Form className="mb-4">
       <Form.Group
         controlId="template"
         className="p-3"
@@ -141,6 +142,17 @@ const EventForm = ({
         <Form.Label>Start Time</Form.Label>
         <Form.Control type="text" value={time} readOnly />
       </Form.Group>
+
+      <Form.Group controlId="participants">
+                <Form.Label>Participants</Form.Label>
+                <Form.Control 
+                  type="number" 
+                  placeholder="Enter number of participants" 
+                  name="participants" 
+                  value={formData.participants}
+                  onChange={handleChange}
+                />
+              </Form.Group>
     </Form>
   );
 };

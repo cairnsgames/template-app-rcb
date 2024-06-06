@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, ListGroup, ButtonGroup, Form } from 'react-bootstrap';
+import { Modal, Button, ListGroup, Form } from 'react-bootstrap';
 import { Gear, PencilSquare, Trash } from 'react-bootstrap-icons';
 
 const TemplateModal = ({ templates, setTemplates }) => {
@@ -10,7 +10,8 @@ const TemplateModal = ({ templates, setTemplates }) => {
     name: '',
     description: '',
     duration: '',
-    location: ''
+    location: '',
+    participants: '10'
   });
 
   const handleClose = () => {
@@ -56,7 +57,8 @@ const TemplateModal = ({ templates, setTemplates }) => {
       name: '',
       description: '',
       duration: '',
-      location: ''
+      location: '',
+      participants: '10'
     });
   };
 
@@ -68,7 +70,8 @@ const TemplateModal = ({ templates, setTemplates }) => {
       name: '',
       description: '',
       duration: '',
-      location: ''
+      location: '',
+      participants: '10'
     });
   };
 
@@ -140,6 +143,16 @@ const TemplateModal = ({ templates, setTemplates }) => {
                   placeholder="Enter template location" 
                   name="location" 
                   value={formData.location}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              <Form.Group controlId="formTemplateParticipants">
+                <Form.Label>Participants</Form.Label>
+                <Form.Control 
+                  type="number" 
+                  placeholder="Enter number of participants" 
+                  name="participants" 
+                  value={formData.participants ?? 10}
                   onChange={handleChange}
                 />
               </Form.Group>

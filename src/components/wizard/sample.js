@@ -11,8 +11,8 @@ const WizardSample = () => {
   const [selectedDay, setSelectedDay] = useState();
   const [selectedTime, setSelectedTime] = useState();
   const [appointments, setAppointments] = useState([
-    { name: "Event 1", startingTime: "08:30", duration: "60", description: "A dance class", location: "Dance Studio" },
-    { name: "Event 2", startingTime: "11:00", duration: "90", description: "A dance class", location: "Dance Studio" },
+    { name: "Event 1", startingTime: "08:30", duration: "60", description: "A dance class", location: "Dance Studio", participants: 10},
+    { name: "Event 2", startingTime: "11:00", duration: "90", description: "A dance class", location: "Dance Studio", participants: 10},
   ]);  
   const [formData, setFormData] = useState({
     name: '',
@@ -27,6 +27,7 @@ const WizardSample = () => {
       description: "Kizomba dance class",
       duration: "60",
       location: "Dance Studio",
+      participants: 10
     },
     {
       id: 2,
@@ -34,6 +35,7 @@ const WizardSample = () => {
       description: "Salsa dance class",
       duration: "60",
       location: "Dance Studio",
+      participants: 1,
     },
   ]);
 
