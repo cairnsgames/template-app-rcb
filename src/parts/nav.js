@@ -21,6 +21,10 @@ function NavPart() {
         <Navbar.Collapse className="ms-2">
           <Nav className="me-auto">
             <NavDropdown className="bg-primary" title="Sample Pages">
+              
+            <Nav.Link className="bg-primary" href="#trans" bg="primary">
+                Translation
+              </Nav.Link>
               <Nav.Link className="bg-primary" href="#review" bg="primary">
                 Reviews
               </Nav.Link>

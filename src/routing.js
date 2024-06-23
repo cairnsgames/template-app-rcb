@@ -32,6 +32,7 @@ import FormPage from "./pages/form/formpage";
 import DocsPage from "./pages/doc/docspage";
 import APITestPage from "./pages/apitest/apitestpage";
 import WizardPage from "./pages/wizard/wizardpage.js";
+import TranslationPage from "./pages/translationpage.js";
 
 const MapPage = React.lazy(() => import("./pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("./pages/admin/admin"));
@@ -74,6 +75,9 @@ const Routing = () => {
 
         <Route is={"content/{id}"}>
           <ContentPage />
+        </Route>
+        <Route is={"trans"}>
+          <TranslationPage />
         </Route>
 
         <Route is={"tour"}>

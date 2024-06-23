@@ -2,7 +2,16 @@ import { useState, useEffect, useCallback } from 'react';
 
 const API_BASE_URL = 'http://localhost/cairnsgames/php/apitesting/api.php/';
 
-const useGAPIV2 = (configName, { shouldLoad = true, itemKey = 'id' } = {}) => {
+const useGAPIV2 = (
+  configName,
+  {
+    shouldLoad = true,
+    itemKey = 'id',
+    updateEndpoint = `${API_BASE_URL}${configName}`,
+    insertEndpoint = `${API_BASE_URL}${configName}`,
+    deleteEndpoint = `${API_BASE_URL}${configName}`,
+  } = {}
+) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +62,7 @@ const useGAPIV2 = (configName, { shouldLoad = true, itemKey = 'id' } = {}) => {
     console.log("UPDATE ITEM", item);
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}${configName}/${item[itemKey]}`, {
+      const response = await fetch(`${updateEndpoint}/${item[itemKey]}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(item),
@@ -73,7 +82,7 @@ const useGAPIV2 = (configName, { shouldLoad = true, itemKey = 'id' } = {}) => {
   const insertItem = async (item) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}${configName}`, {
+      const response = await fetch(insertEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(item),
@@ -90,7 +99,7 @@ const useGAPIV2 = (configName, { shouldLoad = true, itemKey = 'id' } = {}) => {
   const deleteItem = async (id) => {
     setIsLoading(true);
     try {
-      await fetch(`${API_BASE_URL}${configName}/${id}`, {
+      await fetch(`${deleteEndpoint}/${id}`, {
         method: 'DELETE',
       });
       setData((prevData) => prevData.filter((d) => d[itemKey] !== id));
