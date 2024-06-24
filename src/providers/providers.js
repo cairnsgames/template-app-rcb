@@ -1,10 +1,10 @@
 import { MobileDeviceProvider } from "../packages/device/mobiledeviceprovider";
 import { ThemeProvider } from "./theme/themeprovider";
-import { TenantProvider } from "@cairnsgames/tenant/context/tenantprovider";
-import { AuthenticationProvider } from "@cairnsgames/auth/context/authprovider";
-import { FeatureFlagProvider } from "@cairnsgames/featureflags/featureflag";
-import { SettingsProvider } from "@cairnsgames/settings/settingsprovider";
-import { ToastsProvider } from "@cairnsgames/toasts/toastsprovider";
+import { TenantProvider } from "../packages/tenant/context/tenantprovider";
+import { AuthenticationProvider } from "../packages/auth/context/authprovider";
+import { FeatureFlagProvider } from "../packages/featureflags/featureflag";
+import { SettingsProvider } from "../packages/settings/settingsprovider";
+import { ToastsProvider } from "../packages/toasts/toastsprovider";
 import MapProvider from "../packages/map/context/mapprovider";
 import TranslationProvider from "../packages/translation/translationprovider";
 
@@ -21,15 +21,15 @@ const Providers = ({ children }) => {
           onError={onError}
         >
           <TranslationProvider defaultLocale="en" locale="en">
-          <AuthenticationProvider onError={onError}>
-            <FeatureFlagProvider>
-              <SettingsProvider>
-                <ToastsProvider>
-                  <MapProvider>{children}</MapProvider>
-                </ToastsProvider>
-              </SettingsProvider>
-            </FeatureFlagProvider>
-          </AuthenticationProvider>
+            <AuthenticationProvider onError={onError} googleClientId="284541609551-mnsvu7bi9medujkp0hdap87b1pvqjaa8.apps.googleusercontent.com" >
+              <FeatureFlagProvider>
+                <SettingsProvider>
+                  <ToastsProvider>
+                    <MapProvider>{children}</MapProvider>
+                  </ToastsProvider>
+                </SettingsProvider>
+              </FeatureFlagProvider>
+            </AuthenticationProvider>
           </TranslationProvider>
         </TenantProvider>
       </MobileDeviceProvider>

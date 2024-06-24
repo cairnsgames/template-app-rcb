@@ -6,18 +6,20 @@ import Row from "react-bootstrap/Row";
 import { useAuth } from "../../auth/context/useauth";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 
+import { GoogleLogin, googleLogout } from "@react-oauth/google";
+
 // interface ILoginProps {
 //   onLogin?: (result: any) => void;
 // }
 
-const LoginForm = ({ onSuccess }) => {
+const LoginForm = ({ onSuccess, onClose }) => {
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [keep, setKeep] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const { login } = useAuth();
+  const { login, setgoogleAccessToken } = useAuth();
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -38,6 +40,15 @@ const LoginForm = ({ onSuccess }) => {
     // });
 
     setValidated(true);
+  };
+
+  const responseMessage = (response) => {
+    setgoogleAccessToken(response.credential);
+    if (onClose) onClose();
+  };
+
+  const errorMessage = (error) => {
+    console.error(error);
   };
 
   return (
@@ -69,7 +80,10 @@ const LoginForm = ({ onSuccess }) => {
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
-            <Button variant="outline-primary" onClick={() => setShowPassword(!showPassword)}>
+            <Button
+              variant="outline-primary"
+              onClick={() => setShowPassword(!showPassword)}
+            >
               {showPassword ? <EyeSlash /> : <Eye />}
             </Button>
             <Form.Control.Feedback type="invalid">
@@ -88,6 +102,11 @@ const LoginForm = ({ onSuccess }) => {
         />
       </Form.Group>
       <Button type="submit">Submit form</Button>
+      <GoogleLogin
+        className="w-100"
+        onSuccess={responseMessage}
+        onError={errorMessage}
+      />
     </Form>
   );
 };

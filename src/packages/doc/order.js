@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Table, Button, Image } from "react-bootstrap";
 import { jsPDF } from "jspdf";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 export const orderData = {
   id: "12345",

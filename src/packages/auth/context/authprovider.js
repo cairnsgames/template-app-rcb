@@ -126,16 +126,16 @@ const AuthenticationProvider = (props) => {
     if (googleAccessToken && decodedToken) {
       const decodedToken2 = decodedToken;
       console.log("GOOGLE ACCESS TOKEN", decodedToken);
-      setUser({
-        email: decodedToken2.email,
-        lastname: decodedToken2.lastname,
-        firstname: decodedToken2.firstname,
-        id: decodedToken2.sub,
-        name: decodedToken2.name,
-        avatar: decodedToken2.picture,
-        verified_email: decodedToken2.verified_email,
-        permissions: decodedToken2.permissions,
-      });
+      // setUser({
+      //   email: decodedToken2.email,
+      //   lastname: decodedToken2.lastname,
+      //   firstname: decodedToken2.firstname,
+      //   id: decodedToken2.sub,
+      //   name: decodedToken2.name,
+      //   avatar: decodedToken2.picture,
+      //   verified_email: decodedToken2.verified_email,
+      //   permissions: decodedToken2.permissions,
+      // });
       const body = {
         email: decodedToken2.email,
         firstname: decodedToken2.firstname,
@@ -150,8 +150,19 @@ const AuthenticationProvider = (props) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("GOOGLE LOGIN", data);
+          console.log("GOOGLE LOGIN", data);          
           settoken(data.token);
+          const userDetails = {
+            email: data.email,
+            lastname: data.lastname,
+            firstname: data.firstname,
+            id: data.id,
+            name: data.firstname + " " + data.lastname,
+            picture: data.avatar,
+            permissions: data.permissions,
+            mastertoken: data.mastertoken,
+          };
+          setUser(userDetails);
           window.location.hash = "#";
         })
         .catch((err) => {
