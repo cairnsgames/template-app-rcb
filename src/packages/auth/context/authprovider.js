@@ -272,6 +272,41 @@ const AuthenticationProvider = (props) => {
       });
   };
 
+  const loginWithMagicLink = (magiccode) => {
+    const body = {
+      code: magiccode,
+    };
+
+    return fetch(process.env.REACT_APP_AUTH_API + "/loginwithmagiclink.php?debug=true", {
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data === "string") {
+          data = JSON.parse(data);
+        }
+        settoken(data.token);
+        const userDetails = {
+          email: data.email,
+          lastname: data.lastname,
+          firstname: data.firstname,
+          id: data.id,
+          name: data.firstname + " " + data.lastname,
+          picture: data.avatar,
+          permissions: data.permissions,
+        };
+        setUser(userDetails);
+        return data;
+      })
+      .catch((err) => {
+        if (onError) {
+          onError("Auth: Unable to complete Login", err);
+        }
+      });
+  };
+
   const forgot = async (email) => {
     console.log("forgot", email);
     const body = {
@@ -376,6 +411,7 @@ const AuthenticationProvider = (props) => {
       token,
       register,
       login,
+      loginWithMagicLink,
       logout,
       forgot,
       user,
@@ -387,6 +423,7 @@ const AuthenticationProvider = (props) => {
       token,
       register,
       login,
+      loginWithMagicLink,
       logout,
       forgot,
       user,

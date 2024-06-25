@@ -5,7 +5,11 @@ import Default from "./default";
 // Function to check if a path matches a specific pattern
 function is(path, pattern) {
   // Remove the hash symbol if present
-  const sanitizedPath = path.replace(/^#/, "");
+  let sanitizedPath = path.replace(/^#/, "");
+  
+  // Exclude characters after '?' if they exist
+  sanitizedPath = sanitizedPath.split('?')[0];
+  
   const regex = new RegExp(`^${pattern.replace(/{.*?}/g, ".*")}$`);
   return regex.test(sanitizedPath);
 }
@@ -17,7 +21,13 @@ function startsWith(path, pattern) {
   return regex.test(sanitizedPath);
 }
 
-function extractNamesAndValues(path, template) {
+function extractNamesAndValues(url, template) {
+  // Splitting the URL into path and query parts
+  const urlParts = url.split("?");
+  const path = urlParts[0]; // Path part of the URL
+  const queryString = urlParts[1]; // Query part of the URL
+
+  // Splitting path and template into parts
   const pathParts = path.split("/");
   const templateParts = template.split("/");
 
@@ -27,6 +37,8 @@ function extractNamesAndValues(path, template) {
   }
 
   const result = {};
+  
+  // Extracting path parameters from the template
   for (let i = 0; i < templateParts.length; i++) {
     const templatePart = templateParts[i];
     if (templatePart.startsWith("{") && templatePart.endsWith("}")) {
@@ -34,6 +46,14 @@ function extractNamesAndValues(path, template) {
       const value = pathParts[i];
       result[name] = value;
     }
+  }
+
+  // Handling query parameters
+  if (queryString) {
+    const queryParams = new URLSearchParams(queryString);
+    queryParams.forEach((value, key) => {
+      result[key] = value;
+    });
   }
 
   return result;

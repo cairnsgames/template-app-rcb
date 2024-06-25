@@ -33,6 +33,7 @@ import DocsPage from "./pages/doc/docspage";
 import APITestPage from "./pages/apitest/apitestpage";
 import WizardPage from "./pages/wizard/wizardpage.js";
 import TranslationPage from "./pages/translationpage.js";
+import MagicLoginPage from "./pages/auth/magiccodepage.js";
 
 const MapPage = React.lazy(() => import("./pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("./pages/admin/admin"));
@@ -62,12 +63,16 @@ const Routing = () => {
             }}
           />
         </Route>
+        
         <Route is={"forgot"}>
           <ForgotPasswordPage
             onSuccess={() => {
               window.location.hash = "";
             }}
           />
+        </Route>
+        <Route is={"magic"}>
+          <MagicLoginPage />
         </Route>
         <Route is={"logout"}>
           <LandingPage />
