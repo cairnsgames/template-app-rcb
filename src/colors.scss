@@ -3,6 +3,7 @@
 
 $primary:       green;
 $secondary:     $gray-600 !default;
+$tertiary:      $gray-400 !default;
 $success:       $green !default;
 $info:          $cyan !default;
 $warning:       $yellow !default;
@@ -10,6 +11,18 @@ $danger:        $red !default;
 $light:         $gray-100 !default;
 $dark:          $gray-900 !default;
 // scss-docs-end theme-color-variables
+
+/*
+https://huemint.com/bootstrap-basic/#palette=fffcec-ffffff-161b19-00d4bb-166445-d1730b
+    "light":      #fffcec,
+    "dark":       #161b19,
+    "primary":    #00d4bb,
+    "secondary":  #166445,
+    "info":       #d1730b,
+    "success":    #00b644,
+    "warning":    #f5ca00,
+    "danger":     #fb003c,
+    */
 
 // scss-docs-start theme-colors-map
 $theme-colors: (

@@ -3,6 +3,7 @@ const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPl
 const Dotenv = require("dotenv-webpack");
 const deps = require("./package.json").dependencies;
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = (_, argv) => ({
   resolve: {
@@ -80,6 +81,12 @@ module.exports = (_, argv) => ({
     }),
     new HtmlWebPackPlugin({
       template: "./src/index.html",
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: "./public/", to: "." },
+        { from: "./public/images", to: "./images" },
+      ],
     }),
     new Dotenv(),
   ],

@@ -298,7 +298,7 @@ const AuthenticationProvider = (props) => {
           permissions: data.permissions,
         };
         setUser(userDetails);
-        return data;
+        window.location.hash = "home";
       })
       .catch((err) => {
         if (onError) {

@@ -1,11 +1,21 @@
+import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import PageCentered from "../../parts/pagelayouts/pagecentered";
 import useToast from "@cairnsgames/toasts/usetoast";
+import useAuth from "../../packages/auth/context/useauth";
 
 const MagicCodePage = (props) => {
   const { addToast } = useToast();
+  const { loginWithMagicLink } = useAuth();
 
   console.log("PROPS", props);
+
+  useEffect(() => {
+    console.log("MAGIC CODE PAGE - code", props.code);
+    if (props?.code.length) {
+      loginWithMagicLink(props.code);
+    }
+  }, [props.code]);
 
   return (
     <PageCentered position="middle" >
