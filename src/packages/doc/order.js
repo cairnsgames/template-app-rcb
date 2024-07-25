@@ -42,7 +42,6 @@ const calculateDiscountedPrice = (price, discount) => {
 };
 
 const OrderSummary = ({ order }) => {
-  console.log("#### Order Summary", order);
 
   const handlePrint = () => {
     const doc = new jsPDF();

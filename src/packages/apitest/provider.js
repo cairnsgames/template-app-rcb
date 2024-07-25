@@ -17,7 +17,7 @@ export const APITestProvider = ({ children }) => {
   const { data: calls, refresh: refreshCalls } = useGAPIV2(
     `project/${activeProject?.id}/calls`,
     {
-      shouldLoad: !!activeProject,
+      shouldLoad: false //!!activeProject,
     }
   );
   const { insert: insertCall, update: updateCall } = useGAPIV2(`call`, {
@@ -58,12 +58,10 @@ export const APITestProvider = ({ children }) => {
     } else {
       call = await insertCall(call);
     }
-    console.log("CALL", call[0]);
     setSelectedCall(call[0]);
   };
 
   const executeCall = async (call) => {
-    console.log("EXECUTE CALL", call);
     const headers =
       call.headers ||
       defaults.find((d) => d.project_id === activeProject?.id)
@@ -74,7 +72,6 @@ export const APITestProvider = ({ children }) => {
       fetchHeaders[header.key] = header.value;
     });
 
-    console.log("FETCH HEADERS", fetchHeaders);
     const options = {
       method: call.method ?? "GET",
       headers: { "Content-Type": "application/json", ...fetchHeaders },
@@ -82,12 +79,10 @@ export const APITestProvider = ({ children }) => {
     if (call.method === "POST" || call.method === "PUT") {
       options.body = JSON.stringify(call.body);
     }
-    console.log("Calling", call.url, options)
     const response = await fetch(call.url, options);
     const result = await response.json();
     await updateCall(call);
 
-    console.log("FETCH RESULT", result)
     return result;
   };
 

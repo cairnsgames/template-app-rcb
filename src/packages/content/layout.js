@@ -97,7 +97,6 @@ const Layout = ({ props }) => {
       </Row>
     );
   } else {
-    console.log("7. Other Type of layout - customType", customType)
     return customType(item)
   }
   return <div className="layout">{item.content}</div>;

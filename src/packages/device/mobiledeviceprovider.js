@@ -22,7 +22,6 @@ const MobileDeviceProvider = (props) => {
 
   const registration = (token) => {
     setRegistrationToken(token.value);
-    console.log("#### Registration", JSON.stringify(token));
   };
   const registrationError = (err) => {
     console.error("#### Registration error: ", err.error);
@@ -30,7 +29,6 @@ const MobileDeviceProvider = (props) => {
   };
 
   const pushNotificationReceived = (notification) => {
-    console.log("#### Push notification received: ", notification);
     alert("Message Recieved", notification.title, JSON.stringify(notification));
     async (notification) => {
         let now = {

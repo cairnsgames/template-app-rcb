@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import Row from "react-bootstrap/Row";
+import { Form, Button, InputGroup, Row, Col, Alert } from "react-bootstrap";
 import { useAuth } from "../../auth/context/useauth";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
+import useTranslation from "../../translation/usetranslation";
 
 // interface ILoginProps {
 //   onLogin?: (result: any) => void;
@@ -20,6 +18,10 @@ const LoginForm = ({ onSuccess, onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { login, setgoogleAccessToken } = useAuth();
+  const [errors, setErrors] = useState();
+  const [warning, setWarning] = useState();
+
+  const { t } = useTranslation();
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -28,18 +30,30 @@ const LoginForm = ({ onSuccess, onClose }) => {
     event.stopPropagation();
     if (form.checkValidity() === false) {
       console.log("Not all values are entered correctly");
+      setValidated(false);
       return;
     }
 
-    const result = login(email, password);
-    // .then((result: any) => {
-    console.log("Logged in successfully", result);
-    if (result && onSuccess) {
-      onSuccess(true);
-    }
-    // });
-
     setValidated(true);
+
+    login(email, password)
+      .then((result) => {
+        
+        console.log("Login return", result);
+        if (result.errors) {
+          console.log("Cannot login", result.errors[0]);
+          setErrors(result.errors[0].message);
+          return;
+        }
+        console.log("Logged in successfully", result);
+        if (result && onSuccess) {
+          onSuccess(true);
+        }
+      })
+      .catch((error) => {
+        console.log("Cannot login", error);
+        setErrors(error);
+      });
   };
 
   const responseMessage = (response) => {
@@ -53,9 +67,10 @@ const LoginForm = ({ onSuccess, onClose }) => {
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      {errors && <Alert variant="danger">{t("Cannot log in")}: {errors}</Alert>}
       <Row className="mb-3">
         <Form.Group>
-          <Form.Label>Email</Form.Label>
+          <Form.Label>{t("Email")}</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
               type="email"
@@ -66,12 +81,12 @@ const LoginForm = ({ onSuccess, onClose }) => {
               autoComplete="email"
             />
             <Form.Control.Feedback type="invalid">
-              Your email address is required to login.
+              {t("Your email address is required to login.")}
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
         <Form.Group>
-          <Form.Label>Password</Form.Label>
+          <Form.Label>{t("Password")}</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
               type={showPassword ? "text" : "password"}
@@ -87,7 +102,7 @@ const LoginForm = ({ onSuccess, onClose }) => {
               {showPassword ? <EyeSlash /> : <Eye />}
             </Button>
             <Form.Control.Feedback type="invalid">
-              Please enter your password.
+              {t("Please enter your password.")}
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
@@ -101,12 +116,18 @@ const LoginForm = ({ onSuccess, onClose }) => {
           }}
         />
       </Form.Group>
-      <Button type="submit">Submit form</Button>
-      <GoogleLogin
-        className="w-100"
-        onSuccess={responseMessage}
-        onError={errorMessage}
-      />
+      <Row>
+        <Col>
+          <Button type="submit">{t("Login")}</Button>
+        </Col>
+        <Col>
+          <GoogleLogin
+            className="w-100"
+            onSuccess={responseMessage}
+            onError={errorMessage}
+          />
+        </Col>
+      </Row>
     </Form>
   );
 };

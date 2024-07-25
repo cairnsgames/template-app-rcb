@@ -8,10 +8,8 @@ const ContentItem = (props) => {
   const [item, setItem] = useState();
   const { user } = useUser();
 
-  console.log("PROPS", props);
 
   useEffect(() => {
-    console.log("Fetching content", id);
     if (!id) {
       console.warn("No content id recieved");
       return;

@@ -73,43 +73,47 @@ const AuthenticationProvider = (props) => {
 
   const validateToken = (token) => {
     const body = { token: token };
-      fetch(process.env.REACT_APP_AUTH_API + "/validateToken.php?debug=true", {
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
-        method: "POST",
+    fetch(process.env.REACT_APP_AUTH_API + "/validateToken.php?debug=true", {
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+        APP_ID: tenant,
+        deviceid: deviceId,
+      },
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data === "string") {
+          data = JSON.parse(data);
+        }
+        if (data.errors) {
+          console.error("VALIDATE TOKEN ERRORS", data.errors);
+        }
+        settoken(data.token);
+        const userDetails = {
+          email: data.email,
+          lastname: data.lastname,
+          firstname: data.firstname,
+          id: data.id,
+          name: data.firstname + " " + data.lastname,
+          picture: data.avatar,
+          permissions: data.permissions,
+          mastertoken: data.mastertoken,
+        };
+        setUser(userDetails);
+        // Do not show the authentication screen when validating token
+        if (window.location.hash.includes("auth")) {
+          window.location.hash = "#";
+        }
       })
-        .then((res) => res.json())
-        .then((data) => {
-          if (typeof data === "string") {
-            data = JSON.parse(data);
-          }
-          if (data.errors) {
-            console.error("VALIDATE TOKEN ERRORS", data.errors);
-          }
-          settoken(data.token);
-          const userDetails = {
-            email: data.email,
-            lastname: data.lastname,
-            firstname: data.firstname,
-            id: data.id,
-            name: data.firstname + " " + data.lastname,
-            picture: data.avatar,
-            permissions: data.permissions,
-            mastertoken: data.mastertoken,
-          };
-          setUser(userDetails);
-          // Do not show the authentication screen when validating token
-          if (window.location.hash.includes("auth")) {
-            window.location.hash = "#";
-          }
-        })
-        .catch((err) => {
-          if (onError) {
-            onError("Auth: Unable to Validate Token", err);
-          }
-        });
-      settoken(token);
-  }
+      .catch((err) => {
+        if (onError) {
+          onError("Auth: Unable to Validate Token", err);
+        }
+      });
+    settoken(token);
+  };
 
   useEffect(() => {
     if (!process.env) {
@@ -145,12 +149,16 @@ const AuthenticationProvider = (props) => {
       };
       await fetch(process.env.REACT_APP_AUTH_API + "/logingoogle.php", {
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          deviceid: deviceId,
+        },
         method: "POST",
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("GOOGLE LOGIN", data);          
+          console.log("GOOGLE LOGIN", data);
           settoken(data.token);
           const userDetails = {
             email: data.email,
@@ -182,7 +190,7 @@ const AuthenticationProvider = (props) => {
   const logout = () => {
     console.log("Logout");
     // Check if we have a master token
-    console.log("USER", user)
+    console.log("USER", user);
     if (user && user.mastertoken) {
       validateToken(user.mastertoken);
     } else {
@@ -206,7 +214,11 @@ const AuthenticationProvider = (props) => {
       process.env.REACT_APP_AUTH_API + "/registration.php?debug=true",
       {
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          deviceid: deviceId,
+        },
         method: "POST",
       }
     )
@@ -244,14 +256,24 @@ const AuthenticationProvider = (props) => {
 
     return fetch(process.env.REACT_APP_AUTH_API + "/login.php?debug=true", {
       body: JSON.stringify(body),
-      headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
+      headers: {
+        "Content-Type": "application/json",
+        APP_ID: tenant,
+        deviceid: deviceId,
+      },
       method: "POST",
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log("Login Response", data);
+        if (data.errors) {
+          console.log("Login Error!!!!", data.errors);
+          return (data);
+        }
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
+        debugger;
         settoken(data.token);
         const userDetails = {
           email: data.email,
@@ -263,12 +285,15 @@ const AuthenticationProvider = (props) => {
           permissions: data.permissions,
         };
         setUser(userDetails);
+        console.log("return data", data)
         return data;
       })
       .catch((err) => {
+        console.log("Login Error", JSON.stringify(err));
         if (onError) {
           onError("Auth: Unable to complete Login", err);
         }
+        return err;
       });
   };
 
@@ -277,11 +302,18 @@ const AuthenticationProvider = (props) => {
       code: magiccode,
     };
 
-    return fetch(process.env.REACT_APP_AUTH_API + "/loginwithmagiclink.php?debug=true", {
-      body: JSON.stringify(body),
-      headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
-      method: "POST",
-    })
+    return fetch(
+      process.env.REACT_APP_AUTH_API + "/loginwithmagiclink.php?debug=true",
+      {
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          deviceid: deviceId,
+        },
+        method: "POST",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (typeof data === "string") {
@@ -317,7 +349,11 @@ const AuthenticationProvider = (props) => {
       process.env.REACT_APP_AUTH_API + "/forgotpassword.php?debug=true",
       {
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          deviceid: deviceId,
+        },
         method: "POST",
       }
     )
@@ -350,7 +386,11 @@ const AuthenticationProvider = (props) => {
       process.env.REACT_APP_AUTH_API + "/changepassword.php?debug=true",
       {
         body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json", APP_ID: tenant, deviceid: deviceId },
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          deviceid: deviceId,
+        },
         method: "POST",
       }
     ).catch((err) => {
@@ -368,7 +408,7 @@ const AuthenticationProvider = (props) => {
         headers: {
           "Content-Type": "application/json",
           APP_ID: tenant,
-          token: token, 
+          token: token,
           deviceid: deviceId,
         },
         method: "GET",

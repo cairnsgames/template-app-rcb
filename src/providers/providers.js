@@ -7,6 +7,8 @@ import { SettingsProvider } from "../packages/settings/settingsprovider";
 import { ToastsProvider } from "../packages/toasts/toastsprovider";
 import MapProvider from "../packages/map/context/mapprovider";
 import TranslationProvider from "../packages/translation/translationprovider";
+import { GPSProvider } from "../packages/gps/gpsprovider";
+import ProvidersWithUser from "./providerswithuser";
 
 // import all providers here, so that in app.js only a single providers file need be imported
 const Providers = ({ children }) => {
@@ -21,11 +23,18 @@ const Providers = ({ children }) => {
           onError={onError}
         >
           <TranslationProvider defaultLocale="en" locale="en">
-            <AuthenticationProvider onError={onError} googleClientId="284541609551-mnsvu7bi9medujkp0hdap87b1pvqjaa8.apps.googleusercontent.com" >
+            <AuthenticationProvider
+              onError={onError}
+              googleClientId="284541609551-mnsvu7bi9medujkp0hdap87b1pvqjaa8.apps.googleusercontent.com"
+            >
               <FeatureFlagProvider>
                 <SettingsProvider>
                   <ToastsProvider>
-                    <MapProvider>{children}</MapProvider>
+                    <GPSProvider>
+                      <ProvidersWithUser>
+                        <MapProvider>{children}</MapProvider>
+                      </ProvidersWithUser>
+                    </GPSProvider>
                   </ToastsProvider>
                 </SettingsProvider>
               </FeatureFlagProvider>

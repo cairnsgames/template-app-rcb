@@ -1,0 +1,18 @@
+.mapsearch {
+    display: block;
+    vertical-align: top;
+    position: relative;
+    width: calc(90% - 170px);
+    height: 160px;
+    margin-left: 5%;
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid grey;
+    z-index: 450;
+
+    .places {
+        max-height: 70%; 
+        overflow-y: scroll;
+    }
+}

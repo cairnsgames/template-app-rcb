@@ -1,11 +1,13 @@
 import Alerts from "./alerts";
 import Accordians from "./accordians";
+import { Container } from "react-bootstrap";
 import Badges from "./badges";
 import Breadcrumbs from "./breadcrumbs";
 import ButtonGroups from "./buttongroups";
 import useLocation from "../../hooks/uselocation";
 import Cards from "./card";
 import Carousels from "./carousels";
+import ComponentShowcase from "./componentshowcase";
 
 const DesignElements = () => {
   const { hash } = useLocation();
@@ -48,6 +50,7 @@ const DesignElements = () => {
       <a href="#design/cards">Card</a>
       <br />
       <a href="#design/carousela">Carousel</a>
+      <ComponentShowcase />
     </Container>
   );
 };

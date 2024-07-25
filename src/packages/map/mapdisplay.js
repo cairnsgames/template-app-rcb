@@ -1,15 +1,12 @@
-import {
-  MapContainer,
-  TileLayer,
-  useMap,
-} from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import useMapContext from "./context/usemapcontext";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup, Row, Col } from "react-bootstrap";
 import { Map, Pin } from "react-bootstrap-icons";
 import Markers from "./markers";
 import "leaflet/dist/leaflet.css";
 import "./map.scss";
 import MapEvents from "./mapevents";
+import MapSearch from "./mapSearch";
 
 function ChangeView({ center, zoom }) {
   const map = useMap();
@@ -26,20 +23,27 @@ const MapDisplay = (props) => {
   return (
     <div>
       <div style={{ position: "relative", zIndex: "100" }}>
-        <ButtonGroup className="m-3" style={{position:"relative", left:"50px"}}>
-        <Button onClick={() => centerMapOnCurrentLocation()}>
-          <Pin />
-        </Button>
-        <Button onClick={() => setLocation(-26.20227, 28.04363)}>
-          <Map />
-        </Button>
+        <div style={{ position: "relative", left: "270px" }}>
+          <ButtonGroup
+            className="m-3"
+          >
+            <Button onClick={() => centerMapOnCurrentLocation()}>
+              <Pin />
+            </Button>
+            <Button onClick={() => setLocation(-26.20227, 28.04363)}>
+              <Map />
+            </Button>
 
-        <Button
-          onClick={() => setLocation(-25.81625913702715, 27.462750728129443)}
-        >
-          <Map />
-        </Button>
-        </ButtonGroup>
+            <Button
+              onClick={() =>
+                setLocation(-25.81625913702715, 27.462750728129443)
+              }
+            >
+              <Map />
+            </Button>
+          </ButtonGroup>
+          <MapSearch />
+        </div>
       </div>
       <MapContainer
         center={center}
@@ -48,7 +52,7 @@ const MapDisplay = (props) => {
         whenCreated={setMap}
         style={{
           position: "absolute",
-          top: "56px",
+          top: props.offsetTop ?? "56px",
           bottom: "0",
           left: "0",
           right: "0",
@@ -61,8 +65,8 @@ const MapDisplay = (props) => {
         />
         <ChangeView center={center} zoom={zoom} />
         <MapEvents onMapChange={props.onMapChange} />
-        <Markers markers={markers} />
-           
+
+        <Markers markers={props.markers ?? markers} />
       </MapContainer>
     </div>
   );

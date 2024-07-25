@@ -47,20 +47,29 @@ export const MapProvider = ({ children }) => {
     }
   ]);
 
+  const centerMap = useCallback((lat, lng) => {
+      setCenter([lat, lng]);
+  }, [latlng])
+
   const centerMapOnCurrentLocation = useCallback(() => {
     if (latlng) {
       setCenter([latlng.latitude, latlng.longitude]);
     }
   }, [latlng])
+
   const setLocation = useCallback((lat, lng) => {
     setCenter([lat, lng]);
   }, [])
 
+  const addMarker = (lat, lng, title) => {
+    setMarkers([...markers, { lat, lng, title }]);
+  };
+
   const values = useMemo(
     () => ({
-      center, zoom, centerMapOnCurrentLocation, setLocation, markers, setMarkers
+      center, setCenter, zoom, centerMapOnCurrentLocation, setLocation, markers, setMarkers, addMarker, centerMap
     }),
-    [center, zoom, centerMapOnCurrentLocation, setLocation, markers, setMarkers]
+    [center, setCenter, zoom, centerMapOnCurrentLocation, setLocation, markers, setMarkers, addMarker, centerMap]
   );
 
   return (

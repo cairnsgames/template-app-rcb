@@ -6,6 +6,7 @@ import Hero from "./hero";
 import Footer from "./footer";
 import { useRef } from "react";
 import Events from "./events";
+import Testimonials from "./testimonial";
 
 const LandingPage = ({subTitle}) => {
   const heroRef = useRef();
@@ -27,6 +28,7 @@ const LandingPage = ({subTitle}) => {
       <div ref={albumRef}>
         <Events />
       </div>
+      <Testimonials />
       <Footer
         heroRef={heroRef}
         featureRef={featureRef}

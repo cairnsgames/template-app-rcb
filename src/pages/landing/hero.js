@@ -7,13 +7,10 @@ const Hero = (props) => {
   return (
     <div className="pb-5 my-5 text-center">
       <Image className="mb-4" src="./favicon.png" alt="" width="72" />
-      <h1 className="display-5 fw-bold">Landing Page</h1>
+      <h1 className="display-5 fw-bold">Kloko</h1>
       <div className="w-75 mx-auto">
         <div className="lead mb-4">
-          Quickly design and customize responsive mobile-first sites with
-          Bootstrap, the world’s most popular front-end open source toolkit,
-          featuring Sass variables and mixins, responsive grid system, extensive
-          prebuilt components, and powerful JavaScript plugins.
+        Maximize your productivity with our calendar tool! Easily set regular or recurring activities, like classes or meetings, as recurring events. Select multiple dates at once to save time and keep your schedule consistent.
         </div>
         {!isLoggedIn && (
           <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
@@ -31,7 +28,7 @@ const Hero = (props) => {
               size="lg"
               className="px-4"
             >
-              Register
+              Sign up
             </Button>
           </div>
         )}

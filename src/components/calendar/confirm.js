@@ -2,7 +2,6 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 
 const Confirm = ({ formData }) => {
-  console.log("confirm", formData);
   const options1 = { year: '2-digit', month: '2-digit', day: '2-digit' };
 
   return (

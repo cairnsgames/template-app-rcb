@@ -22,6 +22,18 @@ function NavPart() {
           <Nav className="me-auto">
             <NavDropdown className="bg-primary" title="Sample Pages">
               
+            <Nav.Link className="bg-primary" href="#loyalty" bg="primary">
+                Loyalty (Venue)
+              </Nav.Link>
+              <Nav.Link className="bg-primary" href="#userloyalty" bg="primary">
+                Loyalty (User)
+              </Nav.Link>
+              <Nav.Link className="bg-primary" href="#calendar" bg="primary">
+                Calendar
+              </Nav.Link>       
+              <Nav.Link className="bg-primary" href="#eventsearch" bg="primary">
+                Event Search
+              </Nav.Link>      
             <Nav.Link className="bg-primary" href="#trans" bg="primary">
                 Translation
               </Nav.Link>

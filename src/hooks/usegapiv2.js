@@ -1,36 +1,46 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
-const API_BASE_URL = 'http://localhost/cairnsgames/php/apitesting/api.php/';
+const templateString = (str, params) => {
+  if (!params) return str;
 
-const useGAPIV2 = (
-  configName,
-  {
+  const newstr = str.replace(/{(\w+)}/g, (_, key) => {
+    return params.hasOwnProperty(key) ? params[key] : key;
+  });
+  return newstr;
+};
+
+const useGAPIV2 = (baseurl, configName, config = {}) => {
+  const {
     shouldLoad = true,
-    itemKey = 'id',
-    updateEndpoint = `${API_BASE_URL}${configName}`,
-    insertEndpoint = `${API_BASE_URL}${configName}`,
-    deleteEndpoint = `${API_BASE_URL}${configName}`,
-  } = {}
-) => {
+    itemKey = "id",
+    updateEndpoint = `${baseurl}${configName}`,
+    insertEndpoint = `${baseurl}${configName}`,
+    deleteEndpoint = `${baseurl}${configName}`,
+    headers = {},
+    params = {}
+  } = config;
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [childrenData, setChildrenData] = useState({});
 
   const fetchData = useCallback(async () => {
-    if (!shouldLoad) {
-      setData([]);
-      return;
-    }
+    // if (!shouldLoad) {
+    //   setData([]);
+    //   return;
+    // }
     setIsLoading(true);
-    
-    console.log("FETCH DATA", configName);
+
     try {
-      const response = await fetch(`${API_BASE_URL}${configName}`);
+      const url = templateString(`${baseurl}${configName}`, params);
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json", ...headers },
+      });
       const result = await response.json();
       setData(result);
     } catch (err) {
-      console.error(err)
+      console.error(err);
       setError(err);
     } finally {
       setIsLoading(false);
@@ -38,7 +48,6 @@ const useGAPIV2 = (
   }, [configName, shouldLoad]);
 
   useEffect(() => {
-    console.log("FETCH INITIAL DATA", configName);
     fetchData();
   }, [fetchData]);
 
@@ -59,19 +68,20 @@ const useGAPIV2 = (
   };
 
   const updateItem = async (item) => {
-    console.log("UPDATE ITEM", item);
     setIsLoading(true);
     try {
       const response = await fetch(`${updateEndpoint}/${item[itemKey]}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json", ...headers },
         body: JSON.stringify(item),
       });
-      const updatedItem = await response.json();
-      setData((prevData) =>
-        prevData.map((d) => (d[itemKey] === updatedItem[itemKey] ? updatedItem : d))
-      );
-      return updatedItem;
+      const updatedItems = await response.json();
+      const updatedData = data.map((d) => {
+        const foundItem = updatedItems.find((item) => item[itemKey] === d[itemKey]);
+        return foundItem ? foundItem : d;
+      });
+      setData(updatedData);
+      return updatedItems;
     } catch (err) {
       setError(err);
     } finally {
@@ -83,8 +93,8 @@ const useGAPIV2 = (
     setIsLoading(true);
     try {
       const response = await fetch(insertEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...headers },
         body: JSON.stringify(item),
       });
       const newItem = await response.json();
@@ -100,7 +110,8 @@ const useGAPIV2 = (
     setIsLoading(true);
     try {
       await fetch(`${deleteEndpoint}/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
+        headers: { "Content-Type": "application/json", ...headers },
       });
       setData((prevData) => prevData.filter((d) => d[itemKey] !== id));
     } catch (err) {
@@ -117,7 +128,9 @@ const useGAPIV2 = (
     }
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}${configName}/${id}/${subkeyName}`);
+      const response = await fetch(
+        `${API_BASE_URL}${configName}/${id}/${subkeyName}`
+      );
       const result = await response.json();
       setChildrenData((prevData) => ({ ...prevData, [cacheKey]: result }));
       return result;
@@ -128,7 +141,7 @@ const useGAPIV2 = (
     }
   };
 
-  const refresh = (id, subkeyName) => {
+  const refresh = useCallback((id, subkeyName) => {
     if (id && subkeyName) {
       const cacheKey = `${id}-${subkeyName}`;
       setChildrenData((prevData) => ({ ...prevData, [cacheKey]: null }));
@@ -136,7 +149,7 @@ const useGAPIV2 = (
     } else {
       fetchData();
     }
-  };
+  },[]);
 
   return {
     data,

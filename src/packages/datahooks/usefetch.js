@@ -66,7 +66,6 @@ const useFetch = (url, options) => {
 
   // mutates in memory record, does not save to database
   const mutate = useCallback((field, value, newrecord) => {
-    // console.log("MUTATE", field, value);
     let newData = data.map((row) => {
       if (row[field] === value) {
         return newrecord;
@@ -74,14 +73,12 @@ const useFetch = (url, options) => {
       return row;
     });
     if (data.find((row) => row[field] === value) === undefined) {
-      // console.log("Mutate: Record not found, adding", newrecord);
       newData.push(newrecord);
     }
     setData(newData);
   },[data]);
 
   const remove = useCallback((field, value) => {
-    // console.log("DELETE", field, value);
     let newData = data.filter((row) => {
       return row[field] !== value;
     });

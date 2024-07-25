@@ -245,8 +245,6 @@ const ContentDisplay = (props) => {
     loaded,
   ]);
 
-  console.log("Content State", user, edit, item)
-
   return (
     <Tracker itemtype="content" id={props.id ?? props.contentid ?? props.item.id ?? props.item.contentid}>
       <div style={{ position: "relative" }}>

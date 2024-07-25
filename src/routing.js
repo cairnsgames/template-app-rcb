@@ -34,6 +34,10 @@ import APITestPage from "./pages/apitest/apitestpage";
 import WizardPage from "./pages/wizard/wizardpage.js";
 import TranslationPage from "./pages/translationpage.js";
 import MagicLoginPage from "./pages/auth/magiccodepage.js";
+import LoyaltyPage from "./pages/loyalty/loyaltypage.js";
+import UserLoyaltyPage from "./pages/loyalty/loyaltyuserpage.js";
+import FullCalendarPage from "./pages/fullcalendar/fullcalendarpage.js";
+import KlokoSearchPage from "./pages/fullcalendar/klokosearchpage.js";
 
 const MapPage = React.lazy(() => import("./pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("./pages/admin/admin"));
@@ -77,6 +81,12 @@ const Routing = () => {
         <Route is={"logout"}>
           <LandingPage />
         </Route>
+        <Route is={"calendar"}>
+          <FullCalendarPage />
+        </Route>
+        <Route is={"eventsearch"}>
+          <KlokoSearchPage />
+        </Route>
 
         <Route is={"content/{id}"}>
           <ContentPage />
@@ -87,6 +97,14 @@ const Routing = () => {
 
         <Route is={"tour"}>
           <TourPage />
+        </Route>
+
+        
+        <Route startsWith={"loyalty"}>
+          <LoyaltyPage />
+        </Route>
+        <Route startsWith={"userloyalty"}>
+          <UserLoyaltyPage />
         </Route>
 
         <Route is={"pagecontent/{id}"}>

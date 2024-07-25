@@ -12,7 +12,7 @@ const App = () => {
   return (
     <ErrorBoundary fallback={<SiteDown />}>
       <Providers>
-        <Container fluid style={{overflowY: "hidden", padding: "0px"}}>
+        <Container fluid style={{overflowY: "auto", padding: "0px"}}>
           <Routing />
         </Container>
         <Toasts />

@@ -7,7 +7,7 @@ export const TranslationProvider = ({ children, ...props }) => {
   const [defaultLocale, setDefaultLocale] = useState(props.defaultLocale ?? "en");
   const [locale, setLocale] = useState(props.locale ?? props.defaultLocale ?? "en");
 
-  const t = (key, loc) => {
+  const t = (key, loc = locale) => {
     console.log("Locales: ", locales[loc])
     if (!loc) {
      return locales[locale][key] ?? locales[defaultLocale][key] ?? key;

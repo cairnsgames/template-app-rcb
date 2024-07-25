@@ -3,7 +3,6 @@ import useFeatureFlag from "./usefeatureflags";
 
 const Summary = () => {
   const { featureFlags } = useFeatureFlag();
-  console.log("!!FLAGS!!", featureFlags)
   return (
     <div>
       <h3>Summary: Feature Flags</h3>
