@@ -12,7 +12,7 @@ const TourPage = (props) => {
     }
   };
   return (
-    <PageFull style={{ padding: "1rem" }}>
+    <PageFull>
       <div style={{ position: "relative" }}>
         <ContentItem id={16} customType={customType} />
       </div>

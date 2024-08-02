@@ -11,9 +11,9 @@ export const useSearch = () => {
     throw new Error("useSearch was used outside of its Provider");
   }
 
-  const { searchResults, searchEventListing } = context;
+  const { searchResults, searchEventListing, refetchSearch } = context;
 
-  return { searchResults, searchEventListing };
+  return { searchResults, searchEventListing, refetchSearch };
 };
 
 export default useSearch;

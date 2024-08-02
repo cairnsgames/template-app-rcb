@@ -55,6 +55,7 @@ const AuthenticationProvider = (props) => {
   const [googleAccessToken, setgoogleAccessToken] = useState();
   const [user, setUser] = useState();
   const { decodedToken } = useJwt(googleAccessToken || "");
+  const [properties, setProperties] = useState([]);
 
   const { tenant } = useTenant();
   const { deviceId } = useDeviceInfo();
@@ -70,6 +71,10 @@ const AuthenticationProvider = (props) => {
       localStorage.setItem("cg." + tenant + ".auth", token);
     }
   }, [token]);
+
+  useEffect(() => {
+    fetchProperties();
+  }, [user]);
 
   const validateToken = (token) => {
     const body = { token: token };
@@ -268,12 +273,11 @@ const AuthenticationProvider = (props) => {
         console.log("Login Response", data);
         if (data.errors) {
           console.log("Login Error!!!!", data.errors);
-          return (data);
+          return data;
         }
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
-        debugger;
         settoken(data.token);
         const userDetails = {
           email: data.email,
@@ -285,7 +289,7 @@ const AuthenticationProvider = (props) => {
           permissions: data.permissions,
         };
         setUser(userDetails);
-        console.log("return data", data)
+        console.log("return data", data);
         return data;
       })
       .catch((err) => {
@@ -446,6 +450,37 @@ const AuthenticationProvider = (props) => {
     return true;
   };
 
+  const fetchProperties = async () => {
+    if (!user) {
+      setProperties([]);
+      return;
+    }
+    await fetch(
+      process.env.REACT_APP_AUTH_API + `/api.php/user/${user.id}/properties`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          token: token,
+        },
+        method: "GET",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data === "string") {
+          data = JSON.parse(data);
+        }
+        console.log("USER PROPERTIES", data)
+        setProperties(data);
+      })
+      .catch((err) => {
+        if (onError) {
+          onError("Auth: Unable to fetch properties", err);
+        }
+      });
+  };
+
   const values = useMemo(
     () => ({
       token,
@@ -458,6 +493,7 @@ const AuthenticationProvider = (props) => {
       setgoogleAccessToken,
       changePassword,
       impersonate,
+      properties,
     }),
     [
       token,

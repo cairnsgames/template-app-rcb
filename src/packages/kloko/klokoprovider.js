@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useMemo } from "react";
+import eventing from '../eventing/eventing';
 
 // Create context for Calendar, Event, Booking, and Template management
 export const KlokoContext = createContext();
@@ -14,6 +15,8 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
   const [loading, setLoading] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [headers, setHeaders] = useState({});
+  const [canFetch, setCanFetch] = useState(false);
+  const [setsearchCriteria, setSearchCriteria] = useState({});
 
   if (!process.env.REACT_APP_KLOKO_API) {
     throw new Error(
@@ -24,14 +27,16 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
   useEffect(() => {
     console.log("KlokoProvider: Search", user, tenant, token);
     setHeaders({ APP_ID: tenant, token: token });
+    setCanFetch(!!user && !!tenant && token !== "");
+    console.log("CAN FETCH", (!!user && !!tenant && token !== ""), { APP_ID: tenant, token: token })
   }, [user, tenant, token]);
 
   useEffect(() => {
-    if (user) {
+    if (canFetch) {
       fetchCalendars();
       fetchTemplates();
     }
-  }, [user]);
+  }, [canFetch]);
 
   useEffect(() => {
     if (activeCalendar) {
@@ -67,7 +72,7 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
   };
 
   // Fetch events
-  const fetchEvents = async (calendarId) => {
+  const fetchEvents = async (calendarId = activeCalendar.id) => {
     setLoading(true);
     fetch(
       `${process.env.REACT_APP_KLOKO_API}/api.php/calendar/${calendarId}/events`,
@@ -103,6 +108,10 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
 
   // Fetch templates
   const fetchTemplates = async () => {
+    if (!canFetch) {
+      setTemplates([]);
+      return;
+    }
     setLoading(true);
     try {
       const response = await fetch(
@@ -252,7 +261,7 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `{process.env.REACT_APP_KLOKO_API}/api.php/booking`,
+        `${process.env.REACT_APP_KLOKO_API}/api.php/booking`,
         {
           method: "POST",
           headers: { ...headers, "Content-Type": "application/json" },
@@ -262,6 +271,7 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
       const newBooking = await response.json();
       setBookings((prev) => [...prev, newBooking]);
       setLoading(false);
+      eventing.publish("breezo", "reload", newBooking);
       return [newBooking];
     } catch (error) {
       console.error("Error creating booking:", error);
@@ -372,6 +382,7 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
 
   const searchEventListing = async (lat, lng, type, from, to) => {
     setLoading(true);
+    setSearchCriteria({ lat, lng, type, from, to });
     console.log("Search TOKEN", token)
     console.log("Search headers", headers)
     try {
@@ -384,11 +395,18 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
       console.log("SEARCH DATA", data);
       setSearchResults(data);
     } catch (error) {
-      console.error("Error fetching search results (find):", error);
+      console.error("Error fetching search results (searchEventListing):", error);
     }
     setLoading(false);
   }
+  const refetchSearch = () => {
+    searchEventListing(setsearchCriteria.lat, setsearchCriteria.lng, setsearchCriteria.type, setsearchCriteria.from, setsearchCriteria.to);
+  }
   const randomEventListing = async (lat, lng, type, from, to) => {
+    if (!canFetch) {
+      setSearchResults([]);
+      return;
+    }
     setLoading(true);
     console.log("Search TOKEN", token)
     console.log("Search headers", headers)
@@ -402,7 +420,7 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
       console.log("SEARCH DATA", data);
       setSearchResults(data);
     } catch (error) {
-      console.error("Error fetching search results (find):", error);
+      console.error("Error fetching search results (randomEventListing):", error, headers);
     }
     setLoading(false);
   }
@@ -436,6 +454,7 @@ export const KlokoProvider = ({ children, user, tenant, token }) => {
       updateTemplate,
       deleteTemplate,
       searchEventListing,
+      refetchSearch,
     }),
     [
       calendars,

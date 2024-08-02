@@ -22,7 +22,7 @@ const ContentPage = (props) => {
   }, [id]);
 
   return (
-    <PageFull style={{ margin: "1rem" }}>
+    <PageFull>
       <div style={{ padding: "1rem", border: "1px solid green" }}>
         <h1>Choose Content</h1>
         <InputGroup className="mb-3">

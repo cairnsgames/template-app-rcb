@@ -4,7 +4,7 @@ import PageFull from "../../parts/pagelayouts/pagefull";
 
 const UserLoyaltyPage = () => {
   return (
-    <PageFull style={{ padding: "1rem" }}>
+    <PageFull>
       <UserLoyaltyProvider>
         <UserLoyaltyCards />
       </UserLoyaltyProvider>

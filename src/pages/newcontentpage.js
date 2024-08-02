@@ -6,7 +6,7 @@ const NewContentPage = (props) => {
   const { user } = useUser();
   console.log("NEW CONTENT USEWR", user);
   return (
-    <PageFull style={{ margin: "1rem" }}>
+    <PageFull>
       <h1>New Content</h1>
       <div style={{ position: "relative" }}>
         {user && (

@@ -38,6 +38,7 @@ import LoyaltyPage from "./pages/loyalty/loyaltypage.js";
 import UserLoyaltyPage from "./pages/loyalty/loyaltyuserpage.js";
 import FullCalendarPage from "./pages/fullcalendar/fullcalendarpage.js";
 import KlokoSearchPage from "./pages/fullcalendar/klokosearchpage.js";
+import PlaceOrderPage from "./pages/breezo/placeorderpage.js";
 
 const MapPage = React.lazy(() => import("./pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("./pages/admin/admin"));
@@ -86,6 +87,10 @@ const Routing = () => {
         </Route>
         <Route is={"eventsearch"}>
           <KlokoSearchPage />
+        </Route>
+
+        <Route is={"placeorder"}>
+          <PlaceOrderPage />
         </Route>
 
         <Route is={"content/{id}"}>

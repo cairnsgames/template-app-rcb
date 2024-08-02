@@ -3,6 +3,7 @@ import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useAuth } from "@cairnsgames/auth/context/useauth";
 import { useUser } from "@cairnsgames/auth/context/useuser";
 import DarkModeSwitch from "./darkmode";
+import BreezoCart from "../packages/breezo/breezocart";
 
 function NavPart() {
   const { isLoggedIn, logout } = useAuth();
@@ -16,31 +17,36 @@ function NavPart() {
       expand="lg"
     >
       <Container>
-        <Navbar.Brand href="#home">{process.env.brandname}</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Brand href="#home">
+          {process.env.brandname} 
+        </Navbar.Brand>
+        
+        <Navbar.Text style={{marginLeft:"auto"}}><BreezoCart className="float-end" /></Navbar.Text>
+        <Navbar.Toggle className="float-end" aria-controls="responsive-navbar-nav" />
+
         <Navbar.Collapse className="ms-2">
           <Nav className="me-auto">
             <NavDropdown className="bg-primary" title="Sample Pages">
-              
-            <Nav.Link className="bg-primary" href="#loyalty" bg="primary">
+              <Nav.Link className="bg-primary" href="#loyalty" bg="primary">
                 Loyalty (Venue)
               </Nav.Link>
               <Nav.Link className="bg-primary" href="#userloyalty" bg="primary">
                 Loyalty (User)
               </Nav.Link>
+
               <Nav.Link className="bg-primary" href="#calendar" bg="primary">
                 Calendar
-              </Nav.Link>       
+              </Nav.Link>
               <Nav.Link className="bg-primary" href="#eventsearch" bg="primary">
                 Event Search
-              </Nav.Link>      
-            <Nav.Link className="bg-primary" href="#trans" bg="primary">
+              </Nav.Link>
+              <Nav.Link className="bg-primary" href="#trans" bg="primary">
                 Translation
               </Nav.Link>
               <Nav.Link className="bg-primary" href="#review" bg="primary">
                 Reviews
               </Nav.Link>
-              
+
               <Nav.Link className="bg-primary" href="#wizard" bg="primary">
                 Wizard
               </Nav.Link>
@@ -126,6 +132,7 @@ function NavPart() {
                 </Nav.Link>
               </NavDropdown>
             )}
+
             {isLoggedIn && (
               <NavDropdown title="Design Elements">
                 <NavDropdown.Item href="#design/accordian">
@@ -182,6 +189,7 @@ function NavPart() {
             )}
           </Nav>
         </Navbar.Collapse>
+
       </Container>
     </Navbar>
   );

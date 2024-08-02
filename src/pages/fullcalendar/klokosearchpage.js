@@ -8,7 +8,7 @@ import KlokoSearch from "../../packages/kloko/klokosearch";
 
 const KlokoSearchPage = () => {
   return (    
-    <PageFull style={{ margin: "1rem" }}>
+    <PageFull>
         <KlokoSearch />
     </PageFull>
   );

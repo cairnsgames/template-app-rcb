@@ -8,7 +8,7 @@ export const useEvents = () => {
 
   // if `undefined`, throw an error
   if (!context) {
-    throw new Error("useUser was used outside of its Provider");
+    throw new Error("useEvents was used outside of its Provider");
   }
 
   const { events, createEvent, updateEvent, deleteEvent } = context;

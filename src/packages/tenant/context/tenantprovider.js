@@ -1,26 +1,5 @@
 import React, { createContext, useEffect, useMemo, useState } from "react";
 
-// type TenantType = {
-//   tenant: string;
-//   config: any;
-//   params: any;
-//   application: any;
-// };
-// type TenantProviderType = {
-//   children: React.ReactNode;
-//   applicationId: string;
-//   config: any;
-//   params: any;
-//   application: any;
-// };
-
-// create context
-// const TenantContext = createContext<TenantType>({
-//   tenant: "",
-//   config: {},
-//   params: [],
-//   application: []
-// });
 const TenantContext = createContext(
   "TenantContext", // a sufficiently globally unique displayName
   null // default value

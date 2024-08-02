@@ -4,7 +4,7 @@ import PageCentered from "../../parts/pagelayouts/pagecentered";
 import PageFull from "../../parts/pagelayouts/pagefull";
 const LoyaltyPage = ({ id }) => {
   return (
-    <PageFull style={{ padding: "1rem" }}>
+    <PageFull>
       <LoyaltyProvider>
         <Loyalty />
       </LoyaltyProvider>

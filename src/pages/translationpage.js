@@ -4,7 +4,7 @@ import TranslationSummary from "../packages/translation/summary";
 
 const TranslationPage = (props) => {
   return (
-    <PageFull style={{ margin: "1rem" }}>
+    <PageFull>
       <div style={{ position: "relative" }}>
         <h1>TRANSLATION EXAMPLE</h1>
           <TranslationSummary />
