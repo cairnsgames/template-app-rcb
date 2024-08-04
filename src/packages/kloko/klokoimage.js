@@ -17,7 +17,7 @@ const KlokoImage = ({ event }) => {
       : `http://cairnsgames.co.za/files/${event.avatar}`
     : `http://cairnsgames.co.za/files/1.png`;
 
-  return <Image style={{ width: "100%" }} src={imageUrl} />;
+  return <Image style={{ width: "100%", borderTopLeftRadius: "8px", borderTopRightRadius: "8px" }} src={imageUrl} />;
 };
 
 export default KlokoImage;

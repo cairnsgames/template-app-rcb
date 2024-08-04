@@ -1,9 +1,7 @@
-@import "../../colors.scss";
-
 .qrcodecontainer {
-  padding: 0px;
-  width: 100%;
-  max-width: 90vw;
+  border: 10px solid var(--primary);
+  // padding: 5px;
+  max-width: 80vw;
   aspect-ratio: 1 / 1;
 }
 #react-qrcode-logo {

@@ -7,7 +7,14 @@ import useGeoLocation from "../../../hooks/usegeolocation";
 export const BreezoContext = createContext();
 
 // Data provider component
-export const BreezoProvider = ({ children, user, tenant, token }) => {
+export const BreezoProvider = ({
+  children,
+  user,
+  tenant,
+  token,
+  useFeatureFlags,
+  useSettings,
+}) => {
   const [carts, setCarts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [invoices, setInvoices] = useState([]);
@@ -21,6 +28,15 @@ export const BreezoProvider = ({ children, user, tenant, token }) => {
   const [canFetch, setCanFetch] = useState(false);
 
   const [activeOrder, setactiveOrder] = useState();
+
+  let settings = [];
+  let getUserProperty = () => {
+    return false;
+  };
+
+  if (useSettings) {
+    const { settings, getUserProperty } = useSettings();
+  }
 
   if (!process.env.REACT_APP_BREEZO_API) {
     throw new Error(
@@ -206,7 +222,7 @@ export const BreezoProvider = ({ children, user, tenant, token }) => {
       { method: "POST", headers, body: JSON.stringify({ cart_id: cartId }) }
     );
     return await order.json();
-  }
+  };
 
   const values = useMemo(
     () => ({
@@ -226,7 +242,7 @@ export const BreezoProvider = ({ children, user, tenant, token }) => {
       fetchCommission,
       fetchItems,
       deleteItem,
-      createOrderFromCart
+      createOrderFromCart,
     }),
     [carts, cartItems, orders, invoices, payments, commission, items, loading]
   );

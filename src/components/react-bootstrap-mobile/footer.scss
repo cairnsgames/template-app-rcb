@@ -1,0 +1,121 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--bs-white);
+  border-top: 1px solid var(--bs-primary);
+  z-index: 1000;
+  overflow: visible;
+}
+
+.central-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background-color: var(--bs-primary);
+  padding: 10px;
+  cursor: pointer;
+  color: white;
+}
+
+.icon-button {
+  border-radius: 50%;
+  background-color: var(--bs-white); /* White background */
+  color: var(--bs-primary); /* Darker purple icons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 64px;
+  height: 64px;
+  transition: background-color 0.3s, color 0.3s;
+  border: none; /* Remove the border */
+  
+  text-decoration: none;
+  text-decoration-line: none;
+
+  &:hover {
+    background-color: var(--bs-primary-light); /* Light purple background */
+    color: var(--bs-primary); /* Darker purple icons */
+  }
+}
+
+.footer-menu {
+  position: absolute;
+  bottom: 70px; /* Adjust this value based on the height of the icons */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .icon-button {
+    position: absolute;
+    transition: transform 0.3s ease-in-out;
+    background-color: var(--bs-primary); /* Darker purple background */
+    color: var(--bs-light); /* White icons */
+
+    &:hover {
+      background-color: var(--bs-primary-light); /* Light purple background */
+      color: var(--bs-primary); /* Darker purple icons */
+    }
+  }
+
+  /* Dynamic positioning based on the number of menu items */
+  --angle: calc(180deg / (var(--menu-item-count) - 1));
+  --distance: 70px;
+
+  .icon-button:nth-child(1) {
+    transform: rotate(calc(-180deg + var(--angle) * 0)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 0));
+  }
+  .icon-button:nth-child(2) {
+    transform: rotate(calc(-180deg + var(--angle) * 1)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 1));
+  }
+  .icon-button:nth-child(3) {
+    transform: rotate(calc(-180deg + var(--angle) * 2)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 2));
+  }
+  .icon-button:nth-child(4) {
+    transform: rotate(calc(-180deg + var(--angle) * 3)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 3));
+  }
+  .icon-button:nth-child(5) {
+    transform: rotate(calc(-180deg + var(--angle) * 4)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 4));
+  }
+
+  /* Animation classes for showing and hiding */
+  &.show {
+    animation: flyOut 0.3s forwards;
+  }
+
+  &.hide {
+    animation: flyIn 0.3s forwards;
+  }
+}
+
+@keyframes flyOut {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes flyIn {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+body {
+  margin-bottom: 95px;
+}

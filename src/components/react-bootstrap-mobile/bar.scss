@@ -1,0 +1,52 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+$color: white;
+$active-text-color: var(--bs-primary);
+
+.bar-container {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0px 0px 10px 0px;
+  user-select: none; // Prevent text selection during drag
+  background-color: var(--bs-primary); // Use CSS variable for background color
+  color: $color; // Customize text color
+
+  &::-webkit-scrollbar {
+    display: none; // Hide scrollbar for WebKit browsers
+  }
+
+  scrollbar-width: none; // Hide scrollbar for Firefox
+  -ms-overflow-style: none; // Hide scrollbar for Internet Explorer and Edge
+
+  @each $name, $color in $theme-colors {
+    &.#{$name} {
+      background-color: var(--bs-#{$name});
+    }
+  }
+}
+
+.bar-nav {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.bar-nav .nav-link {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: $color; // Customize text color
+
+  &.active-pill {
+    border-radius: 50px;
+    background-color: var(--bs-primary); // Use CSS variable for active link color
+    color: $active-text-color; // Customize active link text color
+  }
+
+  @each $name, $color in $theme-colors {
+    &.active-pill {
+      background-color: white;
+      color: var(--bs-#{$name});
+    }
+  }
+}

@@ -27,17 +27,13 @@ const Providers = ({ children }) => {
               onError={onError}
               googleClientId="284541609551-mnsvu7bi9medujkp0hdap87b1pvqjaa8.apps.googleusercontent.com"
             >
-              <FeatureFlagProvider>
-                <SettingsProvider>
-                  <ToastsProvider>
-                    <GPSProvider>
-                      <ProvidersWithUser>
-                        <MapProvider>{children}</MapProvider>
-                      </ProvidersWithUser>
-                    </GPSProvider>
-                  </ToastsProvider>
-                </SettingsProvider>
-              </FeatureFlagProvider>
+              <ProvidersWithUser>
+                <ToastsProvider>
+                  <GPSProvider>
+                    <MapProvider>{children}</MapProvider>
+                  </GPSProvider>
+                </ToastsProvider>
+              </ProvidersWithUser>
             </AuthenticationProvider>
           </TranslationProvider>
         </TenantProvider>

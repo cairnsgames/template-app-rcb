@@ -10,11 +10,11 @@ import useTranslation from "../../translation/usetranslation";
 //   onLogin?: (result: any) => void;
 // }
 
-const LoginForm = ({ onSuccess, onClose }) => {
+const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [keep, setKeep] = useState(false);
+  const [keep, setKeep] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
   const { login, setgoogleAccessToken } = useAuth();
@@ -38,7 +38,6 @@ const LoginForm = ({ onSuccess, onClose }) => {
 
     login(email, password)
       .then((result) => {
-        
         console.log("Login return", result);
         if (result.errors) {
           console.log("Cannot login", result.errors[0]);
@@ -67,7 +66,11 @@ const LoginForm = ({ onSuccess, onClose }) => {
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-      {errors && <Alert variant="danger">{t("Cannot log in")}: {errors}</Alert>}
+      {errors && (
+        <Alert variant="danger">
+          {t("Cannot log in")}: {errors}
+        </Alert>
+      )}
       <Row className="mb-3">
         <Form.Group>
           <Form.Label>{t("Email")}</Form.Label>
@@ -107,15 +110,17 @@ const LoginForm = ({ onSuccess, onClose }) => {
           </InputGroup>
         </Form.Group>
       </Row>
-      <Form.Group className="mb-3">
-        <Form.Check
-          label="Keep me logged in"
-          checked={keep}
-          onChange={() => {
-            setKeep(!keep);
-          }}
-        />
-      </Form.Group>
+      {!rememberMe && (
+        <Form.Group className="mb-3">
+          <Form.Check
+            label="Keep me logged in"
+            checked={keep}
+            onChange={() => {
+              setKeep(!keep);
+            }}
+          />
+        </Form.Group>
+      )}
       <Row>
         <Col>
           <Button type="submit">{t("Login")}</Button>

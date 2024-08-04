@@ -58,62 +58,71 @@ const KlokoSearch = () => {
 
   return (
     <div>
-      <Row>
-        <Col sm={12} md={3}>
-          <InputGroup className="m-2">
-            <InputGroup.Text>Location</InputGroup.Text>
-            <PlaceSearch onFound={found} />
-            <InputGroup.Text>
-              <Search />
-            </InputGroup.Text>
-          </InputGroup>
-        </Col>
-        <Col sm={12} md={3}>
-          <InputGroup className="m-2">
-            <InputGroup.Text>Style</InputGroup.Text>
-            <Form.Control
-              type="text"
-              placeholder="Style"
-              value={style}
-              onChange={(ev) => setStyle(ev.target.value)}
-            />
-          </InputGroup>
-        </Col>
-        <Col sm={12} md={3} className="m-2">
-          <Row>
-            <Col xs={6}>
-              <InputGroup>
-                <InputGroup.Text>Start</InputGroup.Text>
-                <Form.Control
-                  type="date"
-                  placeholder="Start"
-                  value={start}
-                  onChange={(ev) => setStart(ev.target.value)}
-                />
-              </InputGroup>
-            </Col>
-            <Col>
-              <InputGroup>
-                <InputGroup.Text>End</InputGroup.Text>
-                <Form.Control
-                  type="date"
-                  placeholder="End"
-                  value={end}
-                  onChange={(ev) => setEnd(ev.target.value)}
-                />
-              </InputGroup>
-            </Col>
-          </Row>
-        </Col>
-        <Col className="m-2 text-end">
-          <Button onClick={onSearch}>Search</Button>
-        </Col>
-      </Row>
+      <Container fluid>
+        <Row
+          style={{
+            border: "3px solid var(--bs-primary)",
+            borderRadius: "8px",
+          }}
+          className="mx-1 p-2"
+        >
+          <Col sm={12} md={3}>
+            <InputGroup className="my-1">
+              <InputGroup.Text>Location</InputGroup.Text>
+              <PlaceSearch onFound={found} />
+              <InputGroup.Text>
+                <Search />
+              </InputGroup.Text>
+            </InputGroup>
+          </Col>
+          <Col sm={12} md={3}>
+            <InputGroup className="my-1">
+              <InputGroup.Text>Style</InputGroup.Text>
+              <Form.Control
+                type="text"
+                placeholder="Style"
+                value={style}
+                onChange={(ev) => setStyle(ev.target.value)}
+              />
+            </InputGroup>
+          </Col>
+          <Col sm={12} md={3} className="my-1">
+            <Row>
+              <Col xs={12}>
+                <InputGroup>
+                  <InputGroup.Text>Dates</InputGroup.Text>
+                  <Form.Control
+                    type="date"
+                    placeholder="Start"
+                    value={start}
+                    onChange={(ev) => setStart(ev.target.value)}
+                  />
+                  <Form.Control
+                    type="date"
+                    placeholder="End"
+                    value={end}
+                    onChange={(ev) => setEnd(ev.target.value)}
+                  />
+                </InputGroup>
+              </Col>
+            </Row>
+          </Col>
+          <Col className="my-2 text-end">
+            <Button className="w-100" onClick={onSearch}>
+              Search
+            </Button>
+          </Col>
+        </Row>
+      </Container>
 
       <Container>
         {searchResults?.map((event) => {
           return (
-            <Card key={event.id} className="p-3" style={{ border: "none" }}>
+            <Card
+              key={event.id}
+              className="pt-3"
+              style={{ border: "none", borderRadius: "8px" }}
+            >
               <Row>
                 <Col xs={12} md={3}>
                   <KlokoImage event={event} />
@@ -125,25 +134,30 @@ const KlokoSearch = () => {
                     </h3>
                   </div>
                   <div>
-                    {event.firstname} {event.lastname}
+                    by {event.firstname} {event.lastname}
                   </div>
-                  <div>{event.description}</div>
-                  <div>{event.start_time}</div>
+                  <div className="ps-3">{event.description}</div>
+                  <div>
+                    {event.start_time} for {event.duration} minutes
+                  </div>
                   <div>{event.end_time}</div>
                   <div>{event.style}</div>
-                  <div>$ {event.price}</div>
-                  <div>{Math.ceil(event.distance)} km</div>
-                  <div>
-                    Available: {event.max_participants - event.bookings} of{" "}
-                    {event.max_participants}
+                  <div className="d-flex justify-content-between">
+                    <div style={{ fontWeight: "700" }}>$ {event.price}</div>
+                    <div className="text-end">
+                      {Math.ceil(event.distance)} km away
+                    </div>
+                  </div>
+                  <div className="text-end">
+                    {event.max_participants - event.bookings} places available
                   </div>
                   <div>
-                    {event.location} ({event.lat}, {event.lng})
+                    Location {event.location} ({event.lat}, {event.lng})
                   </div>
                   <BookingSection event={event} />
                 </Col>
               </Row>
-              <div></div>
+              <hr />
             </Card>
           );
         })}

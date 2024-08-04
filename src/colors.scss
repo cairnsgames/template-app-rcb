@@ -1,5 +1,5 @@
-@import "../node_modules/bootstrap/scss/functions";
-@import "../node_modules/bootstrap/scss/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
 
 $primary:       green;
 $secondary:     $gray-600 !default;
@@ -52,6 +52,13 @@ $theme-colors: (
   "light":      $light,
   "dark":       $dark
 );
+$custom-colors: (
+  "event": #009984,
+  "party": #465ca9
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
 
 // Export the color palette to make it accessible to JS
 :export {
@@ -63,4 +70,11 @@ $theme-colors: (
     danger: $danger;
     light: $light;
     dark: $dark;
+}
+
+:root {
+  @each $color, $value in $theme-colors {
+    --#{$color}-light: #{lighten($value, 45%)};
+    --bs-#{$color}-light: #{lighten($value, 45%)};
+  }
 }

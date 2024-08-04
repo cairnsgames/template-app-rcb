@@ -7,14 +7,16 @@ import { ErrorBoundary } from "react-error-boundary";
 import SiteDown from "./sitedown";
 import Toasts from "@cairnsgames/toasts/toasts";
 import "./app.scss";
+import MobileApp from "./mobile/mobile";
 
 const App = () => {
   return (
     <ErrorBoundary fallback={<SiteDown />}>
       <Providers>
-        <Container fluid style={{overflowY: "auto", padding: "0px"}}>
-          <Routing />
-        </Container>
+        {/* <Container fluid style={{overflowY: "auto", padding: "0px"}}> */}
+          {/* <Routing /> */}
+          <MobileApp />
+        {/* </Container> */}
         <Toasts />
       </Providers>
     </ErrorBoundary>

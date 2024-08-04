@@ -5,7 +5,7 @@ import eventing from '../eventing/eventing';
 export const KlokoContext = createContext();
 
 // Data provider component
-export const KlokoProvider = ({ children, user, tenant, token }) => {
+export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, useSettings }) => {
   const [calendars, setCalendars] = useState([]);
   const [events, setEvents] = useState([]);
   const [bookings, setBookings] = useState([]);

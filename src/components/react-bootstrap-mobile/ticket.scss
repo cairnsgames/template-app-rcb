@@ -1,0 +1,113 @@
+@import "../../colors.scss";
+
+.ticket {
+  position: relative;
+  min-height: 75px;
+  padding: 10px;
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease-in-out;
+  font-size: small;
+  border: none;
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background-color: inherit;
+    left: 0;
+  }
+
+  &:before {
+    top: -10px;
+    border-radius: 0 0 $border-radius-lg $border-radius-lg;
+  }
+
+  &:after {
+    bottom: -10px;
+    border-radius: $border-radius-lg $border-radius-lg 0 0;
+  }
+
+  .notch {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .notch-left {
+    left: -10px;
+  }
+
+  .notch-right {
+    right: -10px;
+  }
+
+  &:active {
+    animation: expandThenShrink 0.4s forwards;
+  }
+
+  &-header,
+  &-body,
+  &-footer {
+    position: relative;
+    z-index: 2;
+    padding: 2px 5px; // Reduced padding between sections
+  }
+
+  &-header {
+    font-size: 1.25em;
+    font-weight: bold;
+    background-color: var(--bs-dark);
+    color: var(--bs-white);
+  }
+
+  &-body {
+    font-size: small;
+  }
+
+  &-footer {
+    font-size: smaller;
+    display: flex;
+    justify-content: center; // Center the footer content by default
+    align-items: center;
+    position: relative; // Ensure proper positioning for child elements
+  }
+
+  &-footer-left {
+    position: absolute;
+    left: 10px;
+  }
+
+  &-footer-right {
+    position: absolute;
+    right: 10px;
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .ticket-#{$name} {
+    background-image: linear-gradient(var(--bs-white), var(--bs-#{$name}-light));
+  }
+  .ticket-#{$name} .ticket-header {
+    background-color: var(--bs-#{$name});
+  }
+}
+
+@keyframes expandThenShrink {
+  0% {
+    transform: scaleX(1);
+  }
+  40% {
+    transform: scaleX(1.1);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}

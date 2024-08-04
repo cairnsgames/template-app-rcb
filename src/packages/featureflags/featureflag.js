@@ -1,15 +1,11 @@
 import React, { createContext, useEffect, useState, useMemo } from "react";
-import { useUser } from "../auth/context/useuser";
-import useTenant from "../tenant/context/usetenant";
 
 const FeatureFlagContext = createContext({ featureFlags: []});
 
-const FeatureFlagProvider = ( props ) => {
+const FeatureFlagProvider = ( props, user, tenant, token ) => {
   const { tag, children } = props;
 
   const [featureFlags, setFeatureFlags] = useState([]);
-  const { tenant } = useTenant();
-  const { user } = useUser();
 
   if (!process.env.REACT_APP_FLAGS_API) {
     throw new Error("AuthProvider: REACT_APP_FLAGS_API environment variable is required");
