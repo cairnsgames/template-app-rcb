@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './FloatingCard.scss';
+import './floatingcard.scss';
 
 const FloatingCard = ({ image, children, onClick, className, ...props }) => {
   const [isDarkText, setIsDarkText] = useState(false);
