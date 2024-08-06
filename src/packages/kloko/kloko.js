@@ -45,10 +45,6 @@ const Calendar = (props) => {
   const { events, deleteEvent } = useEvents();
   const [nevents, setEvents] = useState([]);
 
-  useEffect(() => {
-    console.log("Kloko: events updated", events);
-  }, [events]);
-
   const setView = (event) => {
     let view = "timeGridDay";
     if (event.target.value === "Weekdays") {
@@ -134,7 +130,6 @@ const Calendar = (props) => {
   }
 
   const eventsToDisplay = [...(events ?? []), ...(newEvents ?? [])];
-  console.log("Kloko: eventsToDisplay", eventsToDisplay);
   return (
     <div>
       <Row className="m-2">

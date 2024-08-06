@@ -17,10 +17,6 @@ const ContentPage = (props) => {
     }
   };
 
-  useEffect(() => {
-    console.log("ID Changed", id)
-  }, [id]);
-
   return (
     <PageFull>
       <div style={{ padding: "1rem", border: "1px solid green" }}>

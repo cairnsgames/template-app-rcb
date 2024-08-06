@@ -22,8 +22,6 @@ function checkStartsWith(path, pattern) {
 }
 
 function extractNamesAndValues(url, template) {
-  console.log("url", url);
-  console.log("template", template);
   if (!url) {
     url = window.location.href;
   }
@@ -105,6 +103,9 @@ const Router = ({ path, children, isLoggedIn }) => {
         }
         if (is && startsWith && ifTrue && andTrue && auth) {
           const pathParams = extractNamesAndValues(path, route.props.is);
+          console.log ("pathParams", pathParams);
+          console.log ("route.props", route.props);
+
           return <Route {...route.props} {...pathParams} />;
         }
         // if (route.props.is && checkIs(path, route.props.is)) {

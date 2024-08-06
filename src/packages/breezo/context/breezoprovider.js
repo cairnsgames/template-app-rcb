@@ -45,7 +45,6 @@ export const BreezoProvider = ({
   }
 
   const eventReload = () => {
-    console.log("==================== Eventing Reload ====================");
     fetchCarts();
     fetchOrders();
   };
@@ -53,10 +52,8 @@ export const BreezoProvider = ({
   useEventing("breezo", "reload", eventReload);
 
   useEffect(() => {
-    console.log("BreezoProvider: Fetching data", user, token);
     setHeaders({ APP_ID: tenant, token: token });
     setCanFetch(!!user && token !== "");
-    console.log("CAN FETCH", !!user && token !== "", { token: token });
   }, [user, token]);
 
   useEffect(() => {

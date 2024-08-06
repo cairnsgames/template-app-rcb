@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 
-function ForgotPasswordForm({onSuccess}) {
+function MagicLinkForm({onSuccess}) {
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
@@ -23,7 +23,8 @@ function ForgotPasswordForm({onSuccess}) {
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Row className="mb-3">
         <div className="m-3">
-          Please enter your email address. If we find an account with your email address we will send you a link to use to change your password.
+          <p>You need to be a registered user to get a Magic Link</p>
+          Please enter your email address. If we find an account with your email address we will send you a link that you can use to login automatically (valid for 7 days).
         </div>
         <Form.Group>
           <Form.Label>Email</Form.Label>
@@ -34,7 +35,7 @@ function ForgotPasswordForm({onSuccess}) {
               required
             />
             <Form.Control.Feedback type="invalid">
-              Your email address is required to reset your password.
+              Your email address is required to get a Magic Link.
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
@@ -44,4 +45,4 @@ function ForgotPasswordForm({onSuccess}) {
   );
 }
 
-export default ForgotPasswordForm;
+export default MagicLinkForm;

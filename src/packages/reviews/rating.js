@@ -10,8 +10,6 @@ const Rating = (props) => {
   const { tenant } = useTenant();
   const [data, setData] = useState();
 
-  console.log("REVIEWS,", user, token);
-
   if (!process.env.REACT_APP_REVIEW_API) {
     console.error("REACT_APP_REVIEW_API not defined");
     return <div>Reviews are not enabled yet</div>;

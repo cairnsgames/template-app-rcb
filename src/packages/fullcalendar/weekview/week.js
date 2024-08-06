@@ -106,9 +106,6 @@ export default function Week() {
     ) {
       selectInfo.view.calendar.unselect();
       setState({ selectInfo, state: "create" });
-      // Open modal create
-      console.log("open modal create");
-      // console.log(selectInfo);
       setStart(selectInfo.start);
       setEnd(selectInfo.end);
       setModal(true);

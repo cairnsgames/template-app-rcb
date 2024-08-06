@@ -29,7 +29,6 @@ const ContentItem = (props) => {
             data.style = JSON.parse(data.style);
           }
         }
-        console.log("New Item Data", data)
         setItem(data);
       });
   }, [id]);

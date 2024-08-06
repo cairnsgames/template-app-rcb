@@ -6,8 +6,6 @@ const Summary = () => {
   const { tenant, application }= useTenant();
   const { params } = useParams();
 
-  console.log("PARAMS", params);
-  console.log("Application", application)
   return (
     <div>
       <h3>Summary</h3>

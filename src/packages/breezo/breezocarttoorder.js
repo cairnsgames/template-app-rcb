@@ -30,7 +30,6 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
 
   useEffect(() => {
     if (useDefaultAddress && properties) {
-      console.log("Properties", properties);
       const defaultAddress = properties.find((prop) => prop.name === "address");
       if (defaultAddress) {
         setAddress(defaultAddress.value);

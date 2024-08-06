@@ -4,7 +4,6 @@ import useUser from "../packages/auth/context/useuser";
 
 const NewContentPage = (props) => {
   const { user } = useUser();
-  console.log("NEW CONTENT USEWR", user);
   return (
     <PageFull>
       <h1>New Content</h1>

@@ -33,8 +33,6 @@ const eventing = {
     },
   
     publish(eventType, action, data) {
-      console.log("=========== EVENTING publish ============")
-      console.log("=========== Subscribers", this.events[eventType])
       if (this.events[eventType]) {
         if (this.events[eventType].actions[action]) {
           this.events[eventType].actions[action].forEach(callback => callback(data));

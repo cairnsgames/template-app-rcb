@@ -4,8 +4,6 @@ import { useMembership } from "../../context/usemembership";
 const ApplicationList = () => {
     const { applications } = useMembership();
     
-    console.log("ApplicationList", applications)
-
   return (
     <Tracker itemtype="application" id={0}>
       <h1>Application List</h1>

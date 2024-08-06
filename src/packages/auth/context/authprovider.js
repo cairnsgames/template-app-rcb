@@ -193,9 +193,7 @@ const AuthenticationProvider = (props) => {
   }, [googleAccessToken, getGoogleUser]);
 
   const logout = () => {
-    console.log("Logout");
     // Check if we have a master token
-    console.log("USER", user);
     if (user && user.mastertoken) {
       validateToken(user.mastertoken);
     } else {
@@ -209,7 +207,6 @@ const AuthenticationProvider = (props) => {
   };
 
   const register = async (email, password, confirm) => {
-    console.log("Register");
     const body = {
       email: email,
       password: password,
@@ -270,9 +267,8 @@ const AuthenticationProvider = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Login Response", data);
         if (data.errors) {
-          console.log("Login Error!!!!", data.errors);
+          console.error("Login Error!!!!", data.errors);
           return data;
         }
         if (typeof data === "string") {

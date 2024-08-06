@@ -48,39 +48,26 @@ const CustomForm = (props) => {
         newValues[field.name] = values[field.name] ?? "";
       }
     });
-    console.log("#### Initial Values", newValues);
     setFieldValues(newValues);
   }, [config, values]);
 
   const handleSubmit = (event) => {
-    console.log("#### Submit");
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-      console.log("#### Validation Failed");
       setValidated(true);
       return;
     }
 
     setValidated(true);
-    console.log("#### Validation Passed");
-    console.log("#### VALUES", fieldValues);
     propTypes.onSubmit(fieldValues);
   };
 
   useEffect(() => {
-    console.log("#### Form Values", fieldValues);
   }, [fieldValues]);
 
   const changeFieldValue = (e, field) => {
-    console.log(
-      "### Change Field Value",
-      e.target.value,
-      e.target.checked,
-      field.name,
-      field.type
-    );
     const newValues = { ...fieldValues };
     if (field.type === "checkbox") {
       newValues[field.name] = e.target.checked;

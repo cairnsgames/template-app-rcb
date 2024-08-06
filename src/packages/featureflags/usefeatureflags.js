@@ -19,7 +19,6 @@ export const useFeatureFlag = () => {
 
     const isFeatureEnabled = (feature) => {
         const featureFlag = featureFlags[feature];
-        // console.log("FeatureFlag", feature, featureFlag)
         return featureFlag && (featureFlag === "Yes" || featureFlag === "yes" || featureFlag === "true" || featureFlag === "True");
     }
   

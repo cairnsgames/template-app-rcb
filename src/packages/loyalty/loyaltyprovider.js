@@ -65,7 +65,6 @@ export const LoyaltyProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("SYSTEMS", systems);
   }, [systems]);
 
   useEffect(() => {

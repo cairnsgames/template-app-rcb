@@ -8,10 +8,7 @@ const MagicCodePage = (props) => {
   const { addToast } = useToast();
   const { loginWithMagicLink } = useAuth();
 
-  console.log("PROPS", props);
-
   useEffect(() => {
-    console.log("MAGIC CODE PAGE - code", props.code);
     if (props?.code.length) {
       loginWithMagicLink(props.code);
     }

@@ -40,17 +40,11 @@ const MobileDeviceProvider = (props) => {
           }]
         };
         const result = await LocalNotifications.schedule(now)
-        console.log(result)
       }
   };
 
   const pushNotificationActionPerformed = (notification) => {
-    console.log(
-      "#### Push notification action performed",
-      notification.actionId,
-      notification.inputValue,
-      JSON.stringify(notification)
-    );
+
   };
 
   useEffect(() => {

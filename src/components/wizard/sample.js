@@ -42,7 +42,6 @@ const WizardSample = () => {
   const [selectedSlots, setSelectedSlots] = useState([]);
 
   useEffect(() => {
-    console.log("FORM DATA", formData)
     if (formData.name && formData.location && formData.duration) {
       setLastStep(4);
     }
@@ -59,7 +58,6 @@ const WizardSample = () => {
   };
 
   const selectTime = (time, maxDuration) => {
-    console.log("Selecting Time", { time: time, duration: maxDuration })
     setSelectedTime({ time: time, duration: maxDuration });
     setLastStep(3);
   };
@@ -71,8 +69,6 @@ const WizardSample = () => {
   const onSaveDetails = () => {
     const { name, duration, time } = formData;
 
-    console.log("SAVE DETAILS", name, duration, time);
-    
     // Create new appointments for each time
     const newAppointments = time.map(startingTime => ({
       name,
@@ -88,7 +84,6 @@ const WizardSample = () => {
       ...newAppointments
     ]);
   
-    console.log("SAVE DETAILS", formData);
     setFormData({ 
       name: '',
       description: '',

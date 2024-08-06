@@ -7,13 +7,11 @@ const MapEvents = (props) => {
       map.locate();
     },
     locationfound: (location) => {
-      console.log("location found:", location);
       if (onMapClick) {
         onMapClick(location.latitude, location.longitude);
       }
     },
     click: (location) => {
-      console.log("location found:", location.latlng);
       if (onMapClick) {
         onMapClick(location.latlng.lat, location.latlng.lng);
       }

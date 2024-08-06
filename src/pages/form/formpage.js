@@ -102,7 +102,6 @@ const FormPage = ({ id }) => {
   };
 
   const formSubmit = (fieldValues) => {
-    console.log("Form Submit", fieldValues);
     setvalues(fieldValues);
   };
   return (

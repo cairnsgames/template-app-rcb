@@ -25,10 +25,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   }
 
   useEffect(() => {
-    console.log("KlokoProvider: Search", user, tenant, token);
     setHeaders({ APP_ID: tenant, token: token });
     setCanFetch(!!user && !!tenant && token !== "");
-    console.log("CAN FETCH", (!!user && !!tenant && token !== ""), { APP_ID: tenant, token: token })
   }, [user, tenant, token]);
 
   useEffect(() => {
@@ -51,7 +49,6 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   }, [activeEvent]);
 
   useEffect(() => {
-    console.log("Event data changed", events);
   }, [events]);
 
   // Fetch calendars
@@ -206,7 +203,6 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
         event.end = event.end_time;
         return event;
       });
-      console.log("New event created", newEvent);
       setEvents(prev => [...prev, ...newEvent]);
       setLoading(false);
       return [newEvent];
@@ -248,7 +244,6 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
         `${process.env.REACT_APP_KLOKO_API}/api.php/event/${eventId}`,
         { method: "DELETE", headers }
       );
-      console.log("Event Complete", eventId);
       setEvents((prev) => prev.filter((e) => e.id != eventId));
       setLoading(false);
     } catch (error) {
@@ -383,16 +378,12 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const searchEventListing = async (lat, lng, type, from, to) => {
     setLoading(true);
     setSearchCriteria({ lat, lng, type, from, to });
-    console.log("Search TOKEN", token)
-    console.log("Search headers", headers)
     try {
-      console.log("Start search", lat, lng, type, from, to)
       const response = await fetch(
         `${process.env.REACT_APP_KLOKO_API}/api.php/find?lat=${lat}&lng=${lng}&type=${type}&from=${from}&to=${to}`,
         { headers }
       );
       const data = await response.json();
-      console.log("SEARCH DATA", data);
       setSearchResults(data);
     } catch (error) {
       console.error("Error fetching search results (searchEventListing):", error);
@@ -408,16 +399,12 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
       return;
     }
     setLoading(true);
-    console.log("Search TOKEN", token)
-    console.log("Search headers", headers)
     try {
-      console.log("Start search", lat, lng, type, from, to)
       const response = await fetch(
         `${process.env.REACT_APP_KLOKO_API}/api.php/random?lat=${lat}&lng=${lng}&type=${type}&from=${from}&to=${to}`,
         { headers }
       );
       const data = await response.json();
-      console.log("SEARCH DATA", data);
       setSearchResults(data);
     } catch (error) {
       console.error("Error fetching search results (randomEventListing):", error, headers);

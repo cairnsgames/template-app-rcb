@@ -7,13 +7,11 @@ import UserList from "../../../packages/membership/forms/user/userlist";
 
 const ApplicationPage = (props) => {
   const { id } = props;
-  console.log("PROPS", props);
   const { applications, findApplication } = useMembership();
   const [application, setApplication] = useState();
 
   useEffect(() => {
     const app = findApplication(id);
-    console.log("Found App", app);
     if (app) {
       app.id = id;
       setApplication(app);

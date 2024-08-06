@@ -66,8 +66,6 @@ const EditCallForm = () => {
     setResults(result);
   };
 
-  console.log("CALL DATA", callData)
-
   return (
     <Container>
       <Form>

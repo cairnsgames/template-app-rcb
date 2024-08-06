@@ -15,7 +15,6 @@ const MembershipProvider = (props) => {
   }
 
   useEffect(() => {
-    console.log("Applications", applications);
   }, [applications]);
 
   const { data: applications } = useData(
@@ -33,7 +32,6 @@ const MembershipProvider = (props) => {
 
   const findApplication = (id) => {
     const application = applications.find((application) => `${application.id}` === `${id}`);
-    console.log("findApplication", id, applications)
     return application;
   }
 

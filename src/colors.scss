@@ -18,6 +18,7 @@ $warning:       #fbcf00;
 $danger:        #ff1c44;
 $light:         #d1ccb9;
 $dark:          #1b1a1a;
+$white:         #ffffff;
 
 // $primary:       #00d4bb;
 // $secondary:     #e95628;
@@ -54,7 +55,8 @@ $theme-colors: (
 );
 $custom-colors: (
   "event": #009984,
-  "party": #465ca9
+  "party": #465ca9,
+  "white": #ffffff,
 );
 
 // Merge the maps

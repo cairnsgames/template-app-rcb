@@ -9,8 +9,6 @@ const AdminRoutes = () => {
   const { hash } = useLocation();
   const { hasAccess } = useUser();
 
-  console.log("AdminPage", hash);
-
   if (!hasAccess("MembershipAdministration")) {
     return <h1>Access Denied</h1>;
   }

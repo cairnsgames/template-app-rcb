@@ -5,7 +5,10 @@ import {
   AwardFill,
   CheckCircleFill,
   Circle,
+  CupHotFill,
   Gift,
+  Heart,
+  HeartFill,
   Postage,
   PostageFill,
   PostageHeart,
@@ -28,7 +31,7 @@ const CarouselItemContent = (item) => {
           <tbody>
             <tr>
               <td>
-                <Postage size={32} />
+                <Postage size={32} style={{color:"purple"}} />
               </td>
               <td>
                 <PostageFill size={32} />
@@ -50,10 +53,10 @@ const CarouselItemContent = (item) => {
             </tr>
             <tr>
               <td>
-                <Circle size={32} style={{ color: "lightgrey" }} />
+                <CupHotFill size={32} style={{ color: "purple" }} />
               </td>
               <td>
-                <Circle size={32} style={{ color: "lightgrey" }} />
+                <HeartFill size={32} style={{ color: "lightgrey" }} />
               </td>
               <td>
                 <CheckCircleFill size={32} style={{ color: "lightgrey" }} />

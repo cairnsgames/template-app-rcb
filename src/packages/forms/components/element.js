@@ -88,7 +88,6 @@ const CustomFormControlInput = (props) => {
 
 const CustomFormControlCheck = (props) => {
   const { onChange, ...prop } = props;
-  console.log("#### Check box props", prop);
   return (
     <Form.Group as={Col} {...buildProps(props)}>
       <Form.Check {...prop} />
@@ -107,7 +106,6 @@ const CustomFormControlLabel = (props) => {
 
 const CustomFormControlSelect = (props) => {
   const { ...prop } = props;
-  console.log("#### Select props", prop);
   return (
     <Form.Group as={Col} {...buildProps(props)}>
       SELECT
@@ -163,7 +161,6 @@ const CustomFormControl = (props) => {
   }
   if (["layout"].includes(props.type)) {
     const prop = buildProps(props);
-    console.log("#### Layout props", prop);
     return (
       <Row {...prop}>
         {props.fields.map((field) => {

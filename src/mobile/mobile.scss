@@ -1,6 +1,23 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; // Full viewport height
+}
+
+.app-header, .app-footer {
+  background-color: #f8f9fa; // Light grey color, change as needed
+  text-align: center;
+}
+
+.app-body {
+  flex: 1; // This allows the body to take up the remaining space
+  overflow-y: auto; // Enable vertical scrolling for overflow content
+}
+
+
 body {
   background-color: #{lighten($primary, 60%)};
 }

@@ -43,7 +43,6 @@ const SelectLocationModal = ({ onSelectLocation }) => {
   const handleShow = () => setShow(true);
 
   const handleClick = (e) => {
-    // console.log("**** Handleclick", e.latlng)
     setPosition(e.latlng);
   };
 
@@ -57,7 +56,6 @@ const SelectLocationModal = ({ onSelectLocation }) => {
   const LocationFinder = () => {
     useMapEvents({
       click(e) {
-        // console.log(e.latlng);
         handleClick(e);
       },
     });
@@ -68,7 +66,6 @@ const SelectLocationModal = ({ onSelectLocation }) => {
     map.flyTo([user.lat, user.lng]);
   };
   const goFound = (latlng) => {
-    console.log("goFound", latlng)
     map.flyTo(latlng);
   };
 

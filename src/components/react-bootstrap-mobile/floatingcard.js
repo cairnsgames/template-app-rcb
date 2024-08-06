@@ -46,7 +46,6 @@ const FloatingCard = ({ image, children, onClick, className, ...props }) => {
 
   const handleClick = () => {
     // Trigger the swell animation
-    console.log("Card Clicked");
     setSwell(true);
     setTimeout(() => {
       setSwell(false); // Reset swell state after animation

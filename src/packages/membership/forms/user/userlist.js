@@ -10,8 +10,6 @@ const UserList = () => {
     const { hasAccess } = useUser();
     const { impersonate } = useAuth();
     
-    console.log("UsersList", users)
-
     const impersonateUser = (id) => {
       alert("Impersonate User " + id);
       if (impersonate(id)) {

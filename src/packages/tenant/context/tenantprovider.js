@@ -22,10 +22,6 @@ const TenantProvider = (props) => {
   const [params, setParams] = useState(props.params || []);
   const [application, setApplication] = useState();
 
-  // useEffect(() => {
-  //   console.log("Params Updates", params);
-  // }, [params]);
-
   useEffect(() => {
     if (!tenant) {
       return;

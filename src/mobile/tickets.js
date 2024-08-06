@@ -71,7 +71,6 @@ const Tickets = () => {
             <Ticket
               variant={item.eventtype}
               onClick={() => {
-                console.log("Home Ticket Click");
                 alert("Ticket Done!");
               }}
               className="m-3"

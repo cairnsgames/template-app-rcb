@@ -12,7 +12,6 @@ const Ticket = ({
   const ticketRef = useRef(null);
 
   const handleClick = () => {
-    console.log("Ticket Click");
     setIsExpanded(true);
     setTimeout(() => {
       setIsExpanded(false);

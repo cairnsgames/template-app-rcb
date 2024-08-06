@@ -28,12 +28,10 @@ const ProvidersWithUser = ({ children }) => {
   const { user, token } = useUser();
   const { tenant } = useTenant();
 
-  console.log("TOKEN!!!!!!!!!!!!", token);
-
   return (
     <FeatureFlagProvider user={user} tenant={tenant} token={token}>
       <SettingsProvider user={user} tenant={tenant} token={token}>
-        <ProvidersWithSettingsAndFeatures>
+        <ProvidersWithSettingsAndFeatures user={user} tenant={tenant} token={token}>
           {children}
         </ProvidersWithSettingsAndFeatures>
       </SettingsProvider>

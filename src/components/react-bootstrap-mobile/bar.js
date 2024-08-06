@@ -55,7 +55,6 @@ const Bar = ({ children, variant, className, style, defaultActiveKey }) => {
         {React.Children.map(children, (child, index) => {
           // Clone each child and pass the active class if it's the active key
           const childKey = child.props.eventKey || index;
-          console.log("CHILD", childKey, activeKey);
           return React.cloneElement(child, {
             className: childKey === activeKey ? 'active-pill' : '',
             onClick: (e) => handleSelect(childKey, e),

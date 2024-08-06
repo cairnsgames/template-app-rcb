@@ -16,20 +16,16 @@ const ApplicationForm = ({id, application, onSuccess}) => {
   const [description, setDescription] = useState(application.description);
 
   const handleSubmit = (event) => {
-    console.log("Handling submit", email, password)
     const form = event.currentTarget;
     
     event.preventDefault();
     event.stopPropagation();
     if (form.checkValidity() === false) {
-      console.log("Not all values are entered correctly")
       return;
     }
 
-    console.log("Call Login function");
     const result = login(email, password)
     // .then((result: any) => {
-      console.log("Logged in successfully", result);
       if (result && onSuccess) {
         onSuccess(true);
       }

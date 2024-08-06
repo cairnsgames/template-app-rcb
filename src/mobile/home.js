@@ -32,7 +32,6 @@ const Home = () => {
             className="m-3"
             image="./dance.png"
             onClick={() => {
-              console.log("Home Card Clicked");
             }}
           >
             <FloatingCard.Header>The Amaaazzzing Festival</FloatingCard.Header>
@@ -53,7 +52,6 @@ const Home = () => {
           <Ticket
             variant="event"
             onClick={() => {
-              console.log("Home Ticket Click");
               alert("Ticket Done!");
             }}
             className="m-3"

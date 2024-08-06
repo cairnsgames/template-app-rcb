@@ -12,11 +12,9 @@ const PayNowButton = ({ onGetOrder, onPaid }) => {
   }
 
   const createOrder = async (data, actions) => {
-    console.log("createOrder", data, actions);
     try {
       // Send request to your PHP backend to create the PayPal order
       const order = await onGetOrder();
-      console.log("Creating Payment for Order", order);
       const orderId = order.id;
       const totalPrice = order.total_price;
       const response = await fetch(
@@ -38,7 +36,6 @@ const PayNowButton = ({ onGetOrder, onPaid }) => {
       }
 
       const { eccode, paymentid, error } = await response.json();
-      console.log("PayPal Order Created", eccode, paymentid, error);
 
       if (error) {
         throw new Error(error);
@@ -55,7 +52,6 @@ const PayNowButton = ({ onGetOrder, onPaid }) => {
   const onApprove = async (data, actions) => {
     try {
       // Handle the approval of the payment
-      console.log("Payment approved:", data);
       if (onPaid) {
         onPaid();
       }

@@ -2,7 +2,6 @@ import useUser from "../../../../auth/context/useuser";
 
 const PermissionsSummary = () => {
   const { user } = useUser();
-  console.log("PERMISSIONS USER", user);
   return (
     <div>
       <h2>Permissions Summary</h2>

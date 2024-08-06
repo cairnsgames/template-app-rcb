@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, InputGroup, Row, Col, Alert } from "react-bootstrap";
+import { Form, Button, InputGroup, Row, Col, Alert, ButtonGroup } from "react-bootstrap";
 import { useAuth } from "../../auth/context/useauth";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 
@@ -22,6 +22,8 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
   const [warning, setWarning] = useState();
 
   const { t } = useTranslation();
+
+  console.log("LoginForm", { onSuccess, onClose, rememberMe });
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -123,7 +125,10 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
       )}
       <Row>
         <Col>
+        <ButtonGroup>
           <Button type="submit">{t("Login")}</Button>
+          {onClose && <Button variant="outline-primary" onClick={onClose}>{t("Close")}</Button>}
+          </ButtonGroup>
         </Col>
         <Col>
           <GoogleLogin

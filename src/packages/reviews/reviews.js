@@ -14,8 +14,6 @@ const Reviews = (props) => {
   const { tenant } = useTenant();
   const [data, setData] = useState();
 
-  console.log("REVIEWS,", user, token);
-
   if (!process.env.REACT_APP_REVIEW_API) {
     console.error("REACT_APP_REVIEW_API not defined");
     return <div>Reviews are not enabled yet</div>;
@@ -51,7 +49,6 @@ const Reviews = (props) => {
       rating: rating,
       review: review,
     };
-    // console.log("Body!!",body)
     fetch(`${process.env.REACT_APP_REVIEW_API}/addreview.php`, {
       method: "POST",
       headers: {

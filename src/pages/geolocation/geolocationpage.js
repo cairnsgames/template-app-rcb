@@ -18,10 +18,6 @@ const GeoLocationPage = () => {
     }
   }, [latlng]);
 
-  useEffect(() => {
-    console.log("LOCATION", location)
-  }, [location]);
-
   return (    
     <PageCentered style={{ margin: "1rem" }}>
         <h1>Geo Location Page</h1>

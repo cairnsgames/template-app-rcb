@@ -32,7 +32,6 @@ export function MapSearch() {
   const lon2 = -74.006; // Longitude of New York
 
   const distance = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
-  console.log(`Distance: ${distance} km`);
 
   const [places, setPlaces] = useState();
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,7 +41,6 @@ export function MapSearch() {
   useEffect(() => {
     if (debouncedSearchTerm) {
       // Perform the search operation with the debounced search term
-      console.log("Searching for:", debouncedSearchTerm);
       getSuburbs(debouncedSearchTerm);
     }
   }, [debouncedSearchTerm]);

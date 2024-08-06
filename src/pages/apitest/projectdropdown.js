@@ -6,9 +6,7 @@ const ProjectDropdown = () => {
   const { projects, activeProject, setActiveProject } = useAPITest();
 
   const handleSelect = (eventKey) => {
-    console.log("[ApiTest] select project", eventKey)
     const selectedProject = projects.find(project => Number(project.id) === Number(eventKey));
-    console.log("[ApiTest] Found project", selectedProject)
 
     setActiveProject(selectedProject);
   };

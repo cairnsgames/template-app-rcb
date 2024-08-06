@@ -1,0 +1,36 @@
+.news {
+    .news-list {
+      max-height: 80vh; // Set a fixed height for the news list container
+      overflow-y: auto; // Enable vertical scrolling
+    }
+
+  
+    .news-item {
+      cursor: pointer;
+  
+      .card-img-top {
+        object-fit: cover;
+        height: 200px;
+      }
+  
+      .news-item-menu {
+        float: right;
+      }
+    }
+  
+    .full-news-item {
+      .full-news-image {
+        width: 100%;
+        height: auto;
+      }
+  
+      .news-footer {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 10px;
+        font-size: 0.9em;
+        color: #555;
+      }
+    }
+  }
+  
