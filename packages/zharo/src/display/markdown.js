@@ -1,6 +1,6 @@
 import React from "react";
-import Markdown from "react-markdown";
 import { getImageSrc } from "../getimagesrc";
+const Markdown = React.lazy(() => import("react-markdown"));
 
 const MarkdownContent = (props) => {
   const { item, content, style, className } = props;

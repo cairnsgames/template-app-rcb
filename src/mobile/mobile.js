@@ -12,17 +12,14 @@ import {
   House,
   CardChecklist,
   Search,
-  Map,
-  Newspaper,
   Calendar,
-  Heart,
-  MoonFill,
   TicketDetailed,
-  Info,
+  List,
   QrCode,
   InfoCircle,
   CalendarWeek,
   BalloonHeart,
+  Camera,
 } from "react-bootstrap-icons";
 
 import "./mobile.scss";
@@ -132,7 +129,8 @@ const MobileApp = () => {
           <div style={{ fontSize: "12px", fontWeight: "600" }}>Tickets</div>
         </Footer.Icon>
         <Footer.Icon href="#loyaltycarousel">
-          <CardChecklist size={24} />
+          {/* <CardChecklist size={24} /> */}
+          <Camera size={24} />
           <div style={{ fontSize: "12px", fontWeight: "600" }}>Loyalty</div>
         </Footer.Icon>
         <Footer.Center>
@@ -147,6 +145,9 @@ const MobileApp = () => {
           </Footer.Icon>
           <Footer.Icon href="#mycalendar">
             <CalendarWeek size={24} />
+          </Footer.Icon>
+          <Footer.Icon href="#mycalendar">
+            <List size={24} />
           </Footer.Icon>
         </Footer.Center>
       </Footer>

@@ -45,7 +45,7 @@
 
 .footer-menu {
   position: absolute;
-  bottom: 70px; /* Adjust this value based on the height of the icons */
+  bottom: 90px; /* Adjust this value based on the height of the icons */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -57,6 +57,9 @@
     transition: transform 0.3s ease-in-out;
     background-color: var(--bs-primary); /* Darker purple background */
     color: var(--bs-light); /* White icons */
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--bs-primary-light);
 
     &:hover {
       background-color: var(--bs-primary-light); /* Light purple background */

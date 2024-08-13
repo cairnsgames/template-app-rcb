@@ -1,6 +1,7 @@
-import MarkdownEditor from "@uiw/react-markdown-editor";
+import React from "react";
 import useShareData from "../../../hooks/useshare";
 import { getImageSrc } from "../getimagesrc";
+const MarkdownEditor = React.lazy(() => import("@uiw/react-markdown-editor"));
 
 const Markdown = (props) => {
   const { item, content, style, className } = props;

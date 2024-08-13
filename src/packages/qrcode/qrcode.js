@@ -1,20 +1,27 @@
 import { QRCode as QRCodeLogo } from "react-qrcode-logo";
 import "./qrcode.scss";
 import { Colors } from "../../colors";
+import { Copy } from "react-bootstrap-icons";
 
 const QRCode = ({
   link,
-  allowCopyToClipboard = true,
+  allowCopyToClipboard = false,
   size = 255,
   logoPadding = 4,
   logoWidth = 64,
   logoImage = "favicon.png",
   color = Colors.primary,
   className = "",
+  type = 1,
   ...props
 }) => {
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+  };
+  const fullLink = `${link}&t=${type}`;
   return (
     <div {...props} className={`qrcodecontainer ${className}`}>
+      <div className="shake">
       <QRCodeLogo
         size={size}
         value={`${link}`}
@@ -29,14 +36,14 @@ const QRCode = ({
         className="qrcode"
         quietZone={2}
       />
+      </div>
       {allowCopyToClipboard && (
         <>
-          {/* <p />
-          <span onClick={() => copyToClipboard(`${link}&t=1`)}>
+          <p />
+          <span onClick={() => copyToClipboard(`${fullLink}`)}>
             Your Referral link to share: <br />
-            {`${link}&t=1`}{" "}
-            <CopyToClipboard width={16} height={16} color={"purple"} />
-          </span> */}
+            {`${fullLink}`} <Copy size={16} color={"purple"} />
+          </span>
         </>
       )}
     </div>

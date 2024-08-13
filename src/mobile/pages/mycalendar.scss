@@ -1,0 +1,23 @@
+.myCalendar {
+  .fc {
+    height: 100%;
+  }
+
+  .fc-toolbar-title {
+    color: var(--bs-primary);
+    font-size: medium;
+  }
+
+  .fc-button-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+  }
+  .fc-button-primary:hover {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+  } 
+  .fc-button-primary.disabled {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-primary);
+  }
+}

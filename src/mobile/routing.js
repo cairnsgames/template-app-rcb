@@ -14,6 +14,9 @@ import Tickets from "./tickets";
 import MobileAuth from "./pages/mobileauth";
 import NewsSample from "../packages/news/sample";
 
+import QRCodePage from "./pages/qrcodepage";
+import MyCalendar from "./pages/mycalendar";
+
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("../pages/admin/admin"));
 
@@ -61,12 +64,18 @@ const Routing = () => {
           onClose={goHome}
         />
       </Route>
-
+      {/* Below this requires LOGGED in */}
       <Route startsWith={"loyalty"}>
         <LoyaltyPage />
       </Route>
       <Route startsWith={"userloyalty"}>
         <UserLoyaltyPage />
+      </Route>
+      <Route startsWith={"qrcode"}>
+        <QRCodePage />
+      </Route>
+      <Route startsWith={"mycalendar"}>
+        <MyCalendar />
       </Route>
 
       <Route if={!isLoggedIn}>

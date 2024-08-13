@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import MarkdownEditor from "@uiw/react-markdown-editor";
 import {
   Form,
   InputGroup,
@@ -11,6 +10,7 @@ import {
 } from "react-bootstrap";
 import { getImageSrc } from "../getimagesrc";
 import { convertBytes } from "../media";
+const MarkdownEditor = React.lazy(() => import("@uiw/react-markdown-editor"));
 
 const ImageEdit = (props) => {
   const { item, setItem, style, className } = props;

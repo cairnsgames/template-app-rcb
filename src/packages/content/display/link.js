@@ -1,4 +1,3 @@
-import MarkdownEditor from "@uiw/react-markdown-editor";
 import useShareData from "../../../hooks/useshare";
 
 const Link = (props) => {
