@@ -11,14 +11,14 @@ $active-text-color: var(--bs-primary);
   padding: 0px 0px 10px 0px;
   user-select: none; // Prevent text selection during drag
   background-color: var(--bs-primary); // Use CSS variable for background color
-  color: $color; // Customize text color
+  color: $color; // Customize text color  
+  scrollbar-width: none; // Hide scrollbar for Firefox
+  -ms-overflow-style: none; // Hide scrollbar for Internet Explorer and Edge
 
   &::-webkit-scrollbar {
     display: none; // Hide scrollbar for WebKit browsers
   }
 
-  scrollbar-width: none; // Hide scrollbar for Firefox
-  -ms-overflow-style: none; // Hide scrollbar for Internet Explorer and Edge
 
   @each $name, $color in $theme-colors {
     &.#{$name} {

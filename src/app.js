@@ -8,17 +8,20 @@ import SiteDown from "./sitedown";
 import Toasts from "@cairnsgames/toasts/toasts";
 import "./app.scss";
 import MobileApp from "./mobile/mobile";
+import SSRProvider from 'react-bootstrap/SSRProvider';
 
 const App = () => {
   return (
     <ErrorBoundary fallback={<SiteDown />}>
+       <SSRProvider> 
       <Providers>
-        {/* <Container fluid style={{overflowY: "auto", padding: "0px"}}> */}
-          {/* <Routing /> */}
-          <MobileApp />
-        {/* </Container> */}
+      <MobileApp />
+        {/* <Container fluid style={{overflowY: "auto", padding: "0px"}}>
+          <Routing />
+        </Container> */}
         <Toasts />
       </Providers>
+      </SSRProvider>
     </ErrorBoundary>
   );
 };

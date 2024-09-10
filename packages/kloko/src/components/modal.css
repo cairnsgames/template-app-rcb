@@ -1,0 +1,70 @@
+/* Modal overlay */
+.kloko-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* No Bootstrap variable needed here for the overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(
+    --bs-zindex-modal,
+    1050
+  ); /* Use Bootstrap's z-index for modals */
+}
+
+/* Modal content */
+.kloko-modal-content {
+  background-color: var(
+    --bs-modal-bg,
+    #fff
+  ); /* Use Bootstrap's modal background color */
+  border-radius: var(
+    --bs-border-radius,
+    0.3rem
+  ); /* Use Bootstrap's border radius */
+  box-shadow: var(
+    --bs-modal-box-shadow,
+    0 3px 6px rgba(0, 0, 0, 0.16)
+  ); /* Use Bootstrap's box shadow */
+  max-width: 500px;
+  width: 100%;
+  padding: var(--bs-modal-padding, 20px); /* Use Bootstrap's padding */
+  position: relative;
+}
+
+/* Modal content heading */
+.kloko-modal-content h1 {
+  margin-top: 0;
+  margin-bottom: var(
+    --bs-modal-heading-margin-bottom,
+    0.5rem
+  ); /* Use Bootstrap's margin for headings */
+}
+
+/* Modal close button */
+.kloko-modal-close {
+  position: absolute;
+  top: var(
+    --bs-modal-close-top,
+    17px
+  ); /* Use Bootstrap's spacing variable if applicable */
+  right: var(
+    --bs-modal-close-right,
+    17px
+  ); /* Use Bootstrap's spacing variable if applicable */
+  border: none;
+  background: none;
+  font-size: var(
+    --bs-modal-close-font-size,
+    2rem
+  ); /* Use Bootstrap's font size variable if applicable */
+  cursor: pointer;
+}

@@ -56,6 +56,7 @@ const AuthenticationProvider = (props) => {
   const [user, setUser] = useState();
   const { decodedToken } = useJwt(googleAccessToken || "");
   const [properties, setProperties] = useState([]);
+  const [roles, setRoles] = useState([]);
 
   const { tenant } = useTenant();
   const { deviceId } = useDeviceInfo();
@@ -477,6 +478,40 @@ const AuthenticationProvider = (props) => {
       });
   };
 
+  const saveProperties = async (properties) => {
+    if (!user || !properties || !Array.isArray(properties)) {
+      return;
+    }
+  
+    const savePromises = properties.map((property) => {
+      const url = property.id 
+        ? `${process.env.REACT_APP_AUTH_API}/api.php/property/${property.id}` 
+        : `${process.env.REACT_APP_AUTH_API}/api.php/property/`;
+  
+      const method = property.id ? "PUT" : "POST";
+  
+      return fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          token: token,
+        },
+        method: method,
+        body: JSON.stringify(property),
+      });
+    });
+  
+    try {
+      await Promise.all(savePromises);
+      await fetchProperties();
+    } catch (err) {
+      if (onError) {
+        onError("Auth: Unable to save properties", err);
+      }
+    }
+  };
+  
+
   const values = useMemo(
     () => ({
       token,
@@ -489,7 +524,7 @@ const AuthenticationProvider = (props) => {
       setgoogleAccessToken,
       changePassword,
       impersonate,
-      properties,
+      properties, saveProperties
     }),
     [
       token,

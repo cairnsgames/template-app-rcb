@@ -6,6 +6,12 @@
   }
   
   .masonry-brick {    
+    
+    flex: auto;
+    height: 250px;
+    min-width: 25%;
+    margin: 0 8px 8px 0; /* Some gutter */
+    
     .card-img-overlay {
         padding: 0;
     }
@@ -15,10 +21,6 @@
         margin: 0;
         padding: 10px;
     }
-    flex: auto;
-    height: 250px;
-    min-width: 25%;
-    margin: 0 8px 8px 0; /* Some gutter */
   }
 
   @media (max-width: 768px) {

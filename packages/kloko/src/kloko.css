@@ -1,0 +1,149 @@
+:root {
+  --kloko-primary: var(--bs-primary, purple);
+  --kloko-primary-dark: var(--bs-primary-dark, color-mix(in srgb, var(--kloko-primary), black 15%)); 
+  --kloko-primary-darker: var(--bs-primary-darker, color-mix(in srgb, var(--kloko-primary), black 25%)); 
+  --kloko-secondary: var(--bs-secondary, grey);
+  --kloko-secondary-dark: var(--bs-secondary-dark, color-mix(in srgb, var(--kloko-secondary), black 15%)); 
+  --kloko-secondary-darker: var(--bs-secondary-darker, color-mix(in srgb, var(--kloko-secondary), black 25%));
+  --kloko-light: var(--bs-light, white);
+}
+
+/* Container for the event box */
+.kloko-event-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;  
+  }
+  
+  /* Flex container for the event content and image */
+  .kloko-event-container {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  /* Event image container */
+  .kloko-event-image {
+    flex: 0 0 auto;
+    margin-right: 20px;
+    margin-top: 5px;
+  }
+  
+  /* Event image styling */
+  .kloko-event-image img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 4px; /* Optional rounded corners for the image */
+  }
+  
+  /* Content area for the event details */
+  .kloko-event-content {
+    flex: 1 1 auto;
+  }
+  
+  /* Event title */
+  .kloko-event-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    color: #333;
+  }
+  
+  /* Event description */
+  .kloko-event-description {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: #555;
+  }
+  
+  /* Event details */
+  .kloko-event-details {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 16px;
+  }
+  
+  /* Event detail items */
+  .kloko-event-detail-item {
+    margin-bottom: 8px;
+  }
+  
+  /* Button styles similar to Bootstrap */
+  .kloko-button {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    margin-top: 10px;
+  }
+  
+  /* Primary button style */
+  /* Primary button style */
+.kloko-button-primary {
+    color: var(--bs-text-color, #fff);
+    background-color: var(--kloko-primary);
+    border-color: var(--kloko-primary);
+  }
+  
+  .kloko-button-primary:hover {
+    color: var(--bs-text-color, #fff);
+    background-color: var(--kloko-primary-dark); 
+    border-color: var(--kloko-primary-darker);
+  }
+  
+  .kloko-button-primary:disabled {
+    color: #fff;
+    background-color: var(--kloko-secondary, grey); 
+    border-color: var(--kloko-secondary, grey);
+  }
+  
+  /* Secondary button style */
+  .kloko-button-secondary {
+    color: var(--kloko-secondary); 
+    background-color: var(--kloko-light);
+    border-color: var(--kloko-secondary); 
+  }
+  
+  .kloko-button-secondary:hover {
+    color: var(--kloko-light); 
+    background-color: var(--kloko-secondary); 
+    border-color: var(--kloko-secondary); 
+  }
+  
+  /* Input field style */
+  .kloko-input {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    margin-right: 10px; /* Spacing between input and button */
+    height: calc(2rem + 2px); /* Matches button height */
+    vertical-align: middle;
+  }
+  
+  /* Align input and button */
+  .kloko-input,
+  .kloko-button {
+    margin-bottom: 10px;
+  }
+  
+
+  .kloko-advert {
+    margin: 0.33rem;
+    font-size: 0.75rem;
+    text-align: right;
+  }

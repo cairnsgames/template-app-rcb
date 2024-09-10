@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 
-// used to wrape a page to be full screen
+// used to wrap a page to be full screen
 // middle = horiz and vertical center
 // center = horiz center
 const PageCentered = ({ className = "", style = {}, position, children }) => {

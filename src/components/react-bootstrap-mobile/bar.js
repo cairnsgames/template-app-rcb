@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import './bar.scss';
 
-const Bar = ({ children, variant, className, style, defaultActiveKey }) => {
+const Bar = ({ children, variant, className, style, defaultActiveKey, onSelect }) => {
   const scrollRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -33,8 +33,12 @@ const Bar = ({ children, variant, className, style, defaultActiveKey }) => {
   };
 
   const handleSelect = (key, e) => {
+    console.log('handleSelect', key);
     if (!isDragging) {
+      
+      console.log('setActiveKey', key);
       setActiveKey(key);
+      onSelect(key, e);
       e.stopPropagation(); // Prevent the onClick from firing if dragging
     } else {
       e.preventDefault();
@@ -53,6 +57,7 @@ const Bar = ({ children, variant, className, style, defaultActiveKey }) => {
     >
       <Nav className="bar-nav">
         {React.Children.map(children, (child, index) => {
+          if (!child) return null;
           // Clone each child and pass the active class if it's the active key
           const childKey = child.props.eventKey || index;
           return React.cloneElement(child, {

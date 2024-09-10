@@ -1,36 +1,32 @@
-import React from 'react';
-import News from './news';
-
-const exampleNewsItems = [
-  {
-    id: 1,
-    image: 'images/100.jpg',
-    title: 'Breaking News: Event A',
-    body: 'Detailed description of the event A goes here. This includes all the pertinent information and insights.',
-    date: '2024-08-01',
-    author: 'Reporter One',
-  },
-  {
-    id: 2,
-    image: 'images/101.jpg',
-    title: 'Latest Update: Event B',
-    body: 'The latest updates and findings about event B are discussed here, providing a comprehensive overview.',
-    date: '2024-08-02',
-    author: 'Reporter Two',
-  },
-  {
-    id: 3,
-    image: 'images/102.jpg',
-    title: 'Insightful Analysis: Event C',
-    body: 'A deep dive into the implications and outcomes of event C, offering an analytical perspective.',
-    date: '2024-08-03',
-    author: 'Reporter Three',
-  },
-];
+import React from "react";
+import News from "./news";
+import { NewsProvider } from "./newscontext";
+import Router, { Route, Default } from "../router/router";
+import FullNewsItem from "./fullnewsitem";
+import PageCentered from "../../parts/pagelayouts/pagecentered";
+import MyNews from "./mynews";
+import MyNewsEditor from "./mynewseditor";
 
 function NewsSample() {
   return (
-      <News items={exampleNewsItems} />
+    <PageCentered className="my-3">
+    <NewsProvider>
+      <Router>
+        <Route is={"news/mynews/{id}"}>
+          <MyNewsEditor />
+        </Route>
+        <Route is={"news/mynews"}>
+          <MyNews />
+        </Route>
+        <Route is={"news/{id}"} debug={true}>
+          <FullNewsItem />
+        </Route>
+        <Route is={"news"}>
+          <News layout="custom" />
+        </Route>
+      </Router>
+    </NewsProvider>
+    </PageCentered>
   );
 }
 

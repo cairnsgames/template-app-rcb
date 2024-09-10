@@ -15,7 +15,9 @@ const Div = ({ children, onHide, className, style, ...props }) => {
   const handleClose = (e) => {
     e.stopPropagation(); // Prevent click event propagation
     setIsVisible(false);
-    if (onHide) onHide();
+    if (onHide) {
+      setTimeout(() => { onHide() }, 300); // Wait for the animation to finish
+    }
   };
 
   if (!isRendered) return null;

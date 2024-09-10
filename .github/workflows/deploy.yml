@@ -67,3 +67,27 @@ jobs:
           password: ${{ secrets.CG_FTP_PASSWORD }}
           local-dir: ./packages/zharo/test/
           server-dir: /zharo/test/
+
+  build-kloko:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Change directory to mini project
+        run: cd packages/kloko
+      - name: Install dependencies for mini project
+        run: npm ci
+        working-directory: packages/kloko
+      - name: Build mini project
+        run: npm run build
+        working-directory: packages/kloko
+      - name: Deploy Zharo
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ vars.CG_SERVER }}
+          username: ${{ vars.CG_FTP_USERNAME }}
+          password: ${{ secrets.CG_FTP_PASSWORD }}
+          local-dir: ./packages/kloko/dist/
+          server-dir: /kloko/

@@ -33,7 +33,7 @@
   height: 64px;
   transition: background-color 0.3s, color 0.3s;
   border: none; /* Remove the border */
-  
+
   text-decoration: none;
   text-decoration-line: none;
 
@@ -68,23 +68,30 @@
   }
 
   /* Dynamic positioning based on the number of menu items */
-  --angle: calc(180deg / (var(--menu-item-count) - 1));
-  --distance: 70px;
-
+  & {
+    --angle: calc(180deg / (var(--menu-item-count) - 1));
+    --distance: 70px;
+  }
+  
   .icon-button:nth-child(1) {
-    transform: rotate(calc(-180deg + var(--angle) * 0)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 0));
+    transform: rotate(calc(-180deg + var(--angle) * 0))
+      translate(var(--distance)) rotate(calc(180deg - var(--angle) * 0));
   }
   .icon-button:nth-child(2) {
-    transform: rotate(calc(-180deg + var(--angle) * 1)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 1));
+    transform: rotate(calc(-180deg + var(--angle) * 1))
+      translate(var(--distance)) rotate(calc(180deg - var(--angle) * 1));
   }
   .icon-button:nth-child(3) {
-    transform: rotate(calc(-180deg + var(--angle) * 2)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 2));
+    transform: rotate(calc(-180deg + var(--angle) * 2))
+      translate(var(--distance)) rotate(calc(180deg - var(--angle) * 2));
   }
   .icon-button:nth-child(4) {
-    transform: rotate(calc(-180deg + var(--angle) * 3)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 3));
+    transform: rotate(calc(-180deg + var(--angle) * 3))
+      translate(var(--distance)) rotate(calc(180deg - var(--angle) * 3));
   }
   .icon-button:nth-child(5) {
-    transform: rotate(calc(-180deg + var(--angle) * 4)) translate(var(--distance)) rotate(calc(180deg - var(--angle) * 4));
+    transform: rotate(calc(-180deg + var(--angle) * 4))
+      translate(var(--distance)) rotate(calc(180deg - var(--angle) * 4));
   }
 
   /* Animation classes for showing and hiding */

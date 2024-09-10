@@ -1,29 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNews } from './newscontext';
 import NewsItem from './newsitem';
-import FullNewsItem from './fullnewsitem';
-import { Container, Row, Col } from 'react-bootstrap';
+import NewsThumb from './newsthumb';
 import './news.scss';
 
-const News = ({ items }) => {
-  const [selectedItem, setSelectedItem] = useState(null);
+const News = ({ layout = 'default' }) => {
+  const { newsItems } = useNews();
+
+  const handleItemClick = (id) => {
+    window.location.hash = `#news/${id}`;
+  };
 
   return (
-    <Container className="news px-2 pt-2">
-      {selectedItem ? (
-        <div className="full-news-item">
-          <button onClick={() => setSelectedItem(null)}>Back</button>
-          <FullNewsItem item={selectedItem} />
-        </div>
-      ) : (
-        <Row className="news-list">
-          {items.map(item => (
-            <Col key={item.id} xs={12} md={6} lg={4} className="news-col">
-              <NewsItem item={item} onClick={() => setSelectedItem(item)} />
-            </Col>
-          ))}
-        </Row>
-      )}
-    </Container>
+    <div className="news">
+      {newsItems.map(item => (
+        layout === 'custom' 
+          ? <NewsThumb key={item.id} item={item} onClick={() => handleItemClick(item.id)} />
+          : <NewsItem key={item.id} item={item} onClick={() => handleItemClick(item.id)} />
+      ))}
+    </div>
   );
 };
 

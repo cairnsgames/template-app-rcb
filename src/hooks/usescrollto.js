@@ -1,12 +1,12 @@
 const useScrollTo = () => {
-    const scrollTo = (ref) => {
-        ref.current.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          })
-    };
-  
-    return { scrollTo };
+  const scrollTo = (ref) => {
+    ref.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
-  
-  export default useScrollTo;
+
+  return { scrollTo };
+};
+
+export default useScrollTo;

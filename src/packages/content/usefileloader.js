@@ -2,15 +2,16 @@ import React, { useState, useRef } from "react";
 import { useUser } from "../auth/context/useuser";
 
 import { videoMimeTypes, imageMimeTypes, validateExtension } from "./media";
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 const useFileLoader = (
   prefix = "FILE",
-  onSuccess = () => {},
-  onError = () => {},
-  onProgress = () => {}
+  onSuccess,
+  onError,
+  onProgress
 ) => {
   const { token } = useUser();
-  const url = `${process.env.REACT_APP_CONTENT_API}/uploadfile.php?pre=${prefix}`;
+  const url = combineUrlAndPath(process.env.REACT_APP_CONTENT_API, `uploadfile.php?pre=${prefix}`);
   const [fileData, setFileData] = useState();
   const fileInputRef = useRef();
   const [file, setFile] = useState();
@@ -156,6 +157,8 @@ const useFileLoader = (
     setPercent(Math.round(percent));
     setLoaded(e.loaded);
     setTotal(e.total);
+    
+    console.log("Progress Handler", e.loaded, e.total, percent);
     if (onProgress) {
       onProgress(percent, e.loaded, e.total);
     }
@@ -169,7 +172,7 @@ const useFileLoader = (
     setLoaded(total);
     setLoading(false);
     if (onSuccess) {
-      onSuccess(response);
+      return onSuccess(response);
     }
     return response;
   };

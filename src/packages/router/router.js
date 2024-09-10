@@ -18,6 +18,7 @@ function checkIs(path, pattern) {
 function checkStartsWith(path, pattern) {
   const sanitizedPath = path.replace(/^#/, "");
   const regex = new RegExp(`^${pattern.replace(/{.*?}/g, ".*")}`);
+  console.log("CHECK STARTS WITH", sanitizedPath, pattern, regex.test(sanitizedPath));
   return regex.test(sanitizedPath);
 }
 
@@ -38,7 +39,7 @@ function extractNamesAndValues(url, template) {
   const templateParts = template.split("/");
 
   if (pathParts.length !== templateParts.length) {
-    console.error("Path and template lengths do not match.");
+    // console.error("Path and template lengths do not match.", pathParts, templateParts);
     return null;
   }
 
@@ -73,7 +74,9 @@ function extractId(path, pattern) {
   return match ? match[1] : null;
 }
 
-const Router = ({ path, children, isLoggedIn }) => {
+const Router = (props) => {
+  let { path, children, ...restProps } = props;
+  const isLoggedIn = props.isLoggedIn || false;
   const routes = React.Children.toArray(children);
   if (!path) {
     path = window.location.hash;
@@ -95,33 +98,12 @@ const Router = ({ path, children, isLoggedIn }) => {
           : true;
         const auth = route.props.hasOwnProperty("auth") ? isLoggedIn : true;
         if (route.props.debug) {
-          console.log("is", is, route.props.is);
-          console.log("startsWith", startsWith, route.props.startsWith);
-          console.log("if", ifTrue, route.props.if);
-          console.log("and", andTrue, route.props.and);
-          console.log("auth", auth, isLoggedIn);
         }
         if (is && startsWith && ifTrue && andTrue && auth) {
           const pathParams = extractNamesAndValues(path, route.props.is);
-          console.log ("pathParams", pathParams);
-          console.log ("route.props", route.props);
-
-          return <Route {...route.props} {...pathParams} />;
+          console.log("FOUND ROUTE", route.props, pathParams)
+          return <Route {...route.props} {...pathParams} {...restProps} />;
         }
-        // if (route.props.is && checkIs(path, route.props.is)) {
-        //   const pathParams = extractNamesAndValues(path, route.props.is);
-        //   return <Route {...route.props} {...pathParams} />;
-        // }
-        // if (
-        //   route.props.startsWith &&
-        //   startsWith(path, route.props.startsWith)
-        // ) {
-        //   return <Route {...route.props} />;
-        // }
-
-        // if (route.props.if) {
-        //   return <Route {...route.props} />;
-        // }
       } else {
         return <>{route}</>;
       }

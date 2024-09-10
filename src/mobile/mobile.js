@@ -29,6 +29,8 @@ import FavIcon from "./svg/favicon";
 import BreezoCart from "../packages/breezo/breezocart";
 import Routing from "./routing";
 import useAuth from "../packages/auth/context/useauth";
+import PartnerBar from "./partnerbar";
+import useUser from "../packages/auth/context/useuser";
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <div
@@ -44,8 +46,10 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 ));
 
 const MobileApp = () => {
-  const [activeBarItem, setActiveBarItem] = useState("home");
-  const { logout } = useAuth();
+  const { logout, isLoggedIn } = useAuth();
+  const { hasAccess } = useUser();
+
+  console.log("MobileApp");
   return (
     <Container fluid className="app-container">
       <header className="app-header">
@@ -78,39 +82,26 @@ const MobileApp = () => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item href="#profile">Profile</Dropdown.Item>
+                  <Dropdown.Item href="#partner">Partner</Dropdown.Item>
                   <Dropdown.Item href="#settings">Settings</Dropdown.Item>
-                  <Dropdown.Item
+                  <Dropdown.Item href="#landing">About</Dropdown.Item>
+                  {isLoggedIn && <Dropdown.Item
                     onClick={() => {
                       logout();
                       window.location.hash = "home";
                     }}
                   >
                     Logout
-                  </Dropdown.Item>
+                  </Dropdown.Item>}
+                  {!isLoggedIn && <Dropdown.Item href="#login">Login</Dropdown.Item>}
                 </Dropdown.Menu>
               </Dropdown>
             </Nav>
           </Container>
         </Navbar>
-        <Bar
-          variant="event"
-          defaultActiveKey={activeBarItem}
-          onSelect={(key) => setActiveBarItem(key)}
-          className="px-2"
-        >
-          <Nav.Link eventKey="home">Home</Nav.Link>
-          <Nav.Link eventKey="#login">Login</Nav.Link>
-          <Nav.Link eventKey="#calendar">
-            <Calendar />
-          </Nav.Link>
-          <Nav.Link eventKey="settings">Settings</Nav.Link>
-          <Nav.Link eventKey="info">Info</Nav.Link>
-          <Nav.Link eventKey="details2">Details</Nav.Link>
-          <Nav.Link eventKey="settings2">Settings</Nav.Link>
-          <Nav.Link eventKey="info2">Info</Nav.Link>
-          <Nav.Link eventKey="details3">Details</Nav.Link>
-          <Nav.Link eventKey="settings3">Settings</Nav.Link>
-        </Bar>
+        {hasAccess("Partner") &&
+        <PartnerBar />
+}
       </header>
       <main className="app-body">
         <Routing />
@@ -129,8 +120,8 @@ const MobileApp = () => {
           <div style={{ fontSize: "12px", fontWeight: "600" }}>Tickets</div>
         </Footer.Icon>
         <Footer.Icon href="#loyaltycarousel">
-          {/* <CardChecklist size={24} /> */}
-          <Camera size={24} />
+          <CardChecklist size={24} />
+          {/* <Camera size={24} /> */}
           <div style={{ fontSize: "12px", fontWeight: "600" }}>Loyalty</div>
         </Footer.Icon>
         <Footer.Center>
@@ -146,7 +137,7 @@ const MobileApp = () => {
           <Footer.Icon href="#mycalendar">
             <CalendarWeek size={24} />
           </Footer.Icon>
-          <Footer.Icon href="#mycalendar">
+          <Footer.Icon href="#news/mynews">
             <List size={24} />
           </Footer.Icon>
         </Footer.Center>

@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Zharo from './zharo';
 
-function zharoMain(selector, itemtype, contentId) {
+function zharoMain(selector, appId, eventId) {
   const container = document.querySelector(selector);
   if (!contentId) {
     contentId = itemtype;
@@ -14,7 +14,7 @@ function zharoMain(selector, itemtype, contentId) {
   }
 
   const root = createRoot(container);
-  root.render(<Zharo contentId={contentId} itemtype={itemtype} />);
+  root.render(<Zharo appId={appId} eventId={eventId}/>);
 }
 
 window.injectContent = zharoMain;

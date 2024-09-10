@@ -21,6 +21,10 @@ export const UserLoyaltyProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    console.log("===== UserLoyaltyProvider: cards", cards);
+  }, [cards]);
+
+  useEffect(() => {
     if (user) {
       fetch(`${API_BASE_URL}/user/${user.id}/cards`, { headers })
         .then(response => response.json())

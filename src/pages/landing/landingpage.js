@@ -7,6 +7,7 @@ import Footer from "./footer";
 import { useRef } from "react";
 import Events from "./events";
 import Testimonials from "./testimonial";
+import PartnerProgramHero from "../../mobile/pages/landing/partnerprogram";
 
 const LandingPage = ({subTitle}) => {
   const heroRef = useRef();
@@ -29,6 +30,7 @@ const LandingPage = ({subTitle}) => {
         <Events />
       </div>
       <Testimonials />
+      <PartnerProgramHero />
       <Footer
         heroRef={heroRef}
         featureRef={featureRef}

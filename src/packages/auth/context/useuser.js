@@ -11,7 +11,7 @@ export const useUser = () => {
     throw new Error("useUser was used outside of its Provider");
   }
 
-  const { token, user, properties } = context;
+  const { token, user, properties, saveProperties } = context;
 
   const hasAccess = (permission) => {
     const access = user?.permissions?.find((p) => p.name === permission);
@@ -25,7 +25,7 @@ export const useUser = () => {
     return prop?.value;
   }
 
-  return { token, user, isLoggedIn, hasAccess, properties, getPropertyValue };
+  return { token, user, isLoggedIn, hasAccess, properties, getPropertyValue, saveProperties };
 };
 
 export default useUser;

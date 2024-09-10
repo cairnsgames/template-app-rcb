@@ -49,57 +49,10 @@ export default function Week() {
     setModal(false);
   };
 
-  // function handleWeekendsToggle() {
-  //   setWeekendsVisible(!weekendsVisible);
-  // }
   function handleDateClick(arg) {
-    // bind with an arrow function
-    // console.log(arg.dateStr);
   }
-  // function renderSidebar() {
-  //   return (
-  //     <div className="demo-app-sidebar">
-  //       <div className="demo-app-sidebar-section">
-  //         <h2>Instructions</h2>
-  //         <ul>
-  //           <li>Select dates and you will be prompted to create a new event</li>
-  //           <li>Drag, drop, and resize events</li>
-  //           <li>Click an event to delete it</li>
-  //         </ul>
-  //       </div>
-  //       <div className="demo-app-sidebar-section">
-  //         <label>
-  //           <input
-  //             type="checkbox"
-  //             checked={weekendsVisible}
-  //             onChange={handleWeekendsToggle}
-  //           />
-  //           toggle weekends
-  //         </label>
-  //       </div>
-  //       <div className="demo-app-sidebar-section">
-  //         <h2>All Events ({currentEvents.length})</h2>
-  //         <ul>{currentEvents.map(renderSidebarEvent)}</ul>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-  // function renderSidebarEvent(event) {
-  //   return (
-  //     <li key={event.id}>
-  //       <b>
-  //         {formatDate(event.start, {
-  //           year: "numeric",
-  //           month: "short",
-  //           day: "numeric"
-  //         })}
-  //       </b>
-  //       <i>{event.title}</i>
-  //     </li>
-  //   );
-  // }
+  
   function handleDateSelect(selectInfo) {
-    // console.log(selectInfo.view.type);
     if (
       selectInfo.view.type === "timeGridWeek" ||
       selectInfo.view.type === "timeGridDay"
@@ -142,9 +95,7 @@ export default function Week() {
     );
   }
   function handleEventClick(clickInfo) {
-    // console.log("open modal update, delete");
     setState({ clickInfo, state: "update" });
-    // set detail
     setTitle(clickInfo.event.title);
     setStart(clickInfo.event.start);
     setEnd(clickInfo.event.end);
@@ -162,19 +113,14 @@ export default function Week() {
     setCurrentEvents(events);
   }
   function handleEventDrop(checkInfo) {
-    // console.log(checkInfo.event.start.toISOString());
-    // checkInfo.revert();
     setState({ checkInfo, state: "drop" });
     setConfirmModal(true);
   }
   function handleEventResize(checkInfo) {
-    // console.log(checkInfo);
     setState({ checkInfo, state: "resize" });
     setConfirmModal(true);
   }
   function handleEdit() {
-    // console.log(start, end);
-    // state.clickInfo.event.setAllDay(true);
 
     state.clickInfo.event.setStart(start);
     state.clickInfo.event.setEnd(end);
@@ -184,7 +130,6 @@ export default function Week() {
     handleClose();
   }
   function handleSubmit() {
-    // console.log(state.selectInfo.view.calendar);
     const newEvent = {
       id: nanoid(),
       title,
@@ -192,17 +137,12 @@ export default function Week() {
       end: state.selectInfo?.endStr || end.toISOString(),
       allDay: state.selectInfo?.allDay || false
     };
-    // console.log(newEvent);
 
     let calendarApi = calendarRef.current.getApi();
-    // let calendarApi = selectInfo.view.calendar
-
     calendarApi.addEvent(newEvent);
     handleClose();
   }
   function handleDelete() {
-    // console.log(JSON.stringify(state.clickInfo.event));
-    // console.log(state.clickInfo.event.id);
     state.clickInfo.event.remove();
     handleClose();
   }
@@ -222,7 +162,6 @@ export default function Week() {
   ]);
 
   function onFilter(element) {
-    console.log(element.value);
   }
 
   return (

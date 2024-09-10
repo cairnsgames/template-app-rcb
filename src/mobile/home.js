@@ -5,6 +5,7 @@ import Ticket from "../components/react-bootstrap-mobile/ticket";
 import QRCode from "../packages/qrcode/qrcode";
 
 const Home = () => {
+  console.log("Home");
   return (
     <Container fluid className="px-2" style={{ overflow: "hidden" }}>
       <Row>
