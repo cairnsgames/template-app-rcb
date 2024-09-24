@@ -8,7 +8,7 @@ const Loyalty = (props) => {
   return (
     <PageFull>
       <LoyaltySystems />
-      </PageFull>
+    </PageFull>
   );
 };
 

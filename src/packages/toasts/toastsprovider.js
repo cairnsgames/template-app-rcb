@@ -13,7 +13,7 @@ const ToastsProvider = (props) => {
     return counter;
   };
 
-  const scheduleClose = (id, delay = 5000) => {
+  const scheduleClose = (id, delay = 9000) => {
     setTimeout(() => {
       closeToast(id);
     }, delay);

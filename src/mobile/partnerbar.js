@@ -8,6 +8,7 @@ import {
   Cart,
   Cart2,
   CartFill,
+  InfoCircle,
   Receipt,
 } from "react-bootstrap-icons";
 import Bar from "../components/react-bootstrap-mobile/bar";
@@ -63,6 +64,9 @@ const PartnerBar = () => {
           <BalloonHeartFill />
         </Nav.Link>
       )}
+              <Nav.Link eventKey="#news/mynews">
+          <InfoCircle />
+        </Nav.Link>
     </Bar>
   );
 };

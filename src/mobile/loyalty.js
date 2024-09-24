@@ -1,23 +1,16 @@
 import React, { useEffect } from "react";
-import CarouselManager from "../components/react-bootstrap-mobile/carousel/carouselmanager";
+import LoyaltyCardManager from "../packages/loyalty/cards/loyaltycardmanager";
 import {
   UserLoyaltyProvider,
   useUserLoyalty,
 } from "../packages/loyalty/userloyaltyprovider";
 
-const items = [
-  { name: "Item 1", logo: "images/rest1.png" },
-  { name: "Item 2", logo: "images/rest2.png" },
-  { name: "Item 3", logo: "images/rest3.png" },
-  { name: "Item 4", logo: "images/rest4.png" },
-];
-
 const LoyaltyCarousel = () => {
-  const { cards } = useUserLoyalty();
+  const { cards, rewards } = useUserLoyalty();
   useEffect(() => {
     console.log("=== Show Cards", cards);
   }, [cards]);
-  return <CarouselManager items={cards} variant="primary" />;
+  return <LoyaltyCardManager items={cards} rewards={rewards} variant="primary" />;
 };
 
 const UserLoyalty = () => {

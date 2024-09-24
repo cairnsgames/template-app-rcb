@@ -14,6 +14,7 @@ const PartnersPage = (props) => {
         </Route>
         <Route is="partner">
           <h1>Partner PAGE</h1>
+          <PartnerLandingPage />
         </Route>
         <Route is="partner/loyalty">
           <LoyaltyProvider>

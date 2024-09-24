@@ -41,14 +41,14 @@ function Toasts() {
         right: 0,
         minWidth: "50%",
         minHeight: "240px",
-        zIndex: 100,
+        zIndex: 1050,
         pointerEvents: "none",
       }}
     >
       <ToastContainer
         position="bottom-end"
         className="p-3"
-        style={{ zIndex: 100 }}
+        style={{ zIndex: 1100 }}
       >
         {toasts.map((t) => (
           <Toast

@@ -1,18 +1,48 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import jsQR from 'jsqr'; // Import the jsQR library
+import React, { useState, useEffect, useRef } from "react";
+import { Modal, Button, Form, InputGroup } from "react-bootstrap";
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+import jsQR from "jsqr"; // Import the jsQR library
 
-const CapturePhoto = ({ show, onPhoto, onQRCode, onClose }) => {
+function getIdFromUrl(url) {
+  if (!url) {
+    console.error("$$$ No URL provided");
+    return null;
+  }
+  // Regex to match `id` parameter after the `#` or in the URL path
+  const hashRegex = /[#&?]id=(\d+)/;   // Matches `id=21` after the `#`
+  const pathRegex = /\/(\d+)(?:\/)?$/; // Matches `/21` at the end of the URL path
+
+  // Check for `id` in the fragment or query parameters
+  const hashMatch = url.match(hashRegex);
+  if (hashMatch) {
+    return hashMatch[1];
+  }
+
+  // Check for `id` in the URL path
+  const pathMatch = url.match(pathRegex);
+  if (pathMatch) {
+    return pathMatch[1];
+  }
+
+  // Return null if `id` is not found
+  return null;
+}
+
+const CapturePhoto = ({ show, onPhoto, onQRCode, onClose, onId }) => {
   const [photo, setPhoto] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  const [input, setInput] = useState(21);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
   useEffect(() => {
     if (show && !onPhoto && !onQRCode) {
       captureFromCamera();
-    } else if (show && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    } else if (
+      show &&
+      navigator.mediaDevices &&
+      navigator.mediaDevices.getUserMedia
+    ) {
       startVideoStream();
     }
     return () => {
@@ -29,7 +59,7 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose }) => {
         source: CameraSource.Camera,
       });
 
-      if (onQRCode) {
+      if (onQRCode || onId) {
         decodeQRCode(image.dataUrl);
       } else if (onPhoto) {
         onPhoto(image.dataUrl);
@@ -37,7 +67,7 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose }) => {
         setPhoto(image.dataUrl);
       }
     } catch (err) {
-      setError('Error capturing photo');
+      setError("Error capturing photo");
     }
   };
 
@@ -46,16 +76,21 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose }) => {
     image.src = dataUrl;
     image.onload = () => {
       const canvas = canvasRef.current;
-      const context = canvas.getContext('2d');
+      const context = canvas.getContext("2d");
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
       const code = jsQR(imageData.data, imageData.width, imageData.height);
 
-      if (code) {
+      const id = getIdFromUrl(code?.data);
+      console.log("$$$ id captured", id);
+      if (id && onId) {
+          onId(id);
+      } else if (code && onQRCode) {
+        console.log("$$$ QR Code:", code.data);
         onQRCode(code.data); // Return the decoded text from the QR code
       } else {
-        setError('No QR code found');
+        setError("No QR code found");
       }
     };
   };
@@ -68,7 +103,7 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose }) => {
         videoRef.current.play();
       }
     } catch (err) {
-      setError('Error accessing camera');
+      setError("Error accessing camera");
     }
   };
 
@@ -83,9 +118,15 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose }) => {
 
   const handleTakePhoto = () => {
     if (videoRef.current && canvasRef.current) {
-      const context = canvasRef.current.getContext('2d');
-      context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-      const dataUrl = canvasRef.current.toDataURL('image/png');
+      const context = canvasRef.current.getContext("2d");
+      context.drawImage(
+        videoRef.current,
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+      const dataUrl = canvasRef.current.toDataURL("image/png");
 
       if (onQRCode) {
         decodeQRCode(dataUrl); // Decode the QR code from the captured image
@@ -107,11 +148,16 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose }) => {
           <img src={photo} alt="Captured" className="img-fluid" />
         ) : (
           <>
-            <video ref={videoRef} style={{ width: '100%' }} />
-            <canvas ref={canvasRef} style={{ display: 'none' }} />
+            <video ref={videoRef} style={{ width: "100%" }} />
+            <canvas ref={canvasRef} style={{ display: "none" }} />
             {error && <p className="text-danger">{error}</p>}
           </>
         )}
+        <InputGroup>
+        <InputGroup.Text>Customer ID</InputGroup.Text>
+        <Form.Control type="text" placeholder="Enter Customer ID" value={input} onChnage={(ev) => setInput(ev.target.value)} />
+        <Button variant="primary" onClick={()=>onId(input)}>Save</Button>
+        </InputGroup>
       </Modal.Body>
       <Modal.Footer>
         {!photo && (

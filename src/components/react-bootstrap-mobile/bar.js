@@ -7,7 +7,7 @@ const Bar = ({ children, variant, className, style, defaultActiveKey, onSelect }
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [activeKey, setActiveKey] = useState(defaultActiveKey);
+  // const [activeKey, setActiveKey] = useState(defaultActiveKey);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -36,8 +36,8 @@ const Bar = ({ children, variant, className, style, defaultActiveKey, onSelect }
     console.log('handleSelect', key);
     if (!isDragging) {
       
-      console.log('setActiveKey', key);
-      setActiveKey(key);
+      // console.log('setActiveKey', key);
+      // setActiveKey(key);
       onSelect(key, e);
       e.stopPropagation(); // Prevent the onClick from firing if dragging
     } else {
@@ -61,7 +61,7 @@ const Bar = ({ children, variant, className, style, defaultActiveKey, onSelect }
           // Clone each child and pass the active class if it's the active key
           const childKey = child.props.eventKey || index;
           return React.cloneElement(child, {
-            className: childKey === activeKey ? 'active-pill' : '',
+            // className: childKey === activeKey ? 'active-pill' : '',
             onClick: (e) => handleSelect(childKey, e),
             key: childKey,
           });

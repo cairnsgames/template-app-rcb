@@ -33,7 +33,7 @@ export const UserLoyaltyProvider = ({ children }) => {
       
       fetch(`${API_BASE_URL}/user/${user.id}/rewards`, { headers })
         .then(response => response.json())
-        .then(data => setRewards(data))
+        .then(data => setRewards(data.filter(reward => !reward.date_redeemed)))
         .catch(error => console.error('Error fetching rewards:', error));
     }
   }, [user]);
@@ -46,6 +46,10 @@ export const UserLoyaltyProvider = ({ children }) => {
         .catch(error => console.error('Error fetching related stamps:', error));
     }
   }, [selectedCard]);
+
+  useEffect(() => {
+    console.log("!!!! rewards loaded". rewards)
+  }, [rewards]);
 
   return (
     <UserLoyaltyContext.Provider value={{ cards, rewards, stamps, selectedCard, setSelectedCard }}>

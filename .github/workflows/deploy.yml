@@ -24,6 +24,14 @@ jobs:
           password: ${{ secrets.CG_FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: ${{ vars.SERVER_DIR }}
+      - name: Deploy JuztDance Site
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ vars.JD_SERVER }}
+          username: ${{ vars.JD_FTP_USERNAME }}
+          password: ${{ secrets.CG_FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: /rcb/
 
   build-zharo:
     runs-on: ubuntu-latest
