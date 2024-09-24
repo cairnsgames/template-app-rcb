@@ -29,7 +29,7 @@ jobs:
         with:
           server: ${{ vars.JD_SERVER }}
           username: ${{ vars.JD_FTP_USERNAME }}
-          password: ${{ secrets.CG_FTP_PASSWORD }}
+          password: ${{ secrets.JD_FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /rcb/
 
