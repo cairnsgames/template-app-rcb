@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button, Form, InputGroup } from "react-bootstrap";
-import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import jsQR from "jsqr"; // Import the jsQR library
 
 function getIdFromUrl(url) {
@@ -36,40 +35,13 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose, onId }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    if (show && !onPhoto && !onQRCode) {
-      captureFromCamera();
-    } else if (
-      show &&
-      navigator.mediaDevices &&
-      navigator.mediaDevices.getUserMedia
-    ) {
+    if (show && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       startVideoStream();
     }
     return () => {
       stopVideoStream();
     };
   }, [show]);
-
-  const captureFromCamera = async () => {
-    try {
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: false,
-        resultType: CameraResultType.DataUrl,
-        source: CameraSource.Camera,
-      });
-
-      if (onQRCode || onId) {
-        decodeQRCode(image.dataUrl);
-      } else if (onPhoto) {
-        onPhoto(image.dataUrl);
-      } else {
-        setPhoto(image.dataUrl);
-      }
-    } catch (err) {
-      setError("Error capturing photo");
-    }
-  };
 
   const decodeQRCode = (dataUrl) => {
     const image = new Image();
@@ -85,7 +57,7 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose, onId }) => {
       const id = getIdFromUrl(code?.data);
       console.log("$$$ id captured", id);
       if (id && onId) {
-          onId(id);
+        onId(id);
       } else if (code && onQRCode) {
         console.log("$$$ QR Code:", code.data);
         onQRCode(code.data); // Return the decoded text from the QR code
@@ -154,9 +126,14 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose, onId }) => {
           </>
         )}
         <InputGroup>
-        <InputGroup.Text>Customer ID</InputGroup.Text>
-        <Form.Control type="text" placeholder="Enter Customer ID" value={input} onChnage={(ev) => setInput(ev.target.value)} />
-        <Button variant="primary" onClick={()=>onId(input)}>Save</Button>
+          <InputGroup.Text>Customer ID</InputGroup.Text>
+          <Form.Control
+            type="text"
+            placeholder="Enter Customer ID"
+            value={input}
+            onChange={(ev) => setInput(ev.target.value)} // Fixed the typo here
+          />
+          <Button variant="primary" onClick={() => onId(input)}>Save</Button>
         </InputGroup>
       </Modal.Body>
       <Modal.Footer>
