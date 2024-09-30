@@ -62,7 +62,7 @@ const AuthenticationProvider = (props) => {
   const { deviceId } = useDeviceInfo();
 
   console.log("REACT_APP_AUTH_API", process.env.REACT_APP_AUTH_API);
-  console.log("REACT_APP_ENVIRNOMENT", process.env.REACT_APP_ENVIRONMENT);
+  console.log("REACT_APP_ENVIRONMENT", process.env.REACT_APP_ENVIRONMENT);
   console.log("NODE_ENV", process.env.NODE_ENV);
 
   if (!process.env.REACT_APP_AUTH_API) {
