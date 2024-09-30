@@ -88,6 +88,8 @@ module.exports = (_, argv) => ({
         { from: "./public/images", to: "./images" },
       ],
     }),
-    new Dotenv(),
+    new Dotenv({
+      path: process.env.NODE_ENV === 'production' ? './.env.production' : './.env',
+    }),
   ],
 });
