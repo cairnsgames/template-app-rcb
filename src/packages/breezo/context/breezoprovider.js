@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useMemo } from "react";
 import usePubSub from "../../../hooks/usepubsub";
 import useEventing from "../../eventing/useeventing";
 import useGeoLocation from "../../../hooks/usegeolocation";
+import { combineUrlAndPath } from '../../../functions/combineurlandpath';
 
 // Create context for Breezo API management
 export const BreezoContext = createContext();

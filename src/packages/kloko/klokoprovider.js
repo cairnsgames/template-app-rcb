@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useMemo } from "react";
 import eventing from '../eventing/eventing';
+import { combineUrlAndPath } from '../../functions/combineurlandpath';
 
 // Create context for Calendar, Event, Booking, and Template management
 export const KlokoContext = createContext();
