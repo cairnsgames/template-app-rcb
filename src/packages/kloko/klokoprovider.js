@@ -55,8 +55,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const fetchCalendars = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/user/${user.id}/calendars`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/user/${user.id}/calendars`),
         { headers }
       );
       const data = await response.json();
@@ -72,7 +72,7 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const fetchEvents = async (calendarId = activeCalendar.id) => {
     setLoading(true);
     fetch(
-      `${process.env.REACT_APP_KLOKO_API}/api.php/calendar/${calendarId}/events`,
+      combineUrlAndPath(process.env.REACT_APP_KLOKO_API,`api.php/calendar/${calendarId}/events`),
       { headers }
     )
       .then((response) => response.json())
@@ -91,8 +91,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const fetchBookings = async (eventId) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/event/${eventId}/bookings`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/event/${eventId}/bookings`),
         { headers }
       );
       const data = await response.json();
@@ -111,8 +111,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
     }
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/user/${user.id}/templates`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/user/${user.id}/templates`),
         { headers }
       );
       const data = await response.json();
@@ -127,8 +127,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const createCalendar = async (calendar) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/calendar`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/calendar`),
         {
           method: "POST",
           headers: { ...headers, "Content-Type": "application/json" },
@@ -149,8 +149,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const updateCalendar = async (calendar) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/calendar/${calendar.id}`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/calendar/${calendar.id}`),
         {
           method: "PUT",
           headers: { ...headers, "Content-Type": "application/json" },
@@ -173,8 +173,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const deleteCalendar = async (calendarId) => {
     setLoading(true);
     try {
-      await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/calendar/${calendarId}`,
+      await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/calendar/${calendarId}`),
         { method: "DELETE", headers }
       );
       setCalendars((prev) => prev.filter((c) => c.id !== calendarId));
@@ -189,8 +189,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
     setLoading(true);
     try {
       event.calendar_id = activeCalendar;
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/event`,
+      const response = await combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/event`,
         {
           method: "POST",
           headers: { ...headers, "Content-Type": "application/json" },
@@ -216,8 +216,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const updateEvent = async (event) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/events/${event.id}`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/events/${event.id}`),
         {
           method: "PUT",
           headers: { ...headers, "Content-Type": "application/json" },
@@ -240,8 +240,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const deleteEvent = async (eventId) => {
     setLoading(true);
     try {
-      await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/event/${eventId}`,
+      await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/event/${eventId}`),
         { method: "DELETE", headers }
       );
       setEvents((prev) => prev.filter((e) => e.id != eventId));
@@ -255,8 +255,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const createBooking = async (booking) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/booking`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/booking`),
         {
           method: "POST",
           headers: { ...headers, "Content-Type": "application/json" },
@@ -278,8 +278,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const updateBooking = async (booking) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/booking/${booking.id}`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/booking/${booking.id}`),
         {
           method: "PUT",
           headers: { ...headers, "Content-Type": "application/json" },
@@ -302,8 +302,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const deleteBooking = async (bookingId) => {
     setLoading(true);
     try {
-      await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/booking/${bookingId}`,
+      await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/booking/${bookingId}`),
         { method: "DELETE", headers }
       );
       setBookings((prev) => prev.filter((b) => b.id !== bookingId));
@@ -317,8 +317,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const createTemplate = async (template) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/template`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/template`),
         {
           method: "POST",
           headers: { ...headers, "Content-Type": "application/json" },
@@ -339,8 +339,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const updateTemplate = async (template) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/template/${template.id}`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/template/${template.id}`),
         {
           method: "PUT",
           headers: { ...headers, "Content-Type": "application/json" },
@@ -363,8 +363,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
   const deleteTemplate = async (templateId) => {
     setLoading(true);
     try {
-      await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/template/${templateId}`,
+      await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/template/${templateId}`),
         { method: "DELETE", headers }
       );
       setTemplates((prev) => prev.filter((t) => t.id !== templateId));
@@ -379,8 +379,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
     setLoading(true);
     setSearchCriteria({ lat, lng, type, from, to });
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/find?lat=${lat}&lng=${lng}&type=${type}&from=${from}&to=${to}`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/find?lat=${lat}&lng=${lng}&type=${type}&from=${from}&to=${to}`),
         { headers }
       );
       const data = await response.json();
@@ -400,8 +400,8 @@ export const KlokoProvider = ({ children, user, tenant, token, useFeatureFlags, 
     }
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}/api.php/random?lat=${lat}&lng=${lng}&type=${type}&from=${from}&to=${to}`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/random?lat=${lat}&lng=${lng}&type=${type}&from=${from}&to=${to}`),
         { headers }
       );
       const data = await response.json();
