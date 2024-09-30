@@ -17,7 +17,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     insertEndpoint = `${baseurl}${configName}`,
     deleteEndpoint = `${baseurl}${configName}`,
     headers = {},
-    params = {}
+    params = {},
   } = config;
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
@@ -58,7 +58,9 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     }
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}${configName}/${id}`);
+      const response = await fetch(
+        combineUrlAndPath(API_BASE_URL, `${configName}/${id}`)
+      );
       return await response.json();
     } catch (err) {
       setError(err);
@@ -70,14 +72,19 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
   const updateItem = async (item) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${updateEndpoint}/${item[itemKey]}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", ...headers },
-        body: JSON.stringify(item),
-      });
+      const response = await fetch(
+        combineUrlAndPath(updateEndpoint, `${item[itemKey]}`),
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", ...headers },
+          body: JSON.stringify(item),
+        }
+      );
       const updatedItems = await response.json();
       const updatedData = data.map((d) => {
-        const foundItem = updatedItems.find((item) => item[itemKey] === d[itemKey]);
+        const foundItem = updatedItems.find(
+          (item) => item[itemKey] === d[itemKey]
+        );
         return foundItem ? foundItem : d;
       });
       setData(updatedData);
@@ -109,7 +116,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
   const deleteItem = async (id) => {
     setIsLoading(true);
     try {
-      await fetch(`${deleteEndpoint}/${id}`, {
+      await fetch(combineUrlAndPath(deleteEndpoint, `${id}`), {
         method: "DELETE",
         headers: { "Content-Type": "application/json", ...headers },
       });
@@ -129,7 +136,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${API_BASE_URL}${configName}/${id}/${subkeyName}`
+        combineUrlAndPath(API_BASE_URL, `${configName}/${id}/${subkeyName}`)
       );
       const result = await response.json();
       setChildrenData((prevData) => ({ ...prevData, [cacheKey]: result }));
@@ -149,7 +156,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     } else {
       fetchData();
     }
-  },[]);
+  }, []);
 
   return {
     data,

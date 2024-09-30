@@ -193,7 +193,7 @@ const ContentDisplay = (props) => {
       url: fileName,
       style: JSON.stringify(item.style),
     };
-    fetch(`${process.env.REACT_APP_CONTENT_API}api.php/content/${item?.id ?? ""}`, {
+    fetch(combineUrlAndPath(process.env.REACT_APP_CONTENT_API,`api.php/content/${item?.id ?? ""}`), {
       method: item.id ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",

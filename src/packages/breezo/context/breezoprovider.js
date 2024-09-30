@@ -83,8 +83,7 @@ export const BreezoProvider = ({
   const fetchCarts = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BREEZO_API}/api.php/user/${user.id}/cart`,
+      const response = await fetch(combineUrlAndPath(process.env.REACT_APP_BREEZO_API,`api.php/user/${user.id}/cart`),
         { headers }
       );
       const data = await response.json();
@@ -103,8 +102,7 @@ export const BreezoProvider = ({
     }
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BREEZO_API}/api.php/cart/${carts[0].id}/items`,
+      const response = await fetch(combineUrlAndPath(process.env.REACT_APP_BREEZO_API,`/api.php/cart/${carts[0].id}/items`),
         { headers }
       );
       const data = await response.json();
@@ -119,8 +117,8 @@ export const BreezoProvider = ({
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BREEZO_API}/api.php/user/${user.id}/orders`,
+      const response = await combineUrlAndPath(
+        process.env.REACT_APP_BREEZO_API,`api.php/user/${user.id}/orders`,
         { headers }
       );
       const data = await response.json();
@@ -135,8 +133,8 @@ export const BreezoProvider = ({
   const fetchInvoices = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BREEZO_API}/api.php/user/${user.id}/invoices`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_BREEZO_API,`api.php/user/${user.id}/invoices`),
         { headers }
       );
       const data = await response.json();
@@ -151,8 +149,8 @@ export const BreezoProvider = ({
   const fetchPayments = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BREEZO_API}/api.php/supplier/${user.id}/payments`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_BREEZO_API,`api.php/supplier/${user.id}/payments`),
         { headers }
       );
       const data = await response.json();
@@ -167,8 +165,8 @@ export const BreezoProvider = ({
   const fetchCommission = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BREEZO_API}/api.php/supplier/${user.id}/commission`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_BREEZO_API,`api.php/supplier/${user.id}/commission`),
         { headers }
       );
       const data = await response.json();
@@ -183,8 +181,8 @@ export const BreezoProvider = ({
   const fetchItems = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BREEZO_API}/api.php/supplier/${user.id}/items`,
+      const response = await fetch(combineUrlAndPath(
+        process.env.REACT_APP_BREEZO_API,`api.php/supplier/${user.id}/items`),
         { headers }
       );
       const data = await response.json();
@@ -198,8 +196,8 @@ export const BreezoProvider = ({
   const deleteItem = async (itemId) => {
     setLoading(true);
     try {
-      await fetch(
-        `${process.env.REACT_APP_BREEZO_API}/api.php/cart_item/${itemId}`,
+      await fetch(combineUrlAndPath(
+        process.env.REACT_APP_BREEZO_API,`/api.php/cart_item/${itemId}`),
         { method: "DELETE", headers }
       );
       setCartItems((prev) => prev.filter((c) => c.id !== itemId));
@@ -214,8 +212,8 @@ export const BreezoProvider = ({
   // Create, Update, Delete functions can be added similarly
   const createOrderFromCart = async (cartId) => {
     // Create order from cart
-    const order = await fetch(
-      `${process.env.REACT_APP_BREEZO_API}/api.php/placeorder`,
+    const order = await fetch(combineUrlAndPath(
+      process.env.REACT_APP_BREEZO_API,`api.php/placeorder`),
       { method: "POST", headers, body: JSON.stringify({ cart_id: cartId }) }
     );
     return await order.json();

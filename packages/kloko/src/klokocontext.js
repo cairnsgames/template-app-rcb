@@ -13,7 +13,10 @@ export const KlokoProvider = ({ appId, eventId, children }) => {
       setLoading(true);
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_KLOKO_API}getevent.php?id=${eventId}`,
+          combineUrlAndPath(
+            process.env.REACT_APP_KLOKO_API,
+            `getevent.php?id=${eventId}`
+          ),
           {
             APP_ID: appId,
           }
@@ -51,7 +54,7 @@ export const KlokoProvider = ({ appId, eventId, children }) => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_KLOKO_API}anonbooking.php`,
+        combineUrlAndPath(process.env.REACT_APP_KLOKO_API, `anonbooking.php`),
         {
           method: "POST",
           headers: {

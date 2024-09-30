@@ -9,6 +9,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useJwt } from "react-jwt";
 import useTenant from "../../tenant/context/usetenant";
 import useDeviceInfo from "../../device/usedeviceinfo";
+import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 
 // type AuthType = {
 //   token?: string;
@@ -84,7 +85,7 @@ const AuthenticationProvider = (props) => {
 
   const validateToken = (token) => {
     const body = { token: token };
-    fetch(process.env.REACT_APP_AUTH_API + "/validateToken.php?debug=true", {
+    fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API,"validateToken.php?debug=true"), {
       body: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",
