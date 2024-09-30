@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useUser } from '../auth/context/useuser';
 import useTenant from '../tenant/context/usetenant';
+import { combineUrlAndPath } from '../../functions/combineurlandpath';
 
 const NewsContext = createContext();
 
@@ -30,7 +31,7 @@ export const NewsProvider = ({ children }) => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_NEWS_API}/api.php/news`, { headers });
+        const response = await fetch(combineUrlAndPath(process.env.REACT_APP_NEWS_API,`api.php/news`), { headers });
         if (!response.ok) {
           throw new Error('Failed to fetch news');
         }
@@ -55,7 +56,7 @@ export const NewsProvider = ({ children }) => {
     
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_NEWS_API}/api.php/user/${user.id}/news`, { headers });
+      const response = await fetch(combineUrlAndPath(process.env.REACT_APP_NEWS_API,`api.php/user/${user.id}/news`), { headers });
       if (!response.ok) {
         throw new Error('Failed to fetch my news items');
       }
@@ -70,7 +71,7 @@ export const NewsProvider = ({ children }) => {
 
   const createNewsItem = async (newsItem) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_NEWS_API}/api.php/news`, {
+      const response = await fetch(combineUrlAndPath(process.env.REACT_APP_NEWS_API,`api.php/news`), {
         method: 'POST',
         headers,
         body: JSON.stringify(newsItem),
@@ -90,7 +91,7 @@ export const NewsProvider = ({ children }) => {
 
   const updateNewsItem = async (id, updatedNewsItem) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_NEWS_API}/api.php/news/${id}`, {
+      const response = await fetch(combineUrlAndPath(process.env.REACT_APP_NEWS_API,`api.php/news/${id}`), {
         method: 'PUT',
         headers,
         body: JSON.stringify(updatedNewsItem),
