@@ -18,6 +18,7 @@ const News = ({ layout = 'default' }) => {
           ? <NewsThumb key={item.id} item={item} onClick={() => handleItemClick(item.id)} />
           : <NewsItem key={item.id} item={item} onClick={() => handleItemClick(item.id)} />
       ))}
+      {newsItems.length === 0 && <p>No news items</p>}
     </div>
   );
 };
