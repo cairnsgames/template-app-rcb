@@ -8,7 +8,12 @@ const PageCentered = ({ className = "", style = {}, position, children }) => {
   return (
     <Container
       fluid
-      style={{ ...style, minHeight: "85%", maxHeight: "100%" }}
+      style={{
+        ...style,
+        minHeight: "85%",
+        maxHeight: "100%",
+        overflowX: "hidden",
+      }}
       className="page-centered"
     >
       <Row

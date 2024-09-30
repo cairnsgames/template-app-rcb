@@ -8,7 +8,13 @@ const PageFull = ({ className = "", style = {}, position, children }) => {
   return (
     <Container
       fluid
-      style={{ padding: "1rem", ...style, minHeight: "85%", maxHeight: "calc(100vh - 80px)" }}
+      style={{
+        padding: "1rem",
+        ...style,
+        minHeight: "85%",
+        maxHeight: "calc(100vh - 80px)",
+        overflowX: "hidden",
+      }}
       className="page-full"
     >
       <Row
