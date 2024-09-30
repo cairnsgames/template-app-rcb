@@ -8,6 +8,7 @@ import MyNews from "./mynews";
 import MyNewsEditor from "./mynewseditor";
 
 function NewsSample() {
+  console.log("NewsSample")
   return (
     <PageCentered className="my-3">
     <NewsProvider>

@@ -28,7 +28,7 @@ const Routing = () => {
   const { hash } = useLocation();
   const { isLoggedIn } = useAuth();
 
-  console.log("Routing");
+  console.log("Routing - looking for ", hash, " LoggedIn: ", isLoggedIn);
 
   // if (hash.startsWith("sitedown")) {
   //   return <SiteDown />;
@@ -36,6 +36,12 @@ const Routing = () => {
   const goHome = () => {
     window.location.href = "#home";
   };
+  if (hash === "") {
+    if (isLoggedIn) {
+      return <Home />;
+    }
+    return <LandingPage />;
+  }
   return (
     <Router isLoggedIn={isLoggedIn}>
       <Route is={"login"}>
@@ -44,10 +50,8 @@ const Routing = () => {
       <Route is={"logout"}>
         <Home />
       </Route>
-      <Route is={"home"}>
-        <Route if={!isLoggedIn}>
-          <Home />
-        </Route>
+      <Route is={"home"}>{isLoggedIn ? <Home /> : <LandingPage />}</Route>
+      <Route is={"landing"}>
         <LandingPage />
       </Route>
 
@@ -67,14 +71,6 @@ const Routing = () => {
         <ProfilePage />
       </Route>
 
-      <Route is={"landing"}>
-        <LandingPage />
-      </Route>
-
-      {/* <Route is={"partner"}>        
-        <PartnerLandingPage />
-      </Route> */}
-
       <Route is="calendar">
         <ComingSoon />
       </Route>
@@ -88,20 +84,18 @@ const Routing = () => {
         <ComingSoon />
       </Route>
 
-      <Route is={"tickets"} auth debug={true}>
-        <Tickets />
-      </Route>
-
-
       <Route if={!isLoggedIn}>
         <MobileAuth mode="login" onClose={goHome} />
       </Route>
-      {/* Below this requires LOGGED in */}
+
+      <Route is={"tickets"} auth debug={true}>
+        <Tickets />
+      </Route>
       <Route startsWith={"loyalty"}>
         <LoyaltyPage />
       </Route>
       <Route startsWith={"partner"}>
-          <PartnersPage />
+        <PartnersPage />
       </Route>
       <Route startsWith={"userloyalty"}>
         <UserLoyaltyPage />

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Dropdown, Navbar, Nav, Image } from "react-bootstrap";
 import useAuth from "../../packages/auth/context/useauth";
 import useUser from "../../packages/auth/context/useuser";
-import useAssistant from "../assistant/useassistant";
+// import useAssistant from "../assistant/useassistant";
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <div
@@ -19,9 +19,9 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 
 const FaceDropdown = () => {
   const { logout, isLoggedIn } = useAuth();
-  const { venues } = useAssistant();
+  // const { venues } = useAssistant();
 
-  console.log("*** VENUES", venues);
+  // console.log("*** VENUES", venues);
   return (
     <Dropdown align="end">
       <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
@@ -36,9 +36,9 @@ const FaceDropdown = () => {
         <Dropdown.Item href="#profile">Profile</Dropdown.Item>
         <Dropdown.Item href="#partner">Partner</Dropdown.Item>
         <Dropdown.Item href="#settings">Settings</Dropdown.Item>
-        {venues?.length > 0 && (
+        {/* {venues?.length > 0 && (
           <Dropdown.Item href="#assitant/select">Assistant</Dropdown.Item>
-        )}
+        )} */}
         <Dropdown.Item href="#landing">About</Dropdown.Item>
         {isLoggedIn && (
           <Dropdown.Item

@@ -10,9 +10,9 @@ const MobileApp = () => {
   const { tenant } = useTenant();
 
   return (
-    <AssistantProvider user={user} token={token} tenant={tenant} >
+    // <AssistantProvider user={user} token={token} tenant={tenant} >
       <MobileMain />
-    </AssistantProvider>
+    // </AssistantProvider>
   );
 };
 

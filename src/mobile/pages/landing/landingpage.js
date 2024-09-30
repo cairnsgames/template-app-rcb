@@ -7,6 +7,7 @@ import Testimonials from "./testimonial";
 import PartnerProgramHero from "./partnerprogram";
 
 const LandingPage = ({ subTitle }) => {
+  console.log("LandingPage");
   const heroRef = useRef();
   const featureRef = useRef();
   const pricingRef = useRef();

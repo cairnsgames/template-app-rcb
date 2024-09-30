@@ -4,7 +4,7 @@ import { useAuth } from "../../auth/context/useauth";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
-import useTranslation from "../../translation/usetranslation";
+// import useTranslation from "../../translation/usetranslation";
 
 // interface ILoginProps {
 //   onLogin?: (result: any) => void;
@@ -21,7 +21,8 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
   const [errors, setErrors] = useState();
   const [warning, setWarning] = useState();
 
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
+  const t = (key) => key;
 
   console.log("LoginForm", { onSuccess, onClose, rememberMe });
 
