@@ -72,7 +72,6 @@ const AuthenticationProvider = (props) => {
     );
   }
 
-
   useEffect(() => {
     if (token) {
       localStorage.setItem("cg." + tenant + ".auth", token);
@@ -85,15 +84,21 @@ const AuthenticationProvider = (props) => {
 
   const validateToken = (token) => {
     const body = { token: token };
-    fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API,"validateToken.php?debug=true"), {
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        APP_ID: tenant,
-        deviceid: deviceId,
-      },
-      method: "POST",
-    })
+    fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_AUTH_API,
+        "validateToken.php?debug=true"
+      ),
+      {
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          deviceid: deviceId,
+        },
+        method: "POST",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (typeof data === "string") {
@@ -159,7 +164,7 @@ const AuthenticationProvider = (props) => {
         googleid: decodedToken2.sub,
         avatar: decodedToken2.picture,
       };
-      await fetch(process.env.REACT_APP_AUTH_API + "/logingoogle.php", {
+      await fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API,`logingoogle.php`), {
         body: JSON.stringify(body),
         headers: {
           "Content-Type": "application/json",
@@ -219,8 +224,8 @@ const AuthenticationProvider = (props) => {
       password: password,
       confirm: confirm,
     };
-    return fetch(
-      process.env.REACT_APP_AUTH_API + "/registration.php?debug=true",
+    return fetch(combineUrlAndPath(
+      process.env.REACT_APP_AUTH_API,`registration.php?debug=true`),
       {
         body: JSON.stringify(body),
         headers: {
@@ -263,7 +268,7 @@ const AuthenticationProvider = (props) => {
       password: password,
     };
 
-    return fetch(process.env.REACT_APP_AUTH_API + "/login.php?debug=true", {
+    return fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API,`login.php?debug=true`), {
       body: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",
@@ -309,8 +314,8 @@ const AuthenticationProvider = (props) => {
       code: magiccode,
     };
 
-    return fetch(
-      process.env.REACT_APP_AUTH_API + "/loginwithmagiclink.php?debug=true",
+    return fetch(combineUrlAndPath(
+      process.env.REACT_APP_AUTH_API,`loginwithmagiclink.php?debug=true`),
       {
         body: JSON.stringify(body),
         headers: {
@@ -352,8 +357,8 @@ const AuthenticationProvider = (props) => {
       email: email,
     };
     console.log("process.env.REACT_APP_AUTH_API", process);
-    return fetch(
-      process.env.REACT_APP_AUTH_API + "/forgotpassword.php?debug=true",
+    return fetch(combineUrlAndPath(
+      process.env.REACT_APP_AUTH_API,`forgotpassword.php?debug=true`),
       {
         body: JSON.stringify(body),
         headers: {
@@ -389,8 +394,8 @@ const AuthenticationProvider = (props) => {
       password2: password2,
     };
     console.log("process.env.REACT_APP_AUTH_API", process);
-    return fetch(
-      process.env.REACT_APP_AUTH_API + "/changepassword.php?debug=true",
+    return fetch(combineUrlAndPath(
+      process.env.REACT_APP_AUTH_API,`changepassword.php?debug=true`),
       {
         body: JSON.stringify(body),
         headers: {
@@ -410,7 +415,10 @@ const AuthenticationProvider = (props) => {
   const impersonate = (id) => {
     console.log("Impersonate", id);
     fetch(
-      process.env.REACT_APP_AUTH_API + "/impersonate.php?debug=true&id=" + id,
+      combineUrlAndPath(
+        process.env.REACT_APP_AUTH_API,
+        `/impersonate.php?debug=true&id=${id}`
+      ),
       {
         headers: {
           "Content-Type": "application/json",
@@ -459,7 +467,10 @@ const AuthenticationProvider = (props) => {
       return;
     }
     await fetch(
-      process.env.REACT_APP_AUTH_API + `/api.php/user/${user.id}/properties`,
+      combineUrlAndPath(
+        process.env.REACT_APP_AUTH_API,
+        `/api.php/user/${user.id}/properties`
+      ),
       {
         headers: {
           "Content-Type": "application/json",
@@ -474,7 +485,7 @@ const AuthenticationProvider = (props) => {
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
-        console.log("USER PROPERTIES", data)
+        console.log("USER PROPERTIES", data);
         setProperties(data);
       })
       .catch((err) => {
@@ -488,14 +499,14 @@ const AuthenticationProvider = (props) => {
     if (!user || !properties || !Array.isArray(properties)) {
       return;
     }
-  
+
     const savePromises = properties.map((property) => {
-      const url = property.id 
-        ? `${process.env.REACT_APP_AUTH_API}/api.php/property/${property.id}` 
+      const url = property.id
+        ? `${process.env.REACT_APP_AUTH_API}/api.php/property/${property.id}`
         : `${process.env.REACT_APP_AUTH_API}/api.php/property/`;
-  
+
       const method = property.id ? "PUT" : "POST";
-  
+
       return fetch(url, {
         headers: {
           "Content-Type": "application/json",
@@ -506,7 +517,7 @@ const AuthenticationProvider = (props) => {
         body: JSON.stringify(property),
       });
     });
-  
+
     try {
       await Promise.all(savePromises);
       await fetchProperties();
@@ -516,7 +527,6 @@ const AuthenticationProvider = (props) => {
       }
     }
   };
-  
 
   const values = useMemo(
     () => ({
@@ -530,7 +540,8 @@ const AuthenticationProvider = (props) => {
       setgoogleAccessToken,
       changePassword,
       impersonate,
-      properties, saveProperties
+      properties,
+      saveProperties,
     }),
     [
       token,
