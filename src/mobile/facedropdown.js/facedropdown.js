@@ -21,7 +21,6 @@ const FaceDropdown = () => {
   const { logout, isLoggedIn } = useAuth();
   // const { venues } = useAssistant();
 
-  // console.log("*** VENUES", venues);
   return (
     <Dropdown align="end">
       <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">

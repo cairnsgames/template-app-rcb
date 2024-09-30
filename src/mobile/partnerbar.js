@@ -18,8 +18,6 @@ const PartnerBar = () => {
   const [activeBarItem, setActiveBarItem] = useState();
   const { user, hasAccess } = useUser();
 
-  console.log("=== PartnerBar, user", user)
-
   useEffect(() => {
     if (activeBarItem) {
       window.location.hash = activeBarItem;

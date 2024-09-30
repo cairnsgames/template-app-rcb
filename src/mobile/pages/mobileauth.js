@@ -6,7 +6,6 @@ import ForgotPasswordForm from "../../packages/auth/forms/forgot";
 import MagicLinkForm from "../../packages/auth/forms/magiclink";
 
 const MobileAuth = (props) => {
-  console.log("MobileLogin", props);
   const [mode, setMode] = useState(props.mode);
   return (
     <Modal show={true} style={{ top: "15%" }} onHide={props.onClose}>

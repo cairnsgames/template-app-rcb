@@ -51,7 +51,6 @@ const Routing = () => {
   if (hash.startsWith("sitedown")) {
     return <SiteDown />;
   }
-  console.log("<APP> Routing - looking for ", hash);
   return (
     <>
       <NavPart />

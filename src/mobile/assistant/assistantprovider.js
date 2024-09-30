@@ -26,7 +26,6 @@ export const AssistantProvider = ({ children, user, token, tenant }) => {
         throw new Error("Failed to fetch venues");
       }
       const data = await response.json();
-      console.log("*** FETCH Venues Data", data);
       setVenues(data || []);
     } catch (error) {
       console.error("Error fetching venues:", error);
@@ -72,7 +71,6 @@ export const AssistantProvider = ({ children, user, token, tenant }) => {
 
   // Effect to fetch user roles whenever user is set
   useEffect(() => {
-    console.log("*** Assistant User", user);
     if (user && user.id) {
         console.log("*** Found user ID", user.id);
       fetchAssistantVenues();
@@ -86,8 +84,6 @@ export const AssistantProvider = ({ children, user, token, tenant }) => {
     }
   }, [user, venue, fetchUserPermissions]);
 
-  console.log("*** Assistant User", user);
-  console.log("*** Assistant Venues", venues);
   return (
     <AssistantContext.Provider
       value={{

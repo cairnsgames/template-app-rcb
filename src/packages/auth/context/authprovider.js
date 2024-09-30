@@ -66,6 +66,8 @@ const AuthenticationProvider = (props) => {
       "AuthProvider: REACT_APP_AUTH_API environment variable is required"
     );
   }
+  console.log("REACT_APP_AUTH_API", process.env.REACT_APP_AUTH_API);
+
 
   useEffect(() => {
     if (token) {

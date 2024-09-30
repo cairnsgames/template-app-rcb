@@ -4,8 +4,6 @@ import Loyalty from "../../../packages/loyalty/loyalty";
 import LoyaltyProvider from "../../../packages/loyalty/loyaltyprovider";
 
 const PartnersPage = (props) => {
-  console.log("========== PARTNER PROPS", props);
-
   return (
     <>
       <Router>

@@ -8,7 +8,6 @@ import {
 const LoyaltyCarousel = () => {
   const { cards, rewards } = useUserLoyalty();
   useEffect(() => {
-    console.log("=== Show Cards", cards);
   }, [cards]);
   return <LoyaltyCardManager items={cards} rewards={rewards} variant="primary" />;
 };

@@ -180,13 +180,11 @@ export const LoyaltyProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("=== Systems Loaded", systems, systems[0]?.id);
     setSystem(systems[0]);
     setSelectedSystemId(systems[0]?.id);
   }, [systems]);
 
   useEffect(() => {
-    console.log("==== System Set", system);
   }, [system]);
 
   useEffect(() => {

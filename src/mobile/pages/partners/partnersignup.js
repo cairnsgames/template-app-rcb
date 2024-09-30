@@ -15,11 +15,9 @@ const PartnerSignupModal = ({ show, handleClose }) => {
 
   useEffect(() => {
     setSelectedRoles(roles);
-    console.log("Roles", roles);
   }, [roles]);
 
   const handleRoleChange = (role) => {
-    console.log("======= handleRoleChange", role, selectedRoles);
     if (hasRole(role)) {
       setSelectedRoles(selectedRoles.filter((r) => r.role_id !== role.id));
     } else {

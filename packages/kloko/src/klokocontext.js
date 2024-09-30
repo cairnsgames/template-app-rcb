@@ -9,7 +9,6 @@ export const KlokoProvider = ({ appId, eventId, children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("KlokoProvider useEffect", eventId);
     const fetchEvent = async () => {
       setLoading(true);
       try {

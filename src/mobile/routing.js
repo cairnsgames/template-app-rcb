@@ -28,8 +28,6 @@ const Routing = () => {
   const { hash } = useLocation();
   const { isLoggedIn } = useAuth();
 
-  console.log("Routing - looking for ", hash, " LoggedIn: ", isLoggedIn);
-
   // if (hash.startsWith("sitedown")) {
   //   return <SiteDown />;
   // }

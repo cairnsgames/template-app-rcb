@@ -21,7 +21,6 @@ export const UserLoyaltyProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("===== UserLoyaltyProvider: cards", cards);
   }, [cards]);
 
   useEffect(() => {

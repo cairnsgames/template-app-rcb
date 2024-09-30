@@ -81,7 +81,6 @@ const Loyalty = () => {
   };
 
   if (!system) {
-    console.log("==== System not set", system);
     return (
       <div>
         <h2>Loyalty Program</h2>
