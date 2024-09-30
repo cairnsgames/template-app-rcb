@@ -67,6 +67,8 @@ const AuthenticationProvider = (props) => {
     );
   }
   console.log("REACT_APP_AUTH_API", process.env.REACT_APP_AUTH_API);
+  console.log("REACT_APP_ENVIRNOMENT", process.env.REACT_APP_ENVIRONMENT);
+  console.log("NODE_ENV", process.env.NODE_ENV);
 
 
   useEffect(() => {

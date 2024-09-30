@@ -89,7 +89,7 @@ module.exports = (_, argv) => ({
       ],
     }),
     new Dotenv({
-      path: process.env.NODE_ENV === 'production' ? './.env.production' : './.env',
+      path: process.env.NODE_ENV === 'production' ? './.env.production' : './.env.development',
     }),
   ],
 });
