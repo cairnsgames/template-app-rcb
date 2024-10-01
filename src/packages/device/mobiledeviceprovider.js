@@ -1,82 +1,112 @@
 import React, { createContext, useEffect, useState } from "react";
+// import { PushNotifications } from "@capacitor/push-notifications";
+// import { LocalNotifications, ScheduleOptions } from '@capacitor/local-notifications';
+import { Device } from "@capacitor/device";
 
-const MobileDeviceContext = createContext({});
+const MobileDeviceContext = createContext({ PushNotifications: "" });
 
 const MobileDeviceProvider = (props) => {
   const { children } = props;
 
   const [registrationToken, setRegistrationToken] = useState();
-  const [deviceInfo, setDeviceInfo] = useState({}); // Default to an empty object
+  const [deviceInfo, setDeviceInfo] = useState();
   const [deviceIdentifier, setDeviceIdentifier] = useState();
 
-  // Mock implementation to replace Capacitor Push Notifications
-  const isPushNotificationsAvailable = true; // Assume notifications are always available for simplicity
+  useEffect(() => {
+    // When token changes, make sure to store it on backend to allow sending of messages to the device in future. (Link token with userid for example)
+    // Probably not here, so usePushNotifications and when UserId is chnaged do the save
+  }, [registrationToken]);
+
+  const isPushNotificationsAvailable =
+    Capacitor.isPluginAvailable("PushNotifications");
 
   const registration = (token) => {
-    setRegistrationToken(token?.value || "mock-token");
+    setRegistrationToken(token.value);
   };
-
   const registrationError = (err) => {
-    console.error("#### Registration error: ", err?.error || "Unknown error");
-    alert("Registration Error", err?.message || "Unknown error");
+    console.error("#### Registration error: ", err.error);
+    alert("Registration Error", err.error.message || "Unknown error");
   };
 
   const pushNotificationReceived = (notification) => {
-    alert(
-      "Message Received",
-      notification?.title || "No title",
-      JSON.stringify(notification) || "No content"
-    );
+    alert("Message Recieved", notification.title, JSON.stringify(notification));
+    async (notification) => {
+        let now = {
+          notifications: [{
+            id: Date.now(),
+            body: notification.body,
+            title: notification.title,
+            ongoing: false,
+          }]
+        };
+        const result = await LocalNotifications.schedule(now)
+      }
   };
 
   const pushNotificationActionPerformed = (notification) => {
-    console.log("Action performed on notification: ", notification);
+
   };
 
   useEffect(() => {
-    // Mock device information
-    setDeviceInfo({
-      model: "Web Device",
-      osVersion: "1.0.0",
+    Device.getInfo().then((info) => {
+      console.log("#### Device Info",JSON.stringify(info));
     });
-
-    // Mock device identifier
-    setDeviceIdentifier("mock-device-id");
-
+    Device.getId().then((info) => {
+        console.log("#### Device Id",JSON.stringify(info));
+        setDeviceIdentifier(info);
+      });    
   }, []);
 
   useEffect(() => {
     if (!isPushNotificationsAvailable) {
-      return;
+      return () => {};
     }
+    const setUpPushNotifications = async () => {
+      await PushNotifications.addListener("registration", registration);
+      await PushNotifications.addListener(
+        "registrationError",
+        registrationError
+      );
+      await PushNotifications.addListener(
+        "pushNotificationReceived",
+        pushNotificationReceived
+      );
+      await PushNotifications.addListener(
+        "pushNotificationActionPerformed",
+        pushNotificationActionPerformed
+      );
 
-    const setUpPushNotifications = () => {
-      // Mock listener setup
-      console.log("Mock: Setting up push notifications");
+      const registerNotifications = async () => {
+        let permStatus = await PushNotifications.checkPermissions();
 
-      // Simulate registration
-      registration({ value: "mock-registration-token" });
+        if (permStatus.receive === "prompt") {
+          permStatus = await PushNotifications.requestPermissions();
+        }
 
-      // Other mock listeners
-      console.log("Mock: pushNotificationReceived and pushNotificationActionPerformed listeners set.");
+        if (permStatus.receive !== "granted") {
+          throw new Error("User denied permissions!");
+        }
+
+        await PushNotifications.register();
+      };
+
+      await registerNotifications();
     };
-
     setUpPushNotifications();
 
     return () => {
-      console.log("Mock: Removing all listeners");
+      PushNotifications.removeAllListeners();
     };
   }, []);
 
-  const getDeliveredNotifications = () => {
-    // Mock implementation of getting delivered notifications
-    console.log("#### Mock: delivered notifications", []);
+  const getDeliveredNotifications = async () => {
+    const notificationList =
+      await PushNotifications.getDeliveredNotifications();
+    console.log("#### delivered notifications", notificationList);
   };
 
   return (
-    <MobileDeviceContext.Provider
-      value={{ registrationToken, deviceInfo, deviceIdentifier }}
-    >
+    <MobileDeviceContext.Provider value={{ registrationToken, deviceInfo, deviceIdentifier }}>
       {children}
     </MobileDeviceContext.Provider>
   );

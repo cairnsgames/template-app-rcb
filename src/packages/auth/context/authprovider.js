@@ -11,43 +11,6 @@ import useTenant from "../../tenant/context/usetenant";
 import useDeviceInfo from "../../device/usedeviceinfo";
 import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 
-// type AuthType = {
-//   token?: string;
-//   register: Function;
-//   login: Function;
-//   logout: Function;
-//   forgot: Function;
-//   user: any;
-//   setgoogleAccessToken: Function;
-//   changePassword: Function;
-// };
-// type AuthProviderType = {
-//   googleClientId: string;
-//   children: React.ReactNode;
-//   TenantContext: any;
-// };
-// const defaultAuth: AuthType = {
-//   token: "",
-//   register: () => {},
-//   login: () => {},
-//   logout: () => {},
-//   forgot: () => {},
-//   user: {},
-//   setgoogleAccessToken: () => {},
-//   changePassword: () => {},
-// };
-// interface googleDecodedToken {
-//   email: string;
-//   lastname: string;
-//   firstname: string;
-//   sub: string;
-//   name: string;
-//   picture: string;
-//   verified_email: string;
-// }
-
-// create context
-// const AuthenticationContext = createContext<AuthType>(defaultAuth);
 const AuthenticationContext = createContext();
 
 const AuthenticationProvider = (props) => {
@@ -61,10 +24,6 @@ const AuthenticationProvider = (props) => {
 
   const { tenant } = useTenant();
   const { deviceId } = useDeviceInfo();
-
-  console.log("REACT_APP_AUTH_API", process.env.REACT_APP_AUTH_API);
-  console.log("REACT_APP_ENVIRONMENT", process.env.REACT_APP_ENVIRONMENT);
-  console.log("NODE_ENV", process.env.NODE_ENV);
 
   if (!process.env.REACT_APP_AUTH_API) {
     throw new Error(
@@ -485,7 +444,6 @@ const AuthenticationProvider = (props) => {
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
-        console.log("USER PROPERTIES", data);
         setProperties(data);
       })
       .catch((err) => {
