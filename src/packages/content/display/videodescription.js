@@ -1,3 +1,4 @@
+import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 import useShareData from "../../../hooks/useshare";
 
 const VideoDescription = (props) => {
@@ -18,7 +19,7 @@ const VideoDescription = (props) => {
         className={props.className}
         style={{ ...props.style, maxWidth: "90%" }}
       >
-        <source src={`${process.env.REACT_APP_FILES}${props.item?.url}`} />
+        <source src={combineUrlAndPath(process.env.REACT_APP_FILES`${props.item?.url}`)} />
       </video>
       <h3>{item.title}</h3>
       <div>{item.content}</div>

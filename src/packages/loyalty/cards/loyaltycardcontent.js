@@ -3,6 +3,7 @@ import { Image, Table } from "react-bootstrap";
 import { Gift, Star, StarFill } from "react-bootstrap-icons";
 import useUser from "../../auth/context/useuser";
 import pluralize from "pluralize";
+import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 
 const RewardMessage = ({ reward, item }) => {
   if (reward <= 0) {
@@ -74,7 +75,7 @@ const LoyaltyCardContent = ({ item, reward }) => {
 
               {item.image && (
                 <Image
-                  src={process.env.REACT_APP_FILES + "/" + item.image}
+                  src={combineUrlAndPath(process.env.REACT_APP_FILES,item.image)}
                   style={{ height: "125px" }}
                 />
               )}

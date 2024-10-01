@@ -1,3 +1,5 @@
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
+
 export const getImageSrc = (src) => {
     if (src?.includes("blob")) {
       return src;
@@ -5,6 +7,6 @@ export const getImageSrc = (src) => {
     if (!src) {
       return "images/noimage.png";
     }
-    return `${process.env.REACT_APP_FILES}${src}`;
+    return combineUrlAndPath(process.env.REACT_APP_FILES,src);
   }
 

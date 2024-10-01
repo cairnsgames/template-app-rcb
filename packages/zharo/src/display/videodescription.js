@@ -1,4 +1,5 @@
 import React from "react";
+import { combineUrlAndPath } from "../../../../src/functions/combineurlandpath";
 
 const VideoDescription = (props) => {
   const { item, style, className } = props;
@@ -12,7 +13,7 @@ const VideoDescription = (props) => {
         className={props.className}
         style={{ ...props.style, maxWidth: "90%" }}
       >
-        <source src={`${process.env.REACT_APP_FILES}${props.item?.url}`} />
+        <source src={combineUrlAndPath(process.env.REACT_APP_FILES,props.item?.url)} />
       </video>
       <h3>{item.title}</h3>
       <div>{item.content}</div>

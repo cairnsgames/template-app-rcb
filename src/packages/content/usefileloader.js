@@ -124,7 +124,7 @@ const useFileLoader = (
   };
 
   const linkImage = (id, entity, entityid) => {
-    fetch(`${process.env.REACT_APP_FILES}/files/${id}`, {
+    fetch(combineUrlAndPath(process.env.REACT_APP_FILES,`files/${id}`), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
