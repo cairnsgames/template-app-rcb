@@ -21,7 +21,7 @@ const InfoBox = ({ children }) => {
   return <div className="infobox">{enhancedChildren}</div>;
 };
 
-const Header = ({ children, isOpen, toggleBox, variant = 'info', className = '', style = {} }) => (
+const Header = ({ children, isOpen, toggleBox, variant = 'primary', className = '', style = {} }) => (
   <div
     className={`infobox-header bg-${variant} ${className}`}
     onClick={toggleBox}

@@ -38,26 +38,26 @@ const Loyalty = () => {
   }
 
   const onAddStamp = () => {
-    console.log("$$$$ Add Stamp", customer)    
+    console.log("$$$$ Add Stamp", customer);
     addUserStamp(system.id, customer.id);
     addToast("Loyalty", "Stamp added", "success");
     clearCustomer();
-  }
+  };
   const onRedeemReward = () => {
     redeemUserReward(system.id, customer.id);
-    console.log("$$$$ Redeem Reward", customer)
+    console.log("$$$$ Redeem Reward", customer);
     addToast("Loyalty", "Reward redeemed", "info");
     clearCustomer();
-  }
+  };
 
   const clearCustomer = () => {
     setShowCustomer(false);
     setCustomerId();
-  }
+  };
 
   const onCloseCustomer = () => {
     clearCustomer();
-  }
+  };
 
   console.log("System", system);
   console.log("Cards", cards);
@@ -85,40 +85,54 @@ const Loyalty = () => {
       <div>
         <h2>Loyalty Program</h2>
         <InfoBox>
-          <InfoBox.Header>
+          <InfoBox.Header  varaint="primary">
             <em>
               <InfoCircleFill /> About Loyalty Programs
             </em>
           </InfoBox.Header>
           <InfoBox.Body>
             <p>
-              Our Loyalty Program is designed to reward your customers for their
-              continued support. Each partner in the program can offer a
-              personalized loyalty scheme, allowing customers to earn stamps
-              with every qualifying purchase.
+              Our Loyalty Program rewards your customers for their continued
+              support. Customers earn stamps with every qualifying purchase,
+              ensuring return visits and awareness.
             </p>
-
             <p>How It Works:</p>
-            <ol>
+            <ul>
               <li>
-                Join the Program: Customers can easily join by using their
-                unique QR code, which they present during their purchases.
+                <p>
+                  <strong>Join the Program:</strong>
+                </p>
+                <p>
+                  Design your own Loyalty Card and program
+                  <br />
+                  Customers join your program by scanning your xxxxxx <br />
+                  Customers present their unique QR Code during their purchases
+                  and are rewarded with your stamp
+                </p>
               </li>
+
               <li>
-                Earn Stamps: For every qualifying purchase, partners scan the
-                customer's QR code to allocate a stamp to their account.
+                <p>
+                  <strong>Earning Stamps:</strong>
+                </p>
+                <p>
+                  For every qualifying purchase, partners scan the customer's QR
+                  code to allocate a stamp to the customer's account.
+                </p>
               </li>
+
               <li>
-                Get Rewarded: Once the customer has collected 10 stamps, they
-                are eligible for a reward — typically an additional item of the
-                same type they were buying.
+                <p>
+                  <strong>Rewards:</strong>
+                </p>
+                <p>
+                  Once the customer has collected your required amount of
+                  stamps, they are eligible for a reward — typically an
+                  additional item of the same type they were buying.
+                </p>
               </li>
-            </ol>
-            <p>
-              This simple, effective system not only encourages repeat business
-              but also builds stronger relationships with customers, ensuring
-              they keep coming back!
-            </p>
+            </ul>
+            ... Now we're dancing!!
           </InfoBox.Body>
         </InfoBox>
         <LoyaltySystemForm />
@@ -171,7 +185,7 @@ const Loyalty = () => {
         show={showCustomer}
         customer={customer}
         customerStamps={customerStamps}
-        customerRewards={customerRewards} 
+        customerRewards={customerRewards}
         onAddStamp={onAddStamp}
         onRedeemReward={onRedeemReward}
         onClose={onCloseCustomer}

@@ -158,6 +158,8 @@ const LoyaltySystemForm = () => {
         <Form.Label>Stamps Required</Form.Label>
         <Form.Control
           type="number"
+          readOnly
+          disabled
           name="stamps_required"
           value={formData.stamps_required}
           onChange={handleChange}
