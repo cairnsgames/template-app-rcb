@@ -89,10 +89,14 @@ export const LoyaltyProvider = ({ children }) => {
     setSystem(systems.find((system) => system.id === selectedSystemId));
   }, [selectedSystemId]);
 
-  const getUserSystems = (userId) => {
-    return fetch(`${API_BASE_URL}/user/${userId}/systems`, { headers }).then(
-      (response) => response.json()
-    );
+  const getUserSystems = (userId = user.id) => {
+    return fetch(`${API_BASE_URL}/user/${userId}/systems`, { headers })
+      .then((response) => response.json())
+      .then((data) => {
+        setSystems(data);
+        setSelectedSystemId(data[0]?.id);
+        setSystem(data[0]);
+      });
   };
 
   const getSystemCards = (systemId) => {
@@ -189,12 +193,11 @@ export const LoyaltyProvider = ({ children }) => {
     setSelectedSystemId(systems[0]?.id);
   }, [systems]);
 
-  useEffect(() => {
-  }, [system]);
+  useEffect(() => {}, [system]);
 
   useEffect(() => {
     if (user) {
-      getUserSystems(user.id).then(setSystems);
+      getUserSystems(user.id);
     }
   }, [user]);
 

@@ -80,6 +80,8 @@ const Loyalty = () => {
     setShowCamera(false);
   };
 
+  console.log("Checking if there is a system", system);
+
   if (!system) {
     return (
       <div>
