@@ -70,7 +70,7 @@ export const usePartnerRoles = () => {
 
       const result = await response.json();
       setSuccess(result);
-      addToast("Partner status updated", "success");
+      addToast("Partner", "Partner status updated", "success");
       eventing.publish("permissions", "reload", payload);
     } catch (error) {
       setError(error.message);
