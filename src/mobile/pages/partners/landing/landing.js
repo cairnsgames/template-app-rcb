@@ -6,8 +6,9 @@ import Footer from "./footer";
 import Features from "./features";
 import PartnerSignupModal from "../partnersignup";
 import CallToAction from "./calltoaction";
+import PartnerIcons from "./partnericons";
 
-const LandingPage = () => {
+const LandingPage = ({ roles = [] }) => {
   const [modalShow, setModalShow] = useState(false);
 
   const openSignup = () => {
@@ -25,11 +26,16 @@ const LandingPage = () => {
   };
 
   return (
-    <Container fluid className="px-2" style={{overflowY: "auto", overflowX: "hidden"}}>
-      <Hero openSignup={openSignup} />
+    <Container
+      fluid
+      className="px-2"
+      style={{ overflowY: "auto", overflowX: "hidden" }}
+    >
+      <Hero openSignup={openSignup} roles={roles} />
+      {roles.length > 0 && <PartnerIcons />}
       <Features />
       <PartnerBenefits />
-      <CallToAction showSignup={openSignup} />
+      {roles.length === 0 && <CallToAction showSignup={openSignup} />}
       <Footer showSignup={openSignup} />
       <PartnerSignupModal
         show={modalShow}

@@ -10,6 +10,7 @@ import { useJwt } from "react-jwt";
 import useTenant from "../../tenant/context/usetenant";
 import useDeviceInfo from "../../device/usedeviceinfo";
 import { combineUrlAndPath } from "../../../functions/combineurlandpath";
+import useEventing from "../../eventing/useeventing";
 
 const AuthenticationContext = createContext();
 
@@ -101,6 +102,18 @@ const AuthenticationProvider = (props) => {
       validateToken(savedToken);
     }
   }, [tenant]);
+
+  const reloadPermissions = async () => {
+    console.log("==== Reloading Permissions");
+    const savedToken = localStorage.getItem("cg." + tenant + ".auth");
+    if (savedToken && savedToken !== "undefined") {
+      // Validate Token
+      validateToken(savedToken);
+    }
+  };
+
+  
+  useEventing("permissions", "reload", reloadPermissions);
 
   const getGoogleUser = useCallback(async () => {
     if (googleAccessToken && decodedToken) {

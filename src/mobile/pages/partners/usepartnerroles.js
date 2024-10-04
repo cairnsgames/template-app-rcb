@@ -2,14 +2,18 @@ import { useState, useEffect, useCallback } from "react";
 import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 import useUser from "../../../packages/auth/context/useuser";
 import useTenant from "../../../packages/tenant/context/usetenant";
+import useToast from "../../../packages/toasts/usetoast";
+import eventing from "../../../packages/eventing/eventing";
 
-export function usePartnerRoles() {
+export const usePartnerRoles = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [roles, setRoles] = useState([]);
   const { user, token } = useUser();
   const { tenant } = useTenant();
+
+  const { addToast } = useToast();
 
   const headers = {
     "Content-Type": "application/json",
@@ -66,6 +70,8 @@ export function usePartnerRoles() {
 
       const result = await response.json();
       setSuccess(result);
+      addToast("Partner status updated", "success");
+      eventing.publish("permissions", "reload", payload);
     } catch (error) {
       setError(error.message);
       console.error("Error updating roles:", error);

@@ -40,6 +40,7 @@ const PartnerSignupModal = ({ show, handleClose }) => {
       branch_code: bankDetails.branchCode,
     };
     updatePartnerRoles(selectedRoles, partnerData);
+    handleClose();
   };
 
   const hasRole = (role) => {
