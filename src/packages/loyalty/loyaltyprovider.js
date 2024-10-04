@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useUser } from "../auth/context/useuser";
 import useTenant from "../tenant/context/usetenant";
+import { useToast } from "../../packages/toasts/usetoast";
 
 // api
 export const API_BASE_URL = "http://localhost/cairnsgames/php/loyalty/api.php";
@@ -23,6 +24,8 @@ export const LoyaltyProvider = ({ children }) => {
   const [customerRewards, setCustomerRewards] = useState();
 
   const { user, token } = useUser();
+  const { addToast } = useToast();
+
   const headers = {
     "Content-Type": "application/json",
     APP_ID: tenant,
@@ -133,6 +136,8 @@ export const LoyaltyProvider = ({ children }) => {
           // Handle HTTP errors
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
+        getUserSystems();
+        addToast("Loyalty", "System created", "success");
         return response.json();
       })
       .catch((error) => {
