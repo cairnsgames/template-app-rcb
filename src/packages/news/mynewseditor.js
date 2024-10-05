@@ -28,6 +28,8 @@ const MyNewsEditor = ({ id, onClose }) => {
     }
   };
 
+  const canSave = !!title && !!body && !!date && !!expires;
+
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;
     setImageUrl(`${process.env.REACT_APP_CONTENT_API}/uploads/${fileName}`);
@@ -92,8 +94,10 @@ const MyNewsEditor = ({ id, onClose }) => {
 
     if (id) {
       await updateNewsItem(id, newsItem);
+      handleEditorClose();
     } else {
       await createNewsItem(newsItem);
+      handleEditorClose();
     }
   };
 
@@ -182,7 +186,7 @@ const MyNewsEditor = ({ id, onClose }) => {
           <Button
             variant="primary"
             type="submit"
-            disabled={!hasChanges || loading}
+            disabled={!hasChanges || loading || !canSave}
           >
             {id ? "Update News" : "Create News"}
           </Button>

@@ -166,7 +166,7 @@ const Loyalty = () => {
         <img
           src={getImageSrc(system.image)}
           alt={system.name}
-          style={{ maxWidth: "min(90vw, 500px)" }}
+          style={{ maxWidth: "500px" }}
         />
       ) : (
         <h2>{system.name}</h2>

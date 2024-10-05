@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useUser } from '../auth/context/useuser';
-import useTenant from '../tenant/context/usetenant';
-import { combineUrlAndPath } from '../../functions/combineurlandpath';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useUser } from "../auth/context/useuser";
+import useTenant from "../tenant/context/usetenant";
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
+import { useToast } from "../../packages/toasts/usetoast";
 
 const NewsContext = createContext();
 
@@ -13,11 +14,13 @@ export const NewsProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { addToast } = useToast();
+
   const { tenant } = useTenant();
   const { user, token } = useUser();
 
   const headers = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
     APP_ID: tenant,
     token: token,
   };
@@ -31,9 +34,12 @@ export const NewsProvider = ({ children }) => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch(combineUrlAndPath(process.env.REACT_APP_NEWS_API,`api.php/news`), { headers });
+        const response = await fetch(
+          combineUrlAndPath(process.env.REACT_APP_NEWS_API, `api.php/news`),
+          { headers }
+        );
         if (!response.ok) {
-          throw new Error('Failed to fetch news');
+          throw new Error("Failed to fetch news");
         }
         const data = await response.json();
         setNewsItems(data);
@@ -48,17 +54,22 @@ export const NewsProvider = ({ children }) => {
   }, []);
 
   const fetchMyNewsItems = async () => {
-    
     if (!user) {
-      setError('User not authenticated');
+      setError("User not authenticated");
       return;
     }
-    
+
     setLoading(true);
     try {
-      const response = await fetch(combineUrlAndPath(process.env.REACT_APP_NEWS_API,`api.php/user/${user.id}/news`), { headers });
+      const response = await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_NEWS_API,
+          `api.php/user/${user.id}/news`
+        ),
+        { headers }
+      );
       if (!response.ok) {
-        throw new Error('Failed to fetch my news items');
+        throw new Error("Failed to fetch my news items");
       }
       const data = await response.json();
       setMyNewsItems(data);
@@ -71,19 +82,16 @@ export const NewsProvider = ({ children }) => {
 
   const createNewsItem = async (newsItem) => {
     try {
-      const response = await fetch(combineUrlAndPath(process.env.REACT_APP_NEWS_API,`api.php/news`), {
-        method: 'POST',
+      fetch(combineUrlAndPath(process.env.REACT_APP_NEWS_API, `api.php/news`), {
+        method: "POST",
         headers,
         body: JSON.stringify(newsItem),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create news item');
-      }
-
-      const newItem = await response.json();
-      // setNewsItems((prevItems) => [...prevItems, newItem]);
-      fetchMyNewsItems();
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          addToast("News", "News item created", "Success");
+          fetchMyNewsItems();
+        });
     } catch (err) {
       setError(err.message);
     }
@@ -91,18 +99,21 @@ export const NewsProvider = ({ children }) => {
 
   const updateNewsItem = async (id, updatedNewsItem) => {
     try {
-      const response = await fetch(combineUrlAndPath(process.env.REACT_APP_NEWS_API,`api.php/news/${id}`), {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify(updatedNewsItem),
-      });
+      const response = await fetch(
+        combineUrlAndPath(process.env.REACT_APP_NEWS_API, `api.php/news/${id}`),
+        {
+          method: "PUT",
+          headers,
+          body: JSON.stringify(updatedNewsItem),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to update news item');
+        throw new Error("Failed to update news item");
       }
 
       const updatedItem = await response.json();
-      
+
       fetchMyNewsItems();
       // setNewsItems((prevItems) =>
       //   prevItems.map((item) => (item.id === id ? updatedItem : item))
@@ -114,10 +125,21 @@ export const NewsProvider = ({ children }) => {
 
   const getNewsById = (id) => {
     return newsItems.find((item) => item.id === Number(id));
-  }
+  };
 
   return (
-    <NewsContext.Provider value={{ newsItems, myNewsItems, loading, error, createNewsItem, updateNewsItem, fetchMyNewsItems, getNewsById }}>
+    <NewsContext.Provider
+      value={{
+        newsItems,
+        myNewsItems,
+        loading,
+        error,
+        createNewsItem,
+        updateNewsItem,
+        fetchMyNewsItems,
+        getNewsById,
+      }}
+    >
       {children}
     </NewsContext.Provider>
   );

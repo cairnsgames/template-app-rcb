@@ -20,6 +20,8 @@ const LoyaltySystemForm = () => {
     image: "",
   });
 
+  const canSave = !!formData.name && !!formData.description && !!formData.reward_description;
+
   useEffect(() => {
     console.log("---- teant, user", tenant, user);
     const data = formData;
@@ -59,7 +61,7 @@ const LoyaltySystemForm = () => {
     uploadFile,
     isFileSelected,
   } = useFileLoader(
-    "LOYALTY_SYSTEM",
+    "LOYALTY",
     handleFileUploadSuccess,
     handleFileUploadError
   );
@@ -181,7 +183,7 @@ const LoyaltySystemForm = () => {
         <Button
           variant="primary"
           type="submit"
-          disabled={!hasChanges || loading}
+          disabled={!hasChanges || loading || !canSave}
         >
           {system ? "Update" : "Create"}
         </Button>
