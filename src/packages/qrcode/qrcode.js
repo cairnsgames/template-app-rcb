@@ -6,7 +6,7 @@ import { Copy } from "react-bootstrap-icons";
 const QRCode = ({
   link,
   allowCopyToClipboard = false,
-  size = 255,
+  size = 128,
   logoPadding = 4,
   logoWidth = 64,
   logoImage = "favicon.png",
