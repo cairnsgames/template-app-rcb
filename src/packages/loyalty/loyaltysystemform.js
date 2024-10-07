@@ -4,11 +4,13 @@ import { LoyaltyContext } from "./loyaltyprovider";
 import useFileLoader from "../../packages/content/usefileloader";
 import useTenant from "../tenant/context/usetenant";
 import useUser from "../auth/context/useuser";
+import { useToast } from "../../packages/toasts/usetoast";
 
 const LoyaltySystemForm = () => {
   const { createSystem, updateSystem, system } = useContext(LoyaltyContext);
   const { tenant } = useTenant();
   const { user, token } = useUser();
+  const { addToast } = useToast();
 
   const [formData, setFormData] = useState({
     app_id: "",
@@ -20,7 +22,8 @@ const LoyaltySystemForm = () => {
     image: "",
   });
 
-  const canSave = !!formData.name && !!formData.description && !!formData.reward_description;
+  const canSave =
+    !!formData.name && !!formData.description && !!formData.reward_description;
 
   useEffect(() => {
     console.log("---- teant, user", tenant, user);
@@ -47,8 +50,9 @@ const LoyaltySystemForm = () => {
     return fileName;
   };
 
-  const handleFileUploadError = () => {
+  const handleFileUploadError = (error) => {
     console.error("File upload failed");
+    addToast("File upload error", error, "danger" );
   };
 
   const {
@@ -60,11 +64,7 @@ const LoyaltySystemForm = () => {
     fileSelected,
     uploadFile,
     isFileSelected,
-  } = useFileLoader(
-    "LOYALTY",
-    handleFileUploadSuccess,
-    handleFileUploadError
-  );
+  } = useFileLoader("LOYALTY", handleFileUploadSuccess, handleFileUploadError);
 
   useEffect(() => {
     if (system) {
@@ -100,9 +100,22 @@ const LoyaltySystemForm = () => {
     }
 
     if (system) {
-      await updateSystem(system.id, updatedFormData.name, updatedFormData.description, updatedFormData.image, updatedFormData.stampsRequired, updatedFormData.rewardDescription);
+      await updateSystem(
+        system.id,
+        updatedFormData.name,
+        updatedFormData.description,
+        updatedFormData.image,
+        updatedFormData.stampsRequired,
+        updatedFormData.rewardDescription
+      );
     } else {
-      await createSystem(updatedFormData.name, updatedFormData.description, updatedFormData.image, updatedFormData.stampsRequired, updatedFormData.rewardDescription);
+      await createSystem(
+        updatedFormData.name,
+        updatedFormData.description,
+        updatedFormData.image,
+        updatedFormData.stampsRequired,
+        updatedFormData.rewardDescription
+      );
     }
   };
 

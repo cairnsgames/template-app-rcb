@@ -178,14 +178,17 @@ const useFileLoader = (
   };
   const ErrorHandler = () => {
     setLoading(false);
-    if (onError) {
-      onError();
-    }
     setStatus("File upload failed");
+    if (onError) {
+      onError("File upload failed");
+    }
   };
   const AbortHandler = () => {
     setLoading(false);
     setStatus("File upload aborted");
+    if (onError) {
+      onError("File upload aborted");
+    }
   };
 
   return {
