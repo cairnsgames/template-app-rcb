@@ -20,7 +20,7 @@ import BreezoCart from "../packages/breezo/breezocart";
 import Routing from "./routing";
 import useAuth from "../packages/auth/context/useauth";
 import useUser from "../packages/auth/context/useuser";
-import PartnerBar from "./partnerbar";
+import PartnerBar from "./pages/partners/partnerbar";
 import { AssistantProvider } from "./assistant/assistantprovider";
 import FaceDropdown from "./facedropdown.js/facedropdown";
 
