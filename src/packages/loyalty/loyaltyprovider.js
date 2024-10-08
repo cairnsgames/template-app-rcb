@@ -3,10 +3,6 @@ import { useUser } from "../auth/context/useuser";
 import useTenant from "../tenant/context/usetenant";
 import { useToast } from "../../packages/toasts/usetoast";
 
-// api
-export const API_BASE_URL = "http://localhost/cairnsgames/php/loyalty/api.php";
-export const LOYALTY_API = "http://localhost/cairnsgames/php/loyalty";
-
 // LoyaltyContext.js
 export const LoyaltyContext = createContext();
 
@@ -33,7 +29,7 @@ export const LoyaltyProvider = ({ children }) => {
   };
 
   const fetchCustomer = () => {
-    fetch(`${API_BASE_URL}/user/${customerId}`, { headers })
+    fetch(`${process.env.REACT_APP_LOYALTY_API}/api.php/user/${customerId}`, { headers })
       .then((response) => response.json())
       .then((data) => {
         console.log("$$$$ Customer Data", data);
@@ -42,7 +38,7 @@ export const LoyaltyProvider = ({ children }) => {
       .catch((error) => console.error("Error fetching customer:", error));
   };
   const fetchCustomerStamps = () => {
-    fetch(`${API_BASE_URL}/user/${customerId}/cards`, { headers })
+    fetch(`${process.env.REACT_APP_LOYALTY_API}/api.php/user/${customerId}/cards`, { headers })
       .then((response) => response.json())
       .then((data) => {
         console.log("$$$$ Customer Cards", data);
@@ -55,7 +51,7 @@ export const LoyaltyProvider = ({ children }) => {
       );
   };
   const fetchCustomerRewards = () => {
-    fetch(`${API_BASE_URL}/user/${customerId}/rewards`, { headers })
+    fetch(`${process.env.REACT_APP_LOYALTY_API}/api.php/user/${customerId}/rewards`, { headers })
       .then((response) => response.json())
       .then((data) => {
         console.log("$$$$ Customer Rewards", data);
@@ -90,7 +86,7 @@ export const LoyaltyProvider = ({ children }) => {
   }, [selectedSystemId]);
 
   const getUserSystems = (userId = user.id) => {
-    return fetch(`${API_BASE_URL}/user/${userId}/systems`, { headers })
+    return fetch(`${process.env.REACT_APP_LOYALTY_API}/api.php/user/${userId}/systems`, { headers })
       .then((response) => response.json())
       .then((data) => {
         setSystems(data);
@@ -100,13 +96,13 @@ export const LoyaltyProvider = ({ children }) => {
   };
 
   const getSystemCards = (systemId) => {
-    return fetch(`${API_BASE_URL}/system/${systemId}/cards`, { headers }).then(
+    return fetch(`${process.env.REACT_APP_LOYALTY_API}/api.php/system/${systemId}/cards`, { headers }).then(
       (response) => response.json()
     );
   };
 
   const getSystemRewards = (systemId) => {
-    return fetch(`${API_BASE_URL}/system/${systemId}/reward`, { headers }).then(
+    return fetch(`${process.env.REACT_APP_LOYALTY_API}/api.php/system/${systemId}/reward`, { headers }).then(
       (response) => response.json()
     );
   };
@@ -121,7 +117,7 @@ export const LoyaltyProvider = ({ children }) => {
     // Get today's date in ISO format
     const today = new Date().toISOString();
 
-    return fetch(`${API_BASE_URL}/system`, {
+    return fetch(`${process.env.REACT_APP_LOYALTY_API}/api.php/system`, {
       method: "POST",
       headers,
       body: JSON.stringify({
@@ -151,7 +147,7 @@ export const LoyaltyProvider = ({ children }) => {
   };
 
   const createCard = (userId, systemId) => {
-    return fetch(`${API_BASE_URL}/card`, {
+    return fetch(`${process.env.REACT_APP_LOYALTY_API}/api.php/card`, {
       method: "POST",
       headers,
       body: JSON.stringify({
@@ -164,7 +160,7 @@ export const LoyaltyProvider = ({ children }) => {
   };
 
   const addUserStamp = (systemId, id) => {
-    return fetch(`${LOYALTY_API}/addstamp.php?id=${systemId}&user=${id}`, {
+    return fetch(`${process.env.REACT_APP_LOYALTY_API}/addstamp.php?id=${systemId}&user=${id}`, {
       method: "POST",
       headers,
     })
@@ -175,7 +171,7 @@ export const LoyaltyProvider = ({ children }) => {
   };
 
   const redeemUserReward = (systemId, id) => {
-    return fetch(`${LOYALTY_API}/redeemreward.php?id=${systemId}&user=${id}`, {
+    return fetch(`${process.env.REACT_APP_LOYALTY_API}/redeemreward.php?id=${systemId}&user=${id}`, {
       method: "POST",
       headers,
     })
