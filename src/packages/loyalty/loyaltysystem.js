@@ -15,12 +15,9 @@ import UserRewardModal from "./userrewardmodal";
 const Loyalty = () => {
   const {
     system,
-    systems,
-    selectSystem,
     cards,
     rewards,
     redeemUserReward,
-    createNewCard,
     addUserStamp,
     setCustomerId,
     customer,

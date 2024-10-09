@@ -113,6 +113,8 @@ export const NewsProvider = ({ children }) => {
       }
 
       const updatedItem = await response.json();
+      
+      addToast("News", "News item updated", "Success");
 
       fetchMyNewsItems();
       // setNewsItems((prevItems) =>
