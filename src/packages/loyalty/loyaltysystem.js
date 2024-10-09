@@ -87,7 +87,7 @@ const Loyalty = () => {
       <div>
         <h2>Loyalty Program</h2>
         <InfoBox>
-          <InfoBox.Header  varaint="primary">
+          <InfoBox.Header varaint="primary">
             <em>
               <InfoCircleFill /> About Loyalty Programs
             </em>
@@ -144,17 +144,17 @@ const Loyalty = () => {
 
   return (
     <div>
-      <h2>{system.name}</h2>
-      <div className="box border-primary">
-        <Button className="ms-3" onClick={() => setShowCamera(true)}>
-          <Camera />
-        </Button>
+      <div className="d-flex justify-content-between">
+        <h2>{system.name}</h2>
+          <Button className="me-3" onClick={() => setShowCamera(true)}>
+            <Camera />
+          </Button>
       </div>
       {system.image ? (
         <img
           src={getImageSrc(system.image)}
           alt={system.name}
-          style={{ maxWidth: "500px" }}
+          style={{ maxWidth: "100%", height: "auto" }}
         />
       ) : (
         <h2>{system.name}</h2>

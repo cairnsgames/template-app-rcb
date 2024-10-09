@@ -189,7 +189,13 @@ const CapturePhoto = ({
   };
 
   return (
-    <Modal show={show} onHide={onClose}>
+    <Modal
+      show={show}
+      onHide={onClose}
+      dialogClassName="capture-photo-modal"
+      centered
+      fullscreen={window.innerWidth <= 768 ? true : undefined}
+    >
       <Modal.Header closeButton>
         <Modal.Title>Take a Photo</Modal.Title>
       </Modal.Header>
