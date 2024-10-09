@@ -146,20 +146,8 @@ const Loyalty = () => {
     <div>
       <h2>{system.name}</h2>
       <div className="box border-primary">
-        <Button
-          variant="outline-primary"
-          onClick={() => createNewCard(user.id, selectedSystemId)}
-        >
-          Create New Card
-        </Button>
         <Button className="ms-3" onClick={() => setShowCamera(true)}>
           <Camera />
-        </Button>
-        <Button
-          className="ms-3"
-          onClick={() => addToast("Toast", "Formatted Text", "success", true)}
-        >
-          Toast
         </Button>
       </div>
       {system.image ? (

@@ -22,6 +22,8 @@ export const LoyaltyProvider = ({ children }) => {
   const { user, token } = useUser();
   const { addToast } = useToast();
 
+  console.log("$$$$ LoyaltyProvider", user, token, process.env.REACT_APP_LOYALTY_API);
+
   const headers = {
     "Content-Type": "application/json",
     APP_ID: tenant,
