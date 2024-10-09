@@ -82,15 +82,17 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose, onId, useRearCamera = 
 
   const startVideoStream = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
+      const constraints = {
         video: { facingMode: cameraFacingMode },
-      });
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
       }
     } catch (err) {
       setError("Error accessing camera");
+      console.error("Error accessing camera", err);
     }
   };
 
