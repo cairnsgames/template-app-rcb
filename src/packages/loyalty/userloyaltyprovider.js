@@ -1,10 +1,10 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useUser } from '../auth/context/useuser';
 import { useTenant } from '../tenant/context/usetenant';
+import { combineUrlAndPath } from '../../functions/combineurlandpath';
 const UserLoyaltyContext = createContext();
 
 export const useUserLoyalty = () => useContext(UserLoyaltyContext);
-export const API_BASE_URL = "http://localhost/cairnsgames/php/loyalty/api.php";
 
 export const UserLoyaltyProvider = ({ children }) => {
   const { user, token } = useUser();
@@ -25,7 +25,7 @@ export const UserLoyaltyProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      fetch(`${API_BASE_URL}/user/${user.id}/cards`, { headers })
+      fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/user/${user.id}/cards`), { headers })
         .then(response => response.json())
         .then(data => setCards(data))
         .catch(error => console.error('Error fetching cards:', error));
@@ -39,7 +39,7 @@ export const UserLoyaltyProvider = ({ children }) => {
 
   useEffect(() => {
     if (selectedCard) {      
-      fetch(`${API_BASE_URL}/card/${selectedCard}/stamps`, { headers })
+      fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `/card/${selectedCard}/stamps`), { headers })
         .then(response => response.json())
         .then(data => setStamps(data))
         .catch(error => console.error('Error fetching related stamps:', error));
