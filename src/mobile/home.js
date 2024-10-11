@@ -6,7 +6,7 @@ import QRCode from "../packages/qrcode/qrcode";
 
 const Home = () => {
   return (
-    <Container fluid className="px-2" style={{ overflow: "hidden" }}>
+    <Container fluid className="px-2">
       <Row>
         <Col xs={12} md={6} lg={4} xl={3}>
           <FloatingCard className="m-3 m-3" image="./whitedance.png">

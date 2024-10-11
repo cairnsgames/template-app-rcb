@@ -28,7 +28,9 @@ import FaceDropdown from "./facedropdown.js/facedropdown";
 const MobileMain = () => {
   const { hasAccess } = useUser();
 
-  return   <Container fluid className="app-container">
+  const mobile = (/Mobi|Android/i.test(navigator.userAgent));
+
+  return   <Container fluid className={`app-container ${mobile ? "mobile" : ""}`}>
     <header className="app-header">
       <Navbar className="px-3" bg="primary" data-bs-theme="dark">
         <Container>
