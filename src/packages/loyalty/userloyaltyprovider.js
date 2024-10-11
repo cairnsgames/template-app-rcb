@@ -30,7 +30,7 @@ export const UserLoyaltyProvider = ({ children }) => {
         .then(data => setCards(data))
         .catch(error => console.error('Error fetching cards:', error));
       
-      fetch(`${API_BASE_URL}/user/${user.id}/rewards`, { headers })
+      fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/user/${user.id}/rewards`), { headers })
         .then(response => response.json())
         .then(data => setRewards(data.filter(reward => !reward.date_redeemed)))
         .catch(error => console.error('Error fetching rewards:', error));

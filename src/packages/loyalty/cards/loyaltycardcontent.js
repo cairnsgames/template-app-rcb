@@ -11,6 +11,12 @@ const RewardMessage = ({ reward, item }) => {
     return null;
   }
 
+  if (!item.reward_description) {
+    // No reward description to display
+    return "";
+  }
+
+  console.log("!!!! RewardMessage", reward, item);
   const description = item.reward_description.trim();
 
   // Regular expression to check if the description starts with an article
