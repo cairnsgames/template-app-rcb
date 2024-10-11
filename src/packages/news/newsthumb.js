@@ -2,6 +2,7 @@ import React from "react";
 import HighlightText from "./highlighttext";
 import { Pencil } from "react-bootstrap-icons";
 import "./newsthumb.scss";
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 const NewsThumb = ({ item, onClick, onEdit }) => {
   if (item.id === 10) {
@@ -14,7 +15,7 @@ const NewsThumb = ({ item, onClick, onEdit }) => {
           className="news-thumb-image"
           data-original={item.image}
           alt={item.title}
-          src={`http://localhost/files/${item.image_url}`}
+          src={combineUrlAndPath(process.env.REACT_APP_FILES,`${item.image_url}`)}
         />
       )}
       <div

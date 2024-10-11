@@ -19,7 +19,7 @@ const FullNewsItem = ({ id }) => {
   return (
     <div className="full-news-item">
       {item.image_url && (
-        <img src={`http://localhost/files/${item.image_url}`} alt={item.title} className="full-news-image" />
+        <img src={combineUrlAndPath(process.env.REACT_APP_FILES,`${item.image_url}`)} alt={item.title} className="full-news-image" />
       )}
       <h2>
         <HighlightText text={item.title} />
