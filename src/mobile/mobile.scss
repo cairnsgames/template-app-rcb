@@ -5,6 +5,13 @@
   display: flex;
   flex-direction: column;
   height: 100vh; // Full viewport height
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (max-width: 767px) {
+  .app-container {
+    padding-bottom: env(safe-area-inset-bottom, 20px); // Fallback to 20px if the device doesn't support safe area insets
+  }
 }
 
 .app-header, .app-footer {

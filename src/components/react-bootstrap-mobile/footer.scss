@@ -6,13 +6,6 @@
   border-top: 1px solid var(--bs-primary);
   z-index: 1000;
   overflow: visible;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-@media (max-width: 767px) {
-  .footer {
-    padding-bottom: env(safe-area-inset-bottom, 20px); // Fallback to 20px if the device doesn't support safe area insets
-  }
 }
 
 .central-icon {
