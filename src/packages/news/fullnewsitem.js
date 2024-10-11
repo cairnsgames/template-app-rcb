@@ -3,6 +3,7 @@ import "./fullnewsitem.scss";
 import { useNews } from "./newscontext";
 import HighlightText, { formattedText } from "./highlighttext";
 import { convertToMarkdown } from "../../functions/converttomarkdown";
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 const Markdown = React.lazy(() => import("react-markdown"));
 
