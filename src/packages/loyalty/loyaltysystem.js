@@ -3,7 +3,7 @@ import { LoyaltyContext, LoyaltyProvider } from "./loyaltyprovider";
 import { useUser } from "../auth/context/useuser";
 import StampsBarChart from "./stampsbarchart";
 import LoyaltyRewards from "./loyaltyrewards";
-import { Button, Collapse } from "react-bootstrap";
+import { Button, Collapse, Spinner } from "react-bootstrap";
 import { getImageSrc } from "../../../packages/zharo/src/getimagesrc";
 import { Camera, InfoCircleFill } from "react-bootstrap-icons";
 import CapturePhoto from "../photo/capturephoto";
@@ -14,6 +14,7 @@ import UserRewardModal from "./userrewardmodal";
 
 const Loyalty = () => {
   const {
+    loading,
     system,
     cards,
     rewards,
@@ -76,9 +77,7 @@ const Loyalty = () => {
     console.log("$$$ QR Code captured", qrCode);
     setShowCamera(false);
   };
-
-  console.log("Checking if there is a system", system);
-
+  
   if (!system) {
     return (
       <div>
@@ -137,6 +136,10 @@ const Loyalty = () => {
         <LoyaltySystemForm />
       </div>
     );
+  }
+
+  if (loading) {
+    return <Spinner />;
   }
 
   return (
