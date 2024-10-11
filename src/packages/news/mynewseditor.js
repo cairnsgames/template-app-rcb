@@ -33,11 +33,13 @@ const MyNewsEditor = ({ id, onClose }) => {
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;
     setImageUrl(`${process.env.REACT_APP_CONTENT_API}/uploads/${fileName}`);
+    addToast("File upload", "success", "success");
     return fileName;
   };
 
   const handleFileUploadError = () => {
     console.error("File upload failed");
+    addToast("File upload", "failed", "danger");
   };
 
   const {
