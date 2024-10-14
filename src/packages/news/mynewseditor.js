@@ -11,6 +11,8 @@ import useFileLoader from "../content/usefileloader";
 import "./mynewseditor.scss";
 import { extractFileName } from "../../functions/extractfilename";
 import Div from "../../components/react-bootstrap-mobile/div";
+import { useToast } from "../toasts/usetoast";
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 const MyNewsEditor = ({ id, onClose }) => {
   const { createNewsItem, updateNewsItem, myNewsItems, fetchMyNewsItems } =
@@ -19,8 +21,10 @@ const MyNewsEditor = ({ id, onClose }) => {
   const [body, setBody] = useState("");
   const [date, setDate] = useState("");
   const [expires, setExpires] = useState("");
-  const [imageUrl, setImageUrl] = useState(""); // Store the image URL
-  const [hasChanges, setHasChanges] = useState(false); // Track if there are changes
+  const [imageUrl, setImageUrl] = useState("");
+  const [hasChanges, setHasChanges] = useState(false);
+
+  const { addToast } = useToast();
 
   const handleEditorClose = () => {
     if (onClose) {
@@ -32,7 +36,7 @@ const MyNewsEditor = ({ id, onClose }) => {
 
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;
-    setImageUrl(`${process.env.REACT_APP_CONTENT_API}/uploads/${fileName}`);
+    setImageUrl(combineUrlAndPath(process.env.REACT_APP_FILES, `${fileName}`));
     addToast("File upload", "success", "success");
     return fileName;
   };
@@ -90,7 +94,7 @@ const MyNewsEditor = ({ id, onClose }) => {
     if (isFileSelected) {
       const fileName = await uploadFile(fileInputRef.current.files);
       newsItem.image_url = extractFileName(
-        `${process.env.REACT_APP_CONTENT_API}/uploads/${fileName}`
+        combineUrlAndPath(process.env.REACT_APP_FILES, fileName)
       );
     }
 

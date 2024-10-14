@@ -28,7 +28,7 @@ function ProfileForm() {
 
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;
-    const avatarUrl = `${process.env.REACT_APP_CONTENT_API}/uploads/${fileName}`;
+    const avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, fileName);
     setProfile({ ...profile, avatar: avatarUrl });
     return fileName;
   };
@@ -56,7 +56,7 @@ function ProfileForm() {
 
     if (isFileSelected) {
       const fileName = await uploadFile(fileInputRef.current.files);
-      avatarUrl = `${process.env.REACT_APP_CONTENT_API}/uploads/${fileName}`;
+      avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, fileName);
     }
 
     // Proceed with the API call to save the user profile

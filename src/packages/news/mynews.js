@@ -3,11 +3,12 @@ import { Button, DropdownButton, Dropdown, Row, Col } from "react-bootstrap";
 import { useNews } from "./newscontext";
 import NewsThumb from "./newsthumb";
 import { useUser } from "../auth/context/useuser";
+import LoadingSpinner from "../../components/spinner/spinner";
 
 const MyNewsEditor = React.lazy(() => import("./mynewseditor"));
 
 const MyNews = () => {
-  const { myNewsItems, fetchMyNewsItems } = useNews();
+  const { myNewsItems, fetchMyNewsItems, loading } = useNews();
   const { user } = useUser();
   const [showEditor, setShowEditor] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
@@ -53,6 +54,10 @@ const MyNews = () => {
     }
     return 0;
   });
+
+  if (loading) {
+    return <div><LoadingSpinner animation="border" /></div>;
+  }
 
   return (
     <div className="my-news">

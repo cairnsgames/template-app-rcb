@@ -46,7 +46,7 @@ const LoyaltySystemForm = () => {
 
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;
-    setImageUrl(`${process.env.REACT_APP_CONTENT_API}/uploads/${fileName}`);
+    setImageUrl(combineUrlAndPath(process.env.REACT_APP_FILES, fileName));
     return fileName;
   };
 

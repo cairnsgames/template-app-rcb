@@ -34,6 +34,7 @@ export const NewsProvider = ({ children }) => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           combineUrlAndPath(process.env.REACT_APP_NEWS_API, `api.php/news`),
           { headers }
@@ -89,6 +90,7 @@ export const NewsProvider = ({ children }) => {
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log("*** News *** News item created", data);
           addToast("News", "News item created", "Success");
           fetchMyNewsItems();
         });
@@ -117,9 +119,6 @@ export const NewsProvider = ({ children }) => {
       addToast("News", "News item updated", "Success");
 
       fetchMyNewsItems();
-      // setNewsItems((prevItems) =>
-      //   prevItems.map((item) => (item.id === id ? updatedItem : item))
-      // );
     } catch (err) {
       setError(err.message);
     }
