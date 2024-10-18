@@ -12,62 +12,60 @@ jobs:
       # Checkout repository only once
       - uses: actions/checkout@v4
       
-      # Set up Node.js environment and install dependencies once in the root folder
+      # Set up Node.js environment and install dependencies in the root folder (just.dance is root)
       - uses: actions/setup-node@v3
         with:
           node-version: 20
       - name: Install Dependencies
         run: npm ci
-        working-directory: ./just.dance
 
-      # Build and deploy for JuztDance
+      # Build and deploy for JuztDance (just.dance is root)
       - name: Build JuztDance Site
         run: npm run build
-        working-directory: ./just.dance
       - name: Deploy JuztDance Site
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{ vars.JD_SERVER }}
           username: ${{ vars.JD_FTP_USERNAME }}
           password: ${{ secrets.JD_FTP_PASSWORD }}
-          local-dir: ./just.dance/dist/
+          local-dir: ./dist/
           server-dir: /
 
       # Build and deploy for Zharo mini project
       - name: Build Zharo
         run: npm run build
-        working-directory: ./just.dance/packages/zharo
+        working-directory: ./packages/zharo
       - name: Deploy Zharo
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{ vars.CG_SERVER }}
           username: ${{ vars.CG_FTP_USERNAME }}
           password: ${{ secrets.CG_FTP_PASSWORD }}
-          local-dir: ./just.dance/packages/zharo/dist/
+          local-dir: ./packages/zharo/dist/
           server-dir: /zharo/
 
       # Deploy Zharo test directory
       - name: Modify and Deploy Zharo Test Directory
         run: |
-          sed -i 's|../dist/zharo.js|https://cairnsgames.co.za/zharo/zharo.js|g' ./just.dance/packages/zharo/test/index.html
+          sed -i 's|../dist/zharo.js|https://cairnsgames.co.za/zharo/zharo.js|g' ./packages/zharo/test/index.html
       - name: Deploy Modified Test Directory
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{ vars.CG_SERVER }}
           username: ${{ vars.CG_FTP_USERNAME }}
           password: ${{ secrets.CG_FTP_PASSWORD }}
-          local-dir: ./just.dance/packages/zharo/test/
+          local-dir: ./packages/zharo/test/
           server-dir: /zharo/test/
 
       # Build and deploy for Kloko mini project
       - name: Build Kloko
         run: npm run build
-        working-directory: ./just.dance/packages/kloko
+        working-directory: ./packages/kloko
       - name: Deploy Kloko
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{ vars.CG_SERVER }}
           username: ${{ vars.CG_FTP_USERNAME }}
           password: ${{ secrets.CG_FTP_PASSWORD }}
-          local-dir: ./just.dance/packages/kloko/dist/
+          local-dir: ./packages/kloko/dist/
           server-dir: /kloko/
