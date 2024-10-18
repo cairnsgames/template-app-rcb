@@ -18,7 +18,7 @@ jobs:
 
       - name: Build JuztDance Site
         run: npm run build
-        working-directory: ./projects/just.dance
+        working-directory: ./projects/juzt.dance
 
       - name: Deploy JuztDance Site
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
