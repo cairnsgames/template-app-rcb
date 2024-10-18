@@ -6,26 +6,14 @@ on:
       - main
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout repository once and install root dependencies
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-      - name: Install Root Dependencies
-        run: npm ci
-        working-directory: ./projects/just.dance  # Set correct working directory
-
   build-juztdance:
     runs-on: ubuntu-latest
-    needs: setup  # This job depends on the setup job finishing
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Install JuztDance Dependencies
+      # Install dependencies and build for JuztDance project
+      - name: Install Dependencies
         run: npm ci
         working-directory: ./projects/just.dance
 
@@ -44,12 +32,12 @@ jobs:
 
   build-zharo:
     runs-on: ubuntu-latest
-    needs: setup  # Wait for setup job to complete
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Zharo Dependencies
+      # Install dependencies and build for Zharo project
+      - name: Install Dependencies
         run: npm ci
         working-directory: ./packages/zharo
 
@@ -73,6 +61,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Modify and deploy Zharo test directory
       - name: Modify and Deploy Zharo Test Directory
         run: |
           sed -i 's|../dist/zharo.js|https://cairnsgames.co.za/zharo/zharo.js|g' ./packages/zharo/test/index.html
@@ -87,12 +76,12 @@ jobs:
 
   build-kloko:
     runs-on: ubuntu-latest
-    needs: setup  # Waits for setup job to complete
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Kloko Dependencies
+      # Install dependencies and build for Kloko project
+      - name: Install Dependencies
         run: npm ci
         working-directory: ./packages/kloko
 
