@@ -9,42 +9,47 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      # Checkout repository only once and install dependencies
+      # Checkout repository once and install root dependencies
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - name: Install Dependencies
+      - name: Install Root Dependencies
         run: npm ci
+        working-directory: ./projects/just.dance  # Set correct working directory
 
   build-juztdance:
     runs-on: ubuntu-latest
-    needs: setup  # Ensures this job waits for the setup job to finish
+    needs: setup  # This job depends on the setup job finishing
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Install Dependencies
+      
+      - name: Install JuztDance Dependencies
         run: npm ci
+        working-directory: ./projects/just.dance
+
       - name: Build JuztDance Site
         run: npm run build
+        working-directory: ./projects/just.dance
+
       - name: Deploy JuztDance Site
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{ vars.JD_SERVER }}
           username: ${{ vars.JD_FTP_USERNAME }}
           password: ${{ secrets.JD_FTP_PASSWORD }}
-          local-dir: ./dist/
+          local-dir: ./projects/just.dance/dist/
           server-dir: /
 
   build-zharo:
     runs-on: ubuntu-latest
-    needs: setup  # Waits for setup job to complete
+    needs: setup  # Wait for setup job to complete
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Dependencies
+      - name: Install Zharo Dependencies
         run: npm ci
         working-directory: ./packages/zharo
 
@@ -87,7 +92,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Dependencies
+      - name: Install Kloko Dependencies
         run: npm ci
         working-directory: ./packages/kloko
 
