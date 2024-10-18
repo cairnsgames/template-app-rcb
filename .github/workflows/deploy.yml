@@ -26,7 +26,7 @@ jobs:
           server: ${{ vars.JD_SERVER }}
           username: ${{ vars.JD_FTP_USERNAME }}
           password: ${{ secrets.JD_FTP_PASSWORD }}
-          local-dir: ./projects/just.dance/dist/
+          local-dir: ./projects/juzt.dance/dist/
           server-dir: /
 
   build-zharo:
