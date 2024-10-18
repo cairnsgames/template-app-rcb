@@ -6,20 +6,21 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  setup:
     runs-on: ubuntu-latest
     steps:
-      # Checkout repository only once
+      # Checkout repository only once and install dependencies
       - uses: actions/checkout@v4
-      
-      # Set up Node.js environment and install dependencies in the root folder (just.dance is root)
       - uses: actions/setup-node@v3
         with:
           node-version: 20
       - name: Install Dependencies
         run: npm ci
 
-      # Build and deploy for JuztDance (just.dance is root)
+  build-juztdance:
+    runs-on: ubuntu-latest
+    needs: setup   # Ensures this job waits for the setup job to finish
+    steps:
       - name: Build JuztDance Site
         run: npm run build
       - name: Deploy JuztDance Site
@@ -31,7 +32,10 @@ jobs:
           local-dir: ./dist/
           server-dir: /
 
-      # Build and deploy for Zharo mini project
+  build-zharo:
+    runs-on: ubuntu-latest
+    needs: setup   # This job will also wait for the setup to finish
+    steps:
       - name: Build Zharo
         run: npm run build
         working-directory: ./packages/zharo
@@ -44,7 +48,10 @@ jobs:
           local-dir: ./packages/zharo/dist/
           server-dir: /zharo/
 
-      # Deploy Zharo test directory
+  deploy-zharo-test:
+    runs-on: ubuntu-latest
+    needs: build-zharo   # This job depends on build-zharo to finish first
+    steps:
       - name: Modify and Deploy Zharo Test Directory
         run: |
           sed -i 's|../dist/zharo.js|https://cairnsgames.co.za/zharo/zharo.js|g' ./packages/zharo/test/index.html
@@ -57,7 +64,10 @@ jobs:
           local-dir: ./packages/zharo/test/
           server-dir: /zharo/test/
 
-      # Build and deploy for Kloko mini project
+  build-kloko:
+    runs-on: ubuntu-latest
+    needs: setup   # Wait for setup before building Kloko
+    steps:
       - name: Build Kloko
         run: npm run build
         working-directory: ./packages/kloko
