@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Dropdown, Navbar, Nav, Image } from "react-bootstrap";
 import useAuth from "../../packages/auth/context/useauth";
 import useUser from "../../packages/auth/context/useuser";
+import { Person, PersonCircle } from "react-bootstrap-icons";
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <div
@@ -24,12 +25,7 @@ const FaceDropdown = () => {
   return (
     <Dropdown align="end">
       <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-        <Image
-          roundedCircle
-          src="person1.jpeg"
-          style={{ height: "32px", cursor: "pointer" }}
-          className="ms-2"
-        />
+        <PersonCircle size={24} className="ms-3" style={{color: "white"}} />
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {user && 

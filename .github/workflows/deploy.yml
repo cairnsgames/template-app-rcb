@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-main-site:
+  build-juzt-dance:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,15 +14,17 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+        working-directory: /projects/just.dance
       - name: Build Main Site
         run: npm run build
+        working-directory: /projects/just.dance
       - name: Deploy Main Site
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{ vars.CG_SERVER }}
           username: ${{ vars.CG_FTP_USERNAME }}
           password: ${{ secrets.CG_FTP_PASSWORD }}
-          local-dir: ./dist/
+          local-dir: /projects/just.dance/dist/
           server-dir: ${{ vars.SERVER_DIR }}
       - name: Deploy JuztDance Site
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
@@ -30,8 +32,34 @@ jobs:
           server: ${{ vars.JD_SERVER }}
           username: ${{ vars.JD_FTP_USERNAME }}
           password: ${{ secrets.JD_FTP_PASSWORD }}
-          local-dir: ./dist/
+          local-dir: /projects/just.dance/dist/
           server-dir: /
+  # build-main-site:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 20
+  #     - run: npm ci
+  #     - name: Build Main Site
+  #       run: npm run build
+  #     - name: Deploy Main Site
+  #       uses: SamKirkland/FTP-Deploy-Action@4.3.3
+  #       with:
+  #         server: ${{ vars.CG_SERVER }}
+  #         username: ${{ vars.CG_FTP_USERNAME }}
+  #         password: ${{ secrets.CG_FTP_PASSWORD }}
+  #         local-dir: ./dist/
+  #         server-dir: ${{ vars.SERVER_DIR }}
+  #     - name: Deploy JuztDance Site
+  #       uses: SamKirkland/FTP-Deploy-Action@4.3.3
+  #       with:
+  #         server: ${{ vars.JD_SERVER }}
+  #         username: ${{ vars.JD_FTP_USERNAME }}
+  #         password: ${{ secrets.JD_FTP_PASSWORD }}
+  #         local-dir: ./dist/
+  #         server-dir: /
 
   build-zharo:
     runs-on: ubuntu-latest

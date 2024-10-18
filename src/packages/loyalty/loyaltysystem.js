@@ -3,7 +3,7 @@ import { LoyaltyContext, LoyaltyProvider } from "./loyaltyprovider";
 import { useUser } from "../auth/context/useuser";
 import StampsBarChart from "./stampsbarchart";
 import LoyaltyRewards from "./loyaltyrewards";
-import { Button, Collapse, Spinner } from "react-bootstrap";
+import { Button  } from "react-bootstrap";
 import { getImageSrc } from "../../../packages/zharo/src/getimagesrc";
 import { Camera, InfoCircleFill } from "react-bootstrap-icons";
 import CapturePhoto from "../photo/capturephoto";
@@ -11,6 +11,7 @@ import { useToast } from "../../packages/toasts/usetoast";
 import LoyaltySystemForm from "./loyaltysystemform";
 import InfoBox from "../../components/infobox/infobox";
 import UserRewardModal from "./userrewardmodal";
+import LoadingSpinner from "../../components/spinner/spinner";
 
 const Loyalty = () => {
   const {
@@ -139,7 +140,7 @@ const Loyalty = () => {
   }
 
   if (loading) {
-    return <Spinner />;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -154,7 +155,7 @@ const Loyalty = () => {
         <img
           src={getImageSrc(system.image)}
           alt={system.name}
-          style={{ maxWidth: "100%", height: "auto" }}
+          style={{ maxWidth: "500px", height: "auto" }}
         />
       ) : (
         <h2>{system.name}</h2>

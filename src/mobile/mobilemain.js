@@ -10,6 +10,8 @@ import {
   InfoCircle,
   CalendarWeek,
   BalloonHeart,
+  GeoAlt,
+  Balloon,
 } from "react-bootstrap-icons";
 
 import "./mobile.scss";
@@ -71,7 +73,7 @@ const MobileMain = () => {
       </Footer.Icon>
       <Footer.Center>
         <Footer.Icon href="#events">
-          <BalloonHeart size={24} />
+          <Balloon size={24} />
         </Footer.Icon>
         <Footer.Icon href="#news">
           <InfoCircle size={24} />
@@ -83,7 +85,7 @@ const MobileMain = () => {
           <CalendarWeek size={24} />
         </Footer.Icon>
         <Footer.Icon href="#news/mynews">
-          <List size={24} />
+          <GeoAlt size={24} />
         </Footer.Icon>
       </Footer.Center>
     </Footer>

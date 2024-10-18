@@ -4,11 +4,11 @@ import PageCentered from "../../parts/pagelayouts/pagecentered";
 import useUser from "../../packages/auth/context/useuser";
 
 const QRCodePage = (props) => {
-  const { user } = useUser();
+  const { user, fullId } = useUser();
   if (!user) {
     return <div>Loading...</div>;
   }
-  const text = `https://juzt.dance/#referral?id=${user.id}`;
+  const text = `https://juzt.dance/#referral?id=${fullId}`;
   return (
     <PageCentered>
       <h2>Your QR Code</h2>
@@ -33,7 +33,7 @@ const QRCodePage = (props) => {
       </div>
       
       <div className="mb-3">
-          <em>Your customer ID is <strong>{user.id}</strong> if our partners have trouble scaning your code.</em>
+          <em>Your customer ID is <strong>{fullId}</strong> if our partners have trouble scaning your code.</em>
         </div>
     </PageCentered>
   );

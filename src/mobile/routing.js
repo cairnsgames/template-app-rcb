@@ -48,6 +48,13 @@ const Routing = () => {
       <Route is={"logout"}>
         <Home />
       </Route>
+      <Route is={"referral"}>        
+        <MobileAuth mode="register" onSuccess={goHome} onClose={goHome} />
+      </Route>
+      <Route is={"register"}>        
+        <MobileAuth mode="register" onSuccess={goHome} onClose={goHome} />
+      </Route>
+      
       <Route is={"home"}>{isLoggedIn ? <Home /> : <LandingPage />}</Route>
       <Route is={"landing"}>
         <LandingPage />

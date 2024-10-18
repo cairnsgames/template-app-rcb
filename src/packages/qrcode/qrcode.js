@@ -1,6 +1,6 @@
 import { QRCode as QRCodeLogo } from "react-qrcode-logo";
 import "./qrcode.scss";
-import { Colors } from "../../colors";
+import { Colors } from "../../styles/colors";
 import { Copy } from "react-bootstrap-icons";
 
 const QRCode = ({
@@ -32,7 +32,7 @@ const QRCode = ({
         logoPadding={logoPadding}
         logoWidth={logoWidth}
         logoPaddingStyle="circle" // square
-        qrStyle="dots"
+        // qrStyle="dots"
         className="qrcode"
         quietZone={2}
       />

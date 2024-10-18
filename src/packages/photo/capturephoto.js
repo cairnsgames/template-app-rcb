@@ -8,24 +8,35 @@ function getIdFromUrl(url) {
     console.error("$$$ No URL provided");
     return null;
   }
+  
   // Regex to match id parameter after the # or in the URL path
-  const hashRegex = /[#&?]id=(\d+)/; // Matches id=21 after the #
-  const pathRegex = /\/(\d+)(?:\/)?$/; // Matches /21 at the end of the URL path
+  const hashRegex = /[#&?]id=(\d+)/; // Matches id=870001 after the #
+  const pathRegex = /\/(\d+)(?:\/)?$/; // Matches /870001 at the end of the URL path
 
   // Check for id in the fragment or query parameters
   const hashMatch = url.match(hashRegex);
   if (hashMatch) {
-    return hashMatch[1];
+    return extractOriginalId(hashMatch[1]);
   }
 
   // Check for id in the URL path
   const pathMatch = url.match(pathRegex);
   if (pathMatch) {
-    return pathMatch[1];
+    return extractOriginalId(pathMatch[1]);
   }
 
   // Return null if id is not found
   return null;
+}
+
+function extractOriginalId(expandedId) {
+  if (expandedId.length <= 4) {
+    // If the ID is less than or equal to 4 digits, it's the original ID
+    return expandedId;
+  }
+
+  // The first two digits are the checksum, the rest is the original ID
+  return expandedId.slice(2); // Return only the original ID (after checksum)
 }
 
 const CapturePhoto = ({
