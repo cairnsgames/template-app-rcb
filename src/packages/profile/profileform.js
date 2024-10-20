@@ -4,6 +4,7 @@ import { Save } from 'react-bootstrap-icons';
 import useUser from '../auth/context/useuser';
 import UserPropertyForm from './userpropertyform';
 import useFileLoader from '../content/usefileloader';
+import { combineUrlAndPath } from '../../functions/combineurlandpath';
 
 function ProfileForm() {
   const { user } = useUser();

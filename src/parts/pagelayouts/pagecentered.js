@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 // middle = horiz and vertical center
 // center = horiz center
 const PageCentered = ({ className = "", style = {}, position, children }) => {
-  const classes = "pt-1";
+  const classes = "p-2 pt-1";
   return (
     <Container
       fluid

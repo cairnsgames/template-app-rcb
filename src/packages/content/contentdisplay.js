@@ -14,6 +14,7 @@ import ImageEdit from "./edit/imageedit";
 import useTenant from "../tenant/context/usetenant";
 import useUser from "../auth/context/useuser";
 import { getImageSrc } from "./getimagesrc";
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 /* Item Types
     1. Image

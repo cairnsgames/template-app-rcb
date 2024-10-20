@@ -5,6 +5,7 @@ import useFileLoader from "../../packages/content/usefileloader";
 import useTenant from "../tenant/context/usetenant";
 import useUser from "../auth/context/useuser";
 import { useToast } from "../../packages/toasts/usetoast";
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 const LoyaltySystemForm = () => {
   const { createSystem, updateSystem, system } = useContext(LoyaltyContext);

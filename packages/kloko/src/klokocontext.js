@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
+import { combineUrlAndPath } from "../../../src/functions/combineurlandpath";
 
 export const KlokoContext = createContext();
 

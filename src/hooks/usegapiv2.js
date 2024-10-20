@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { combineUrlAndPath } from "../functions/combineurlandpath";
 
 const templateString = (str, params) => {
   if (!params) return str;
