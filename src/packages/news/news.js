@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNews } from './newscontext';
+import { useNews } from './context/newscontext';
 import NewsItem from './newsitem';
 import NewsThumb from './newsthumb';
 import './news.scss';
@@ -13,6 +13,10 @@ const News = ({ layout = 'default' }) => {
 
   return (
     <div className="news">
+      
+      <div className="text-center">
+        <h3>Latest News</h3>
+      </div>
       {newsItems.map(item => (
         layout === 'custom' 
           ? <NewsThumb key={item.id} item={item} onClick={() => handleItemClick(item.id)} />

@@ -6,7 +6,7 @@ import {
   InputGroup,
   CloseButton,
 } from "react-bootstrap";
-import { useNews } from "./newscontext";
+import { useNews } from "./context/newscontext";
 import useFileLoader from "../content/usefileloader";
 import "./mynewseditor.scss";
 import { extractFileName } from "../../functions/extractfilename";
@@ -56,10 +56,6 @@ const MyNewsEditor = ({ id, onClose }) => {
     uploadFile,
     isFileSelected,
   } = useFileLoader("NEWS", handleFileUploadSuccess, handleFileUploadError);
-
-  useEffect(() => {
-    fetchMyNewsItems();
-  }, []);
 
   useEffect(() => {
     if (id) {

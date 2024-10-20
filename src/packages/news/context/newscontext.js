@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useUser } from "../auth/context/useuser";
-import useTenant from "../tenant/context/usetenant";
-import { combineUrlAndPath } from "../../functions/combineurlandpath";
-import { useToast } from "../../packages/toasts/usetoast";
+import { useUser } from "../../auth/context/useuser";
+import useTenant from "../../tenant/context/usetenant";
+import { combineUrlAndPath } from "../../../functions/combineurlandpath";
+import { useToast } from "../../toasts/usetoast";
 
 const NewsContext = createContext();
 
@@ -55,6 +55,7 @@ export const NewsProvider = ({ children }) => {
   }, []);
 
   const fetchMyNewsItems = async () => {
+    console.log("*** News *** Fetching my news items");
     if (!user) {
       setError("User not authenticated");
       return;

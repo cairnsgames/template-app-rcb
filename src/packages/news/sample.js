@@ -1,6 +1,6 @@
 import React from "react";
 import News from "./news";
-import { NewsProvider } from "./newscontext";
+import { NewsProvider } from "./context/newscontext";
 import Router, { Route, Default } from "../router/router";
 import FullNewsItem from "./fullnewsitem";
 import PageCentered from "../../parts/pagelayouts/pagecentered";

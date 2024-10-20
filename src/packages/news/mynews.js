@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { Button, DropdownButton, Dropdown, Row, Col } from "react-bootstrap";
-import { useNews } from "./newscontext";
+import { useNews } from "./context/newscontext";
 import NewsThumb from "./newsthumb";
 import { useUser } from "../auth/context/useuser";
 import LoadingSpinner from "../../components/spinner/spinner";

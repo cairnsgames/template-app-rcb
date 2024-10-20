@@ -47,10 +47,35 @@ export const useUser = () => {
   };
   const fullId = getIdWithChecksum();
 
+  const getIdFromFullId = (fullId) => {
+    if (!fullId || fullId.length < 5) {
+      return undefined;
+    }
+  
+    // Extract the checksum (first two characters) and the id (remaining part)
+    const checksum = parseInt(fullId.slice(0, 2));
+    const idStr = fullId.slice(2);
+  
+    // Recalculate checksum for the id
+    let sum = 0;
+    for (let i = 0; i < idStr.length; i++) {
+      sum += parseInt(idStr[i]);
+    }
+    let recalculatedChecksum = (sum % 90) + 10;
+  
+    // Compare checksums
+    if (checksum === recalculatedChecksum) {
+      return idStr;
+    } else {
+      return undefined;
+    }
+  };
+
   return {
     token,
     user,
     fullId,
+    getIdFromFullId,
     isLoggedIn,
     hasAccess,
     properties,
