@@ -39,7 +39,11 @@ const AuthenticationProvider = (props) => {
   }, [token]);
 
   useEffect(() => {
+    if (!user?.id) {
+      return;
+    }
     fetchProperties();
+    console.log("Welcome User", user);
   }, [user]);
 
   const validateToken = (token) => {
@@ -112,7 +116,6 @@ const AuthenticationProvider = (props) => {
     }
   };
 
-  
   useEventing("permissions", "reload", reloadPermissions);
 
   const getGoogleUser = useCallback(async () => {
@@ -499,6 +502,35 @@ const AuthenticationProvider = (props) => {
     }
   };
 
+  const saveUser = (newUser) => {
+    // fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API, `user/${user.id}`),
+    fetch(combineUrlAndPath("http://localhost/cairnsgames/php/auth", `api.php/user/${user.id}`),
+      {
+        body: JSON.stringify(newUser),
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          token: token,
+        },
+        method: "PUT",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data === "string") {
+          data = JSON.parse(data);
+        }
+        settoken(data.token);
+        setUser(data);
+      })
+      .catch((err) => {
+        if (onError) {
+          onError("Auth: Unable to save user", err);
+        }
+      });
+    }
+
+
   const values = useMemo(
     () => ({
       token,
@@ -508,6 +540,7 @@ const AuthenticationProvider = (props) => {
       logout,
       forgot,
       user,
+      saveUser,
       setgoogleAccessToken,
       changePassword,
       impersonate,

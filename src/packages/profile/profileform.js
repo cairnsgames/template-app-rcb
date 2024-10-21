@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col, Spinner, InputGroup } from 'react-bootstrap';
-import { Save } from 'react-bootstrap-icons';
+import { Form, Row, Col, Spinner, InputGroup } from 'react-bootstrap';
 import useUser from '../auth/context/useuser';
 import UserPropertyForm from './userpropertyform';
 import useFileLoader from '../content/usefileloader';
 import { combineUrlAndPath } from '../../functions/combineurlandpath';
 
 function ProfileForm() {
-  const { user } = useUser();
+  const { user, saveUser } = useUser();
   const [profile, setProfile] = useState({});
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log("=== Profile: User", user);
+  }, [user]);
 
   const {
     fileInputRef,
@@ -56,14 +59,12 @@ function ProfileForm() {
     let avatarUrl = profile.avatar;
 
     if (isFileSelected) {
-      const fileName = await uploadFile(fileInputRef.current.files);
-      avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, fileName);
+      const file = await uploadFile(fileInputRef.current.files);
+      
+      avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, file.filename);
     }
-
-    // Proceed with the API call to save the user profile
     const updatedProfile = { ...profile, avatar: avatarUrl };
-    // Call your API to update the user data
-    // e.g., await updateUserProfile(updatedProfile);
+    saveUser(updatedProfile);
 
     setLoading(false);
   };
@@ -148,7 +149,7 @@ function ProfileForm() {
           </Form.Group>
         </Col>
       </Row>
-      <UserPropertyForm />
+      <UserPropertyForm onSave={handleSave} />
     </Form>
   );
 }

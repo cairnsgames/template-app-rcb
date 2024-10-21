@@ -3,7 +3,7 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 import useUser from "../auth/context/useuser";
 import { Save } from "react-bootstrap-icons";
 
-function UserPropertyForm() {
+const UserPropertyForm = ({onSave}) => {
   const { properties, saveProperties } = useUser();
   const [mergedProperties, setMergedProperties] = useState([]);
 
@@ -37,11 +37,12 @@ function UserPropertyForm() {
   const labelFor = (name) => labels[name] || name;
 
   const handleSave = () => {
+    onSave();
     saveProperties(mergedProperties);
   };
 
   return (
-    <div>
+    <div className="mt-4">
       <h5>User Properties</h5>
       {mergedProperties?.map((property, index) => (
         <Row key={property.name}>
@@ -62,7 +63,7 @@ function UserPropertyForm() {
         variant="primary mt-3"
         onClick={handleSave}
       >
-        <Save />
+        <Save className="me-2"/>
         Save
       </Button>
     </div>
