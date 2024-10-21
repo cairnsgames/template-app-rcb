@@ -29,7 +29,7 @@ const UserRewardModal = ({
       onHide={() => onClose()}
       dialogClassName="user-reward-modal"
       centered
-      fullscreen={window.innerWidth <= 768 ? true : undefined}
+      // fullscreen={window.innerWidth <= 768 ? true : undefined}
     >
       <Modal.Header closeButton>
         <Modal.Title>{customer?.firstname}'s Stamps & Rewards</Modal.Title>
