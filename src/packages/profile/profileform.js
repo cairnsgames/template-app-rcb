@@ -89,7 +89,7 @@ function ProfileForm() {
 
   return (
     <Form>
-      {(profile.firstname || profile.lastname) && (
+      {(!profile.firstname || !profile.lastname) && (
         <Alert variant="info">
           Please fill in your profile details below, then use the save button at the bottom of the form to save your changes.
         </Alert>
