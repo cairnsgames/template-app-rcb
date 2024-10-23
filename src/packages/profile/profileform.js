@@ -1,22 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { Form, Row, Col, Spinner, InputGroup, Alert } from "react-bootstrap";
+import {
+  Form,
+  Row,
+  Col,
+  Spinner,
+  InputGroup,
+  Alert,
+  Button,
+} from "react-bootstrap";
 import useUser from "../auth/context/useuser";
 import UserPropertyForm from "./userpropertyform";
 import useFileLoader from "../content/usefileloader";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import useToast from "../toasts/usetoast";
+import CapturePhoto from "../photo/capturephoto";
+import { Camera } from "react-bootstrap-icons";
 
 function ProfileForm() {
   const { user, saveUser } = useUser();
   const [profile, setProfile] = useState({});
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showCapturePhoto, setShowCapturePhoto] = useState(false);
 
   const { addToast } = useToast();
 
-  useEffect(() => {
-    console.log("=== Profile: User", user);
-  }, [user]);
+  const handleFileUploadSuccess = (response) => {
+    const fileName = response.filename;
+    const avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, fileName);
+    setProfile({ ...profile, avatar: avatarUrl });
+    return fileName;
+  };
+
+  const handleFileUploadError = () => {
+    console.error("File upload failed");
+  };
 
   const {
     fileInputRef,
@@ -37,17 +55,6 @@ function ProfileForm() {
     }
   }, [user]);
 
-  const handleFileUploadSuccess = (response) => {
-    const fileName = response.filename;
-    const avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, fileName);
-    setProfile({ ...profile, avatar: avatarUrl });
-    return fileName;
-  };
-
-  const handleFileUploadError = () => {
-    console.error("File upload failed");
-  };
-
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
@@ -61,20 +68,52 @@ function ProfileForm() {
     }
   };
 
+  const base64ToFile = (dataUrl, filename) => {
+    const arr = dataUrl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
   const handleSave = async () => {
     setLoading(true);
     let avatarUrl = profile.avatar;
 
-    if (isFileSelected) {
-      const file = await uploadFile(fileInputRef.current.files);
+    console.log("Profile", profile);
 
-      avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, file.filename);
+    if (profile.avatar && typeof profile.avatar === "string" && profile.avatar.startsWith("data:image")) {
+      const avatarFile = base64ToFile(profile.avatar, "avatar.jpg");
+      const fileArray = [avatarFile];
+      let file = await uploadFile(fileArray);
+      console.log("File uploaded", file);
+      avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, file);
+    } else if (isFileSelected) {
+      const file = await uploadFile(fileInputRef.current.files);
+      console.log("Image File uploaded", file);
+      avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, file);
     }
+    console.log("Avatar URL", avatarUrl, );
+
     const updatedProfile = { ...profile, avatar: avatarUrl };
     saveUser(updatedProfile);
     addToast("Profile Updated", "Your profile has been updated", "success");
 
     setLoading(false);
+  };
+
+  const handleCapturePhoto = (dataUrl) => {
+    setAvatarPreview(dataUrl);
+    setProfile({ ...profile, avatar: dataUrl });
+    setShowCapturePhoto(false);
+  };
+
+  const handleIdCapture = (id) => {
+    console.log("Captured ID:", id);
   };
 
   if (!profile) {
@@ -83,11 +122,12 @@ function ProfileForm() {
 
   return (
     <Form>
-      {(!profile.firstname) && (
+      {!profile.firstname && (
         <Alert variant="info">
-          Please fill in your profile details below, then use the save button at the bottom of the form to save your changes.
+          Please fill in your profile details below, then use the save button at
+          the bottom of the form to save your changes.
         </Alert>
-        )}
+      )}
       <Row>
         <Col md={6}>
           <Form.Group controlId="firstname">
@@ -139,6 +179,13 @@ function ProfileForm() {
                   ref={fileInputRef}
                 />
               )}
+
+              <Button
+                variant="primary"
+                onClick={() => setShowCapturePhoto(true)}
+              >
+                <Camera />
+              </Button>
             </InputGroup>
             <div
               style={{
@@ -177,6 +224,12 @@ function ProfileForm() {
         </Col>
       </Row>
       <UserPropertyForm onSave={handleSave} />
+      <CapturePhoto
+        show={showCapturePhoto}
+        onPhoto={handleCapturePhoto}
+        onClose={() => setShowCapturePhoto(false)}
+        onId={handleIdCapture}
+      />
     </Form>
   );
 }
