@@ -25,14 +25,14 @@ const FaceDropdown = () => {
   return (
     <Dropdown align="end">
       <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-        <PersonCircle size={24} className="ms-3" style={{color: "white"}} />
+        <PersonCircle size={24} className="ms-3" style={{ color: "white" }} />
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {user && 
-        <Dropdown.Item>Welcome {user.firstname}</Dropdown.Item>}
-        <Dropdown.Item href="#profile">Profile</Dropdown.Item>
-        <Dropdown.Item href="#partner">Partner</Dropdown.Item>
-        <Dropdown.Item href="#settings">Settings</Dropdown.Item>
+        {isLoggedIn && <Dropdown.Item>Welcome {user.firstname}</Dropdown.Item>}
+        {isLoggedIn && <Dropdown.Item href="#profile">Profile</Dropdown.Item>}
+        {isLoggedIn && <Dropdown.Item href="#partner">Partner</Dropdown.Item>}
+          {isLoggedIn && <Dropdown.Item href="#settings">Settings</Dropdown.Item>}
+          <Dropdown.Item onClick={()=>{window.location.reload(true);}}>RELOAD</Dropdown.Item>
         {/* {venues?.length > 0 && (
           <Dropdown.Item href="#assitant/select">Assistant</Dropdown.Item>
         )} */}
