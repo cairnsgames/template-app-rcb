@@ -94,7 +94,7 @@ const CapturePhoto = ({
   const decodeQRCode = (dataUrl) => {
     const image = new Image();
     image.src = dataUrl;
-    image.onload = () => {
+    image.onload = async () => {
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -102,7 +102,7 @@ const CapturePhoto = ({
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
       const code = jsQR(imageData.data, imageData.width, imageData.height);
 
-      const id = getIdFromUrl(code?.data);
+      const id = await getIdFromUrl(code?.data);
       console.log("$$$ id captured", id);
       if (id && onId) {
         processId(id);
