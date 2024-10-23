@@ -28,7 +28,7 @@ const CapturePhoto = ({
   );
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
 
-  const { user, oldIdToNewMapping } = useUser();
+  const { user, oldIdToNewMapping, getIdFromFullId } = useUser();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -37,30 +37,37 @@ const CapturePhoto = ({
       console.error("$$$ No URL provided");
       return null;
     }
-    
+
     const hashRegex = /[#&?]id=(\d+)/; // Matches id=870001 after the #
     const pathRegex = /\/(\d+)(?:\/)?$/; // Matches /870001 at the end of the URL path
     const referRegex = /[?&]refer=(\d+)/; // Matches refer=27 in the query string
-    
+
     const hashMatch = url.match(hashRegex);
     if (hashMatch) {
       return extractOriginalId(hashMatch[1]);
     }
-  
+
     const pathMatch = url.match(pathRegex);
     if (pathMatch) {
       return extractOriginalId(pathMatch[1]);
     }
-  
+
     const referMatch = url.match(referRegex);
     if (referMatch) {
       const oldId = referMatch[1];
       return await oldIdToNewMapping(oldId);
     }
-  
+
     return null;
   }
-  
+
+  const processId = (id) => {
+    const tempId = getIdFromFullId(id);
+    console.log("$$$ Id, tempid", id, tempId);
+    if (tempId && onId) {
+      onId(tempId);
+    }
+  };
 
   useEffect(() => {
     if (show && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -98,7 +105,7 @@ const CapturePhoto = ({
       const id = getIdFromUrl(code?.data);
       console.log("$$$ id captured", id);
       if (id && onId) {
-        onId(id);
+        processId(id);
       } else if (code && onQRCode) {
         console.log("$$$ QR Code:", code.data);
         onQRCode(code.data); // Return the decoded text from the QR code
@@ -190,7 +197,7 @@ const CapturePhoto = ({
             value={input}
             onChange={(ev) => setInput(ev.target.value)}
           />
-          <Button variant="primary" onClick={() => onId(input)}>
+          <Button variant="primary" onClick={() => processId(input)}>
             Save
           </Button>
         </InputGroup>
