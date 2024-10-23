@@ -4,25 +4,19 @@ import useUser from "../auth/context/useuser";
 import UserPropertyForm from "./userpropertyform";
 import useFileLoader from "../content/usefileloader";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
+import useToast from "../toasts/usetoast";
 
 function ProfileForm() {
   const { user, saveUser } = useUser();
   const [profile, setProfile] = useState({});
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState();
+
+  const { addToast } = useToast();
 
   useEffect(() => {
     console.log("=== Profile: User", user);
   }, [user]);
-
-  useEffect(() => {
-    if (message) {
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
-    }
-  }, [message]);
 
   const {
     fileInputRef,
@@ -78,7 +72,7 @@ function ProfileForm() {
     }
     const updatedProfile = { ...profile, avatar: avatarUrl };
     saveUser(updatedProfile);
-    setMessage("Profile updated successfully");
+    addToast("Profile Updated", "Your profile has been updated", "success");
 
     setLoading(false);
   };
@@ -183,7 +177,6 @@ function ProfileForm() {
         </Col>
       </Row>
       <UserPropertyForm onSave={handleSave} />
-      {message && <Alert variant="info">{message}</Alert>}
     </Form>
   );
 }
