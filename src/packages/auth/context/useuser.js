@@ -8,7 +8,7 @@ export const useUser = () => {
     throw new Error("useUser was used outside of its Provider");
   }
 
-  const { token, user, saveUser, properties, saveProperties } = context;
+  const { token, user, saveUser, properties, saveProperties, oldIdToNewMapping } = context;
 
   const hasAccess = (permission) => {
     const access = user?.permissions?.find((p) => p.name === permission);
@@ -67,6 +67,7 @@ export const useUser = () => {
     user,
     saveUser,
     fullId,
+    oldIdToNewMapping,
     getIdFromFullId,
     isLoggedIn,
     hasAccess,

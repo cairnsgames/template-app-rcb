@@ -1,19 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Row, Col, Spinner, InputGroup } from 'react-bootstrap';
-import useUser from '../auth/context/useuser';
-import UserPropertyForm from './userpropertyform';
-import useFileLoader from '../content/usefileloader';
-import { combineUrlAndPath } from '../../functions/combineurlandpath';
+import React, { useState, useEffect } from "react";
+import { Form, Row, Col, Spinner, InputGroup, Alert } from "react-bootstrap";
+import useUser from "../auth/context/useuser";
+import UserPropertyForm from "./userpropertyform";
+import useFileLoader from "../content/usefileloader";
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 function ProfileForm() {
   const { user, saveUser } = useUser();
   const [profile, setProfile] = useState({});
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState();
 
   useEffect(() => {
     console.log("=== Profile: User", user);
   }, [user]);
+
+  useEffect(() => {
+    if (message) {
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
+    }
+  }, [message]);
 
   const {
     fileInputRef,
@@ -21,7 +30,11 @@ function ProfileForm() {
     fileSelected,
     uploadFile,
     isFileSelected,
-  } = useFileLoader("USER_AVATAR", handleFileUploadSuccess, handleFileUploadError);
+  } = useFileLoader(
+    "USER_AVATAR",
+    handleFileUploadSuccess,
+    handleFileUploadError
+  );
 
   useEffect(() => {
     if (user) {
@@ -60,11 +73,12 @@ function ProfileForm() {
 
     if (isFileSelected) {
       const file = await uploadFile(fileInputRef.current.files);
-      
+
       avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, file.filename);
     }
     const updatedProfile = { ...profile, avatar: avatarUrl };
     saveUser(updatedProfile);
+    setMessage("Profile updated successfully");
 
     setLoading(false);
   };
@@ -75,6 +89,11 @@ function ProfileForm() {
 
   return (
     <Form>
+      {(profile.firstname || profile.lastname) && (
+        <Alert variant="info">
+          Please fill in your profile details below, then use the save button at the bottom of the form to save your changes.
+        </Alert>
+        )}
       <Row>
         <Col md={6}>
           <Form.Group controlId="firstname">
@@ -82,7 +101,7 @@ function ProfileForm() {
             <Form.Control
               type="text"
               name="firstname"
-              value={profile.firstname || ''}
+              value={profile.firstname || ""}
               onChange={handleChange}
             />
           </Form.Group>
@@ -93,7 +112,7 @@ function ProfileForm() {
             <Form.Control
               type="text"
               name="lastname"
-              value={profile.lastname || ''}
+              value={profile.lastname || ""}
               onChange={handleChange}
             />
           </Form.Group>
@@ -106,7 +125,7 @@ function ProfileForm() {
             <Form.Control
               type="email"
               name="email"
-              value={profile.email || ''}
+              value={profile.email || ""}
               onChange={handleChange}
             />
           </Form.Group>
@@ -127,29 +146,44 @@ function ProfileForm() {
                 />
               )}
             </InputGroup>
-            <div style={{border: '1px solid #ccc', padding: '5px', marginTop: '5px', height:"100px", width:"100px"}}>
-            {avatarPreview ? (
-              <img
-                src={avatarPreview}
-                alt="Avatar Preview"
-                className="img-preview mt-2"
-                style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-              />
-            ) :
-              profile.avatar ? (
+            <div
+              style={{
+                border: "1px solid #ccc",
+                padding: "5px",
+                marginTop: "5px",
+                height: "100px",
+                width: "100px",
+              }}
+            >
+              {avatarPreview ? (
+                <img
+                  src={avatarPreview}
+                  alt="Avatar Preview"
+                  className="img-preview mt-2"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : profile.avatar ? (
                 <img
                   src={profile.avatar}
                   alt="Avatar Preview"
                   className="img-preview mt-2"
-                  style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
                 />
-              ) : null
-            }
+              ) : null}
             </div>
           </Form.Group>
         </Col>
       </Row>
       <UserPropertyForm onSave={handleSave} />
+      {message && <Alert variant="info">{message}</Alert>}
     </Form>
   );
 }

@@ -34,6 +34,9 @@ const Routing = () => {
   const goHome = () => {
     window.location.href = "#home";
   };
+  const goProfile = () => {
+    window.location.href = "#profile";
+  };
   if (hash === "") {
     if (isLoggedIn) {
       return <Home />;
@@ -49,10 +52,10 @@ const Routing = () => {
         <Home />
       </Route>
       <Route is={"referral"}>        
-        <MobileAuth mode="register" onSuccess={goHome} onClose={goHome} />
+        <MobileAuth mode="register" onSuccess={goProfile} onClose={goHome} />
       </Route>
       <Route is={"register"}>        
-        <MobileAuth mode="register" onSuccess={goHome} onClose={goHome} />
+        <MobileAuth mode="register" onSuccess={goProfile} onClose={goHome} />
       </Route>
       
       <Route is={"home"}>{isLoggedIn ? <Home /> : <LandingPage />}</Route>

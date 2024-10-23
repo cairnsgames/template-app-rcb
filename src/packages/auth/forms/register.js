@@ -1,40 +1,62 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
+import React, { useState } from "react";
+import { Form, Button, InputGroup, Row, Alert } from "react-bootstrap";
 import { useAuth } from "../../auth/context/useauth";
-import { Eye } from 'react-bootstrap-icons';
+import { Eye } from "react-bootstrap-icons";
 
-function RegisterForm({onSuccess}) {
+function RegisterForm({ onSuccess }) {
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState("cairnswm@gmail.com");
   const [password, setPassword] = useState("123456");
   const [confirm, setConfirm] = useState("123456");
   const [seePassword, setSeePassword] = useState(false);
+  const [error, setError] = useState();
 
   const { register } = useAuth();
- 
-  const handleSubmit = (event) => {
+  // const { t } = useTranslation();
+  const t = (key) => key;
+
+  const handleSubmit = async (event) => {
     const form = event.currentTarget;
-    
+
     event.preventDefault();
     event.stopPropagation();
 
     if (form.checkValidity() === false) {
-      console.log("Form is invalid, please check the fields and try again.")
+      console.log("Form is invalid, please check the fields and try again.");
       return;
     }
 
-    register(email, password, confirm);
+    register(email, password, confirm)
+      .then((result) => {
+        console.log("Register return", result);
+        if (result.errors) {
+          console.log("Cannot register 1", result.errors[0]);
+          setError(result.errors[0].message);
+          return;
+        }
+        console.log("Registered successfully", result);
+        if (result && onSuccess) {
+          onSuccess(true);
+        }
+      })
+      .catch((error) => {
+        console.log("Cannot register 1", error);
+        setError(error);
+        return;
+      });
     setValidated(true);
-    if (onSuccess) {
-      onSuccess();
-    }
+    // if (onSuccess) {
+    //   onSuccess();
+    // }
   };
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      {error && (
+        <Alert variant="danger">
+          {t("Cannot register: ")}: {error}
+        </Alert>
+      )}
       <Row className="mb-3">
         <Form.Group>
           <Form.Label>Email address</Form.Label>
@@ -45,7 +67,7 @@ function RegisterForm({onSuccess}) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              autoComplete='email'
+              autoComplete="email"
             />
             <Form.Control.Feedback type="invalid">
               Your email address is required.
@@ -60,9 +82,11 @@ function RegisterForm({onSuccess}) {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              autoComplete='current-password'
+              autoComplete="current-password"
             />
-            <Button onClick={()=>setSeePassword(!seePassword)}><Eye /></Button>
+            <Button onClick={() => setSeePassword(!seePassword)}>
+              <Eye />
+            </Button>
             <Form.Control.Feedback type="invalid">
               Please enter a new, secure password.
             </Form.Control.Feedback>
@@ -76,7 +100,7 @@ function RegisterForm({onSuccess}) {
               required
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              autoComplete='confirm-password'
+              autoComplete="confirm-password"
             />
             <Form.Control.Feedback type="invalid">
               Please enter the same password as above.

@@ -2,40 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 import jsQR from "jsqr"; // Import the jsQR library
 import { ArrowRepeat } from "react-bootstrap-icons";
-
-function getIdFromUrl(url) {
-  if (!url) {
-    console.error("$$$ No URL provided");
-    return null;
-  }
-  
-  // Regex to match id parameter after the # or in the URL path
-  const hashRegex = /[#&?]id=(\d+)/; // Matches id=870001 after the #
-  const pathRegex = /\/(\d+)(?:\/)?$/; // Matches /870001 at the end of the URL path
-
-  // Check for id in the fragment or query parameters
-  const hashMatch = url.match(hashRegex);
-  if (hashMatch) {
-    return extractOriginalId(hashMatch[1]);
-  }
-
-  // Check for id in the URL path
-  const pathMatch = url.match(pathRegex);
-  if (pathMatch) {
-    return extractOriginalId(pathMatch[1]);
-  }
-
-  // Return null if id is not found
-  return null;
-}
+import useUser from "../auth/context/useuser";
 
 function extractOriginalId(expandedId) {
   if (expandedId.length <= 4) {
-    // If the ID is less than or equal to 4 digits, it's the original ID
     return expandedId;
   }
 
-  // The first two digits are the checksum, the rest is the original ID
   return expandedId.slice(2); // Return only the original ID (after checksum)
 }
 
@@ -54,8 +27,40 @@ const CapturePhoto = ({
     useRearCamera ? "environment" : "user"
   );
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
+
+  const { user, oldIdToNewMapping } = useUser();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+
+  async function getIdFromUrl(url) {
+    if (!url) {
+      console.error("$$$ No URL provided");
+      return null;
+    }
+    
+    const hashRegex = /[#&?]id=(\d+)/; // Matches id=870001 after the #
+    const pathRegex = /\/(\d+)(?:\/)?$/; // Matches /870001 at the end of the URL path
+    const referRegex = /[?&]refer=(\d+)/; // Matches refer=27 in the query string
+    
+    const hashMatch = url.match(hashRegex);
+    if (hashMatch) {
+      return extractOriginalId(hashMatch[1]);
+    }
+  
+    const pathMatch = url.match(pathRegex);
+    if (pathMatch) {
+      return extractOriginalId(pathMatch[1]);
+    }
+  
+    const referMatch = url.match(referRegex);
+    if (referMatch) {
+      const oldId = referMatch[1];
+      return await oldIdToNewMapping(oldId);
+    }
+  
+    return null;
+  }
+  
 
   useEffect(() => {
     if (show && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {

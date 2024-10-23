@@ -39,6 +39,7 @@ const AuthenticationProvider = (props) => {
   }, [token]);
 
   useEffect(() => {
+    console.log("=== User", user);
     if (!user?.id) {
       return;
     }
@@ -213,6 +214,7 @@ const AuthenticationProvider = (props) => {
     )
       .then((res) => res.json())
       .then((data) => {
+        console.log("=== Register 1", data)
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
@@ -530,6 +532,12 @@ const AuthenticationProvider = (props) => {
       });
     }
 
+  const oldIdToNewMapping = async (oldId) => {
+    const resp = await fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API, `api.php/user/${oldId}/old`));
+    const data = await resp.json();
+    return data[0].new_user_id;
+  }
+
 
   const values = useMemo(
     () => ({
@@ -546,6 +554,7 @@ const AuthenticationProvider = (props) => {
       impersonate,
       properties,
       saveProperties,
+      oldIdToNewMapping,
     }),
     [
       token,
