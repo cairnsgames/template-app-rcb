@@ -83,7 +83,7 @@ function ProfileForm() {
 
   return (
     <Form>
-      {(!profile.firstname || !profile.lastname) && (
+      {(!profile.firstname) && (
         <Alert variant="info">
           Please fill in your profile details below, then use the save button at the bottom of the form to save your changes.
         </Alert>
@@ -91,7 +91,7 @@ function ProfileForm() {
       <Row>
         <Col md={6}>
           <Form.Group controlId="firstname">
-            <Form.Label>First Name</Form.Label>
+            <Form.Label>First Name / Venue Name</Form.Label>
             <Form.Control
               type="text"
               name="firstname"
@@ -102,7 +102,7 @@ function ProfileForm() {
         </Col>
         <Col md={6}>
           <Form.Group controlId="lastname">
-            <Form.Label>Last Name</Form.Label>
+            <Form.Label>Last Name (optional)</Form.Label>
             <Form.Control
               type="text"
               name="lastname"
