@@ -505,8 +505,8 @@ const AuthenticationProvider = (props) => {
   };
 
   const saveUser = (newUser) => {
-    // fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API, `user/${user.id}`),
-    fetch(combineUrlAndPath("http://localhost/cairnsgames/php/auth", `api.php/user/${user.id}`),
+    fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API, `api.php/user/${user.id}`),
+    // fetch(combineUrlAndPath("http://localhost/cairnsgames/php/auth", `api.php/user/${user.id}`),
       {
         body: JSON.stringify(newUser),
         headers: {

@@ -31,8 +31,14 @@ const FaceDropdown = () => {
         {isLoggedIn && <Dropdown.Item>Welcome {user.firstname}</Dropdown.Item>}
         {isLoggedIn && <Dropdown.Item href="#profile">Profile</Dropdown.Item>}
         {isLoggedIn && <Dropdown.Item href="#partner">Partner</Dropdown.Item>}
-          {isLoggedIn && <Dropdown.Item href="#settings">Settings</Dropdown.Item>}
-          <Dropdown.Item onClick={()=>{window.location.reload(true);}}>RELOAD</Dropdown.Item>
+        {isLoggedIn && <Dropdown.Item href="#settings">Settings</Dropdown.Item>}
+        <Dropdown.Item
+          onClick={() => {
+            window.location.reload(true);
+          }}
+        >
+          RELOAD
+        </Dropdown.Item>
         {/* {venues?.length > 0 && (
           <Dropdown.Item href="#assitant/select">Assistant</Dropdown.Item>
         )} */}
