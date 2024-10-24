@@ -161,7 +161,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         </Form.Group>
 
         <Form.Group controlId="date">
-          <Form.Label>Date</Form.Label>
+          <Form.Label>Display to users from</Form.Label>
           <InputGroup>
             <Form.Control
               type="date"

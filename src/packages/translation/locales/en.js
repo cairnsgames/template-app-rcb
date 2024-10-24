@@ -1,5 +1,6 @@
 const en = {
     hello: 'Hello',
+    summary: "Summary",
     "Email": "Email Address",
 }
 

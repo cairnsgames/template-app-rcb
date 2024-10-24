@@ -123,16 +123,17 @@ const LoyaltySystemForm = () => {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formStartDate">
-        <Form.Label>Name</Form.Label>
+        <Form.Label>Name your Loyalty Program</Form.Label>
         <Form.Control
           type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
         />
+        <Form.Text>This is the name users will see when they view their card.</Form.Text>
       </Form.Group>
 
-      <Form.Group>
+      {/* <Form.Group>
         <Form.Label>Description</Form.Label>
         <Form.Control
           type="text"
@@ -140,7 +141,7 @@ const LoyaltySystemForm = () => {
           value={formData.description}
           onChange={handleChange}
         />
-      </Form.Group>
+      </Form.Group> */}
 
       <Form.Group controlId="formImage">
         <Form.Label>Stamp Card Logo</Form.Label>
@@ -161,6 +162,7 @@ const LoyaltySystemForm = () => {
             </>
           )}
         </InputGroup>
+        <Form.Text>This logo will be displayed on the user's Loyalty Card so make it destinctive so they know it is you!</Form.Text>
         {fileData || imageUrl ? (
           <img
             src={fileData || `http://localhost/files/${imageUrl}`}
@@ -191,6 +193,7 @@ const LoyaltySystemForm = () => {
           value={formData.reward_description}
           onChange={handleChange}
         />
+        <Form.Text>What will a user get when they reach 10 stamps?</Form.Text>
       </Form.Group>
 
       <div className="py-3">
