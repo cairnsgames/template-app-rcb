@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap-icons";
 import Bar from "../../../components/react-bootstrap-mobile/bar";
 import useUser from "../../../packages/auth/context/useuser";
+import "./partnerbar.scss";
 
 const PartnerBar = () => {
   const { user, hasAccess } = useUser();
@@ -19,11 +20,10 @@ const PartnerBar = () => {
   }
   return (
     <Bar
-      variant="event"
       onSelect={(key) => {
         window.location.hash = key;
       }}
-      className="px-2"
+      className="partner-bar px-2"
     >
       {hasAccess("Calendar") && (
         <Nav.Link eventKey="#calendar">
