@@ -37,29 +37,31 @@ const CapturePhoto = ({
       console.error("$$$ No URL provided");
       return null;
     }
-
+  
+    // Updated regex to match refer in both query string and hash fragment
     const hashRegex = /[#&?]id=(\d+)/; // Matches id=870001 after the #
     const pathRegex = /\/(\d+)(?:\/)?$/; // Matches /870001 at the end of the URL path
-    const referRegex = /[?&]refer=(\d+)/; // Matches refer=27 in the query string
-
+    const referRegex = /[?&#]refer=(\d+)/; // Matches refer=27 in the query string or fragment
+  
     const hashMatch = url.match(hashRegex);
     if (hashMatch) {
       return extractOriginalId(hashMatch[1]);
     }
-
+  
     const pathMatch = url.match(pathRegex);
     if (pathMatch) {
       return extractOriginalId(pathMatch[1]);
     }
-
+  
     const referMatch = url.match(referRegex);
     if (referMatch) {
       const oldId = referMatch[1];
       return await oldIdToNewMapping(oldId);
     }
-
+  
     return null;
   }
+  
 
   const processId = (id) => {
     const tempId = getIdFromFullId(id);
