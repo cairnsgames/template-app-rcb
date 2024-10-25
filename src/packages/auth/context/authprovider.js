@@ -140,15 +140,18 @@ const AuthenticationProvider = (props) => {
         googleid: decodedToken2.sub,
         avatar: decodedToken2.picture,
       };
-      await fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API,`logingoogle.php`), {
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-          APP_ID: tenant,
-          deviceid: deviceId,
-        },
-        method: "POST",
-      })
+      await fetch(
+        combineUrlAndPath(process.env.REACT_APP_AUTH_API, `logingoogle.php`),
+        {
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+            APP_ID: tenant,
+            deviceid: deviceId,
+          },
+          method: "POST",
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log("GOOGLE LOGIN", data);
@@ -200,8 +203,11 @@ const AuthenticationProvider = (props) => {
       password: password,
       confirm: confirm,
     };
-    return fetch(combineUrlAndPath(
-      process.env.REACT_APP_AUTH_API,`registration.php?debug=true`),
+    return fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_AUTH_API,
+        `registration.php?debug=true`
+      ),
       {
         body: JSON.stringify(body),
         headers: {
@@ -214,7 +220,7 @@ const AuthenticationProvider = (props) => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log("=== Register 1", data)
+        console.log("=== Register 1", data);
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
@@ -245,15 +251,18 @@ const AuthenticationProvider = (props) => {
       password: password,
     };
 
-    return fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API,`login.php?debug=true`), {
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        APP_ID: tenant,
-        deviceid: deviceId,
-      },
-      method: "POST",
-    })
+    return fetch(
+      combineUrlAndPath(process.env.REACT_APP_AUTH_API, `login.php?debug=true`),
+      {
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          deviceid: deviceId,
+        },
+        method: "POST",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.errors) {
@@ -291,8 +300,11 @@ const AuthenticationProvider = (props) => {
       code: magiccode,
     };
 
-    return fetch(combineUrlAndPath(
-      process.env.REACT_APP_AUTH_API,`loginwithmagiclink.php?debug=true`),
+    return fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_AUTH_API,
+        `loginwithmagiclink.php?debug=true`
+      ),
       {
         body: JSON.stringify(body),
         headers: {
@@ -334,8 +346,11 @@ const AuthenticationProvider = (props) => {
       email: email,
     };
     console.log("process.env.REACT_APP_AUTH_API", process);
-    return fetch(combineUrlAndPath(
-      process.env.REACT_APP_AUTH_API,`forgotpassword.php?debug=true`),
+    return fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_AUTH_API,
+        `forgotpassword.php?debug=true`
+      ),
       {
         body: JSON.stringify(body),
         headers: {
@@ -371,8 +386,11 @@ const AuthenticationProvider = (props) => {
       password2: password2,
     };
     console.log("process.env.REACT_APP_AUTH_API", process);
-    return fetch(combineUrlAndPath(
-      process.env.REACT_APP_AUTH_API,`changepassword.php?debug=true`),
+    return fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_AUTH_API,
+        `changepassword.php?debug=true`
+      ),
       {
         body: JSON.stringify(body),
         headers: {
@@ -505,8 +523,12 @@ const AuthenticationProvider = (props) => {
   };
 
   const saveUser = (newUser) => {
-    fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API, `api.php/user/${user.id}`),
-    // fetch(combineUrlAndPath("http://localhost/cairnsgames/php/auth", `api.php/user/${user.id}`),
+    fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_AUTH_API,
+        `api.php/user/${user.id}`
+      ),
+      // fetch(combineUrlAndPath("http://localhost/cairnsgames/php/auth", `api.php/user/${user.id}`),
       {
         body: JSON.stringify(newUser),
         headers: {
@@ -530,14 +552,25 @@ const AuthenticationProvider = (props) => {
           onError("Auth: Unable to save user", err);
         }
       });
-    }
+  };
 
   const oldIdToNewMapping = async (oldId) => {
-    const resp = await fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API, `api.php/user/${oldId}/old`));
+    const resp = await fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_AUTH_API,
+        `api.php/user/${oldId}/old`
+      ),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          token: token,
+        },
+      }
+    );
     const data = await resp.json();
     return data[0].new_user_id;
-  }
-
+  };
 
   const values = useMemo(
     () => ({

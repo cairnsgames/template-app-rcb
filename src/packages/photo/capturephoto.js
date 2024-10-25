@@ -64,7 +64,7 @@ const CapturePhoto = ({
   
 
   const processId = (id) => {
-    const tempId = getIdFromFullId(id);
+    const tempId = getIdFromFullId(`${id}`);
     console.log("$$$ Id, tempid", id, tempId);
     if (tempId && onId) {
       onId(tempId);

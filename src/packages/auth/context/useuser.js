@@ -42,7 +42,7 @@ export const useUser = () => {
   const fullId = getIdWithChecksum();
 
   const getIdFromFullId = (fullId) => {
-    if (!fullId || fullId.length < 5) {
+    if (!fullId || fullId.length < 6) {
       return fullId;
     }
   
