@@ -229,6 +229,7 @@ function ProfileForm() {
         onPhoto={handleCapturePhoto}
         onClose={() => setShowCapturePhoto(false)}
         onId={handleIdCapture}
+        useRearCamera={false}
       />
     </Form>
   );

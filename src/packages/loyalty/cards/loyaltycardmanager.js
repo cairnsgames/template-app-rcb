@@ -7,6 +7,8 @@ import { CardChecklist, ChevronLeft, ChevronRight } from "react-bootstrap-icons"
 const LoyaltyCardManager = ({ items, rewards }) => {
   const [index, setIndex] = useState(0);
 
+  const count = items?.length ?? 0;
+
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
   };
@@ -42,7 +44,7 @@ const LoyaltyCardManager = ({ items, rewards }) => {
         return (
           <Carousel.Item key={item.name} style={{height:"500px"}}>
             <Carousel.Caption>
-              <LoyaltyCardContent item={item} reward={reward} />
+              <LoyaltyCardContent item={item} index={index} of={count} reward={reward} />
             </Carousel.Caption>
           </Carousel.Item>
         );

@@ -14,6 +14,8 @@ export const UserLoyaltyProvider = ({ children }) => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [stamps, setStamps] = useState([]);
 
+  const count = cards?.length ?? 0;
+
   const headers = {
     'Content-Type': 'application/json',
     APP_ID: tenant,
@@ -51,7 +53,7 @@ export const UserLoyaltyProvider = ({ children }) => {
   }, [rewards]);
 
   return (
-    <UserLoyaltyContext.Provider value={{ cards, rewards, stamps, selectedCard, setSelectedCard }}>
+    <UserLoyaltyContext.Provider value={{ cards, count, rewards, stamps, selectedCard, setSelectedCard }}>
       {children}
     </UserLoyaltyContext.Provider>
   );

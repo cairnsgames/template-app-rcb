@@ -68,11 +68,12 @@ const RewardMessage = ({ reward, item }) => {
   }
 };
 
-const LoyaltyCardContent = ({ item, reward }) => {
+const LoyaltyCardContent = ({ item, index, of, reward }) => {
   console.log("!!!! LoyaltyCardContent", item, reward);
   const { user } = useUser();
   return (
     <div>
+      <div style={{fontSize:"0.7rem"}} className="text-center mb-2">Card {index+1} of {of}</div>
       <Table bordered>
         <thead>
           <tr>
