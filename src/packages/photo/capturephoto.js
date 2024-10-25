@@ -110,7 +110,7 @@ const CapturePhoto = ({
         console.log("$$$ QR Code:", code.data);
         onQRCode(code.data); // Return the decoded text from the QR code
       } else {
-        setError("No QR code found");
+        setError("No QR code found", code?.data);
       }
     };
   };
