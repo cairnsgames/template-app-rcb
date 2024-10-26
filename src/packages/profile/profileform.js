@@ -16,7 +16,7 @@ import useToast from "../toasts/usetoast";
 import CapturePhoto from "../photo/capturephoto";
 import { Camera } from "react-bootstrap-icons";
 
-function ProfileForm() {
+const ProfileForm = () => {
   const { user, saveUser } = useUser();
   const [profile, setProfile] = useState({});
   const [avatarPreview, setAvatarPreview] = useState(null);

@@ -4,47 +4,62 @@ import { usePartnerRoles } from "./usepartnerroles";
 
 const PartnerSignupModal = ({ show, handleClose }) => {
   const [selectedRoles, setSelectedRoles] = useState([]);
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const [paypalUsername, setPaypalUsername] = useState("");
   const [bankDetails, setBankDetails] = useState({
-    bankName: "",
-    accountNumber: "",
-    branchCode: "",
+    id: "",
+    partner_id: "",
+    bank_name: "",
+    account_number: "",
+    branch_code: "",
+    payment_method: "",
+    paypal_username: "",
   });
-  const { roles, roleList, updatePartnerRoles } = usePartnerRoles();
+  const { roles, roleList, updatePartnerRoles, bankingDetails } = usePartnerRoles();
 
   useEffect(() => {
-    setSelectedRoles(roles);
+    setSelectedRoles(roles || []);
   }, [roles]);
+
+  useEffect(() => {
+    // Ensure bankingDetails is not null or undefined
+    setBankDetails(bankingDetails || {
+      id: "",
+      partner_id: "",
+      bank_name: "",
+      account_number: "",
+      branch_code: "",
+      payment_method: "",
+      paypal_username: "",
+    });
+    
+    console.log("==== Banking details:", bankingDetails);
+  }, [bankingDetails]);
 
   const handleRoleChange = (role) => {
     if (hasRole(role)) {
       setSelectedRoles(selectedRoles.filter((r) => r.role_id !== role.id));
     } else {
-      setSelectedRoles([...selectedRoles, {role_id: role.id, name}]);
+      setSelectedRoles([...selectedRoles, { role_id: role.id, name: role.name }]);
     }
   };
 
   const handlePaymentMethodChange = (method) => {
-    setPaymentMethod(method);
-    setPaypalUsername("");
-    setBankDetails({ bankName: "", accountNumber: "", branchCode: "" });
+    setBankDetails((prevDetails) => ({
+      ...prevDetails,
+      payment_method: method,
+      paypal_username: "",
+      bank_name: "",
+      account_number: "",
+      branch_code: "",
+    }));
   };
 
   const handleJoin = () => {
-    const partnerData = {
-      payment_method: paymentMethod,
-      paypal_username: paypalUsername,
-      bank_name: bankDetails.bankName,
-      account_number: bankDetails.accountNumber,
-      branch_code: bankDetails.branchCode,
-    };
-    updatePartnerRoles(selectedRoles, partnerData);
+    updatePartnerRoles(selectedRoles, bankDetails);
     handleClose();
   };
 
   const hasRole = (role) => {
-    return !!selectedRoles.find(r => r.role_id === role.id)
+    return !!selectedRoles.find((r) => r.role_id === role.id);
   };
 
   return (
@@ -57,19 +72,17 @@ const PartnerSignupModal = ({ show, handleClose }) => {
           <Form.Group>
             <Form.Label>Select Your Role(s)</Form.Label>
             <Row>
-              {roleList.map(
-                (role) => (
-                  <Col key={role.id} xs={6}>
-                    <Form.Check
-                      type="checkbox"
-                      label={role.name}
-                      value={role.id}
-                      checked={hasRole(role)}
-                      onChange={() => handleRoleChange(role)}
-                    />
-                  </Col>
-                )
-              )}
+              {roleList.map((role) => (
+                <Col key={role.id} xs={6}>
+                  <Form.Check
+                    type="checkbox"
+                    label={role.name}
+                    value={role.id}
+                    checked={hasRole(role)}
+                    onChange={() => handleRoleChange(role)}
+                  />
+                </Col>
+              ))}
             </Row>
           </Form.Group>
 
@@ -79,40 +92,42 @@ const PartnerSignupModal = ({ show, handleClose }) => {
               type="radio"
               label="PayPal"
               value="paypal"
-              checked={paymentMethod === "paypal"}
+              checked={bankDetails.payment_method === "paypal"}
               onChange={() => handlePaymentMethodChange("paypal")}
             />
             <Form.Check
               type="radio"
               label="Bank Deposit"
               value="bank"
-              checked={paymentMethod === "bank"}
+              checked={bankDetails.payment_method === "bank"}
               onChange={() => handlePaymentMethodChange("bank")}
             />
           </Form.Group>
 
-          {paymentMethod === "paypal" && (
+          {bankDetails.payment_method === "paypal" && (
             <Form.Group className="mt-3">
               <Form.Label>PayPal Username</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter your PayPal username"
-                value={paypalUsername}
-                onChange={(e) => setPaypalUsername(e.target.value)}
+                value={bankDetails.paypal_username}
+                onChange={(e) =>
+                  setBankDetails({ ...bankDetails, paypal_username: e.target.value })
+                }
               />
             </Form.Group>
           )}
 
-          {paymentMethod === "bank" && (
+          {bankDetails.payment_method === "bank" && (
             <>
               <Form.Group className="mt-3">
                 <Form.Label>Bank Name</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter your Bank Name"
-                  value={bankDetails.bankName}
+                  value={bankDetails.bank_name}
                   onChange={(e) =>
-                    setBankDetails({ ...bankDetails, bankName: e.target.value })
+                    setBankDetails({ ...bankDetails, bank_name: e.target.value })
                   }
                 />
               </Form.Group>
@@ -121,11 +136,11 @@ const PartnerSignupModal = ({ show, handleClose }) => {
                 <Form.Control
                   type="text"
                   placeholder="Enter your Account Number"
-                  value={bankDetails.accountNumber}
+                  value={bankDetails.account_number}
                   onChange={(e) =>
                     setBankDetails({
                       ...bankDetails,
-                      accountNumber: e.target.value,
+                      account_number: e.target.value,
                     })
                   }
                 />
@@ -135,11 +150,11 @@ const PartnerSignupModal = ({ show, handleClose }) => {
                 <Form.Control
                   type="text"
                   placeholder="Enter your Branch Code"
-                  value={bankDetails.branchCode}
+                  value={bankDetails.branch_code}
                   onChange={(e) =>
                     setBankDetails({
                       ...bankDetails,
-                      branchCode: e.target.value,
+                      branch_code: e.target.value,
                     })
                   }
                 />
