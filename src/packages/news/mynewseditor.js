@@ -153,7 +153,7 @@ const MyNewsEditor = ({ id, onClose }) => {
           </InputGroup>
           {fileData || imageUrl ? (
             <img
-              src={fileData || `http://localhost/files/${imageUrl}`}
+              src={fileData || combineUrlAndPath(process.env.REACT_APP_FILES,imageUrl)}
               alt="Preview"
               className="img-preview"
             />
