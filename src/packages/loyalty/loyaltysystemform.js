@@ -24,7 +24,7 @@ const LoyaltySystemForm = () => {
   });
 
   const canSave =
-    !!formData.name && !!formData.description && !!formData.reward_description;
+    !!formData.name && !!formData.reward_description;
 
   useEffect(() => {
     console.log("---- teant, user", tenant, user);
