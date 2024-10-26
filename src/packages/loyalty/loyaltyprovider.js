@@ -3,6 +3,7 @@ import { useUser } from "../auth/context/useuser";
 import useTenant from "../tenant/context/usetenant";
 import { useToast } from "../../packages/toasts/usetoast";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
+import useGeoLocation from "../../hooks/usegeolocation";
 
 // LoyaltyContext.js
 export const LoyaltyContext = createContext();
@@ -20,6 +21,8 @@ export const LoyaltyProvider = ({ children }) => {
   const [customerStamps, setCustomerStamps] = useState();
   const [customerRewards, setCustomerRewards] = useState();
 
+  const { latlng } = useGeoLocation();
+
   const [loading, setLoading] = useState(false); // New loading state
   const { user, token } = useUser();
   const { addToast } = useToast();
@@ -32,7 +35,13 @@ export const LoyaltyProvider = ({ children }) => {
 
   const fetchCustomer = () => {
     setLoading(true);
-    fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/user/${customerId}`), { headers })
+    fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_LOYALTY_API,
+        `api.php/user/${customerId}`
+      ),
+      { headers }
+    )
       .then((response) => response.json())
       .then((data) => {
         setCustomer(data[0]);
@@ -43,10 +52,18 @@ export const LoyaltyProvider = ({ children }) => {
 
   const fetchCustomerStamps = () => {
     setLoading(true);
-    fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/user/${customerId}/cards`), { headers })
+    fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_LOYALTY_API,
+        `api.php/user/${customerId}/cards`
+      ),
+      { headers }
+    )
       .then((response) => response.json())
       .then((data) => {
-        setCustomerStamps(data.filter((card) => card.system_id === selectedSystemId));
+        setCustomerStamps(
+          data.filter((card) => card.system_id === selectedSystemId)
+        );
       })
       .catch((error) => console.error("Error fetching customer stamps:", error))
       .finally(() => setLoading(false));
@@ -54,16 +71,26 @@ export const LoyaltyProvider = ({ children }) => {
 
   const fetchCustomerRewards = () => {
     setLoading(true);
-    fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/user/${customerId}/rewards`), { headers })
+    fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_LOYALTY_API,
+        `api.php/user/${customerId}/rewards`
+      ),
+      { headers }
+    )
       .then((response) => response.json())
       .then((data) => {
         setCustomerRewards(
           data.filter(
-            (reward) => reward.system_id === selectedSystemId && reward.date_redeemed === null
+            (reward) =>
+              reward.system_id === selectedSystemId &&
+              reward.date_redeemed === null
           )
         );
       })
-      .catch((error) => console.error("Error fetching customer rewards:", error))
+      .catch((error) =>
+        console.error("Error fetching customer rewards:", error)
+      )
       .finally(() => setLoading(false));
   };
 
@@ -85,7 +112,13 @@ export const LoyaltyProvider = ({ children }) => {
 
   const getUserSystems = (userId = user.id) => {
     setLoading(true);
-    return fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/user/${userId}/systems`), { headers })
+    return fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_LOYALTY_API,
+        `api.php/user/${userId}/systems`
+      ),
+      { headers }
+    )
       .then((response) => response.json())
       .then((data) => {
         setSystems(data);
@@ -97,14 +130,26 @@ export const LoyaltyProvider = ({ children }) => {
 
   const getSystemCards = (systemId) => {
     setLoading(true);
-    return fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/system/${systemId}/cards`), { headers })
+    return fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_LOYALTY_API,
+        `api.php/system/${systemId}/cards`
+      ),
+      { headers }
+    )
       .then((response) => response.json())
       .finally(() => setLoading(false));
   };
 
   const getSystemRewards = (systemId) => {
     setLoading(true);
-    return fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/system/${systemId}/reward`), { headers })
+    return fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_LOYALTY_API,
+        `api.php/system/${systemId}/reward`
+      ),
+      { headers }
+    )
       .then((response) => response.json())
       .finally(() => setLoading(false));
   };
@@ -119,20 +164,23 @@ export const LoyaltyProvider = ({ children }) => {
     const today = new Date().toISOString();
 
     setLoading(true);
-    return fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `/api.php/system`), {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        venue_id: user.id,
-        name: name,
-        description: description,
-        image: image,
-        stamps_required: stampsRequired,
-        reward_description: rewardDescription,
-        start_date: today,
-        end_date: null,
-      }),
-    })
+    return fetch(
+      combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `/api.php/system`),
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          venue_id: user.id,
+          name: name,
+          description: description,
+          image: image,
+          stamps_required: stampsRequired,
+          reward_description: rewardDescription,
+          start_date: today,
+          end_date: null,
+        }),
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -150,26 +198,40 @@ export const LoyaltyProvider = ({ children }) => {
 
   const createCard = (userId, systemId) => {
     setLoading(true);
-    return fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/card`), {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        user_id: userId,
-        system_id: systemId,
-        qr_code: "",
-        stamps_collected: 0,
-      }),
-    })
+    return fetch(
+      combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `api.php/card`),
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          user_id: userId,
+          system_id: systemId,
+          qr_code: "",
+          stamps_collected: 0,
+        }),
+      }
+    )
       .then((response) => response.json())
       .finally(() => setLoading(false));
   };
 
   const addUserStamp = (systemId, id) => {
     setLoading(true);
-    return fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `addstamp.php?id=${systemId}&user=${id}`), {
-      method: "POST",
-      headers,
-    })
+    console.log("==== Position", latlng.latitude, latlng.longitude);
+    return fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_LOYALTY_API,
+        `addstamp.php?id=${systemId}&user=${id}`
+      ),
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          lat: latlng.latitude,
+          lng: latlng.longitude,
+        })
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         getSystemData();
@@ -179,10 +241,16 @@ export const LoyaltyProvider = ({ children }) => {
 
   const redeemUserReward = (systemId, id) => {
     setLoading(true);
-    return fetch(combineUrlAndPath(process.env.REACT_APP_LOYALTY_API, `/redeemreward.php?id=${systemId}&user=${id}`), {
-      method: "POST",
-      headers,
-    })
+    return fetch(
+      combineUrlAndPath(
+        process.env.REACT_APP_LOYALTY_API,
+        `/redeemreward.php?id=${systemId}&user=${id}`
+      ),
+      {
+        method: "POST",
+        headers,
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (customerId) {
