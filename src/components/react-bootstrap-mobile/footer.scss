@@ -5,20 +5,22 @@
   background-color: var(--bs-white);
   border-top: 1px solid var(--bs-primary);
   z-index: 1000;
-  overflow: visible;
+  overflow: visible !important;
+  position:relative;
+
 }
 
 .central-icon {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   transform: translateY(-50%);
   border-radius: 50%;
   background-color: var(--bs-primary);
   padding: 10px;
   cursor: pointer;
   color: white;
+  z-index: 1049;
 }
 
 .icon-button {
@@ -125,8 +127,4 @@
     opacity: 0;
     transform: scale(0);
   }
-}
-
-body {
-  // margin-bottom: 95px;
 }

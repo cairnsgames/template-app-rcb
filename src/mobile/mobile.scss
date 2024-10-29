@@ -1,33 +1,54 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
+$footer-height: 60px;
+$header-height: 50px;
+$icon-bar-height: 50px;
+
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; // Full viewport height
-  // padding-bottom: env(safe-area-inset-bottom);
+  min-height: 100vh;
 }
 
-.mobile {
-  // padding-bottom: env(
-  //   safe-area-inset-bottom,
-  //   20px
-  // ); // Fallback to 20px if the device doesn't support safe area insets
-  // height: calc(100vh - 40px);
+.navbar-top {
+  height: $header-height;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 20; // Ensure it stays above the icon-bar and content
 }
 
-.app-header,
-.app-footer {
-  background-color: #f8f9fa; // Light grey color, change as needed
-  text-align: center;
+.icon-bar {
+  height: $icon-bar-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #f8f9fa;
+  position: fixed;
+  top: $header-height; // Place it right below the header
+  width: 100%;
+  z-index: 10;
 }
 
-.app-body {
-  flex: 1; // This allows the body to take up the remaining space
-  overflow-y: auto; // Enable vertical scrolling for overflow content
-  overflow-x: hidden;
+.content-section {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: $footer-height; // To prevent overlap with footer
+  background-color: #e9ecef;
+  margin-top: calc(#{$header-height} + #{$icon-bar-height}); // Start below both header and icon bar
 }
 
-body {
-  background-color: #{lighten($primary, 60%)};
+.footer-nav {
+  height: $footer-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #007bff;
+  color: #fff;
+  padding-bottom: env(safe-area-inset-bottom); // Avoid overlap with mobile footer
+  position: fixed;
+  bottom: 0;
+  width: 100%; // Ensure footer takes full width
+  z-index: 999;
 }

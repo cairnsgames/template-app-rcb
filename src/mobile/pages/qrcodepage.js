@@ -12,7 +12,7 @@ const QRCodePage = (props) => {
   return (
     <PageCentered>
       <h2>Your QR Code</h2>
-      <div className="mx-auto my-2" style={{ maxWidth: "350px" }}>
+      <div className="mx-auto my-2 text-center" style={{ maxWidth: "350px" }}>
         <QRCode link={text} size={255} allowCopyToClipboard={true} />
       </div>
       <div className="primary-border my-3">
