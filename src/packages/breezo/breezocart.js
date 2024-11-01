@@ -27,14 +27,14 @@ const BreezoCart = (props) => {
       <Button
         variant="primary"
         onClick={handleShow}
-        className="position-relative me-auto p-2"
+        className="position-relative me-1 p-2"
       >
         <CartFill size={24} />
         <Badge
           pill
           bg="info"
           className="position-absolute top-25 start-75 translate-middle"
-          style={{ fontSize: "small" }}
+          style={{ fontSize: "12px" }}
         >
           {itemCount}
           <span className="visually-hidden">cart items</span>
