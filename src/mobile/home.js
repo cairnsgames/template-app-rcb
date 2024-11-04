@@ -8,6 +8,23 @@ const Home = () => {
   return (
     <Container fluid className="px-2">
       <Row>
+      <Col xs={12} md={6} lg={4} xl={3}>
+          <FloatingCard className="m-3 m-3"  style={{ backgroundColor: "purple" }}>
+            <FloatingCard.Header>
+              <p className="text-center">Partner Program</p>
+            </FloatingCard.Header>
+            <FloatingCard.Body>
+              <div>
+                <p className="fw-bold" style={{fontSize:"small"}}>
+                  We support all vendors in the dance Community. Our custom offereings include a Loyalty Program Management, community News and Ticketing.
+                </p>
+              </div>
+            </FloatingCard.Body>
+            <FloatingCard.Footer>
+              <Button variant="secondary" size="sm" onClick={()=>window.location.href="#partner"}>Find out More</Button>
+            </FloatingCard.Footer>
+          </FloatingCard>
+        </Col>
         <Col xs={12} md={6} lg={4} xl={3}>
           <FloatingCard className="m-3 m-3" image="./whitedance.png">
             <FloatingCard.Header>
