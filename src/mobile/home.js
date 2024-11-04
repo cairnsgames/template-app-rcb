@@ -11,17 +11,15 @@ const Home = () => {
       <Col xs={12} md={6} lg={4} xl={3}>
           <FloatingCard className="m-3 m-3"  style={{ backgroundColor: "purple" }}>
             <FloatingCard.Header>
-              <p className="text-center">Partner Program</p>
+              <div className="text-center">Partner Program</div>
             </FloatingCard.Header>
             <FloatingCard.Body>
-              <div>
-                <p className="fw-bold" style={{fontSize:"small"}}>
-                  We support all vendors in the dance Community. Our custom offereings include a Loyalty Program Management, community News and Ticketing.
-                </p>
-              </div>
+                <div className="fw-bold text-center" style={{fontSize:"small"}}>
+                We support all vendors associated directly and indirectly with the dance community value chain. 
+                We offer a Loyalty Program, ticketing and  scheduling support, community news and more...</div>
             </FloatingCard.Body>
             <FloatingCard.Footer>
-              <Button variant="secondary" size="sm" onClick={()=>window.location.href="#partner"}>Find out More</Button>
+              <Button variant="secondary" size="sm" onClick={()=>window.location.href="#partner"}>Join now</Button>
             </FloatingCard.Footer>
           </FloatingCard>
         </Col>
