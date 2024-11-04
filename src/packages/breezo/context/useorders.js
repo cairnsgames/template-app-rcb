@@ -10,9 +10,9 @@ export const useOrders = () => {
     throw new Error("useOrders was used outside of its Provider");
   }
 
-  const { orders, fetchOrders, loading, createOrderFromCart } = context;
+  const { activeOrder, orders, fetchOrders, orderItems, setActiveOrderId, loading, createOrderFromCart } = context;
 
-  return { orders, fetchOrders, loading, createOrderFromCart };
+  return { activeOrder, orders, fetchOrders, orderItems, setActiveOrderId, loading, createOrderFromCart };
 };
 
 export default useOrders;

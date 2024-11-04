@@ -51,7 +51,7 @@ const BreezoCart = (props) => {
               {cartItems.map((item, index) => (
                 <ListGroup.Item key={index}>
                   <div>
-                    {item.title} - ${Number(item.price).toFixed(2)}
+                    {item.title} - R {Number(item.price).toFixed(2)}
                     <Button variant="outline-primary" className="float-end">
                       <TrashFill
                         onClick={() => {
@@ -69,7 +69,7 @@ const BreezoCart = (props) => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <p>Total: ${cartTotal.toFixed(2)}</p>
+          <p>Total: R {cartTotal.toFixed(2)}</p>
         </Modal.Footer>
         <Modal.Footer>
           {cartItems.length > 0 && (

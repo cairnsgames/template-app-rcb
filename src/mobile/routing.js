@@ -19,6 +19,8 @@ import MyCalendar from "./pages/mycalendar";
 import ProfilePage from "../pages/profile/profilepage";
 import LandingPage from "./pages/landing/landingpage";
 import ComingSoon from "./pages/comingsoon";
+import BreezoPayNow from "../packages/breezo/breezopayorder";
+import PayNowPage from "../pages/breezo/paynowpage";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -70,7 +72,11 @@ const Routing = () => {
         <KlokoSearchPage />
       </Route>
       <Route is={"placeorder"}>
-        <PlaceOrderPage />
+        <PayNowPage />
+      </Route>
+      
+      <Route is={"payorder/{id}"}>
+        <BreezoPayNow />
       </Route>
       <Route is={"loyaltycarousel"} auth debug={true}>
         <LoyaltyCarousel />

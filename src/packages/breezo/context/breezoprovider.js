@@ -27,8 +27,8 @@ export const BreezoProvider = ({
   const [loading, setLoading] = useState(false);
   const [headers, setHeaders] = useState({});
   const [canFetch, setCanFetch] = useState(false);
-
-  const [activeOrder, setactiveOrder] = useState();
+  const [activeOrder, setActiveOrder] = useState();
+  const [activeOrderId, setActiveOrderId] = useState();
 
   let settings = [];
   let getUserProperty = () => {
@@ -58,6 +58,18 @@ export const BreezoProvider = ({
   }, [user, token]);
 
   useEffect(() => {
+    if (orders.length > 0  && activeOrderId) {
+      console.log("==== Getting active Order, activeOrderId", activeOrderId, orders);
+      const order = orders.find((o) => o.id === Number(activeOrderId));
+      console.log("==== Order found", order);
+      setActiveOrder(order);
+    } else {
+      setActiveOrder(null);
+    }
+  }, [orders, activeOrderId]);
+
+  useEffect(() => {
+    console.log("===== canFetch", canFetch);
     if (canFetch) {
       fetchCarts();
       fetchOrders();
@@ -69,8 +81,9 @@ export const BreezoProvider = ({
   }, [canFetch]);
 
   useEffect(() => {
+    console.log("==== activeOrder", activeOrder);
     if (canFetch) {
-      // fetchOrderItems();
+      fetchOrderItems();
     }
   }, [activeOrder]);
 
@@ -126,6 +139,7 @@ export const BreezoProvider = ({
   const fetchOrders = async () => {
     setLoading(true);
     try {
+      console.log("====fetchOrders", user.id);
       const response = await fetch(
         combineUrlAndPath(
           process.env.REACT_APP_BREEZO_API,
@@ -133,11 +147,35 @@ export const BreezoProvider = ({
         ),
         { headers }
       );
-      console.log("fetchOrders response", response);
       const data = await response.json();
+      console.log("fetchOrders response", data);
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
+    }
+    setLoading(false);
+  };
+
+  // Fetch orders
+  const fetchOrderItems = async () => {
+    if (!activeOrder) {
+      setOrderItems([]);
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_BREEZO_API,
+          `api.php/order/${activeOrder.id}/items`
+        ),
+        { headers }
+      );
+      const data = await response.json();
+      console.log("==== Order items", data);
+      setOrderItems(data);
+    } catch (error) {
+      console.error("Error fetching order items:", error);
     }
     setLoading(false);
   };
@@ -251,7 +289,9 @@ export const BreezoProvider = ({
     () => ({
       carts,
       cartItems,
+      activeOrder,
       orders,
+      orderItems,
       invoices,
       payments,
       commission,
@@ -265,9 +305,20 @@ export const BreezoProvider = ({
       fetchCommission,
       fetchItems,
       deleteItem,
+      setActiveOrderId,
       createOrderFromCart,
     }),
-    [carts, cartItems, orders, invoices, payments, commission, items, loading]
+    [
+      carts,
+      cartItems,
+      orders,
+      orderItems,
+      invoices,
+      payments,
+      commission,
+      items,
+      loading,
+    ]
   );
 
   return (

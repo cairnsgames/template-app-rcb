@@ -4,7 +4,7 @@ import { CartFill, CashStack } from "react-bootstrap-icons";
 import useOrders from "./context/useorders";
 
 const BreezoOrders = (props) => {
-  const { orders, fetchOrders, loading } = useOrders();
+  const { orders, fetchOrders, setActiveOrderId, loading } = useOrders();
   const [show, setShow] = useState(false);
   const [pendingOrders, setPendingOrders] = useState([]);
 
@@ -17,6 +17,12 @@ const BreezoOrders = (props) => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const selectOrder = (id) => {
+    setActiveOrderId(id);
+    window.location.href = `#payorder/${id}`;
+    handleClose();
+  }
 
   if (pendingOrders.length < 1) {
     return null;
@@ -49,7 +55,7 @@ const BreezoOrders = (props) => {
           {pendingOrders.length > 0 ? (
             <ListGroup>
               {pendingOrders.map((order) => (
-                <ListGroup.Item key={order.id}>
+                <ListGroup.Item key={order.id} onClick={()=>{selectOrder(order.id)}}>
                   <div>
                     <strong>Details:</strong> {order.order_details || "N/A"}
                   </div>
@@ -60,7 +66,7 @@ const BreezoOrders = (props) => {
                     </div>
                   )}
                   <div>
-                    <strong>Total Price:</strong> $
+                    <strong>Total Price:</strong> R
                     {Number(order.total_price).toFixed(2)}
                   </div>
                 </ListGroup.Item>
