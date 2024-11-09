@@ -9,7 +9,7 @@ const SiteDown = ({error}) => {
         {param("error") && <div className="text-center">{param("error")}</div>}
         {param("reason") && <div className="text-center">{param("reason")}</div>}
         <div className="text-center mt-5">
-            <Button onClick={()=>{ window.location.hash = "home" }}>Reload</Button>
+            <Button onClick={()=>{ window.location.href = "#home"; window.location.reload(); }}>Reload</Button>
         </div>
         <div>
             <h5>Error message</h5>
