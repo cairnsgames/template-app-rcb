@@ -59,7 +59,7 @@ export const useUser = () => {
     let recalculatedChecksum = (sum % 90) + 10;
   
     if (checksum === recalculatedChecksum) {
-      return idStr;
+      return parseInt(idStr).toString();
     } else {
       return undefined;
     }

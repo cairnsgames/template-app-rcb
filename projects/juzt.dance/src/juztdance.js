@@ -10,7 +10,9 @@ import SSRProvider from 'react-bootstrap/SSRProvider';
 import "./juztdance.scss";
 
 const App = () => (
-  <ErrorBoundary fallback={<SiteDown />}>
+  <ErrorBoundary fallbackRender={({ error, resetErrorBoundary }) => (
+    <SiteDown error={error} />
+  )}>
   <SSRProvider> 
  <Providers>
  <MobileApp />

@@ -11,7 +11,10 @@ const PayNowButton = ({ onGetOrder, onPaid }) => {
     throw new Error("onPaid is required.");
   }
 
+  console.log("==== PAYPAL Button")
+
   const createOrder = async (data, actions) => {
+    console.log("==== PAYPAL Button createOrder", data, actions)
     try {
       // Send request to your PHP backend to create the PayPal order
       const order = await onGetOrder();
@@ -35,6 +38,8 @@ const PayNowButton = ({ onGetOrder, onPaid }) => {
         throw new Error("Network response was not ok.");
       }
 
+      console.log("==== PAYPAL Button response", response)
+
       const { eccode, paymentid, error } = await response.json();
 
       if (error) {
@@ -51,6 +56,7 @@ const PayNowButton = ({ onGetOrder, onPaid }) => {
 
   const onApprove = async (data, actions) => {
     try {
+      console.log("==== PAYPAL Button onApprove", data, actions)
       // Handle the approval of the payment
       if (onPaid) {
         onPaid();
@@ -65,6 +71,7 @@ const PayNowButton = ({ onGetOrder, onPaid }) => {
 
   return (
     <div>
+      Buttons
       <PayPalButtons
         createOrder={createOrder}
         onApprove={onApprove}

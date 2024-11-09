@@ -11,6 +11,10 @@ const SiteDown = ({error}) => {
         <div className="text-center mt-5">
             <Button onClick={()=>{ window.location.hash = "home" }}>Reload</Button>
         </div>
+        <div>
+            <h5>Error message</h5>
+            {error && <pre>{error.message}</pre>}
+        </div>
     </Container>
 }
 

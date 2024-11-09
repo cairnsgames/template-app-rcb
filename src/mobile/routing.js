@@ -72,11 +72,11 @@ const Routing = () => {
         <KlokoSearchPage />
       </Route>
       <Route is={"placeorder"}>
-        <PayNowPage />
+        <PlaceOrderPage />
       </Route>
       
       <Route is={"payorder/{id}"}>
-        <BreezoPayNow />
+        <PayNowPage />
       </Route>
       <Route is={"loyaltycarousel"} auth debug={true}>
         <LoyaltyCarousel />
