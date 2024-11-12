@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Modal, Button, Form, InputGroup } from "react-bootstrap";
+import { Modal, Button, Form, InputGroup, Alert } from "react-bootstrap";
 import jsQR from "jsqr"; // Import the jsQR library
 import { ArrowRepeat } from "react-bootstrap-icons";
 import useUser from "../auth/context/useuser";
@@ -37,31 +37,30 @@ const CapturePhoto = ({
       console.error("$$$ No URL provided");
       return null;
     }
-  
+
     // Updated regex to match refer in both query string and hash fragment
     const hashRegex = /[#&?]id=(\d+)/; // Matches id=870001 after the #
     const pathRegex = /\/(\d+)(?:\/)?$/; // Matches /870001 at the end of the URL path
     const referRegex = /[?&#]refer=(\d+)/; // Matches refer=27 in the query string or fragment
-  
+
     const hashMatch = url.match(hashRegex);
     if (hashMatch) {
       return extractOriginalId(hashMatch[1]);
     }
-  
+
     const pathMatch = url.match(pathRegex);
     if (pathMatch) {
       return extractOriginalId(pathMatch[1]);
     }
-  
+
     const referMatch = url.match(referRegex);
     if (referMatch) {
       const oldId = referMatch[1];
       return await oldIdToNewMapping(oldId);
     }
-  
+
     return null;
   }
-  
 
   const processId = (id) => {
     const tempId = getIdFromFullId(`${id}`);
@@ -112,7 +111,7 @@ const CapturePhoto = ({
         console.log("$$$ QR Code:", code.data);
         onQRCode(code.data); // Return the decoded text from the QR code
       } else {
-        setError(`No QR code found (URL: ${code?.data})`);
+        setError(`No QR code found, use the customer ID instead.`);
       }
     };
   };
@@ -182,16 +181,7 @@ const CapturePhoto = ({
         <Modal.Title>Take a Photo</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {photo ? (
-          <img src={photo} alt="Captured" className="img-fluid" />
-        ) : (
-          <>
-            <video ref={videoRef} style={{ width: "100%" }} />
-            <canvas ref={canvasRef} style={{ display: "none" }} />
-            {error && <p className="text-danger">{error}</p>}
-          </>
-        )}
-        <InputGroup>
+        <InputGroup className="mb-2">
           <InputGroup.Text>Customer ID</InputGroup.Text>
           <Form.Control
             type="text"
@@ -203,6 +193,19 @@ const CapturePhoto = ({
             Save
           </Button>
         </InputGroup>
+        {photo ? (
+          <img src={photo} alt="Captured" className="img-fluid" />
+        ) : (
+          <>
+            <video ref={videoRef} style={{ width: "100%" }} />
+            <canvas ref={canvasRef} style={{ display: "none" }} />
+            {error && (
+              <Alert className="mb-2" variant="danger">
+                {error}
+              </Alert>
+            )}
+          </>
+        )}
       </Modal.Body>
       <Modal.Footer>
         {!photo && (

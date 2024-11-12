@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 import SelectLocationModal from "../gps/selectlocationmodal";
-import { useTemplates } from "./usetemplates";
-import { useEvents } from "./useevents";
+import { useTemplates } from "./context/usetemplates";
+import { useEvents } from "./context/useevents";
 
 const EventDetailsModal = ({ events, onSave, onClose }) => {
   const [details, setDetails] = useState(events[0]);

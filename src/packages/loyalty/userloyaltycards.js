@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useUserLoyalty } from "./userloyaltyprovider";
+import { useUserLoyalty } from "./context/userloyaltyprovider";
 import { Tabs, Tab, Card, Collapse, ListGroup, Button } from "react-bootstrap";
 import StampsCard from "./stampscard";
 

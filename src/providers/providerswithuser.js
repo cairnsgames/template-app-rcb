@@ -1,5 +1,5 @@
 import React from "react";
-import { KlokoProvider } from "../packages/kloko/klokoprovider";
+import { KlokoProvider } from "../packages/kloko/context/klokoprovider";
 import { useUser } from "../packages/auth/context/useuser";
 import { useTenant } from "../packages/tenant/context/usetenant";
 import BreezoProvider from "../packages/breezo/context/breezoprovider";

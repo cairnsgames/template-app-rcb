@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
-import { useUser } from "../auth/context/useuser";
-import useTenant from "../tenant/context/usetenant";
-import { useToast } from "../../packages/toasts/usetoast";
-import { combineUrlAndPath } from "../../functions/combineurlandpath";
-import useGeoLocation from "../../hooks/usegeolocation";
+import { useUser } from "../../auth/context/useuser";
+import useTenant from "../../tenant/context/usetenant";
+import { useToast } from "../../../packages/toasts/usetoast";
+import { combineUrlAndPath } from "../../../functions/combineurlandpath";
+import useGeoLocation from "../../../hooks/usegeolocation";
 
 // LoyaltyContext.js
 export const LoyaltyContext = createContext();

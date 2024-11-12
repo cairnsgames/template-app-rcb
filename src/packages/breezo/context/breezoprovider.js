@@ -285,6 +285,12 @@ export const BreezoProvider = ({
     return await order.json();
   };
 
+  const orderPaid = async () => {
+    setTimeout(() => {
+      fetchOrders();
+  },750);
+  }
+
   const values = useMemo(
     () => ({
       carts,
@@ -307,6 +313,7 @@ export const BreezoProvider = ({
       deleteItem,
       setActiveOrderId,
       createOrderFromCart,
+      orderPaid
     }),
     [
       carts,

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import useBookings from "./usebookings";
-import useSearch from "./usesearch";
+import useBookings from "./context/usebookings";
+import useSearch from "./context/usesearch";
 
 const BookingSection = (props) => {
   const { createBooking } = useBookings();

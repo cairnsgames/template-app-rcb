@@ -21,7 +21,7 @@ const PayNowButton = ({ onGetOrder, onPaid }) => {
       const orderId = order.id;
       const totalPrice = order.total_price;
       const response = await fetch(
-        "http://localhost/cairnsgames/paypal/create.php",
+        "http://localhost/cairnsgames/php/paypal/create.php",
         {
           method: "POST",
           headers: {

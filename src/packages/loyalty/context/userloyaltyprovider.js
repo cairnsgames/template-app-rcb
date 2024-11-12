@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { useUser } from '../auth/context/useuser';
-import { useTenant } from '../tenant/context/usetenant';
-import { combineUrlAndPath } from '../../functions/combineurlandpath';
+import { useUser } from '../../auth/context/useuser';
+import { useTenant } from '../../tenant/context/usetenant';
+import { combineUrlAndPath } from '../../../functions/combineurlandpath';
 const UserLoyaltyContext = createContext();
 
 export const useUserLoyalty = () => useContext(UserLoyaltyContext);

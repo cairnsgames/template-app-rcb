@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Form, Button, InputGroup, Spinner } from "react-bootstrap";
-import { LoyaltyContext } from "./loyaltyprovider";
+import { LoyaltyContext } from "./context/loyaltyprovider";
 import useFileLoader from "../../packages/content/usefileloader";
 import useTenant from "../tenant/context/usetenant";
 import useUser from "../auth/context/useuser";

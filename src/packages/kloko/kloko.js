@@ -14,7 +14,7 @@ import {
 
 import "./kloko.scss";
 import EventDetailsModal from "./eventdetailsmodal";
-import useEvents from "./useevents";
+import useEvents from "./context/useevents";
 import KlokoSearch from "./klokosearch";
 
 function addMinutes(dateString, mins = 90) {

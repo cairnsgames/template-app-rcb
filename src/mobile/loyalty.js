@@ -3,7 +3,7 @@ import LoyaltyCardManager from "../packages/loyalty/cards/loyaltycardmanager";
 import {
   UserLoyaltyProvider,
   useUserLoyalty,
-} from "../packages/loyalty/userloyaltyprovider";
+} from "../packages/loyalty/context/userloyaltyprovider";
 
 const LoyaltyCarousel = () => {
   const { cards, rewards } = useUserLoyalty();

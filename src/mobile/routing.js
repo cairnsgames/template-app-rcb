@@ -18,9 +18,10 @@ import QRCodePage from "./pages/qrcodepage";
 import MyCalendar from "./pages/mycalendar";
 import ProfilePage from "../pages/profile/profilepage";
 import LandingPage from "./pages/landing/landingpage";
-import ComingSoon from "./pages/comingsoon";
+import ComingSoon from "../components/comingsoon/comingsoon";
 import BreezoPayNow from "../packages/breezo/breezopayorder";
 import PayNowPage from "../pages/breezo/paynowpage";
+import PayNowThankYouPage from "../pages/breezo/paynowthankyoupage";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -75,9 +76,13 @@ const Routing = () => {
         <PlaceOrderPage />
       </Route>
       
+      <Route is={"payorder/thankyou"}>
+        <PayNowThankYouPage />
+      </Route>
       <Route is={"payorder/{id}"}>
         <PayNowPage />
       </Route>
+
       <Route is={"loyaltycarousel"} auth debug={true}>
         <LoyaltyCarousel />
       </Route>

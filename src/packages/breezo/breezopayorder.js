@@ -6,7 +6,7 @@ import PayNowButton from "./paynowbutton";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const BreezoPayNow = ({ id }) => {
-  const { activeOrder, setActiveOrderId, orderItems, loading } = useOrders();
+  const { activeOrder, orderPaid, setActiveOrderId, orderItems, loading } = useOrders();
   const { user } = useUser();
 
   useEffect(() => {
@@ -29,6 +29,8 @@ const BreezoPayNow = ({ id }) => {
   };
   const doPaid = () => {
     console.log("PAID");
+    orderPaid();
+    window.location.hash = "#payorder/thankyou";
   };
 
   const paypalclientId =

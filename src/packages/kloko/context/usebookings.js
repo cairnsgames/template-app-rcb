@@ -11,9 +11,9 @@ export const useBookings = () => {
     throw new Error("useUser was used outside of its Provider");
   }
 
-  const { bookings, createBooking, updateBooking, deleteBooking } = context;
+  const { bookings, tickets, createBooking, updateBooking, deleteBooking } = context;
 
-  return { bookings, createBooking, updateBooking, deleteBooking };
+  return { bookings, tickets, createBooking, updateBooking, deleteBooking };
 };
 
 export default useBookings;

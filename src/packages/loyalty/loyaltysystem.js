@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { LoyaltyContext, LoyaltyProvider } from "./loyaltyprovider";
+import { LoyaltyContext, LoyaltyProvider } from "./context/loyaltyprovider";
 import { useUser } from "../auth/context/useuser";
 import StampsBarChart from "./stampsbarchart";
 import LoyaltyRewards from "./loyaltyrewards";
