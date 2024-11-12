@@ -14,17 +14,17 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-        working-directory: /projects/just.dance
+        working-directory: /projects/juzt.dance
       - name: Build Main Site
         run: npm run build
-        working-directory: /projects/just.dance
+        working-directory: /projects/juzt.dance
       - name: Deploy Main Site
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: ${{ vars.CG_SERVER }}
           username: ${{ vars.CG_FTP_USERNAME }}
           password: ${{ secrets.CG_FTP_PASSWORD }}
-          local-dir: /projects/just.dance/dist/
+          local-dir: /projects/juzt.dance/dist/
           server-dir: ${{ vars.SERVER_DIR }}
       - name: Deploy JuztDance Site
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
@@ -32,7 +32,7 @@ jobs:
           server: ${{ vars.JD_SERVER }}
           username: ${{ vars.JD_FTP_USERNAME }}
           password: ${{ secrets.JD_FTP_PASSWORD }}
-          local-dir: /projects/just.dance/dist/
+          local-dir: /projects/juzt.dance/dist/
           server-dir: /
   # build-main-site:
   #   runs-on: ubuntu-latest
