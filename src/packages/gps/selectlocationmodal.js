@@ -26,10 +26,23 @@ import MapDisplay from "../map/mapdisplay";
 
 const SelectLocationModal = ({ onSelectLocation }) => {
   const [show, setShow] = useState(false);
-  const [position, setPosition] = useState([26,26]);
-  const [center, setCenter] = useState([26,26]);
+  const [position, setPosition] = useState([26, 26]);
+  const [center, setCenter] = useState([26, 26]);
 
   const [map, setMap] = useState(null);
+
+  const [marker, setMarker] = useState();
+
+  const markers = marker ? [marker] : [];
+
+  const selectMapLocation = (latlng) => {
+    console.log("selectMapLocation", latlng);
+    setPosition([latlng[0].toFixed(3), latlng[1].toFixed(3)]);
+    setMarker({
+      lat: latlng[0],
+      lng: latlng[1],
+    });
+  };
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -48,9 +61,13 @@ const SelectLocationModal = ({ onSelectLocation }) => {
 
   const selectLocation = () => {
     if (onSelectLocation) {
-      onSelectLocation(position);
-      setShow(false);
+      if (marker) {
+        onSelectLocation([marker.lat, marker.lng]);
+      } else {
+        onSelectLocation(position);
+      }
     }
+    setShow(false);
   };
 
   const LocationFinder = () => {
@@ -87,8 +104,20 @@ const SelectLocationModal = ({ onSelectLocation }) => {
           <Modal.Title>Select Location</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body style={{ position:"relative", height: "100%", width: "100%", minHeight: "60vh" }}>
-          <MapDisplay offsetTop="0px" markers={[]} />
+        <Modal.Body
+          style={{
+            position: "relative",
+            height: "100%",
+            width: "100%",
+            minHeight: "60vh",
+          }}
+        >
+          <MapDisplay
+            offsetTop="0px"
+            markers={markers}
+            onClick={selectMapLocation}
+            isModal={true}
+          />
         </Modal.Body>
 
         <Modal.Footer>

@@ -5,7 +5,7 @@ import { useDebounce } from "../../hooks/usedebounce";
 import "./mapsearch.scss";
 import useMapContext from "./context/usemapcontext";
 
-export function MapSearch() {
+export function MapSearch(props) {
   function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     const R = 6371; // Radius of the earth in km
     const dLat = deg2rad(lat2 - lat1); // deg2rad below
@@ -90,15 +90,9 @@ export function MapSearch() {
             </InputGroup.Text>
           </InputGroup>
         </div>
-      <div style={{width:"100%"}}>
+      <div style={{width: "100%", overflowY:"auto", height:"90%"}}>
           <div className="places">
             {places?.map((place) => (
-              <div
-                key={place.place_id}
-                onClick={() => {
-                  setCenter([place.lat, place.lon]);
-                }}
-              >
                 <div
                   onClick={() => {
                     goto(place);
@@ -106,7 +100,6 @@ export function MapSearch() {
                 >
                   {place.display_name} {place.distance.toFixed(0)} km
                 </div>
-              </div>
             ))}
           </div>
         </div>

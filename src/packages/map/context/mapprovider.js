@@ -62,6 +62,7 @@ export const MapProvider = ({ children }) => {
   }, [])
 
   const addMarker = (lat, lng, title) => {
+    console.log("Adding marker", lat, lng, title);
     setMarkers([...markers, { lat, lng, title }]);
   };
 

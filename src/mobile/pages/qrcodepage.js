@@ -10,7 +10,7 @@ const QRCodePage = (props) => {
   }
   const text = `https://juzt.dance/#referral?id=${fullId}`;
   return (
-    <PageCentered>
+    <PageCentered className="qrcode">
       <h2>Your QR Code</h2>
       <div className="mx-auto my-2 text-center" style={{ maxWidth: "350px" }}>
         <QRCode link={text} size={255} allowCopyToClipboard={true} />

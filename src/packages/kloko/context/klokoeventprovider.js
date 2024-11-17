@@ -3,14 +3,14 @@ import eventing from "../../eventing/eventing";
 import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 
 // Create context for Calendar, Event, Booking, and Template management
-export const KlokoContext = createContext();
+export const KlokoEventContext = createContext();
 /* An event has the following fields (Keep this comment)
 // 'id', 'calendar_id', 'user_id', 'event_template_id', 'content_id', 'app_id', 'title', 'description', 'price', 'image', 'event_type', 'duration', 'location', 'lat', 'lng', 'max_participants', 'start_time', 'end_time'
 // where image is a file path - usung the file uploader to create.
 */
 
 // Data provider component
-export const KlokoProvider = ({
+export const KlokoEventProvider = ({
   children,
   user,
   tenant,
@@ -561,9 +561,9 @@ export const KlokoProvider = ({
   );
 
   return (
-    <KlokoContext.Provider value={values}>{children}</KlokoContext.Provider>
+    <KlokoEventContext.Provider value={values}>{children}</KlokoEventContext.Provider>
   );
 };
 
 // Custom hook for using the DataContext
-export default KlokoProvider;
+export default KlokoEventProvider;

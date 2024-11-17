@@ -1,5 +1,5 @@
 import React from "react";
-import { KlokoProvider } from "../packages/kloko/context/klokoprovider";
+import { KlokoProviders } from "../packages/kloko/context/klokoproviders";
 import { useUser } from "../packages/auth/context/useuser";
 import { useTenant } from "../packages/tenant/context/usetenant";
 import BreezoProvider from "../packages/breezo/context/breezoprovider";
@@ -16,11 +16,11 @@ const ProvidersWithSettingsAndFeatures = ({
 }) => {
 
   return (
-    <KlokoProvider user={user} tenant={tenant} token={token} useSettings={useSettings} useFeatureFlag={useFeatureFlag}>
+    <KlokoProviders user={user} tenant={tenant} token={token} useSettings={useSettings} useFeatureFlag={useFeatureFlag}>
       <BreezoProvider user={user} tenant={tenant} token={token} useSettings={useSettings} useFeatureFlag={useFeatureFlag}>
         {children}
       </BreezoProvider>
-    </KlokoProvider>
+    </KlokoProviders>
   );
 };
 

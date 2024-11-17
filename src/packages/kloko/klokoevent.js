@@ -6,6 +6,7 @@ import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { extractFileName } from "../../functions/extractfilename";
 import { useToast } from "../toasts/usetoast";
 import Div from "../../components/react-bootstrap-mobile/div";
+import LocationSelect from "./LocationSelect";
 
 const KlokoEventEditor = ({id, onClose}) => {
   const {
@@ -210,15 +211,9 @@ const KlokoEventEditor = ({id, onClose}) => {
 
       <Form.Group controlId="location">
         <Form.Label>Location</Form.Label>
-        <InputGroup>
-          <Form.Control
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-          />
-        </InputGroup>
+        <LocationSelect onChange={setLocation} />
       </Form.Group>
+
 
       <Form.Group controlId="maxParticipants">
         <Form.Label>Max Participants</Form.Label>

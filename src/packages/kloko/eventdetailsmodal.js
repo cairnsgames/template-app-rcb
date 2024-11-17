@@ -10,7 +10,10 @@ const EventDetailsModal = ({ events, onSave, onClose }) => {
   const {templates} = useTemplates();
   const { createEvent } = useEvents();
 
-
+  const selectPosition = (position) => {
+    console.log("position", position);
+    setDetails({ ...details, lat: position[0].toFixed(3), lng: position[1].toFixed(3) });
+  }
   const save = () => {
     onSave(
       events.map((event) => {        
@@ -132,7 +135,7 @@ const EventDetailsModal = ({ events, onSave, onClose }) => {
                   setDetails({ ...details, lng: ev.target.value })
                 }
               />
-            <SelectLocationModal />
+            <SelectLocationModal onSelectLocation={(position)=>{selectPosition(position)}} />
           </InputGroup>
         </Form>
       </Modal.Body>

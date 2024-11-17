@@ -12,8 +12,9 @@ const MapEvents = (props) => {
       }
     },
     click: (location) => {
+      console.log("Map click", location.latlng);
       if (onMapClick) {
-        onMapClick(location.latlng.lat, location.latlng.lng);
+        onMapClick([location.latlng.lat, location.latlng.lng]);
       }
     },
     moveend: () => {

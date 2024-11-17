@@ -8,7 +8,7 @@ const Map = () => {
   const mapChanged = (south, west, north, east) => {
   };
   const mapClick = async (lat, lng) => {
-    const details = await getLocationDetails(lat, lng);
+    // const details = await getLocationDetails(lat, lng);
     addMarker(lat, lng, details.suburb ?? details.city);
   };
   return (

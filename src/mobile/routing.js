@@ -118,6 +118,10 @@ const Routing = () => {
       <Route startsWith={"partner"}>
         <PartnersPage />
       </Route>
+      
+      <Route startsWith={"map"}>
+        <MapPage />
+      </Route>
       <Route startsWith={"userloyalty"}>
         <UserLoyaltyPage />
       </Route>

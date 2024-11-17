@@ -47,7 +47,7 @@ const NavBarbottom = () => {
         <Footer.Icon href="#mycalendar">
           <CalendarWeek size={24} />
         </Footer.Icon>
-        <Footer.Icon href="#news/mynews">
+        <Footer.Icon href="#map">
           <GeoAlt size={24} />
         </Footer.Icon>
       </Footer.Center>
