@@ -131,23 +131,26 @@ const Calendar = (props) => {
 
   const eventsToDisplay = [...(events ?? []), ...(newEvents ?? [])];
   return (
-    <div>
+    <>
       <Row className="m-2">
-        <Col>
-          <Form.Select onChange={setView}>
+        <Col xs={12}>
+          <h1 class="text-center">Schedule Classes</h1>
+        </Col>
+        {/* <Col>
+          <Form.Select onChange={setView} style={{fontSize:"10px"}}>
             <option value="Day">Day</option>
             <option value="Weekdays">Week</option>
             <option value="Week">Week with Weekends</option>
             <option value="Month">Month</option>
           </Form.Select>
-        </Col>
+        </Col> */}
         <Col>
           <InputGroup>
-            <InputGroup.Text>Duration</InputGroup.Text>
+            <InputGroup.Text style={{fontSize:"10px"}}>Duration</InputGroup.Text>
 
             <Form.Select
               value={duration}
-              onChange={(e) => setDuration(e.target.value)}
+              onChange={(e) => setDuration(e.target.value)} style={{fontSize:"10px"}}
             >
               <option value="30">30 Minutes</option>
               <option value="60">1 hour</option>
@@ -171,10 +174,13 @@ const Calendar = (props) => {
         slotMaxTime="22:00"
         allDaySlot={false}
         headerToolbar={{
-          left: `prev,next,today${newEvents.length > 0 ? " Save,Cancel" : ""}`,
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-        }}
+          left: `prev,next,today`,
+          center: `${newEvents.length > 0 ? "Save,Cancel" : ""}`,
+          right: "timeGridWeek,timeGridDay,listWeek",
+        }}  
+        expandRows={true}
+        stickyHeaderDates={true}
+        height={"auto"}
       />
       {showDetails && (
         <EventDetailsModal
@@ -183,7 +189,7 @@ const Calendar = (props) => {
           onClose={() => setShowDetails(false)}
         />
       )}
-    </div>
+    </>
   );
 };
 

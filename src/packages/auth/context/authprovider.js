@@ -39,12 +39,10 @@ const AuthenticationProvider = (props) => {
   }, [token]);
 
   useEffect(() => {
-    console.log("=== User", user);
     if (!user?.id) {
       return;
     }
     fetchProperties();
-    console.log("Welcome User", user);
   }, [user]);
 
   const validateToken = (token) => {
@@ -109,7 +107,6 @@ const AuthenticationProvider = (props) => {
   }, [tenant]);
 
   const reloadPermissions = async () => {
-    console.log("==== Reloading Permissions");
     const savedToken = localStorage.getItem("cg." + tenant + ".auth");
     if (savedToken && savedToken !== "undefined") {
       // Validate Token
@@ -220,7 +217,6 @@ const AuthenticationProvider = (props) => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log("=== Register 1", data);
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
@@ -283,11 +279,9 @@ const AuthenticationProvider = (props) => {
           permissions: data.permissions,
         };
         setUser(userDetails);
-        console.log("return data", data);
         return data;
       })
       .catch((err) => {
-        console.log("Login Error", JSON.stringify(err));
         if (onError) {
           onError("Auth: Unable to complete Login", err);
         }
@@ -341,11 +335,9 @@ const AuthenticationProvider = (props) => {
   };
 
   const forgot = async (email) => {
-    console.log("forgot", email);
     const body = {
       email: email,
     };
-    console.log("process.env.REACT_APP_AUTH_API", process);
     return fetch(
       combineUrlAndPath(
         process.env.REACT_APP_AUTH_API,
@@ -363,11 +355,9 @@ const AuthenticationProvider = (props) => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log("FORGOT PASSWORD DATA", data);
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
-        console.log("Forgot password response)  ", data);
         return data;
       })
       .catch((err) => {
@@ -378,14 +368,12 @@ const AuthenticationProvider = (props) => {
   };
 
   const changePassword = (id, old, password, password2) => {
-    console.log("change password", id, old, password, password2);
     const body = {
       userid: id,
       oldpassword: old,
       password: password,
       password2: password2,
     };
-    console.log("process.env.REACT_APP_AUTH_API", process);
     return fetch(
       combineUrlAndPath(
         process.env.REACT_APP_AUTH_API,

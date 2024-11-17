@@ -62,10 +62,6 @@ const WizardSample = () => {
     setLastStep(3);
   };
 
-  useEffect(() => {
-    console.log("Last Step", lastStep)
-  }, [lastStep]);
-
   const onSaveDetails = () => {
     const { name, duration, time } = formData;
 

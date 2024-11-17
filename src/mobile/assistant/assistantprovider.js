@@ -72,7 +72,6 @@ export const AssistantProvider = ({ children, user, token, tenant }) => {
   // Effect to fetch user roles whenever user is set
   useEffect(() => {
     if (user && user.id) {
-        console.log("*** Found user ID", user.id);
       fetchAssistantVenues();
     }
   }, [user, fetchUserRoles]);

@@ -27,32 +27,32 @@ const PartnerBar = () => {
     >
       {hasAccess("Calendar") && (
         <Nav.Link eventKey="#calendar">
-          <Calendar />
+          <Calendar className="ms-1" />
         </Nav.Link>
       )}
       {hasAccess("Store") && (
         <Nav.Link eventKey="#store">
-          <Cart />
+          <Cart className="ms-1" />
         </Nav.Link>
       )}
       {hasAccess("Loyalty") && (
         <Nav.Link eventKey="#partner/loyalty">
-          <Heart />
+          <Heart className="ms-1" />
         </Nav.Link>
       )}
       {hasAccess("Orders") && (
         <Nav.Link eventKey="#orders">
-          <Receipt />
+          <Receipt className="ms-1" />
         </Nav.Link>
       )}
 
       {hasAccess("Events") && (
-        <Nav.Link eventKey="#events">
-          <Balloon />
+        <Nav.Link eventKey="#events/myevents">
+          <Balloon className="ms-1" />
         </Nav.Link>
       )}
       <Nav.Link eventKey="#news/mynews">
-        <InfoCircle />
+        <InfoCircle className="ms-1" />
       </Nav.Link>
     </Bar>
   );

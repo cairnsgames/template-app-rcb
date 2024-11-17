@@ -20,7 +20,6 @@ const LandingPage = ({ roles = [] }) => {
   };
 
   const joinPartnerProgram = (partnerData) => {
-    console.log("Partner Data:", partnerData);
     // Handle the join partner logic here
     closeSignup();
   };

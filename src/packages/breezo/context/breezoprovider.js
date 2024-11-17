@@ -59,9 +59,7 @@ export const BreezoProvider = ({
 
   useEffect(() => {
     if (orders.length > 0  && activeOrderId) {
-      console.log("==== Getting active Order, activeOrderId", activeOrderId, orders);
       const order = orders.find((o) => o.id === Number(activeOrderId));
-      console.log("==== Order found", order);
       setActiveOrder(order);
     } else {
       setActiveOrder(null);
@@ -69,7 +67,6 @@ export const BreezoProvider = ({
   }, [orders, activeOrderId]);
 
   useEffect(() => {
-    console.log("===== canFetch", canFetch);
     if (canFetch) {
       fetchCarts();
       fetchOrders();
@@ -81,7 +78,6 @@ export const BreezoProvider = ({
   }, [canFetch]);
 
   useEffect(() => {
-    console.log("==== activeOrder", activeOrder);
     if (canFetch) {
       fetchOrderItems();
     }
@@ -139,7 +135,6 @@ export const BreezoProvider = ({
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      console.log("====fetchOrders", user.id);
       const response = await fetch(
         combineUrlAndPath(
           process.env.REACT_APP_BREEZO_API,
@@ -148,7 +143,6 @@ export const BreezoProvider = ({
         { headers }
       );
       const data = await response.json();
-      console.log("fetchOrders response", data);
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -172,7 +166,6 @@ export const BreezoProvider = ({
         { headers }
       );
       const data = await response.json();
-      console.log("==== Order items", data);
       setOrderItems(data);
     } catch (error) {
       console.error("Error fetching order items:", error);

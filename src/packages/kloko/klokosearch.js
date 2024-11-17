@@ -58,7 +58,7 @@ const KlokoSearch = () => {
 
   return (
     <div>
-      <Container fluid>
+      <Container fluid style={{overflowY:"hidden"}}>
         <Row
           style={{
             border: "3px solid var(--bs-primary)",

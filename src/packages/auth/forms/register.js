@@ -28,19 +28,15 @@ function RegisterForm({ onSuccess }) {
 
     register(email, password, confirm)
       .then((result) => {
-        console.log("Register return", result);
         if (result.errors) {
-          console.log("Cannot register 1", result.errors[0]);
           setError(result.errors[0].message);
           return;
         }
-        console.log("Registered successfully", result);
         if (result && onSuccess) {
           onSuccess(true);
         }
       })
       .catch((error) => {
-        console.log("Cannot register 1", error);
         setError(error);
         return;
       });

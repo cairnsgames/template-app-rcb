@@ -33,11 +33,7 @@ const Bar = ({ children, variant, className, style, defaultActiveKey, onSelect }
   };
 
   const handleSelect = (key, e) => {
-    console.log('handleSelect', key);
     if (!isDragging) {
-      
-      // console.log('setActiveKey', key);
-      // setActiveKey(key);
       onSelect(key, e);
       e.stopPropagation(); // Prevent the onClick from firing if dragging
     } else {

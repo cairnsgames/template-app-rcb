@@ -11,7 +11,6 @@ const BreezoPayNow = ({ id }) => {
 
   useEffect(() => {
     if (user && id) {
-      console.log("==== setting active order id", id);
       setActiveOrderId(id);
     }
   }, [id, user]);

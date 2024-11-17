@@ -7,7 +7,7 @@ import PageCentered from "../../parts/pagelayouts/pagecentered";
 import MyNews from "./mynews";
 import MyNewsEditor from "./mynewseditor";
 
-function NewsSample() {
+function NewsRouting() {
   console.log("NewsSample")
   return (
     <PageCentered className="my-3">
@@ -31,4 +31,4 @@ function NewsSample() {
   );
 }
 
-export default NewsSample;
+export default NewsRouting;

@@ -30,8 +30,6 @@ const PartnerSignupModal = ({ show, handleClose }) => {
       payment_method: "",
       paypal_username: "",
     });
-    
-    console.log("==== Banking details:", bankingDetails);
   }, [bankingDetails]);
 
   const handleRoleChange = (role) => {

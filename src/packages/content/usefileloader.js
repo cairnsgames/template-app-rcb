@@ -86,7 +86,6 @@ const useFileLoader = (
   };
 
   const uploadFile = (files) => {
-    console.log("+++++++ files", files)
     return new Promise(function (resolve, reject) {
       setLoading(true);
       const file1 = files[0];
@@ -98,7 +97,6 @@ const useFileLoader = (
       xhr.addEventListener(
         "load",
         (e) => {
-          console.log("File upload success")
           resolve(SuccessHandler(e));
         },
         false
@@ -173,7 +171,6 @@ const useFileLoader = (
     setPercent(100);
     setLoaded(total);
     setLoading(false);
-    console.log("Success Handler", response);
     if (onSuccess) {
       return onSuccess(response);
     }

@@ -3,8 +3,6 @@ import { createRoot } from "react-dom/client";
 import Kloko from "./kloko";
 
 function klokoMain(selector, appId, eventId, style) {
-  console.log("klokoMain", selector, appId, eventId, style);
-
   const container = document.querySelector(selector);
   if (!container) {
     console.error(`Element with selector "${selector}" not found.`);

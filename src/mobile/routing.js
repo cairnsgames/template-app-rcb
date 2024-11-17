@@ -12,7 +12,7 @@ import PlaceOrderPage from "../pages/breezo/placeorderpage";
 import LoyaltyCarousel from "./loyalty";
 import Tickets from "./tickets";
 import MobileAuth from "./pages/mobileauth";
-import NewsSample from "../packages/news/sample";
+import NewsRouting from "../packages/news/newsrouting";
 
 import QRCodePage from "./pages/qrcodepage";
 import MyCalendar from "./pages/mycalendar";
@@ -22,6 +22,8 @@ import ComingSoon from "../components/comingsoon/comingsoon";
 import BreezoPayNow from "../packages/breezo/breezopayorder";
 import PayNowPage from "../pages/breezo/paynowpage";
 import PayNowThankYouPage from "../pages/breezo/paynowthankyoupage";
+import Calendar from "../packages/kloko/kloko";
+import KlokoRouting from "../packages/kloko/klokorouting";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -67,7 +69,7 @@ const Routing = () => {
       </Route>
 
       <Route startsWith={"news"}>
-        <NewsSample />
+        <NewsRouting />
       </Route>
       <Route is={"search"}>
         <KlokoSearchPage />
@@ -91,7 +93,7 @@ const Routing = () => {
       </Route>
 
       <Route is="calendar">
-        <ComingSoon />
+        <Calendar />
       </Route>
       <Route is="store">
         <ComingSoon />
@@ -99,8 +101,8 @@ const Routing = () => {
       <Route is="orders">
         <ComingSoon />
       </Route>
-      <Route is="events">
-        <ComingSoon />
+      <Route startsWith="events">
+        <KlokoRouting />
       </Route>
 
       <Route if={!isLoggedIn}>

@@ -100,10 +100,8 @@ const Router = (props) => {
         if (route.props.debug) {
         }
         if (is && startsWith && ifTrue && andTrue && auth) {
-          console.log("Router: Found route", route);
           const pathParams = extractNamesAndValues(path, route.props.is);
           
-          console.log("Router: props", pathParams, restProps);
           return <Route children={route.props.children} {...pathParams} {...restProps} />;
         }
       } else {

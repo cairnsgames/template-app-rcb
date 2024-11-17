@@ -5,8 +5,6 @@ import useUser from "../../../../packages/auth/context/useuser";
 const Hero = ({ openSignup, roles }) => {
   const { isLoggedIn } = useUser();
 
-  console.log("Partner Roles", roles);
-
   if (roles.length > 0) {
     return <div className="my-5 text-center">
       <Image className="mb-4" src="./favicon.png" alt="" width="72" />

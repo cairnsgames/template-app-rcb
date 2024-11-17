@@ -24,15 +24,12 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
   // const { t } = useTranslation();
   const t = (key) => key;
 
-  console.log("LoginForm", { onSuccess, onClose, rememberMe });
-
   const handleSubmit = (event) => {
     const form = event.currentTarget;
 
     event.preventDefault();
     event.stopPropagation();
     if (form.checkValidity() === false) {
-      console.log("Not all values are entered correctly");
       setValidated(false);
       return;
     }
@@ -41,13 +38,10 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
 
     login(email, password)
       .then((result) => {
-        console.log("Login return", result);
         if (result.errors) {
-          console.log("Cannot login", result.errors[0]);
           setErrors(result.errors[0].message);
           return;
         }
-        console.log("Logged in successfully", result);
         if (result && onSuccess) {
           onSuccess(true);
         }

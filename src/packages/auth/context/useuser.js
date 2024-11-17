@@ -46,11 +46,8 @@ export const useUser = () => {
       return fullId;
     }
   
-    console.log("fullId", fullId);
     const checksum = parseInt(fullId.slice(0, 2));
-    console.log("checksum", checksum);
     const idStr = fullId.slice(2);
-    console.log("idStr", idStr);
   
     let sum = 0;
     for (let i = 0; i < idStr.length; i++) {
