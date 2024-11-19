@@ -1,0 +1,28 @@
+.filetree {
+  padding: 0.5rem;
+}
+
+
+.editor-wrapper {
+  flex: 1; // Allow it to grow and fill available space
+  
+  flex-direction: column; // Ensure children stack vertically
+  display: flex;
+
+  .editor-wrapper {
+    padding: 0.5rem;
+  }
+
+  .editor {
+    flex: 1; /* Allow it to grow and fill available space */
+    flex-direction: column; /* Ensure children stack vertically */
+    display: flex;
+    background-color: rgb(247, 252, 245);
+
+    .tiptap {
+      flex: 1;
+      background-color: transparent;
+      padding: 4px;
+    }
+  }
+}

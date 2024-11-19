@@ -1,0 +1,58 @@
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 55, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it is above other content */
+}
+
+.elf-dialog {
+  border-radius: 8px;
+  padding: 20px;
+  width: 80%; /* Set width to 80% of the viewport */
+  max-width: 600px; /* Maximum width */
+}
+
+.elf-image {
+  width: 200px; /* Adjust the width of the elf image */
+  margin-bottom: 20px; /* Space between image and dialog */
+}
+
+.dialog-bubble {
+  background: #f0f0f0; /* Light gray background */
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+  min-width: 400px;
+  min-height: 150px;
+  max-width: 100%; /* Limit the width of the speech bubble */
+  border: 2px solid var(--bs-primary); /* Outline with primary color */
+}
+.dialog-bubble::before {
+  content: '';
+  position: absolute;
+  top: 50%; /* Center the arrow vertically */
+  left: -36px; /* Position to the left of the bubble */
+  transform: translateY(-50%); /* Center the arrow vertically */
+  border-width: 20px; 
+  border-style: solid;
+  border-color: transparent #f0f0f0 transparent transparent; /* Triangle pointing left with body color */
+  z-index: 1; /* Ensure the body-colored arrow is above the red arrow */
+}
+
+.dialog-bubble::after {
+  content: '';
+  position: absolute;
+  top: 50%; /* Center the arrow vertically */
+  left: -36px; /* Position to the left of the bubble */
+  transform: translateY(-50%); /* Center the arrow vertically */
+  border-width: 18px;
+  border-style: solid;
+  border-color: transparent red transparent transparent; /* Triangle pointing left with red border */
+  z-index: 0; /* Ensure the red arrow is below the body-colored arrow */
+}

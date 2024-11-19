@@ -1,0 +1,22 @@
+.layout {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.left-sidebar {
+  background-color: #f8f9fa; /* Light background for the sidebar */
+  border-right: 1px solid #dee2e6; /* Divider line */
+}
+
+.right-content {
+  flex-grow: 1; /* Take remaining space */
+  background-color: #ffffff; /* White background for the content */
+}
+
+.divider {
+  cursor: ew-resize; /* Change cursor to indicate resizing */
+  width: 5px; /* Width of the divider */
+  background-color: #6c757d; /* Color of the divider */
+  // height: 100%; /* Full height of the layout */
+}
