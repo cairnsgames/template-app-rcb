@@ -20,7 +20,7 @@ const Markers = ({ markers }) => {
             
               <div>
                 <div className="me-1" style={{ display: "inline-block" }}>
-                  <Image roundedCircle src="person1.jpeg" width="40px" />
+                  <Image roundedCircle src={marker.image ?? "person1.jpeg"} width="40px" />
                 </div>
                 <div style={{ display: "inline-block" }}>
                   <Button
@@ -32,7 +32,10 @@ const Markers = ({ markers }) => {
                     {marker.title}
                   </Button>
                 </div>
+                <div>
                 {marker.more && (<FormattedText text={marker.more} />)}
+                {marker.category}
+                </div>
               </div>
             </Popup>
           </Marker>

@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 const EventThumb = ({ event, onClick, onEdit }) => {
+  const [imageLoaded, setImageLoaded] = useState(true); // State to track image loading
+
   return (
     <Card className="mb-3" onClick={onClick}>
       <Card.Title>{event.title}</Card.Title>
       <Card.Body className="d-flex">
-        <img
-          src={combineUrlAndPath(process.env.REACT_APP_FILES, event.image)}
-          alt="Event"
-          style={{ maxWidth: "25%", marginRight: "15px" }}
-        />
+        {imageLoaded && (
+          <img
+            src={combineUrlAndPath(process.env.REACT_APP_FILES, event.image)}
+            alt="Event"
+            style={{ maxWidth: "25%", marginRight: "15px" }}
+            onError={() => setImageLoaded(false)} // Set to false if image fails to load
+          />
+        )}
         <div>
           <Card.Text>
             <strong>Start Time:</strong>{" "}

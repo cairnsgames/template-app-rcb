@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Row, Col, InputGroup } from "react-bootstrap";
+import { Form, Row, Col, InputGroup, CloseButton } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
 import { useDebounce } from "../../hooks/usedebounce";
 import "./mapsearch.scss";
@@ -78,7 +78,8 @@ export function MapSearch(props) {
   return (
     <div className="mapsearch">
         <div style={{width: "100%", display: "block"}}>
-          <InputGroup className="mb-3">
+        <CloseButton style={{float:"right",marginTop:"0.5rem"}} onClick={() => props.onClose(false)} />
+          <InputGroup className="mb-3 me-5" style={{width: "calc(100% - 75px)"}}>
             <InputGroup.Text>Search </InputGroup.Text>
             <Form.Control
               type="text"
@@ -98,7 +99,7 @@ export function MapSearch(props) {
                     goto(place);
                   }}
                 >
-                  {place.display_name} {place.distance.toFixed(0)} km
+                  {place.display_name} <span style={{color:"#888888"}}>({place.distance.toFixed(0)} km)</span>
                 </div>
             ))}
           </div>

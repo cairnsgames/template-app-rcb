@@ -8,6 +8,8 @@ import "./map.scss";
 import MapEvents from "./mapevents";
 import MapSearch from "./mapSearch";
 import { useEffect, useState } from "react";
+import Filter from "../../components/icons/filter";
+import MapFilterModal from "./mapfilter";
 
 function ChangeView({ center, zoom }) {
   const map = useMap();
@@ -22,6 +24,7 @@ const MapDisplay = (props) => {
     useMapContext();
   const [isSecondColBelow, setIsSecondColBelow] = useState(false);
   const [isMapSearchVisible, setIsMapSearchVisible] = useState(false); // New state for MapSearch visibility
+  const [showFilter, setShowFilter] = useState(false);
 
   const isModal = props.isModal ?? false;
   const setMap = (map) => {};
@@ -75,13 +78,17 @@ const MapDisplay = (props) => {
                   {/* Toggle visibility */}
                   <Search />
                 </Button>
+                <Button onClick={()=>setShowFilter(!showFilter)}><Filter /></Button>
               </ButtonGroup>
             </Col>
             {!isModal && (
             <Col xs={12} className={isSecondColBelow ? "mt-3" : ""}>
               {isMapSearchVisible && (
-                <MapSearch />)
+                <MapSearch onClose={() => setIsMapSearchVisible(false)} />)
               }
+              {showFilter && (
+                <MapFilterModal onHide={() => setShowFilter(false)} show={showFilter} />
+                )}
             </Col>)}
           </Row>
         </div>
