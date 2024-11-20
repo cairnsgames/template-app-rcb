@@ -157,17 +157,17 @@ export const MapProvider = ({ children }) => {
       end: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0],
     },
     categories: {
-      classes: false,
-      events: false,
-      teachers: false,
-      djs: false,
-      suppliers: false,
-      venues: false,
+      class: false,
+      event: false,
+      teacher: false,
+      dj: false,
+      supplier: false,
+      venue: false,
     },
     keywords: '',
   });
 
-  const getFilteredMarkers = () => {
+  const getFilteredMarkers = (rawMarkers, filters) => {
     // Default to today and one week ahead if no date range is set
     const today = new Date();
     const defaultStartDate = today.toISOString().split("T")[0];
@@ -179,7 +179,7 @@ export const MapProvider = ({ children }) => {
     const endDateFilter = filters.dateRange?.end || defaultEndDate;
   
     return rawMarkers.filter((marker) => {
-      const { startDate, endDate, category, keywords } = marker;
+      const { startDate, endDate, category, subcategory, keywords } = marker;
   
       // Filter out historical items
       if (new Date(endDate) < new Date()) {
@@ -198,7 +198,14 @@ export const MapProvider = ({ children }) => {
       const categoryKeys = Object.keys(filters.categories);
       const anyCategorySelected = categoryKeys.some((cat) => filters.categories[cat]);
       if (anyCategorySelected) {
-        if (!filters.categories[category]) {
+        const lcategory = category.toLowerCase();
+        const lsubcategory = subcategory?.toLowerCase();
+        console.log("Categories to find:", filters.categories)
+        console.log("Checking categories", category, subcategory, filters.categories[lcategory] || filters.categories[lsubcategory]);
+        const matchesCategory =
+          filters.categories[lcategory] || filters.categories[lsubcategory];
+
+        if (!matchesCategory) {
           return false;
         }
       }
@@ -215,8 +222,6 @@ export const MapProvider = ({ children }) => {
       return true;
     });
   };
-  
-  
 
   const centerMap = useCallback((lat, lng) => {
       setCenter([lat, lng]);
@@ -237,7 +242,7 @@ export const MapProvider = ({ children }) => {
     setMarkers([...markers, { lat, lng, title }]);
   };
 
-  const markers = getFilteredMarkers();
+  const markers = getFilteredMarkers(rawMarkers, filters);
 
   const values = useMemo(
     () => ({
