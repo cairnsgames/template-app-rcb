@@ -167,6 +167,25 @@ export const MapProvider = ({ children }) => {
     keywords: '',
   });
 
+  const clearFilters = () => {
+    setFilters({
+      oldEvents: false,
+      dateRange: {
+        start: new Date().toISOString().split('T')[0],
+        end: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0],
+      },
+      categories: {
+        class: false,
+        event: false,
+        teacher: false,
+        dj: false,
+        supplier: false,
+        venue: false,
+      },
+      keywords: '',
+    });
+  };
+
   const getFilteredMarkers = (rawMarkers, filters) => {
     // Default to today and one week ahead if no date range is set
     const today = new Date();
@@ -246,9 +265,9 @@ export const MapProvider = ({ children }) => {
 
   const values = useMemo(
     () => ({
-      center, setCenter, zoom, centerMapOnCurrentLocation, setLocation, markers,addMarker, centerMap, filters, setFilters
+      center, setCenter, zoom, centerMapOnCurrentLocation, setLocation, markers,addMarker, centerMap, filters, setFilters, clearFilters
     }),
-    [center, setCenter, zoom, centerMapOnCurrentLocation, setLocation, markers, addMarker, centerMap, filters, setFilters]
+    [center, setCenter, zoom, centerMapOnCurrentLocation, setLocation, markers, addMarker, centerMap, filters, setFilters, clearFilters]
   );
 
   return (

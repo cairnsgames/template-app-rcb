@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import useMapContext from "./context/usemapcontext";
 
 const MapFilterModal = ({ show, onHide }) => {
-  const { filters, setFilters } = useMapContext();
+  const { filters, setFilters, clearFilters } = useMapContext();
+  const [initialFilters, setInitialFilters] = useState(filters);
+
+  useEffect(() => {
+    setInitialFilters(filters);
+  }, [show, filters]);
 
   const handleCategoryChange = (e) => {
     setFilters({
@@ -18,7 +23,26 @@ const MapFilterModal = ({ show, onHide }) => {
     onHide();
   };
 
-  console.log("Filters", filters);
+  const handleReset = () => {
+    clearFilters();
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Prevent form submission
+        handleFilter();
+      } else if (event.key === "Escape") {
+        setFilters(initialFilters); // Reset filters to initial values
+        onHide();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [filters, onHide, initialFilters]);
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -37,28 +61,28 @@ const MapFilterModal = ({ show, onHide }) => {
               }
             />
           </Form.Group>
-           <Form.Group controlId="dateRange">
+          <Form.Group controlId="dateRange">
             <Form.Label>Date Range</Form.Label>
-              <Form.Control
-                type="date"
-                value={filters.dateRange.start}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    dateRange: { ...filters.dateRange, start: e.target.value },
-                  })
-                }
-              />
-              <Form.Control
-                type="date"
-                value={filters.dateRange.end}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    dateRange: { ...filters.dateRange, end: e.target.value },
-                  })
-                }
-              />
+            <Form.Control
+              type="date"
+              value={filters.dateRange.start}
+              onChange={(e) =>
+                setFilters({
+                  ...filters,
+                  dateRange: { ...filters.dateRange, start: e.target.value },
+                })
+              }
+            />
+            <Form.Control
+              type="date"
+              value={filters.dateRange.end}
+              onChange={(e) =>
+                setFilters({
+                  ...filters,
+                  dateRange: { ...filters.dateRange, end: e.target.value },
+                })
+              }
+            />
           </Form.Group>
           <Form.Group>
             <Form.Label>Categories</Form.Label>
@@ -88,10 +112,13 @@ const MapFilterModal = ({ show, onHide }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Close
+          Cancel
         </Button>
         <Button variant="primary" onClick={handleFilter}>
           Filter
+        </Button>
+        <Button variant="outline-secondary" onClick={handleReset}>
+          Reset
         </Button>
       </Modal.Footer>
     </Modal>
