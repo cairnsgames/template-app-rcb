@@ -125,6 +125,27 @@ export const NewsProvider = ({ children }) => {
     }
   };
 
+  const deleteNewsItem = async (id) => {
+    try {
+      const response = await fetch(
+        combineUrlAndPath(process.env.REACT_APP_NEWS_API, `api.php/news/${id}`),
+        {
+          method: "DELETE",
+          headers,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete news item");
+      }
+
+      addToast("News", "News item deleted", "Success");
+      fetchMyNewsItems();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const getNewsById = (id) => {
     return newsItems.find((item) => item.id === Number(id));
   };
@@ -138,6 +159,7 @@ export const NewsProvider = ({ children }) => {
         error,
         createNewsItem,
         updateNewsItem,
+        deleteNewsItem,
         fetchMyNewsItems,
         getNewsById,
       }}

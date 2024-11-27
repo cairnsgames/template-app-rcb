@@ -8,12 +8,12 @@ import LoadingSpinner from "../../components/spinner/spinner";
 const MyNewsEditor = React.lazy(() => import("./mynewseditor"));
 
 const MyNews = () => {
-  const { myNewsItems, fetchMyNewsItems, loading } = useNews();
+  const { myNewsItems, fetchMyNewsItems, loading, deleteNewsItem } = useNews();
   const { user } = useUser();
   const [showEditor, setShowEditor] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
   const [sortOption, setSortOption] = useState("title");
-  const [sortOrder, setSortOrder] = useState("asc"); // Track sort order
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     fetchMyNewsItems();
@@ -36,12 +36,17 @@ const MyNews = () => {
 
   const handleSort = (option) => {
     if (sortOption === option) {
-      // Toggle sort order if sorting by the same option
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
       setSortOption(option);
-      setSortOrder("asc"); // Default to ascending order
+      setSortOrder("asc");
     }
+  };
+
+  const handleDelete = (id) => {
+    deleteNewsItem(id);
+    setEditItemId(undefined);
+    setShowEditor(false);
   };
 
   const sortedNewsItems = myNewsItems.sort((a, b) => {
@@ -93,6 +98,7 @@ const MyNews = () => {
                 item={item}
                 onClick={() => handleEdit(item.id)}
                 onEdit={() => handleEdit(item.id)}
+                onDelete={() => handleDelete(item.id)} // Pass onDelete prop
               />
             ))}
           </Row>
