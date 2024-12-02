@@ -1,13 +1,13 @@
 import React from "react";
 import Router, { Route, Default } from "../router/router";
-import PageCentered from "../../parts/pagelayouts/pagecentered";;
 import KlokoMyEvents from "./klokomyevents";
 import KlokoEvents from "./klokoevents";
+import PageFull from "../../parts/pagelayouts/pagefull";
 
 function KlokoRouting() {
   console.log("KlokoSample")
   return (
-    <PageCentered className="my-3">
+    <PageFull className="my-3">
       <Router>
         <Route is={"events/myevents/{id}"}>
           <KlokoMyEvents />
@@ -22,7 +22,7 @@ function KlokoRouting() {
           <KlokoEvents />
         </Route>
       </Router>
-    </PageCentered>
+    </PageFull>
   );
 }
 

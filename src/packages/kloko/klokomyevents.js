@@ -71,12 +71,12 @@ const KlokoMyEvents = () => {
       {!showEditor && (
         <>
           <Row className="mb-3">
-            <Col>
+            <Col xs={6} lg={3}>
               <Button variant="primary" onClick={handleAdd}>
                 Add Event
               </Button>
             </Col>
-            <Col>
+            <Col xs={6} lg={3}>
               <DropdownButton
                 id="sort-dropdown"
                 title={`Sort`}
@@ -95,7 +95,7 @@ const KlokoMyEvents = () => {
               />
             </Col>
           </Row>
-          <Row>
+          <Row className="mx-1">
             {filteredEvents.map((event) => (
               <EventThumb
                 key={event.id}
