@@ -13,6 +13,7 @@ export const NewsProvider = ({ children }) => {
   const [myNewsItems, setMyNewsItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filters, setFilters] = useState({ newItemsOnly: true }); // Filters object
 
   const { addToast } = useToast();
 
@@ -150,6 +151,21 @@ export const NewsProvider = ({ children }) => {
     return newsItems.find((item) => item.id === Number(id));
   };
 
+  const filterNewsItems = () => {
+    const today = new Date().toISOString().split('T')[0] + " 00:00:00"; // Get today's date in the required format
+    return filters.newItemsOnly ? myNewsItems.filter(item => item.expires >= today) : myNewsItems; // Filter based on filters object
+  };
+
+  const news = filterNewsItems(); // Call the filter function
+
+  const setFilterField = (field, value) => {
+    setFilters(prevFilters => ({ ...prevFilters, [field]: value })); // Update specific filter field
+  };
+
+  const clearFilters = () => {
+    setFilters({ newItemsOnly: true }); // Reset filters to default state
+  };
+
   return (
     <NewsContext.Provider
       value={{
@@ -162,6 +178,11 @@ export const NewsProvider = ({ children }) => {
         deleteNewsItem,
         fetchMyNewsItems,
         getNewsById,
+        news, // Expose the filtered news variable
+        filters, // Expose the filters object
+        setFilters, // Expose the setter for filters
+        setFilterField, // Expose the function to set a specific filter field
+        clearFilters, // Expose the function to clear filters
       }}
     >
       {children}

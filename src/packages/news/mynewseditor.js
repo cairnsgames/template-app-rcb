@@ -138,7 +138,6 @@ const MyNewsEditor = ({ id, onClose }) => {
             {loading ? (
               <Spinner animation="border" />
             ) : (
-              <>
                 <Form.Control
                   ref={fileInputRef}
                   type="file"
@@ -148,7 +147,6 @@ const MyNewsEditor = ({ id, onClose }) => {
                     setHasChanges(true); // Mark as changed
                   }}
                 />
-              </>
             )}
           </InputGroup>
           {fileData || imageUrl ? (

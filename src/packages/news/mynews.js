@@ -1,5 +1,12 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { Button, DropdownButton, Dropdown, Row, Col } from "react-bootstrap";
+import {
+  Button,
+  DropdownButton,
+  Dropdown,
+  Row,
+  Col,
+  Form,
+} from "react-bootstrap";
 import { useNews } from "./context/newscontext";
 import NewsThumb from "./newsthumb";
 import { useUser } from "../auth/context/useuser";
@@ -8,12 +15,14 @@ import LoadingSpinner from "../../components/spinner/spinner";
 const MyNewsEditor = React.lazy(() => import("./mynewseditor"));
 
 const MyNews = () => {
-  const { myNewsItems, fetchMyNewsItems, loading, deleteNewsItem } = useNews();
+  const { news, fetchMyNewsItems, loading, deleteNewsItem, setFilterField } =
+    useNews();
   const { user } = useUser();
   const [showEditor, setShowEditor] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
   const [sortOption, setSortOption] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [showOldNews, setShowOldNews] = useState(false);
 
   useEffect(() => {
     fetchMyNewsItems();
@@ -49,7 +58,12 @@ const MyNews = () => {
     setShowEditor(false);
   };
 
-  const sortedNewsItems = myNewsItems.sort((a, b) => {
+  const handleCheckboxChange = (e) => {
+    setShowOldNews(e.target.checked);
+    setFilterField("newItemsOnly", !e.target.checked);
+  };
+
+  const sortedNewsItems = news.sort((a, b) => {
     const compareValue = sortOrder === "asc" ? 1 : -1;
 
     if (sortOption === "title") {
@@ -61,7 +75,11 @@ const MyNews = () => {
   });
 
   if (loading) {
-    return <div><LoadingSpinner animation="border" /></div>;
+    return (
+      <div>
+        <LoadingSpinner animation="border" />
+      </div>
+    );
   }
 
   return (
@@ -75,12 +93,12 @@ const MyNews = () => {
       {!showEditor && (
         <>
           <Row className="mb-3">
-            <Col>
+            <Col xs={6} lg={3}>
               <Button variant="primary" onClick={handleAdd}>
                 Add
               </Button>
             </Col>
-            <Col>
+            <Col xs={6} lg={3}>
               <DropdownButton
                 id="sort-dropdown"
                 title={`Sort`}
@@ -89,6 +107,14 @@ const MyNews = () => {
                 <Dropdown.Item eventKey="title">Title</Dropdown.Item>
                 <Dropdown.Item eventKey="expiry">Expiry Date</Dropdown.Item>
               </DropdownButton>
+            </Col>
+            <Col>
+              <Form.Check
+                type="checkbox"
+                label="Show old news"
+                checked={showOldNews}
+                onChange={handleCheckboxChange}
+              />
             </Col>
           </Row>
           <Row>
