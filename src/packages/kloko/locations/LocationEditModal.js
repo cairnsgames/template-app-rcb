@@ -1,16 +1,17 @@
 import React from "react";
-import { Modal, Button, Form, InputGroup } from "react-bootstrap";
-import SelectLocationModal from "../gps/selectlocationmodal";
+import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import SelectLocationModal from "../../gps/selectlocationmodal";
 
-const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
+const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave }) => {
   const selectLocation = (latlng) => {
     console.log("Selected location", latlng);
     setDetails({ ...details, lat: latlng[0], lng: latlng[1] });
   }
+
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Add/Edit Location</Modal.Title>
+        <Modal.Title>{details.id > 0 ? "Edit Location" : "Add Location"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -20,9 +21,7 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
               type="text"
               placeholder="Enter location name"
               value={details.name}
-              onChange={(ev) =>
-                setDetails({ ...details, name: ev.target.value })
-              }
+              onChange={(ev) => setDetails({ ...details, name: ev.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formAddressLine1">
@@ -31,9 +30,7 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
               type="text"
               placeholder="Enter address line 1"
               value={details.address_line1}
-              onChange={(ev) =>
-                setDetails({ ...details, address_line1: ev.target.value })
-              }
+              onChange={(ev) => setDetails({ ...details, address_line1: ev.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formAddressLine2">
@@ -42,9 +39,7 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
               type="text"
               placeholder="Enter address line 2"
               value={details.address_line2}
-              onChange={(ev) =>
-                setDetails({ ...details, address_line2: ev.target.value })
-              }
+              onChange={(ev) => setDetails({ ...details, address_line2: ev.target.value })}
             />
           </Form.Group>
           <Form.Group controlId="formTown">
@@ -53,9 +48,7 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
               type="text"
               placeholder="Enter town"
               value={details.town}
-              onChange={(ev) =>
-                setDetails({ ...details, town: ev.target.value })
-              }
+              onChange={(ev) => setDetails({ ...details, town: ev.target.value })}
             />
           </Form.Group>
           <InputGroup className="mb-3">
@@ -64,28 +57,31 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
               type="text"
               placeholder="lat"
               value={details.lat}
-              onChange={(ev) =>
-                setDetails({ ...details, lat: ev.target.value })
-              }
+              onChange={(ev) => setDetails({ ...details, lat: ev.target.value })}
             />
             <Form.Control
               type="text"
               placeholder="lng"
               value={details.lng}
-              onChange={(ev) =>
-                setDetails({ ...details, lng: ev.target.value })
-              }
+              onChange={(ev) => setDetails({ ...details, lng: ev.target.value })}
             />
-
-            <SelectLocationModal onSelectLocation={selectLocation}/>
+            <SelectLocationModal onSelectLocation={selectLocation} />
           </InputGroup>
+          <Form.Group controlId="formShowOnMap">
+            <Form.Check
+              type="checkbox"
+              label="Show on Map"
+              checked={details.showonmap}
+              onChange={(ev) => setDetails({ ...details, showonmap: ev.target.checked ? 1 : 0})}
+            />
+          </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={onSave}>
+        <Button variant="primary" onClick={handleSave}>
           Save Changes
         </Button>
       </Modal.Footer>
@@ -93,4 +89,4 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
   );
 };
 
-export default LocationSelectModal;
+export default LocationEditModal;

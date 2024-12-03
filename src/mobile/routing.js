@@ -104,6 +104,9 @@ const Routing = () => {
       <Route startsWith="events">
         <KlokoRouting />
       </Route>
+      <Route is="locations">
+        <KlokoRouting />
+      </Route>
 
       <Route if={!isLoggedIn}>
         <MobileAuth mode="login" onClose={goHome} />

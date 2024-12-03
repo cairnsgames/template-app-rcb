@@ -2,6 +2,7 @@ import React from "react";
 import Router, { Route, Default } from "../router/router";
 import KlokoMyEvents from "./klokomyevents";
 import KlokoEvents from "./klokoevents";
+import UserLocationManagement from "./locations/UserLocationManagement"; // Import the new component
 import PageFull from "../../parts/pagelayouts/pagefull";
 
 function KlokoRouting() {
@@ -21,6 +22,9 @@ function KlokoRouting() {
         <Route is={"events"}>
           <KlokoEvents />
         </Route>
+        <Route is={"locations"}>
+          <UserLocationManagement />
+          </Route>
       </Router>
     </PageFull>
   );

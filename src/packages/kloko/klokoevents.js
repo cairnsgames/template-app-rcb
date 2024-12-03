@@ -55,7 +55,7 @@ const KlokoEvents = () => {
   return (
     <div className="my-events">
       <Row className="mb-3">
-        <Col xs={12} lg={6}>
+        <Col xs={6} lg={6}>
           <DropdownButton
             id="sort-dropdown"
             title={`Sort`}

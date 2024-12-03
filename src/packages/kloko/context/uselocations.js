@@ -10,9 +10,9 @@ export const useLocations = () => {
     throw new Error("useLocations must be used within a KlokoLocationProvider");
   }
 
-  const { userLocations, locations, getLocationById, createUserLocation, updateUserLocation } = context;
+  const { loading, userLocations, locations, getLocationById, createUserLocation, updateUserLocation, deleteUserLocation } = context;
 
-  return { userLocations, locations, getLocationById, createUserLocation, updateUserLocation };
+  return { loading, userLocations, locations, getLocationById, createUserLocation, updateUserLocation, deleteUserLocation };
 };
 
 export default useLocations;

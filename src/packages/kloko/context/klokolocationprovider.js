@@ -8,6 +8,7 @@ export const KlokoLocationContext = createContext();
 export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
   const [userLocations, setUserLocations] = useState([]);
   const [locations, setLocations] = useState({});
+  const [loading, setLoading] = useState(false);
 
   if (!process.env.REACT_APP_KLOKO_API) {
     throw new Error(
@@ -23,8 +24,13 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    console.log("Loading", loading);
+  }, [loading]);
+
   const fetchUserLocations = async () => {
     try {
+      setLoading(true);
       console.log("Fetching user locations");
       const response = await fetch(
         combineUrlAndPath(
@@ -43,8 +49,10 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
         locationsCache[location.id] = location;
       });
       setLocations(locationsCache);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching user locations:", error);
+      setLoading(false);
     }
   };
 
@@ -113,6 +121,8 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
         setUserLocations((prev) => [...prev, createdUserLocation]);
         setLocations((prev) => ({ ...prev, [newLocation.id]: newLocation }));
       });
+      
+      fetchUserLocations();
     } catch (error) {
       console.error("Error creating user location:", error);
     }
@@ -124,7 +134,7 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
       const locationResponse = await fetch(
         combineUrlAndPath(
           process.env.REACT_APP_KLOKO_API,
-          `api.php/locations/${id}`
+          `api.php/location/${id}`
         ),
         {
           method: "PUT",
@@ -138,20 +148,53 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
       );
       const updatedLocation = await locationResponse.json();
       setLocations((prev) => ({ ...prev, [id]: updatedLocation }));
+      fetchUserLocations();
     } catch (error) {
       console.error("Error updating user location:", error);
+    }
+  };
+
+  const deleteUserLocation = async (id) => {
+    try {
+      const response = await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_KLOKO_API,
+          `api.php/location/${id}`
+        ),
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            ...headers,
+          },
+        }
+      );
+      if (response.ok) {
+        setUserLocations((prev) => prev.filter(location => location.id !== id));
+        setLocations((prev) => {
+          const newLocations = { ...prev };
+          delete newLocations[id];
+          return newLocations;
+        });
+      } else {
+        console.error("Error deleting user location:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting user location:", error);
     }
   };
 
   const values = useMemo(
     () => ({
       userLocations,
+      loading,
       locations,
       getLocationById,
       createUserLocation,
       updateUserLocation,
+      deleteUserLocation,
     }),
-    [userLocations, locations]
+    [userLocations, loading, locations]
   );
 
   return (

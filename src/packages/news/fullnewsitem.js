@@ -30,9 +30,9 @@ const FullNewsItem = ({ id }) => {
         <span>{new Date(item.date).toLocaleDateString()}</span>
       </div>
       <p>
-        <Suspense>
+        {/* <Suspense>
           <Markdown>{convertToMarkdown(item.body)}</Markdown>
-        </Suspense>
+        </Suspense> */}
         <HighlightText text={item.body} terms={{"juzt.dance": "juztdance", "article": "text-event"}}/>
       </p>
     </div>

@@ -6,6 +6,7 @@ import {
   Cart,
   Heart,
   InfoCircle,
+  Map,
   Receipt,
 } from "react-bootstrap-icons";
 import Bar from "../../../components/react-bootstrap-mobile/bar";
@@ -53,6 +54,9 @@ const PartnerBar = () => {
       )}
       <Nav.Link eventKey="#news/mynews">
         <InfoCircle className="ms-1" />
+      </Nav.Link>
+      <Nav.Link eventKey="#locations">
+        <Map className="ms-1" />
       </Nav.Link>
     </Bar>
   );
