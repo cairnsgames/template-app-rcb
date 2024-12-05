@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import useMapContext from "./context/usemapcontext";
 import { Button, ButtonGroup, Row, Col } from "react-bootstrap";
@@ -7,7 +8,6 @@ import "leaflet/dist/leaflet.css";
 import "./map.scss";
 import MapEvents from "./mapevents";
 import MapSearch from "./mapSearch";
-import { useEffect, useState } from "react";
 import Filter from "../../components/icons/filter";
 import MapFilterModal from "./mapfilter";
 
@@ -28,23 +28,25 @@ const MapControls = (props) => {
   const [isSecondColBelow, setIsSecondColBelow] = useState(false);
   const [isMapSearchVisible, setIsMapSearchVisible] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const isModal = props.isModal ?? false;
-  const { center, zoom, centerMapOnCurrentLocation, setLocation, markers } =
-    useMapContext();
+  const { searchMapArea } = useMapContext();
   const map = useMap();
 
+  
   const { getPosition } = useGeoLocation();
 
   const goToLocation = (lat, lng) => {
     map.flyTo([lat, lng], 15);
   };
-  const goToCurrentLocation = () => {
-    const currentLocation = getPosition();
-    console.log("CURRENT POSITION", currentLocation);
-    if (currentLocation) {
-      map.flyTo([currentLocation.latitude, currentLocation.longitude], 15);
-    }
+  const goToCurrentLocation = async () => {
+    getPosition((res) => {
+      console.log("CURRENT POSITION", res);
+      if (res) {
+        map.flyTo([res[0], res[1]], 15);
+      }
+    });
   };
 
   return (
@@ -74,8 +76,6 @@ const MapControls = (props) => {
               <Button
                 onClick={() => setIsMapSearchVisible(!isMapSearchVisible)}
               >
-                {" "}
-                {/* Toggle visibility */}
                 <Search />
               </Button>
               <Button onClick={() => setShowFilter(!showFilter)}>
@@ -105,10 +105,18 @@ const MapControls = (props) => {
 };
 
 const MapDisplay = (props) => {
-  const { center, zoom, centerMapOnCurrentLocation, setLocation, markers } =
+  const { center, zoom, searchMapArea, markers } =
     useMapContext();
 
-  const setMap = (map) => {};
+  const mapRef = useRef(null);
+
+  const handleMapLoad = () => {    
+    const map = mapRef.current;
+    if (map) {
+      const bounds = map.getBounds(); // Get the initial bounds
+      searchMapArea(bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast());
+    }
+  };
 
   useEffect(() => {
     const updateLayout = () => {
@@ -133,7 +141,10 @@ const MapDisplay = (props) => {
         center={center}
         zoom={zoom}
         scrollWheelZoom={true}
-        whenCreated={setMap}
+        whenReady={(e) => {
+          mapRef.current = e.target;
+          handleMapLoad();
+        }}
         onClick={props.onClick} // Added onClick event
         style={{
           position: "absolute",

@@ -40,21 +40,21 @@ const MapEvents = (props) => {
         prevBounds.current = bnds; // Update the previous bounds
       }
     },
-    load: () => {
-      let bnds = map.getBounds();
-      searchMapArea(bnds.getSouth(), bnds.getWest(), bnds.getNorth(), bnds.getEast());
-    },
+    // load: () => {
+    //   let bnds = map.getBounds();
+    //   searchMapArea(bnds.getSouth(), bnds.getWest(), bnds.getNorth(), bnds.getEast());
+    // },
   });
 
   const prevBounds = useRef(map.getBounds()); // Initialize ref here
 
-  map.whenReady(() => {
-    if (firstLoad) {
-      let bnds = map.getBounds();
-      searchMapArea(bnds.getSouth(), bnds.getWest(), bnds.getNorth(), bnds.getEast());
-      setFirstLoad(false);
-    }
-  });
+  // map.whenReady(() => {
+  //   if (firstLoad) {
+  //     let bnds = map.getBounds();
+  //     searchMapArea(bnds.getSouth(), bnds.getWest(), bnds.getNorth(), bnds.getEast());
+  //     setFirstLoad(false);
+  //   }
+  // });
 
   return null;
 };
