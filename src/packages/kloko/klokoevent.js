@@ -21,6 +21,7 @@ const KlokoEventEditor = ({id, onClose}) => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [imageUrl, setImageUrl] = useState(""); 
+  const [keywords, setKeywords] = useState("");
   const [eventType, setEventType] = useState("");
   const [duration, setDuration] = useState("");
   const [location, setLocation] = useState("");
@@ -57,6 +58,7 @@ const KlokoEventEditor = ({id, onClose}) => {
         setDescription(eventToEdit.description);
         setPrice(eventToEdit.price);
         setImageUrl(eventToEdit.image_url);
+        seyKeywords(eventToEdit.keywords);
         setEventType(eventToEdit.event_type);
         setDuration(eventToEdit.duration);
         setLocation(eventToEdit.location);
@@ -73,6 +75,7 @@ const KlokoEventEditor = ({id, onClose}) => {
       title,
       description,
       price,
+      keywords: keywords,
       event_type: eventType,
       duration,
       location,

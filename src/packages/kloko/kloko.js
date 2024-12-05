@@ -71,6 +71,7 @@ const Calendar = (props) => {
         start: arg.dateStr,
         end: end,
         location: "",
+        keywords: "",
         event_type: "",
         lat: "",
         lng: "",

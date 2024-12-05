@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Dropdown, Navbar, Nav, Image } from "react-bootstrap";
-import useAuth from "../../packages/auth/context/useauth";
-import useUser from "../../packages/auth/context/useuser";
+import useAuth from "../../../packages/auth/context/useauth";
+import useUser from "../../../packages/auth/context/useuser";
 import { Person, PersonCircle } from "react-bootstrap-icons";
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (

@@ -30,6 +30,7 @@ const EventDetailsModal = ({ events, onSave, onClose }) => {
           end: event.end,
           start_time: event.start,
           end_time: event.end,
+          keywords: details.keywords,
           event_type: details.event_type,
           style: details.keyword,
           price: details.price,
@@ -86,6 +87,17 @@ const EventDetailsModal = ({ events, onSave, onClose }) => {
           </InputGroup> 
           <InputGroup className="mb-3">
             <InputGroup.Text>Style</InputGroup.Text>
+            <Form.Control
+              type="text"
+              placeholder="Enter event title"
+              value={details.keywords}
+              onChange={(ev) =>
+                setDetails({ ...details, keywords: ev.target.value })
+              }
+            />
+          </InputGroup>
+          <InputGroup className="mb-3">
+            <InputGroup.Text>Event Type</InputGroup.Text>
             <Form.Control
               type="text"
               placeholder="Enter event title"

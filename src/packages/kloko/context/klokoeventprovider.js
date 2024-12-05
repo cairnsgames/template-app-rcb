@@ -5,7 +5,7 @@ import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 // Create context for Calendar, Event, Booking, and Template management
 export const KlokoEventContext = createContext();
 /* An event has the following fields (Keep this comment)
-// 'id', 'calendar_id', 'user_id', 'event_template_id', 'content_id', 'app_id', 'title', 'description', 'price', 'image', 'event_type', 'duration', 'location', 'lat', 'lng', 'max_participants', 'start_time', 'end_time'
+// 'id', 'calendar_id', 'user_id', 'event_template_id', 'content_id', 'app_id', 'title', 'description', 'price', 'image', 'keywords', 'event_type', 'duration', 'location', 'lat', 'lng', 'max_participants', 'start_time', 'end_time'
 // where image is a file path - usung the file uploader to create.
 */
 

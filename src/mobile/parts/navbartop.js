@@ -3,7 +3,7 @@ import { Container, Navbar, Nav } from "react-bootstrap";
 import FavIcon from "../svg/favicon";
 import BreezoCart from "../../packages/breezo/breezocart";
 import BreezoOrders from "../../packages/breezo/breezoorders";
-import FaceDropdown from "../facedropdown.js/facedropdown";
+import FaceDropdown from "../components/facedropdown/facedropdown";
 import PartnerBar from "../pages/partners/partnerbar";
 import { useUser } from "../../packages/auth/context/useuser";
 

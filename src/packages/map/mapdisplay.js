@@ -14,7 +14,10 @@ import MapFilterModal from "./mapfilter";
 function ChangeView({ center, zoom }) {
   const map = useMap();
   if (map) {
-    map.flyTo(center, zoom);
+    // Only fly to the new view if the zoom level is different
+    if (map.getZoom() !== zoom) {
+      map.flyTo(center, zoom);
+    }
   }
   return null;
 }
@@ -78,22 +81,25 @@ const MapDisplay = (props) => {
                   {/* Toggle visibility */}
                   <Search />
                 </Button>
-                <Button onClick={()=>setShowFilter(!showFilter)}><Filter /></Button>
+                <Button onClick={() => setShowFilter(!showFilter)}>
+                  <Filter />
+                </Button>
               </ButtonGroup>
             </Col>
             {!isModal && (
-            <Col xs={12} className={isSecondColBelow ? "mt-3" : ""}>
-              {isMapSearchVisible && (
-                <MapSearch onClose={() => setIsMapSearchVisible(false)} />)
-              }
-              {showFilter && (
-                <MapFilterModal onHide={() => setShowFilter(false)} show={showFilter} />
+              <Col xs={12} className={isSecondColBelow ? "mt-3" : ""}>
+                {isMapSearchVisible && (
+                  <MapSearch onClose={() => setIsMapSearchVisible(false)} />
                 )}
-            </Col>)}
+                {showFilter && (
+                  <MapFilterModal onHide={() => setShowFilter(false)} show={showFilter} />
+                )}
+              </Col>
+            )}
           </Row>
         </div>
-        
-        {isModal && isMapSearchVisible && (<MapSearch/>)}
+
+        {isModal && isMapSearchVisible && <MapSearch />}
       </div>
       <MapContainer
         center={center}
@@ -114,7 +120,7 @@ const MapDisplay = (props) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <ChangeView center={center} zoom={zoom} />
+        <ChangeView center={center} />
         <MapEvents onMapChange={props.onMapChange} onMapClick={props.onClick} />
 
         <Markers markers={props.markers ?? markers} />
