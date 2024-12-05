@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useMapEvents } from "react-leaflet";
 import { useContext, useRef } from "react";
 import { MapContext } from "./context/mapprovider";
 
 const MapEvents = (props) => {
   const { onMapChange, onMapClick } = props;
-  const { searchMapArea } = useContext(MapContext);
+  const { searchMapArea, setCenter, setZoom } = useContext(MapContext);
+  const [firstLoad, setFirstLoad] = useState(true);
+
   const map = useMapEvents({
     findMe: () => {
       map.locate();
@@ -14,14 +17,11 @@ const MapEvents = (props) => {
         onMapClick(location.latitude, location.longitude);
       }
     },
-    click: (location) => {
-      console.log("Map click", location.latlng);
-      if (onMapClick) {
-        onMapClick([location.latlng.lat, location.latlng.lng]);
-      }
-    },
     moveend: () => {
       let bnds = map.getBounds();
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+
       if (onMapChange) {
         onMapChange(
           bnds.getSouth(),
@@ -30,7 +30,6 @@ const MapEvents = (props) => {
           bnds.getEast()
         );
       }
-      // Check if the bounds have changed before calling searchMapArea
       if (
         prevBounds.current.getSouth() !== bnds.getSouth() ||
         prevBounds.current.getWest() !== bnds.getWest() ||
@@ -41,9 +40,23 @@ const MapEvents = (props) => {
         prevBounds.current = bnds; // Update the previous bounds
       }
     },
+    load: () => {
+      console.log("**** Map loaded");
+      let bnds = map.getBounds();
+      searchMapArea(bnds.getSouth(), bnds.getWest(), bnds.getNorth(), bnds.getEast());
+    },
   });
 
   const prevBounds = useRef(map.getBounds()); // Initialize ref here
+
+  map.whenReady(() => {
+    console.log("**** Map is ready");
+    if (firstLoad) {
+      let bnds = map.getBounds();
+      searchMapArea(bnds.getSouth(), bnds.getWest(), bnds.getNorth(), bnds.getEast());
+      setFirstLoad(false);
+    }
+  });
 
   return null;
 };

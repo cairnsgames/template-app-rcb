@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import Filter from "../../components/icons/filter";
 import MapFilterModal from "./mapfilter";
 
+import useGeoLocation from "../../hooks/usegeolocation";
+
 function ChangeView({ center, zoom }) {
   const map = useMap();
   if (map) {
@@ -22,14 +24,90 @@ function ChangeView({ center, zoom }) {
   return null;
 }
 
-const MapDisplay = (props) => {
-  const { center, zoom, centerMapOnCurrentLocation, setLocation, markers } =
-    useMapContext();
+const MapControls = (props) => {
   const [isSecondColBelow, setIsSecondColBelow] = useState(false);
-  const [isMapSearchVisible, setIsMapSearchVisible] = useState(false); // New state for MapSearch visibility
+  const [isMapSearchVisible, setIsMapSearchVisible] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
   const isModal = props.isModal ?? false;
+  const { center, zoom, centerMapOnCurrentLocation, setLocation, markers } =
+    useMapContext();
+  const map = useMap();
+
+  const { getPosition } = useGeoLocation();
+
+  const goToLocation = (lat, lng) => {
+    map.flyTo([lat, lng], 15);
+  };
+  const goToCurrentLocation = () => {
+    const currentLocation = getPosition();
+    console.log("CURRENT POSITION", currentLocation);
+    if (currentLocation) {
+      map.flyTo([currentLocation.latitude, currentLocation.longitude], 15);
+    }
+  };
+
+  return (
+    <div style={{ position: "relative", zIndex: "1100" }}>
+      <div
+        className="mapwrapper"
+        style={{
+          position: "relative",
+          left: "80px",
+          width: "calc(100vw - 130px)",
+          overflow: "hidden",
+        }}
+      >
+        <Row>
+          <Col xs={12} md={2}>
+            <ButtonGroup className="m-3">
+              <Button onClick={() => goToCurrentLocation()}>
+                <Pin />
+              </Button>
+              <Button
+                onClick={() =>
+                  goToLocation(-25.81625913702715, 27.462750728129443)
+                }
+              >
+                <Map />
+              </Button>
+              <Button
+                onClick={() => setIsMapSearchVisible(!isMapSearchVisible)}
+              >
+                {" "}
+                {/* Toggle visibility */}
+                <Search />
+              </Button>
+              <Button onClick={() => setShowFilter(!showFilter)}>
+                <Filter />
+              </Button>
+            </ButtonGroup>
+          </Col>
+          {!isModal && (
+            <Col xs={12} className={isSecondColBelow ? "mt-3" : ""}>
+              {isMapSearchVisible && (
+                <MapSearch onClose={() => setIsMapSearchVisible(false)} />
+              )}
+              {showFilter && (
+                <MapFilterModal
+                  onHide={() => setShowFilter(false)}
+                  show={showFilter}
+                />
+              )}
+            </Col>
+          )}
+        </Row>
+      </div>
+
+      {isModal && isMapSearchVisible && <MapSearch />}
+    </div>
+  );
+};
+
+const MapDisplay = (props) => {
+  const { center, zoom, centerMapOnCurrentLocation, setLocation, markers } =
+    useMapContext();
+
   const setMap = (map) => {};
 
   useEffect(() => {
@@ -49,58 +127,10 @@ const MapDisplay = (props) => {
     };
   }, []);
 
+  console.log("Markers being passed:", props.markers ?? markers);
+
   return (
     <div>
-      <div style={{ position: "relative", zIndex: "100" }}>
-        <div
-          className="mapwrapper"
-          style={{
-            position: "relative",
-            left: "80px",
-            width: "calc(100vw - 130px)",
-            overflow: "hidden",
-          }}
-        >
-          <Row>
-            <Col xs={12} md={2}>
-              <ButtonGroup className="m-3">
-                <Button onClick={() => centerMapOnCurrentLocation()}>
-                  <Pin />
-                </Button>
-                <Button
-                  onClick={() =>
-                    setLocation(-25.81625913702715, 27.462750728129443)
-                  }
-                >
-                  <Map />
-                </Button>
-                <Button
-                  onClick={() => setIsMapSearchVisible(!isMapSearchVisible)}
-                >
-                  {" "}
-                  {/* Toggle visibility */}
-                  <Search />
-                </Button>
-                <Button onClick={() => setShowFilter(!showFilter)}>
-                  <Filter />
-                </Button>
-              </ButtonGroup>
-            </Col>
-            {!isModal && (
-              <Col xs={12} className={isSecondColBelow ? "mt-3" : ""}>
-                {isMapSearchVisible && (
-                  <MapSearch onClose={() => setIsMapSearchVisible(false)} />
-                )}
-                {showFilter && (
-                  <MapFilterModal onHide={() => setShowFilter(false)} show={showFilter} />
-                )}
-              </Col>
-            )}
-          </Row>
-        </div>
-
-        {isModal && isMapSearchVisible && <MapSearch />}
-      </div>
       <MapContainer
         center={center}
         zoom={zoom}
@@ -116,11 +146,12 @@ const MapDisplay = (props) => {
           zIndex: "0",
         }}
       >
+        <MapControls />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <ChangeView center={center} />
+        {/* <ChangeView center={center} /> */}
         <MapEvents onMapChange={props.onMapChange} onMapClick={props.onClick} />
 
         <Markers markers={props.markers ?? markers} />

@@ -24,7 +24,12 @@ const useGeoLocation = (onChange, live = false) => {
         if (onChange) {
           onChange(position.coords);
         }
+        return position.coords;
+      }, (error) => {
+        console.error("Error getting geolocation", error);
       });
+    } else {
+      console.warning("No Geolocation available");
     }
   };
 

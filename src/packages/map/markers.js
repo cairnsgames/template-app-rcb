@@ -16,7 +16,7 @@ const Markers = ({ markers }) => {
               fill: marker.color,
             })}
           >
-            <Popup offset={[0, -30]}>
+            <Popup offset={[0, -30]}  autoPan={false}>
             
               <div>
                 <div className="me-1" style={{ display: "inline-block" }}>

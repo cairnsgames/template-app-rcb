@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useState, createContext, useEffect, useMemo } from "react";
 import useGeoLocation from "../../../hooks/usegeolocation";
+import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 
 export const MapContext = createContext();
 
@@ -203,22 +204,27 @@ export const MapProvider = ({ children }) => {
     ) {
       try {
         const response = await fetch(
-          `http://localhost/cairnsgames/php/kloko/getmappins.php?lat_nw=${searchArea[0][0]}&lng_nw=${searchArea[0][1]}&lat_se=${searchArea[1][0]}&lng_se=${searchArea[1][1]}`
+          combineUrlAndPath(
+            process.env.REACT_APP_KLOKO_API,
+            `/getmappins.php?lat_nw=${searchArea[0][0]}&lng_nw=${searchArea[0][1]}&lat_se=${searchArea[1][0]}&lng_se=${searchArea[1][1]}`
+          )
         );
         const data = await response.json();
 
         // Set color based on category
         const updatedMarkers = data.map((marker) => {
           switch (marker.category.toLowerCase()) {
-            case "class":
-              marker.color = "lightblue";
-              break;
             case "event":
+              const eventtype = marker.event_type.toLowerCase();
               marker.color = "orange";
-              break;
-            case "party":
-              marker.color = "lightred";
-              break;
+              switch (eventtype) {
+                case "class":
+                  marker.color = "lightblue";
+                  break;
+                case "party":
+                  marker.color = "lightcoral";
+                  break;
+              }
             case "partner":
               const roleNames = marker.keywords
                 ? marker.keywords.split(",")
@@ -227,7 +233,7 @@ export const MapProvider = ({ children }) => {
                 roleNames.length > 0 ? roleNames[0].toLowerCase() : "";
               switch (role) {
                 case "venue":
-                  marker.color = "yellow";
+                  marker.color = "blue";
                   break;
                 case "supplier":
                   marker.color = "green";
@@ -236,10 +242,10 @@ export const MapProvider = ({ children }) => {
                   marker.color = "red";
                   break;
                 case "dj":
-                  marker.color = "red";
+                  marker.color = "yellow";
                   break;
                 case "event coordinator":
-                  marker.color = "red";
+                  marker.color = "purple";
                   break;
               }
               break;
@@ -361,6 +367,7 @@ export const MapProvider = ({ children }) => {
       center,
       setCenter,
       zoom,
+      setZoom,
       centerMapOnCurrentLocation,
       setLocation,
       markers,
