@@ -48,10 +48,6 @@ export const UserLoyaltyProvider = ({ children }) => {
     }
   }, [selectedCard]);
 
-  useEffect(() => {
-    console.log("!!!! rewards loaded". rewards)
-  }, [rewards]);
-
   return (
     <UserLoyaltyContext.Provider value={{ cards, count, rewards, stamps, selectedCard, setSelectedCard }}>
       {children}

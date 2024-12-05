@@ -17,8 +17,6 @@ const LocationSelect = ({ onChange, ...props }) => {
     lng: '',
   });
 
-  console.log("UserLocations", userLocations);
-
   const handleAddLocation = async () => {
     await createUserLocation(details);
     setShowModal(false);

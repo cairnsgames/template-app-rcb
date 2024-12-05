@@ -5,12 +5,7 @@ import { Button, InputGroup, FormControl } from 'react-bootstrap';
 const EditableHeader = ({ value, onChange }) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    console.log("isEditing", isEditing);
-  }, [isEditing]);
-
   const handleEditClick = () => {
-    console.log("Edit clicked", value);
     setIsEditing(true);
   };
 

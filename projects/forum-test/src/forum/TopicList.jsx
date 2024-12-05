@@ -20,8 +20,6 @@ const TopicList = () => {
     markTopicAsRead(); // Mark the topic as read
   };
 
-  console.log("TOPICS", selectedRoom.topics)
-
   return (
     <div className="topic-list">
       <Button variant="primary" onClick={handleShow}>

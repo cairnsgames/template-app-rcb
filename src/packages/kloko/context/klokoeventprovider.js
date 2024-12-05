@@ -84,7 +84,7 @@ export const KlokoEventProvider = ({
   // Fetch calendars
   const fetchCalendars = async () => {
     if (!user) {
-      console.log("NO USER");
+      console.warning("NO USER");
       return;
     }
     setLoading(true);
@@ -246,7 +246,6 @@ export const KlokoEventProvider = ({
     setLoading(true);
     try {
       event.calendar_id = activeCalendar;
-      console.log("Creating event", event);
       const response = await fetch(
         combineUrlAndPath(process.env.REACT_APP_KLOKO_API, `api.php/event`),
         {
@@ -256,7 +255,6 @@ export const KlokoEventProvider = ({
         }
       );
       let newEvent = await response.json();
-      console.log("New event", newEvent);
       newEvent = newEvent.map((event) => {
         event.start = event.start_time;
         event.end = event.end_time;

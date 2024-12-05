@@ -1,6 +1,4 @@
 const LoyaltyRewards = ({data}) => {
-    console.log('Rewards data:', data);
-    
     let redeemedCount = 0;
     let notRedeemedCount = 0;
     

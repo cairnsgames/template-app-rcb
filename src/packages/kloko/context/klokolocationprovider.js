@@ -24,14 +24,9 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
     }
   }, [user]);
 
-  useEffect(() => {
-    console.log("Loading", loading);
-  }, [loading]);
-
   const fetchUserLocations = async () => {
     try {
       setLoading(true);
-      console.log("Fetching user locations");
       const response = await fetch(
         combineUrlAndPath(
           process.env.REACT_APP_KLOKO_API,
@@ -92,7 +87,6 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
       );
       let newLocation = await locationResponse.json();
 
-      console.log("newLocation response", newLocation);
       if (Array.isArray(newLocation)) {
         newLocation = newLocation[0];
       }

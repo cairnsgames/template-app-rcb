@@ -6,7 +6,6 @@ import UserLocationManagement from "./locations/UserLocationManagement"; // Impo
 import PageFull from "../../parts/pagelayouts/pagefull";
 
 function KlokoRouting() {
-  console.log("KlokoSample")
   return (
     <PageFull className="my-3">
       <Router>

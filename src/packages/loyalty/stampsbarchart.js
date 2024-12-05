@@ -22,7 +22,6 @@ ChartJS.register(
 );
 
 const StampsBarChart = ({ data }) => {
-  console.log("$$$ StampsBarChart data", data);
   // Initialize the count array for stamps
   const stampCounts = Array(10).fill(0); // from 0 to 9
 

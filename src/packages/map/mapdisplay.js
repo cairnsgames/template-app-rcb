@@ -127,8 +127,6 @@ const MapDisplay = (props) => {
     };
   }, []);
 
-  console.log("Markers being passed:", props.markers ?? markers);
-
   return (
     <div>
       <MapContainer

@@ -19,7 +19,6 @@ const MapFilterModal = ({ show, onHide }) => {
 
   const handleFilter = () => {
     // Implement filter logic here
-    console.log(filters);
     onHide();
   };
 

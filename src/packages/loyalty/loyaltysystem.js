@@ -37,14 +37,12 @@ const Loyalty = () => {
   }
 
   const onAddStamp = () => {
-    console.log("$$$$ Add Stamp", customer);
     addUserStamp(system.id, customer.id);
     addToast("Loyalty", "Stamp added", "success");
     clearCustomer();
   };
   const onRedeemReward = () => {
     redeemUserReward(system.id, customer.id);
-    console.log("$$$$ Redeem Reward", customer);
     addToast("Loyalty", "Reward redeemed", "info");
     clearCustomer();
   };
@@ -58,11 +56,7 @@ const Loyalty = () => {
     clearCustomer();
   };
 
-  console.log("System", system);
-  console.log("Cards", cards);
-
   const captureId = (id) => {
-    console.log("$$$ ID captured", id);
     // addUserStamp(system.id, id);
     // addToast("Loyalty", "Stamp added", "success");
     setShowCamera(false);
@@ -70,12 +64,10 @@ const Loyalty = () => {
     setShowCustomer(true);
   };
   const capturePhoto = (photo) => {
-    console.log("Photo captured", photo);
     setShowCamera(false);
   };
 
   const captureQRCode = (qrCode) => {
-    console.log("$$$ QR Code captured", qrCode);
     setShowCamera(false);
   };
   

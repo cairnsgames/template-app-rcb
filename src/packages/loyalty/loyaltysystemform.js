@@ -27,7 +27,6 @@ const LoyaltySystemForm = () => {
     !!formData.name && !!formData.reward_description;
 
   useEffect(() => {
-    console.log("---- teant, user", tenant, user);
     const data = formData;
     if (tenant) {
       data.app_id = tenant;
@@ -41,9 +40,6 @@ const LoyaltySystemForm = () => {
   const [imageUrl, setImageUrl] = useState(""); // Store the image URL
   const [hasChanges, setHasChanges] = useState(false); // Track if there are changes
 
-  useEffect(() => {
-    console.log("--- formData", formData);
-  }, [formData]);
 
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;

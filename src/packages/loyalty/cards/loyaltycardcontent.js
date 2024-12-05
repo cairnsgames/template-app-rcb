@@ -16,7 +16,6 @@ const RewardMessage = ({ reward, item }) => {
     return "";
   }
 
-  console.log("!!!! RewardMessage", reward, item);
   const description = item.reward_description.trim();
 
   // Regular expression to check if the description starts with an article

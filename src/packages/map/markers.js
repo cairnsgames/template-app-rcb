@@ -34,7 +34,7 @@ const Markers = ({ markers }) => {
                 </div>
                 <div>
                 {marker.more && (<FormattedText text={marker.more} />)}
-                {marker.category}, {marker.event_type}, {marker.keywords}<br/>
+                {marker.category}, {marker.subcategory?.length > 0 ? marker.subcategory[0] : "none"}, {marker.keywords}<br/>
                 </div>
               </div>
             </Popup>

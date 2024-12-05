@@ -41,7 +41,6 @@ const MapEvents = (props) => {
       }
     },
     load: () => {
-      console.log("**** Map loaded");
       let bnds = map.getBounds();
       searchMapArea(bnds.getSouth(), bnds.getWest(), bnds.getNorth(), bnds.getEast());
     },
@@ -50,7 +49,6 @@ const MapEvents = (props) => {
   const prevBounds = useRef(map.getBounds()); // Initialize ref here
 
   map.whenReady(() => {
-    console.log("**** Map is ready");
     if (firstLoad) {
       let bnds = map.getBounds();
       searchMapArea(bnds.getSouth(), bnds.getWest(), bnds.getNorth(), bnds.getEast());

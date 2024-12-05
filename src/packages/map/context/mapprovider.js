@@ -206,6 +206,7 @@ export const MapProvider = ({ children }) => {
         const response = await fetch(
           combineUrlAndPath(
             process.env.REACT_APP_KLOKO_API,
+            // 'http://localhost/cairnsgames/php/kloko',
             `/getmappins.php?lat_nw=${searchArea[0][0]}&lng_nw=${searchArea[0][1]}&lat_se=${searchArea[1][0]}&lng_se=${searchArea[1][1]}`
           )
         );
@@ -213,9 +214,10 @@ export const MapProvider = ({ children }) => {
 
         // Set color based on category
         const updatedMarkers = data.map((marker) => {
+          marker.subcategory = JSON.parse(marker.subcategory || "");
           switch (marker.category.toLowerCase()) {
             case "event":
-              const eventtype = marker.event_type.toLowerCase();
+              const eventtype = marker.subcategory.length > 0 ? marker.subcategory[0].toLowerCase() : "event";
               marker.color = "orange";
               switch (eventtype) {
                 case "class":
@@ -226,9 +228,7 @@ export const MapProvider = ({ children }) => {
                   break;
               }
             case "partner":
-              const roleNames = marker.keywords
-                ? marker.keywords.split(",")
-                : [];
+              const roleNames = marker.subcategory || [];
               const role =
                 roleNames.length > 0 ? roleNames[0].toLowerCase() : "";
               switch (role) {
@@ -283,7 +283,7 @@ export const MapProvider = ({ children }) => {
     const endDateFilter = filters.dateRange?.end || defaultEndDate;
 
     return rawMarkers.filter((marker) => {
-      const { startDate, endDate, category, subcategory, keywords } = marker;
+      const { startDate, endDate, category, event_type, keywords } = marker;
 
       // Filter out historical items
       if (new Date(endDate) < new Date()) {
@@ -305,14 +305,7 @@ export const MapProvider = ({ children }) => {
       );
       if (anyCategorySelected) {
         const lcategory = category.toLowerCase();
-        const lsubcategory = subcategory?.toLowerCase();
-        console.log("Categories to find:", filters.categories);
-        console.log(
-          "Checking categories",
-          category,
-          subcategory,
-          filters.categories[lcategory] || filters.categories[lsubcategory]
-        );
+        const lsubcategory = event_type?.toLowerCase();
         const matchesCategory =
           filters.categories[lcategory] || filters.categories[lsubcategory];
 
@@ -356,7 +349,6 @@ export const MapProvider = ({ children }) => {
   }, []);
 
   const addMarker = (lat, lng, title) => {
-    console.log("Adding marker", lat, lng, title);
     setMarkers([...markers, { lat, lng, title }]);
   };
 
