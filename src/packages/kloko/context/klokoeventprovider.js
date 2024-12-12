@@ -383,7 +383,7 @@ export const KlokoEventProvider = ({
     }
   };
 
-  const createTemplate = async (template) => {
+  const addTemplate = async (template) => {
     setLoading(true);
     try {
       const response = await fetch(
@@ -395,7 +395,8 @@ export const KlokoEventProvider = ({
         }
       );
       const newTemplate = await response.json();
-      setTemplates((prev) => [...prev, newTemplate]);
+      // setTemplates((prev) => [...prev, newTemplate]);
+      fetchTemplates();
       setLoading(false);
       return [newTemplate];
     } catch (error) {
@@ -538,7 +539,7 @@ export const KlokoEventProvider = ({
       createBooking,
       updateBooking,
       deleteBooking,
-      createTemplate,
+      addTemplate,
       updateTemplate,
       deleteTemplate,
       searchEventListing,

@@ -11,9 +11,9 @@ export const useTemplates = () => {
     throw new Error("useTemplates was used outside of its Provider");
   }
 
-  const { templates, createTemplate, updateTemplate, deleteTemplate } = context;
+  const { templates, addTemplate, updateTemplate, deleteTemplate } = context;
 
-  return { templates, createTemplate, updateTemplate, deleteTemplate };
+  return { templates, addTemplate, updateTemplate, deleteTemplate };
 };
 
 export default useTemplates;

@@ -12,7 +12,6 @@ function NewsRouting() {
   console.log("NewsSample");
   return (
     <PageFull className="my-3">
-      <NewsProvider>
         <Router>
           <Route is={"news/mynews/{id}"}>
             <MyNewsEditor />
@@ -27,7 +26,6 @@ function NewsRouting() {
             <News layout="custom" />
           </Route>
         </Router>
-      </NewsProvider>
     </PageFull>
   );
 }

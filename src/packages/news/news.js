@@ -1,10 +1,40 @@
-import React from 'react';
-import { useNews } from './context/newscontext';
-import NewsItem from './newsitem';
-import NewsThumb from './newsthumb';
-import './news.scss';
+import React from "react";
+import { useNews } from "./context/newscontext";
+import NewsItem from "./newsitem";
+import NewsThumb from "./newsthumb";
+import "./news.scss";
+import NewsCard from "./newscard";
 
-const News = ({ layout = 'default' }) => {
+const NewsDisplay = ({ item, onClick, layout }) => {
+  console.log("Item to Display", layout, item)
+  if ((layout === "card")) {
+    return <NewsCard item={item} onClick={onClick} />;
+  }
+  if ((layout === "thumb")) {
+    return <NewsThumb item={item} onClick={onClick} />;
+  }
+  return (
+    <NewsItem
+      key={item.id}
+      item={item}
+      onClick={() => handleItemClick(item.id)}
+    />
+  );
+};
+
+export const NewsItems = ({ count, layout, onClick }) => {
+  
+  const { newsItems } = useNews();
+  const items = newsItems.slice(0, count);
+  return (
+    <>
+      {items.map((item) => {
+        return <NewsDisplay key={item.id} item={item} layout={layout} onClick={onClick}/>;
+      })}</>
+  );
+}
+
+const News = ({ layout = "default", items = 99999 }) => {
   const { newsItems } = useNews();
 
   const handleItemClick = (id) => {
@@ -13,16 +43,10 @@ const News = ({ layout = 'default' }) => {
 
   return (
     <div className="news">
-      
       <div className="text-center">
         <h3>Latest News</h3>
       </div>
-      {newsItems.map(item => (
-        layout === 'custom' 
-          ? <NewsThumb key={item.id} item={item} onClick={() => handleItemClick(item.id)} />
-          : <NewsItem key={item.id} item={item} onClick={() => handleItemClick(item.id)} />
-      ))}
-      {newsItems.length === 0 && <p>No news items</p>}
+      <NewsItems items={items} layout={layout}  onClick={handleItemClick} />
     </div>
   );
 };

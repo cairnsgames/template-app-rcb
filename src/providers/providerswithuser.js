@@ -7,6 +7,7 @@ import { FeatureFlagProvider } from "../packages/featureflags/featureflag";
 import SettingsProvider from "../packages/settings/settingsprovider";
 import useSettings from "../packages/settings/usesettings";
 import useFeatureFlag from "../packages/featureflags/usefeatureflags";
+import { NewsProvider } from "../packages/news/context/newscontext";
 
 const ProvidersWithSettingsAndFeatures = ({
   children,
@@ -14,11 +15,22 @@ const ProvidersWithSettingsAndFeatures = ({
   tenant,
   token,
 }) => {
-
   return (
-    <KlokoProviders user={user} tenant={tenant} token={token} useSettings={useSettings} useFeatureFlag={useFeatureFlag}>
-      <BreezoProvider user={user} tenant={tenant} token={token} useSettings={useSettings} useFeatureFlag={useFeatureFlag}>
-        {children}
+    <KlokoProviders
+      user={user}
+      tenant={tenant}
+      token={token}
+      useSettings={useSettings}
+      useFeatureFlag={useFeatureFlag}
+    >
+      <BreezoProvider
+        user={user}
+        tenant={tenant}
+        token={token}
+        useSettings={useSettings}
+        useFeatureFlag={useFeatureFlag}
+      >
+        <NewsProvider>{children}</NewsProvider>
       </BreezoProvider>
     </KlokoProviders>
   );
@@ -31,7 +43,11 @@ const ProvidersWithUser = ({ children }) => {
   return (
     <FeatureFlagProvider user={user} tenant={tenant} token={token}>
       <SettingsProvider user={user} tenant={tenant} token={token}>
-        <ProvidersWithSettingsAndFeatures user={user} tenant={tenant} token={token}>
+        <ProvidersWithSettingsAndFeatures
+          user={user}
+          tenant={tenant}
+          token={token}
+        >
           {children}
         </ProvidersWithSettingsAndFeatures>
       </SettingsProvider>
