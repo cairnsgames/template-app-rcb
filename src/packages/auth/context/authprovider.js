@@ -289,7 +289,36 @@ const AuthenticationProvider = (props) => {
       });
   };
 
+  const requestMagicLink = (email) => {
+    const body = {
+      code: email,
+    };
+    return fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API, `magic.php`), {
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+        APP_ID: tenant,
+        deviceid: deviceId,
+      },
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data === "string") {
+          data = JSON.parse(data);
+        }
+        return data;
+      })
+      .catch((err) => {
+        if (onError) {
+          onError("Auth: Unable to complete Magic Link Request", err);
+        }
+      });
+
+  };
+
   const loginWithMagicLink = (magiccode) => {
+    console.log
     const body = {
       code: magiccode,
     };
@@ -314,6 +343,7 @@ const AuthenticationProvider = (props) => {
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
+        console.log("MAGIC LINK LOGIN", data);
         settoken(data.token);
         const userDetails = {
           email: data.email,
@@ -565,6 +595,7 @@ const AuthenticationProvider = (props) => {
       token,
       register,
       login,
+      requestMagicLink,
       loginWithMagicLink,
       logout,
       forgot,
@@ -581,6 +612,7 @@ const AuthenticationProvider = (props) => {
       token,
       register,
       login,
+      requestMagicLink,
       loginWithMagicLink,
       logout,
       forgot,

@@ -21,7 +21,7 @@ const MobileAuth = (props) => {
       <Modal.Body>
         {mode === "register" && <RegisterForm {...props} />}
         {mode === "forgot" && <ForgotPasswordForm {...props} />}
-        {mode === "magiclink" && <MagicLinkForm {...props} />}
+        {mode === "magiclink" && <MagicLinkForm {...props} onSuccess={()=>{setMode("login")}} />}
         {mode === "login" && <LoginForm {...props} rememberMe={true} />}
       </Modal.Body>
       <Modal.Footer>

@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import PageCentered from "../../parts/pagelayouts/pagecentered";
 import useToast from "@cairnsgames/toasts/usetoast";
 import useAuth from "../../packages/auth/context/useauth";
+import LoadingSpinner from "../../components/spinner/spinner";
 
 const MagicCodePage = (props) => {
   const { addToast } = useToast();
@@ -16,13 +17,7 @@ const MagicCodePage = (props) => {
 
   return (
     <PageCentered position="middle" >
-      <Row className="border-bottom">
-        <h1>MAGIC CODE</h1>
-      </Row>
-      <Row className="mt-3">
-        <Col>Code</Col>
-        <Col>{props.code}</Col>
-      </Row>
+      <LoadingSpinner />
     </PageCentered>
   );
 };

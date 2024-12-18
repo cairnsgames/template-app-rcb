@@ -24,6 +24,7 @@ import PayNowPage from "../pages/breezo/paynowpage";
 import PayNowThankYouPage from "../pages/breezo/paynowthankyoupage";
 import Calendar from "../packages/kloko/kloko";
 import KlokoRouting from "../packages/kloko/klokorouting";
+import MagicCodePage from "../pages/auth/magiccodepage";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -56,13 +57,16 @@ const Routing = () => {
       <Route is={"logout"}>
         <Home />
       </Route>
-      <Route is={"referral"}>        
+      <Route is={"magic"}>
+        <MagicCodePage />
+      </Route>
+      <Route is={"referral"}>
         <MobileAuth mode="register" onSuccess={goProfile} onClose={goHome} />
       </Route>
-      <Route is={"register"}>        
+      <Route is={"register"}>
         <MobileAuth mode="register" onSuccess={goProfile} onClose={goHome} />
       </Route>
-      
+
       <Route is={"home"}>{isLoggedIn ? <Home /> : <LandingPage />}</Route>
       <Route is={"landing"}>
         <LandingPage />
@@ -77,7 +81,7 @@ const Routing = () => {
       <Route is={"placeorder"}>
         <PlaceOrderPage />
       </Route>
-      
+
       <Route is={"payorder/thankyou"}>
         <PayNowThankYouPage />
       </Route>
@@ -121,7 +125,7 @@ const Routing = () => {
       <Route startsWith={"partner"}>
         <PartnersPage />
       </Route>
-      
+
       <Route startsWith={"map"}>
         <MapPage />
       </Route>
