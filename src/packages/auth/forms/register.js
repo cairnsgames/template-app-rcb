@@ -5,9 +5,9 @@ import { Eye } from "react-bootstrap-icons";
 
 function RegisterForm({ onSuccess }) {
   const [validated, setValidated] = useState(false);
-  const [email, setEmail] = useState("cairnswm@gmail.com");
-  const [password, setPassword] = useState("123456");
-  const [confirm, setConfirm] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [seePassword, setSeePassword] = useState(false);
   const [error, setError] = useState();
 
