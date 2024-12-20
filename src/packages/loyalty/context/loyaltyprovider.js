@@ -219,7 +219,7 @@ export const LoyaltyProvider = ({ children }) => {
     setLoading(true);
     // console.log("==== Position", latlng.latitude, latlng.longitude);
     console.log("Adding stamp without GeoPosition")
-    const bodt = {
+    const body = {
       // lat: latlng.latitude,
       // lng: latlng.longitude,
     }
