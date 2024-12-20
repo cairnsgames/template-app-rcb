@@ -21,7 +21,7 @@ export const LoyaltyProvider = ({ children }) => {
   const [customerStamps, setCustomerStamps] = useState();
   const [customerRewards, setCustomerRewards] = useState();
 
-  const { latlng } = useGeoLocation();
+  // const { latlng } = useGeoLocation();
 
   const [loading, setLoading] = useState(false); // New loading state
   const { user, token } = useUser();
@@ -217,7 +217,11 @@ export const LoyaltyProvider = ({ children }) => {
 
   const addUserStamp = (systemId, id) => {
     setLoading(true);
-    console.log("==== Position", latlng.latitude, latlng.longitude);
+    // console.log("==== Position", latlng.latitude, latlng.longitude);
+    const bodt = {
+      // lat: latlng.latitude,
+      // lng: latlng.longitude,
+    }
     return fetch(
       combineUrlAndPath(
         process.env.REACT_APP_LOYALTY_API,
@@ -226,10 +230,7 @@ export const LoyaltyProvider = ({ children }) => {
       {
         method: "POST",
         headers,
-        body: JSON.stringify({
-          lat: latlng.latitude,
-          lng: latlng.longitude,
-        })
+        body: JSON.stringify(body)
       }
     )
       .then((response) => response.json())
