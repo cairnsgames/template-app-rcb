@@ -1,0 +1,189 @@
+// Custom theme colors
+$theme-colors: (
+  "primary": #ff6b35,   // Dark orange
+  "secondary": #2b2d42  // Dark blue-gray
+);
+
+// Import Bootstrap with custom colors
+@import "~bootstrap/scss/bootstrap";
+
+// Layout styles
+.dashboard-layout {
+  min-height: 100vh;
+  padding-top: 56px;
+}
+
+// Sidebar styles
+.sidebar-wrapper {
+  position: fixed;
+  top: 56px;
+  bottom: 0;
+  left: 0;
+  width: 16.666667%;
+  z-index: 100;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+}
+
+.main-content {
+  margin-left: 16.666667%;
+}
+
+// Hero styles
+.hero {
+  min-height: 80vh;
+  background: linear-gradient(135deg, #ff6b35 0%, #2b2d42 100%);
+  color: white;
+
+  .btn-secondary {
+    &:hover {
+      background-color: darken(#2b2d42, 5%);
+      border-color: darken(#2b2d42, 5%);
+    }
+  }
+
+  .btn-outline-light {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+  }
+}
+
+// Feature styles
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--bs-primary);
+}
+
+// Card styles
+.pricing-card, .subscription-card {
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: translateY(-10px);
+  }
+}
+
+.popular-plan {
+  border: 2px solid var(--bs-primary);
+  position: relative;
+  
+  &::before {
+    content: 'Popular';
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    background: var(--bs-primary);
+    color: white;
+    padding: 0.25rem 1rem;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    font-size: 0.875rem;
+  }
+}
+
+// Navbar styles
+.navbar {
+  z-index: 1030;
+  background-color: var(--bs-primary) !important;
+
+  .navbar-brand {
+    color: white !important;
+    font-weight: 500;
+  }
+
+  #user-dropdown {
+    color: white;
+    padding: 0;
+    
+    &::after {
+      display: none;
+    }
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+}
+
+// Navigation styles
+.nav-tabs {
+  border-bottom: 1px solid #dee2e6;
+  
+  .nav-link {
+    color: #495057;
+    background: none;
+    border: 1px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: -1px;
+    
+    &:hover {
+      border-color: #e9ecef #e9ecef #dee2e6;
+      isolation: isolate;
+    }
+    
+    &.active {
+      color: var(--bs-primary);
+      background-color: #fff;
+      border-color: #dee2e6 #dee2e6 #fff;
+    }
+  }
+}
+
+// Desktop sidebar nav styles
+.nav-link {
+  color: #4a4a4a;
+  
+  &:hover {
+    color: var(--bs-primary);
+    background-color: rgba(255, 107, 53, 0.05);
+  }
+  
+  &.active {
+    color: var(--bs-primary);
+    background-color: rgba(255, 107, 53, 0.1);
+  }
+}
+
+// Mobile navigation styles
+.mobile-nav {
+  .nav-link {
+    color: #4a4a4a;
+    padding: 4px;
+    
+    &:hover {
+      color: var(--bs-primary);
+    }
+    
+    &.active {
+      color: var(--bs-primary);
+    }
+  }
+
+  .mobile-nav-text {
+    font-size: 0.7rem;
+    margin-top: 2px;
+  }
+}
+
+// Icon colors
+.sidebar .nav-link, .mobile-nav .nav-link {
+  svg {
+    color: var(--bs-primary);
+  }
+}
+
+// Current plan styling
+.current-plan {
+  border-color: var(--bs-primary);
+}
+
+// Responsive adjustments
+@media (max-width: 767.98px) {
+  .main-content {
+    margin-left: 0;
+  }
+}
