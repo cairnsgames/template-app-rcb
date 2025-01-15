@@ -513,6 +513,7 @@ export const KlokoEventProvider = ({
 
   // Computed variable for tickets
   const tickets = userBookings.filter((booking) => booking.status === "paid");
+  const upcomingEvents = events.filter(ev => new Date(ev.end_time) > new Date());
 
   const values = useMemo(
     () => ({
@@ -544,6 +545,7 @@ export const KlokoEventProvider = ({
       deleteTemplate,
       searchEventListing,
       refetchSearch,
+      upcomingEvents,
     }),
     [
       calendars,

@@ -4,6 +4,7 @@ import KlokoMyEvents from "./klokomyevents";
 import KlokoEvents from "./klokoevents";
 import UserLocationManagement from "./locations/UserLocationManagement"; // Import the new component
 import PageFull from "../../parts/pagelayouts/pagefull";
+import KlokoEventDetail from "./klokoeventdetail";
 
 function KlokoRouting() {
   return (
@@ -15,11 +16,14 @@ function KlokoRouting() {
         <Route is={"events/myevents"}>
           <KlokoMyEvents />
         </Route>
-        <Route is={"events/{id}"} debug={true}>
+        <Route is={"myevents/{id}"} debug={true}>
           <KlokoMyEvents />
         </Route>
         <Route is={"events"}>
           <KlokoEvents />
+        </Route>
+        <Route is={"events/{id}"} debug={true}>
+          <KlokoEventDetail />
         </Route>
         <Route is={"locations"}>
           <UserLocationManagement />

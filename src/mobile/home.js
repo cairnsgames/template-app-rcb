@@ -4,11 +4,16 @@ import FloatingCard from "../components/react-bootstrap-mobile/floatingcard";
 import Ticket from "../components/react-bootstrap-mobile/ticket";
 import QRCode from "../packages/qrcode/qrcode";
 import { NewsItems } from "../packages/news/news";
+import { EventItems } from "../packages/kloko/klokoeventsasnews";
 
 const Home = () => {
   const showNews = (item) => {
     console.log("Show News", item);
     window.location.hash = `#news/${item.id}`;
+  };
+  const showEvent = (item) => {
+    console.log("Show Event", item);
+    window.location.hash = `#events/${item.id}`;
   };
   return (
     <Container fluid className="px-2">
@@ -43,7 +48,7 @@ const Home = () => {
           </FloatingCard>
         </Col>
         <NewsItems items={3} layout="card" onClick={showNews} />
-      
+        <EventItems items={3} layout="card" onClick={showEvent} />
       </Row>
     </Container>
   );

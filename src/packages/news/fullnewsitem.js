@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import "./fullnewsitem.scss";
 import { useNews } from "./context/newscontext";
-import HighlightText, { formattedText } from "./highlighttext";
+import HighlightText, { formattedText } from "../../components/highlighttext";
 import { convertToMarkdown } from "../../functions/converttomarkdown";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 

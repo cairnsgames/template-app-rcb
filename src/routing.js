@@ -40,6 +40,7 @@ import FullCalendarPage from "./pages/fullcalendar/fullcalendarpage.js";
 import KlokoSearchPage from "./pages/fullcalendar/klokosearchpage.js";
 import PlaceOrderPage from "./pages/breezo/placeorderpage.js";
 import ProfilePage from "./pages/profile/profilepage.js";
+import KlokoEventDetail from "./packages/kloko/klokoeventdetail.js";
 
 const MapPage = React.lazy(() => import("./pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("./pages/admin/admin"));
@@ -188,6 +189,9 @@ const Routing = () => {
           </Suspense>
         </Route>
 
+        <Route is={"event/{id}"}>
+          <KlokoEventDetail />
+        </Route>
         <Route startsWith={"event"}>
           <EventListPage />
         </Route>

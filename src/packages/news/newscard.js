@@ -1,5 +1,5 @@
 import React from "react";
-import HighlightText from "./highlighttext";
+import HighlightText from "../../components/highlighttext";
 import { Pencil, Trash } from "react-bootstrap-icons"; // Importing Trash icon
 import "./newsthumb.scss";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
