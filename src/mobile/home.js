@@ -6,6 +6,10 @@ import QRCode from "../packages/qrcode/qrcode";
 import { NewsItems } from "../packages/news/news";
 
 const Home = () => {
+  const showNews = (item) => {
+    console.log("Show News", item);
+    window.location.hash = `#news/${item.id}`;
+  };
   return (
     <Container fluid className="px-2">
       <Row>
@@ -56,7 +60,7 @@ const Home = () => {
             </FloatingCard.Footer>
           </FloatingCard>
         </Col>
-        <NewsItems items={3} layout="card" />
+        <NewsItems items={3} layout="card" onClick={showNews} />
       </Row>
       <Row>
         <Col xs={12} md={6} lg={4}>

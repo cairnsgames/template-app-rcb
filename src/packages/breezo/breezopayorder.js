@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
-import { Table, Button, Container } from "react-bootstrap";
+import { Table, Row, Col } from "react-bootstrap";
 import { useOrders } from "./context/useorders";
 import useUser from "../auth/context/useuser";
 import PayNowButton from "./paynowbutton";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import PayGateButton from "./paygatebutton";
+import PayGate from "./paygate";
 
 const BreezoPayNow = ({ id }) => {
-  const { activeOrder, orderPaid, setActiveOrderId, orderItems, loading } = useOrders();
+  const { activeOrder, orderPaid, setActiveOrderId, orderItems, loading } =
+    useOrders();
   const { user } = useUser();
 
   useEffect(() => {
@@ -113,7 +116,14 @@ const BreezoPayNow = ({ id }) => {
         </div>
 
         {activeOrder.status === "pending" && (
-          <PayNowButton onGetOrder={getOrder} onPaid={doPaid} />
+          <Row>
+            <Col>
+              <PayNowButton onGetOrder={getOrder} onPaid={doPaid} />
+            </Col>
+            <Col>
+              <PayGate onGetOrder={getOrder} onPaid={doPaid}  />
+            </Col>
+          </Row>
         )}
       </div>
     </PayPalScriptProvider>

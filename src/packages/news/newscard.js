@@ -12,10 +12,8 @@ const NewsCard = ({ item, onClick, onEdit, onDelete }) => {
     console.log("NewsThumb", item);
   }
 
-  const onDeleteItem = (ev) => {
-    ev.stopPropagation();
-    onDelete(item.id);
-  };
+  const overlayText = item?.overlay_text === "Y" ?? true;
+
   return (
     <Col xs={12} md={6} lg={4}>
       <FloatingCard
@@ -24,22 +22,28 @@ const NewsCard = ({ item, onClick, onEdit, onDelete }) => {
           process.env.REACT_APP_FILES,
           `${item.image_url}`
         )}
+        onClick={()=>onClick(item)}
       >
-        <FloatingCard.Header>
-          <p className="text-center">{item.title}</p>
-          <div className="news-thumb-meta">
-            <small className="news-thumb-author">{item.author}</small>
-            <small className="news-thumb-date">
-              {new Date(item.date).toLocaleDateString()}
-            </small>
-          </div>
-        </FloatingCard.Header>
-        <FloatingCard.Body>
-          <HighlightText text={item.body} />
-        </FloatingCard.Body>
-        <FloatingCard.Footer>
-          <Button variant="primary">Book Now</Button>
-        </FloatingCard.Footer>
+        {overlayText && (
+          <>
+            <FloatingCard.Header>
+              {item?.overlay_text && (<h1>{item.overlay_text}</h1>)}
+              <p className="text-center">{item.title}</p>
+              <div className="news-thumb-meta">
+                <small className="news-thumb-author">{item.author}</small>
+                <small className="news-thumb-date">
+                  {new Date(item.date).toLocaleDateString()}
+                </small>
+              </div>
+            </FloatingCard.Header>
+            <FloatingCard.Body>
+              <HighlightText text={item.body} />
+            </FloatingCard.Body>
+            <FloatingCard.Footer>
+              <Button variant="primary">Book Now</Button>
+            </FloatingCard.Footer>
+          </>
+        )}
       </FloatingCard>
     </Col>
   );

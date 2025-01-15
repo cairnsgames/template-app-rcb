@@ -15,7 +15,7 @@ const NewsThumb = ({ item, onClick, onEdit, onDelete }) => {
     onDelete(item.id);
   }
   return (
-    <div className="news-thumb" onClick={onClick}>
+    <div className="news-thumb" onClick={()=>onClick(item)}>
       {item.image_url && (
         <img
           className="news-thumb-image"

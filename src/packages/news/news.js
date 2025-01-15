@@ -6,7 +6,6 @@ import "./news.scss";
 import NewsCard from "./newscard";
 
 const NewsDisplay = ({ item, onClick, layout }) => {
-  console.log("Item to Display", layout, item)
   if ((layout === "card")) {
     return <NewsCard item={item} onClick={onClick} />;
   }
@@ -17,7 +16,7 @@ const NewsDisplay = ({ item, onClick, layout }) => {
     <NewsItem
       key={item.id}
       item={item}
-      onClick={() => handleItemClick(item.id)}
+      onClick={onClick}
     />
   );
 };

@@ -71,7 +71,6 @@ const PayNowButton = ({ onGetOrder, onPaid }) => {
 
   return (
     <div>
-      Buttons
       <PayPalButtons
         createOrder={createOrder}
         onApprove={onApprove}
