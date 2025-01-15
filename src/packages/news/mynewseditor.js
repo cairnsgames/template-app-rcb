@@ -22,6 +22,7 @@ const MyNewsEditor = ({ id, onClose }) => {
   const [date, setDate] = useState("");
   const [expires, setExpires] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [overlayText, setOverlayText] = useState(true);
   const [hasChanges, setHasChanges] = useState(false);
 
   const { addToast } = useToast();
@@ -85,6 +86,7 @@ const MyNewsEditor = ({ id, onClose }) => {
       date: formattedDate,
       expires: formattedExpires,
       image_url: imageUrl,
+      overlay_text: overlayText ? "Y" : "N",
     };
 
     if (isFileSelected) {
@@ -156,6 +158,18 @@ const MyNewsEditor = ({ id, onClose }) => {
               className="img-preview"
             />
           ) : null}
+        </Form.Group>
+
+        <Form.Group controlId="overlayText">
+          <Form.Check
+            type="checkbox"
+            label="Show overlay text"
+            checked={overlayText}
+            onChange={(e) => {
+              setOverlayText(e.target.checked);
+              setHasChanges(true);
+            }}
+          />
         </Form.Group>
 
         <Form.Group controlId="date">
