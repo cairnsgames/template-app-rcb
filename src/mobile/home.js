@@ -9,11 +9,11 @@ import { EventItems } from "../packages/kloko/klokoeventsasnews";
 const Home = () => {
   const showNews = (item) => {
     console.log("Show News", item);
-    window.location.hash = `#news/${item.id}`;
+    window.location.hash = `#news/${item}`;
   };
   const showEvent = (item) => {
     console.log("Show Event", item);
-    window.location.hash = `#events/${item.id}`;
+    window.location.hash = `#events/${item}`;
   };
   return (
     <Container fluid className="px-2">
