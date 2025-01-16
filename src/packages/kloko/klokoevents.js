@@ -15,9 +15,7 @@ const KlokoEvents = () => {
   const { events, fetchEvents, loading } = useEvents();
   const [sortOption, setSortOption] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [showOldEvents, setShowOldEvents] = useState(false); // State for showing old events
-
-  console.log("Kloko Events: Events", events);
+  const [showOldEvents, setShowOldEvents] = useState(false);
 
   const handleSort = (option) => {
     if (sortOption === option) {
@@ -40,9 +38,23 @@ const KlokoEvents = () => {
   });
 
   // Filter events based on the showOldEvents state
-  const filteredEvents = sortedEvents.filter(
-    (event) => showOldEvents || new Date(event.start_time) >= new Date()
-  );
+  const filteredEvents = sortedEvents.filter((event) => {
+    if (event.id === 24) {
+      console.log("Event", event, new Date(event.start_time) >= new Date() ||
+      new Date(event.end_time) >= new Date());
+    }
+    return (
+      showOldEvents ||
+      new Date(event.start_time) >= new Date() ||
+      new Date(event.end_time) >= new Date()
+    );
+  });
+
+  const showEvent = (eventId) => {
+    window.location.href = `#events/${eventId}`;
+  }
+
+  console.log("Kloko Events: Filtered Events", filteredEvents);
 
   if (loading) {
     return (
@@ -76,10 +88,7 @@ const KlokoEvents = () => {
       </Row>
       <Row>
         {filteredEvents.map((event) => (
-          <EventThumb
-            key={event.id}
-            event={event}
-          />
+          <EventThumb key={event.id} event={event} onClick={showEvent} />
         ))}
       </Row>
     </div>

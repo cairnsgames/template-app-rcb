@@ -7,9 +7,11 @@ import { Button, Col } from "react-bootstrap";
 import FloatingCard from "../../components/react-bootstrap-mobile/floatingcard";
 
 const NewsCard = ({ item, onClick, onEdit, onDelete }) => {
-  console.log("NewsCard", item);
-  if (item.id === 10) {
-    console.log("NewsThumb", item);
+
+  const clickOnCard = () => {
+    if (onClick) {
+      onClick(item.id);
+    }
   }
 
   const overlayText = item?.overlay_text === "Y" ?? true;
@@ -22,7 +24,7 @@ const NewsCard = ({ item, onClick, onEdit, onDelete }) => {
           process.env.REACT_APP_FILES,
           `${item.image_url}`
         )}
-        onClick={()=>onClick(item)}
+        onClick={clickOnCard}
       >
         {overlayText && (
           <>

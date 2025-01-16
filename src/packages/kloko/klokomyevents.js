@@ -53,7 +53,7 @@ const KlokoMyEvents = () => {
 
   // Filter events based on the showOldEvents state
   const filteredEvents = sortedEvents.filter(event => 
-    showOldEvents || new Date(event.start_time) >= new Date()
+    showOldEvents || new Date(event.end_time) >= new Date()
   );
 
   if (loading) {

@@ -4,13 +4,14 @@ import "./newsitem.scss";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 const NewsItem = ({ item, onClick }) => {
-  console.log("Item", item);
-  console.log(
-    "Image Path",
-    combineUrlAndPath(process.env.REACT_APP_FILES, item.image_url)
-  );
+  const clickOnCard = () => {
+    if (onClick) {
+      onClick(item.id);
+    }
+  }
+
   return (
-    <Card className="news-item" onClick={()=>onClick(item)}>
+    <Card className="news-item" onClick={clickOnCard}>
       <Card.Img
         variant="top"
         src={combineUrlAndPath(process.env.REACT_APP_FILES, item.image_url)}
@@ -21,7 +22,7 @@ const NewsItem = ({ item, onClick }) => {
       </Card.Body>
       <Card.Footer>
         <small className="text-muted">
-          {item.author} - {new Date(item.date).toLocaleDateString()}
+          {new Date(item.date).toLocaleDateString()}
         </small>
         <div className="news-item-menu">...</div>
       </Card.Footer>

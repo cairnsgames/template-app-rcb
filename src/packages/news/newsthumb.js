@@ -6,16 +6,20 @@ import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { Button, ButtonGroup } from "react-bootstrap";
 
 const NewsThumb = ({ item, onClick, onEdit, onDelete }) => { 
-  if (item.id === 10) {
-    console.log("NewsThumb", item);
-  }
 
   const onDeleteItem = (ev) => {
     ev.stopPropagation();
     onDelete(item.id);
   }
+
+  const clickOnCard = () => {
+    if (onClick) {
+      onClick(item.id);
+    }
+  }
+
   return (
-    <div className="news-thumb" onClick={()=>onClick(item)}>
+    <div className="news-thumb" onClick={clickOnCard}>
       {item.image_url && (
         <img
           className="news-thumb-image"

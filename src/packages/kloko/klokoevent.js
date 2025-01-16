@@ -30,6 +30,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const [startTime, setStartTime] = useState("");
   const [enableBookings, setEnableBookings] = useState(true);
   const [showInNews, setShowInNews] = useState(false);
+  const [overlayText, setOverlayText] = useState(true);
 
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;
@@ -68,6 +69,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
         setLocation(eventToEdit.location);
         setMaxParticipants(eventToEdit.max_participants);
         setStartTime(eventToEdit.start_time);
+        setOverlayText(eventToEdit.overlay_text === "Y");
+        setEnableBookings(eventToEdit.enable_bookings === "Y");
+        setShowInNews(eventToEdit.show_in_news === "Y");
       }
     }
   }, [id, fetchEventById]);
@@ -91,6 +95,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
       end_time: endTime,
       enable_bookings: enableBookings ? "Y" : "N",
       show_in_news: showInNews ? "Y" : "N",
+      overlay_text: overlayText ? "Y" : "N",
     };
     if (isFileSelected) {
       console.log("Uploading file...");
@@ -118,6 +123,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
     setStartTime("");
     setEnableBookings(true);
     setShowInNews(false);
+    setOverlayText(true);
   };
 
   return (
@@ -280,6 +286,15 @@ const KlokoEventEditor = ({ id, onClose }) => {
             label="Show in News"
             checked={showInNews}
             onChange={(e) => setShowInNews(e.target.checked)}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="overlayText">
+          <Form.Check
+            type="checkbox"
+            label="Overlay Text"
+            checked={overlayText}
+            onChange={(e) => setOverlayText(e.target.checked)}
           />
         </Form.Group>
 

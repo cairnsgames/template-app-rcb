@@ -5,6 +5,9 @@ $footer-height: 60px;
 $header-height: 50px;
 $icon-bar-height: 50px;
 
+$card-spacer-y: 0.5rem; 
+$card-spacer-x: 0.5rem; 
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -16,7 +19,7 @@ $icon-bar-height: 50px;
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 20; // Ensure it stays above the icon-bar and content
+  z-index: 20; 
 }
 
 .icon-bar {
