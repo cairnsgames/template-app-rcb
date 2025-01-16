@@ -15,7 +15,7 @@ const EventCard = ({ item, onClick }) => {
       <FloatingCard
         className="m-3"
         image={combineUrlAndPath(process.env.REACT_APP_FILES, `${item.image}`)}
-        onClick={() => onClick(item)}
+        onClick={() => onClick(item.id)}
       >
         {overlayText && (
           <>

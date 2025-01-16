@@ -1,8 +1,7 @@
 import React, { createContext, useEffect, useMemo, useState } from "react";
 
 const TenantContext = createContext(
-  "TenantContext", // a sufficiently globally unique displayName
-  null // default value
+  null 
 );
 
 const TenantProvider = (props) => {
@@ -17,7 +16,7 @@ const TenantProvider = (props) => {
     );
   }
 
-  const [tenant] = useState(props.applicationId);
+  const [tenant, ] = useState(props.applicationId);
   const configValue = props.config;
   const [params, setParams] = useState(props.params || []);
   const [application, setApplication] = useState();
