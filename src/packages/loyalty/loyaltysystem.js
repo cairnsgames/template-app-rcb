@@ -3,7 +3,7 @@ import { LoyaltyContext, LoyaltyProvider } from "./context/loyaltyprovider";
 import { useUser } from "../auth/context/useuser";
 import StampsBarChart from "./stampsbarchart";
 import LoyaltyRewards from "./loyaltyrewards";
-import { Button  } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { getImageSrc } from "../../../packages/zharo/src/getimagesrc";
 import { Camera, InfoCircleFill } from "react-bootstrap-icons";
 import CapturePhoto from "../photo/capturephoto";
@@ -12,6 +12,7 @@ import LoyaltySystemForm from "./loyaltysystemform";
 import InfoBox from "../../components/infobox/infobox";
 import UserRewardModal from "./userrewardmodal";
 import LoadingSpinner from "../../components/spinner/spinner";
+import QRCodeScanner from "../photo/qrcodescanner.js";
 
 const Loyalty = () => {
   const {
@@ -57,8 +58,7 @@ const Loyalty = () => {
   };
 
   const captureId = (id) => {
-    // addUserStamp(system.id, id);
-    // addToast("Loyalty", "Stamp added", "success");
+    console.log("Scanned ID", id);
     setShowCamera(false);
     setCustomerId(id);
     setShowCustomer(true);
@@ -70,7 +70,7 @@ const Loyalty = () => {
   const captureQRCode = (qrCode) => {
     setShowCamera(false);
   };
-  
+
   if (!system) {
     return (
       <div className="m-3">
@@ -139,9 +139,9 @@ const Loyalty = () => {
     <div>
       <div className="d-flex justify-content-between pb-2">
         <h2>{system.name}</h2>
-          <Button className="me-3" onClick={() => setShowCamera(true)}>
-            <Camera />
-          </Button>
+        <Button className="me-3" onClick={() => setShowCamera(true)}>
+          <Camera />
+        </Button>
       </div>
       {system.image ? (
         <img
@@ -157,13 +157,20 @@ const Loyalty = () => {
       <h2>Rewards</h2>
       <LoyaltyRewards data={rewards} />
 
-      <CapturePhoto
+      {showCamera && (
+        <QRCodeScanner
+          onClose={() => setShowCamera(false)}
+          onQRCode={captureId}
+        />
+      )}
+
+      {/* <CapturePhoto
         show={showCamera}
         onId={captureId}
         onPhoto={capturePhoto}
         onQRCode={captureQRCode}
-        onClose={() => setShowCamera(false)}
-      />
+        onClose={() => setShowCamera(false)} 
+      />*/}
       <UserRewardModal
         show={showCustomer}
         customer={customer}

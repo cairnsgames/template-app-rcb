@@ -1,10 +1,10 @@
 
 import { useContext } from "react";
-import { KlokoEventContext } from "./klokoeventprovider";
+import { KlokoMyEventContext } from "./klokomyeventprovider";
 
 export const useSearch = () => {
   // get the context 
-  const context = useContext(KlokoEventContext);
+  const context = useContext(KlokoMyEventContext);
 
   // if `undefined`, throw an error
   if (!context) {

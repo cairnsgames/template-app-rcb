@@ -2,19 +2,19 @@ import React, { useState, useEffect, Suspense } from "react";
 import { Button, DropdownButton, Dropdown, Row, Col, Form } from "react-bootstrap";
 import EventThumb from "./eventthumb"; // Assuming there's a component for displaying event thumbnails
 import LoadingSpinner from "../../components/spinner/spinner";
-import useEvents from "./context/useevents";
+import useMyEvents from "./context/usemyevents";
 
 const KlokoEventEditor = React.lazy(() => import("./klokoevent"));
 
 const KlokoMyEvents = () => {
-  const { events, fetchEvents, loading } = useEvents();
+  const { myEvents, fetchEvents, loading } = useMyEvents();
   const [showEditor, setShowEditor] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
   const [sortOption, setSortOption] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [showOldEvents, setShowOldEvents] = useState(false); // State for showing old events
+  const [showOldEvents, setShowOldEvents] = useState(false); 
 
-  console.log("Kloko Events: My Events", events);
+  console.log("Kloko Events: My Events", myEvents);
 
   const handleAdd = () => {
     setEditItemId(null);
@@ -40,7 +40,7 @@ const KlokoMyEvents = () => {
     }
   };
 
-  const sortedEvents = events.sort((a, b) => {
+  const sortedEvents = myEvents.sort((a, b) => {
     const compareValue = sortOrder === "asc" ? 1 : -1;
 
     if (sortOption === "title") {
@@ -51,7 +51,6 @@ const KlokoMyEvents = () => {
     return 0;
   });
 
-  // Filter events based on the showOldEvents state
   const filteredEvents = sortedEvents.filter(event => 
     showOldEvents || new Date(event.end_time) >= new Date()
   );

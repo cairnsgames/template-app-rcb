@@ -1,19 +1,17 @@
-
-import { useContext } from "react";
-import { KlokoEventContext } from "./klokoeventprovider";
+import { useContext } from 'react';
+import { KlokoEventsContext } from './klokoeventsprovider';
 
 export const useEvents = () => {
   // get the context
-  const context = useContext(KlokoEventContext);
+  const context = useContext(KlokoEventsContext);
 
   // if `undefined`, throw an error
   if (!context) {
     throw new Error("useEvents was used outside of its Provider");
   }
 
-  const { events, upcomingEvents, createEvent, fetchEvents, fetchEventById, updateEvent, deleteEvent } = context;
+  const { events } = context;
 
-  return { events, upcomingEvents, createEvent, fetchEvents, fetchEventById, updateEvent, deleteEvent };
-};
+  return { events };
+}
 
-export default useEvents;

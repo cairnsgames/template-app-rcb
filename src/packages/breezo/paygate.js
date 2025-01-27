@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import PayGateButton from "./paygatebutton";
+import { combineUrlAndPath } from "../../functions/combineurlandpath";
 
 const PayGate = ({ onGetOrder, onPaid }) => {
   if (!onGetOrder) {
@@ -13,6 +14,28 @@ const PayGate = ({ onGetOrder, onPaid }) => {
 
   console.log("==== PAYGATE Button")
 
+  const submitPayment = (payment_id, checksum) => {
+    console.log("==== PAYGATE Button submitPayment", payment_id, checksum);
+    const form = document.createElement("form");
+    form.action = "https://secure.paygate.co.za/payweb3/process.trans";
+    form.method = "POST";
+
+    const input1 = document.createElement("input");
+    input1.type = "hidden";
+    input1.name = "PAY_REQUEST_ID";
+    input1.value = payment_id;
+    form.appendChild(input1);
+
+    const input2 = document.createElement("input");
+    input2.type = "hidden";
+    input2.name = "CHECKSUM";
+    input2.value = checksum;
+    form.appendChild(input2);
+
+    document.body.appendChild(form);
+    form.submit();
+  };
+
   const createOrder = async (data, actions) => {
     console.log("==== PAYGATE Button createOrder", data, actions)
     try {
@@ -20,17 +43,11 @@ const PayGate = ({ onGetOrder, onPaid }) => {
       const order = await onGetOrder();
       const orderId = order.id;
       const totalPrice = order.total_price;
-      const response = await fetch(
-        "http://localhost/cairnsgames/php/paypal/create.php",
+      const response = await fetch(combineUrlAndPath(process.env.REACT_APP_PAYWEB3_API,"initiate.php?order_id=" + orderId),
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: new URLSearchParams({
-            order_id: orderId,
-            total_price: totalPrice,
-          }),
         }
       );
 
@@ -38,15 +55,16 @@ const PayGate = ({ onGetOrder, onPaid }) => {
         throw new Error("Network response was not ok.");
       }
 
-      console.log("==== PAYGATE Button response", response)
+      const result = await response.json();
 
-      const { eccode, paymentid, error } = await response.json();
+      const { payment_id, checksum } = result;
 
-      if (error) {
-        throw new Error(error);
-      }
+      console.log("==== PAYGATE (PayWeb3) Button response", result)
 
-      return eccode; // Return the eccode to the PAYGATE Buttons component
+      // Call this function after retrieving payment_id and checksum
+      submitPayment(payment_id, checksum);
+
+      return checksum; // Return the eccode to the PAYGATE Buttons component
     } catch (error) {
       console.error("Error creating PAYGATE order:", error);
       // Handle error state in your component if needed

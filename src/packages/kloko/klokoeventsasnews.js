@@ -8,7 +8,7 @@ const EventDisplay = ({ item, onClick, layout }) => {
 };
 
 export const EventItems = ({ count, layout, onClick }) => {
-  const { upcomingEvents: events } = useEvents(); 
+  const { events } = useEvents(); 
   console.log("Upcoming Events", events);
   const items = events.filter(ev => ev.show_as_news === "Y").slice(0, count);
   
@@ -23,10 +23,9 @@ export const EventItems = ({ count, layout, onClick }) => {
 }
 
 const Events = ({ layout = "default", items = 99999 }) => {
-  const { eventItems } = useEvents(); // Fetching events from context
 
   const handleItemClick = (id) => {
-    window.location.hash = `#events/${id}`; // Adjusting the hash for events
+    window.location.hash = `#events/${id}`; 
   };
 
   return (

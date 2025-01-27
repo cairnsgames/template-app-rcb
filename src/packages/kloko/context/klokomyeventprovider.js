@@ -3,14 +3,14 @@ import eventing from "../../eventing/eventing";
 import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 
 // Create context for Calendar, Event, Booking, and Template management
-export const KlokoEventContext = createContext();
+export const KlokoMyEventContext = createContext();
 /* An event has the following fields (Keep this comment)
 // 'id', 'calendar_id', 'user_id', 'event_template_id', 'content_id', 'app_id', 'title', 'description', 'price', 'image', 'keywords', 'event_type', 'duration', 'location', 'lat', 'lng', 'max_participants', 'start_time', 'end_time'
 // where image is a file path - usung the file uploader to create.
 */
 
 // Data provider component
-export const KlokoEventProvider = ({
+export const KlokoMyEventProvider = ({
   children,
   user,
   tenant,
@@ -19,7 +19,7 @@ export const KlokoEventProvider = ({
   useSettings,
 }) => {
   const [calendars, setCalendars] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [myEvents, setMyEvents] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [userBookings, setUserBookings] = useState([]); // New state for user bookings
   const [templates, setTemplates] = useState([]);
@@ -52,7 +52,7 @@ export const KlokoEventProvider = ({
 
   useEffect(() => {
     if (activeCalendar) {
-      fetchEvents(activeCalendar);
+      fetchMyEvents(activeCalendar);
     }
   }, [activeCalendar]);
 
@@ -106,7 +106,7 @@ export const KlokoEventProvider = ({
   };
 
   // Fetch events
-  const fetchEvents = async (calendarId = activeCalendar.id) => {
+  const fetchMyEvents = async (calendarId = activeCalendar.id) => {
     setLoading(true);
     fetch(
       combineUrlAndPath(
@@ -117,7 +117,7 @@ export const KlokoEventProvider = ({
     )
       .then((response) => response.json())
       .then((data) => {
-        setEvents(data);
+        setMyEvents(data);
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
@@ -129,7 +129,7 @@ export const KlokoEventProvider = ({
 
   // Fetch event by ID
   const fetchEventById = (id) => {
-    return events.find(event => event.id === id) || null; // Search for the event by ID
+    return myEvents.find(event => event.id === id) || null; // Search for the event by ID
   };
 
   // Fetch bookings
@@ -260,7 +260,7 @@ export const KlokoEventProvider = ({
         event.end = event.end_time;
         return event;
       });
-      setEvents((prev) => [...prev, ...newEvent]);
+      setMyEvents((prev) => [...prev, ...newEvent]);
       setLoading(false);
       return [newEvent];
     } catch (error) {
@@ -285,7 +285,7 @@ export const KlokoEventProvider = ({
         }
       );
       const updatedEvent = await response.json();
-      setEvents((prev) =>
+      setMyEvents((prev) =>
         prev.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
       );
       setLoading(false);
@@ -307,7 +307,7 @@ export const KlokoEventProvider = ({
         ),
         { method: "DELETE", headers }
       );
-      setEvents((prev) => prev.filter((e) => e.id != eventId));
+      setMyEvents((prev) => prev.filter((e) => e.id != eventId));
       setLoading(false);
     } catch (error) {
       console.error("Error deleting event:", error);
@@ -316,6 +316,7 @@ export const KlokoEventProvider = ({
   };
 
   const createBooking = async (booking) => {
+    console.log("Creating booking", booking);
     setLoading(true);
     try {
       const response = await fetch(
@@ -513,12 +514,12 @@ export const KlokoEventProvider = ({
 
   // Computed variable for tickets
   const tickets = userBookings.filter((booking) => booking.status === "paid");
-  const upcomingEvents = events.filter(ev => new Date(ev.end_time) > new Date());
+  const upcomingEvents = myEvents.filter(ev => new Date(ev.end_time) > new Date());
 
   const values = useMemo(
     () => ({
       calendars,
-      events,
+      myEvents,
       bookings,
       userBookings, 
       tickets, 
@@ -535,7 +536,7 @@ export const KlokoEventProvider = ({
       createEvent,
       updateEvent,
       deleteEvent,
-      fetchEvents,
+      fetchMyEvents,
       fetchEventById,
       createBooking,
       updateBooking,
@@ -549,7 +550,7 @@ export const KlokoEventProvider = ({
     }),
     [
       calendars,
-      events,
+      myEvents,
       bookings,
       userBookings, // Add userBookings to dependencies
       tickets, // Add tickets to dependencies
@@ -562,9 +563,9 @@ export const KlokoEventProvider = ({
   );
 
   return (
-    <KlokoEventContext.Provider value={values}>{children}</KlokoEventContext.Provider>
+    <KlokoMyEventContext.Provider value={values}>{children}</KlokoMyEventContext.Provider>
   );
 };
 
 // Custom hook for using the DataContext
-export default KlokoEventProvider;
+export default KlokoMyEventProvider;

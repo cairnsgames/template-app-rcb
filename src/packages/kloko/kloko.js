@@ -14,7 +14,7 @@ import {
 
 import "./kloko.scss";
 import EventDetailsModal from "./eventdetailsmodal";
-import useEvents from "./context/useevents";
+import useMyEvents from "./context/usemyevents";
 import KlokoSearch from "./klokosearch";
 
 function addMinutes(dateString, mins = 90) {
@@ -42,7 +42,7 @@ const Calendar = (props) => {
   const [duration, setDuration] = useState(60);
   const [showDetails, setShowDetails] = useState(false);
   const [newEvents, setNewEvents] = useState([]);
-  const { events, deleteEvent } = useEvents();
+  const { myEvents, deleteEvent } = useMyEvents();
   const [nevents, setEvents] = useState([]);
 
   const setView = (event) => {
@@ -83,8 +83,8 @@ const Calendar = (props) => {
     ]);
   };
   const handleEventClick = (arg) => {};
-  const saveEvents = (eventsToAdd) => {
-    setEvents([...events, ...eventsToAdd]);
+  const saveEvents = (myEventsToAdd) => {
+    setEvents([...myEvents, ...eventsToAdd]);
     setNewEvents([]);
     setShowDetails(false);
   };
@@ -124,7 +124,7 @@ const Calendar = (props) => {
     buttons["Cancel"] = {
       text: "Cancel",
       click: () => {
-        setEvents([...events, ...newEvents]);
+        setEvents([...myEvents, ...newEvents]);
         setNewEvents([]);
       },
     };

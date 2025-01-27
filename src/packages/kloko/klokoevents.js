@@ -9,10 +9,10 @@ import {
 } from "react-bootstrap";
 import EventThumb from "./eventthumb"; // Assuming there's a component for displaying event thumbnails
 import LoadingSpinner from "../../components/spinner/spinner";
-import useEvents from "./context/useevents";
+import useMyEvents from "./context/usemyevents";
 
 const KlokoEvents = () => {
-  const { events, fetchEvents, loading } = useEvents();
+  const { myEvents, fetchEvents, loading } = useMyEvents();
   const [sortOption, setSortOption] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
   const [showOldEvents, setShowOldEvents] = useState(false);
@@ -26,7 +26,7 @@ const KlokoEvents = () => {
     }
   };
 
-  const sortedEvents = events.sort((a, b) => {
+  const sortedEvents = myEvents.sort((a, b) => {
     const compareValue = sortOrder === "asc" ? 1 : -1;
 
     if (sortOption === "title") {

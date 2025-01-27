@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 import SelectLocationModal from "../gps/selectlocationmodal";
 import { useTemplates } from "./context/usetemplates";
-import { useEvents } from "./context/useevents";
+import { useMyEvents } from "./context/usemyevents";
 import EventTemplateModal from "./eventtemplatemodal";
 
 const EventDetailsModal = ({ events, onSave, onClose }) => {
@@ -10,7 +10,7 @@ const EventDetailsModal = ({ events, onSave, onClose }) => {
   const [template, setTemplate] = useState(0);
   const [showAddTemplateModal, setShowAddTemplateModal] = useState(false);
   const { templates, addTemplate } = useTemplates();
-  const { createEvent } = useEvents();
+  const { createEvent } = useMyEvents();
 
   const selectPosition = (position) => {
     setDetails({

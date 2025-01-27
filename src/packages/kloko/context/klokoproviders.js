@@ -1,15 +1,18 @@
-import React from 'react';
-import KlokoEventProvider from './klokoeventprovider';
-import KlokoLocationProvider from './klokolocationprovider';
+import React from "react";
+import KlokoMyEventProvider from "./klokomyeventprovider";
+import KlokoLocationProvider from "./klokolocationprovider";
+import { KlokoEventsProvider } from "./klokoeventsprovider";
 
 export const KlokoProviders = ({ children, user, tenant, token }) => {
   return (
     <KlokoLocationProvider user={user} tenant={tenant} token={token}>
-      <KlokoEventProvider user={user} tenant={tenant} token={token}>
-        {children}
-      </KlokoEventProvider>
+      <KlokoEventsProvider user={user} tenant={tenant} token={token}>
+        <KlokoMyEventProvider user={user} tenant={tenant} token={token}>
+          {children}
+        </KlokoMyEventProvider>
+      </KlokoEventsProvider>
     </KlokoLocationProvider>
   );
-}
+};
 
 export default KlokoProviders;

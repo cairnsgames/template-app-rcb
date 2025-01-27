@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Form, Button, InputGroup, Spinner } from "react-bootstrap";
-import useEvents from "./context/useevents";
+import useMyEvents from "./context/usemyevents";
 import useFileLoader from "../content/usefileloader";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { extractFileName } from "../../functions/extractfilename";
@@ -14,7 +14,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
     updateEvent,
     fetchEventById, 
     loading,
-  } = useEvents();
+  } = useMyEvents();
   const { addToast } = useToast();
 
   const [title, setTitle] = useState("");

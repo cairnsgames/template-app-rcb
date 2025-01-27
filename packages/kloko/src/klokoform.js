@@ -17,7 +17,7 @@ const KlokoForm = ({ onClose }) => {
 
   const handleBooking = (formData) => {
     const { email, firstName, lastName, phoneNumber } = formData;
-    createBooking(email, firstName, lastName, phoneNumber);
+    createBooking({ email, firstName, lastName, phoneNumber });
     setShowBookingForm(false);
   };
 

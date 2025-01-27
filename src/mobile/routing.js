@@ -25,6 +25,9 @@ import PayNowThankYouPage from "../pages/breezo/paynowthankyoupage";
 import Calendar from "../packages/kloko/kloko";
 import KlokoRouting from "../packages/kloko/klokorouting";
 import MagicCodePage from "../pages/auth/magiccodepage";
+import BreezoMyOrders from "../packages/breezo/breezomyorders";
+import BreezoMyOrderDetails from "../packages/breezo/breezomyorderdetails";
+import PageFull from "../parts/pagelayouts/pagefull";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -103,9 +106,18 @@ const Routing = () => {
         <ComingSoon />
       </Route>
       <Route is="orders">
-        <ComingSoon />
+        <PageFull>
+          <BreezoMyOrders />
+        </PageFull>
+      </Route>
+
+      <Route is="orders/{id}">
+          <BreezoMyOrderDetails />
       </Route>
       <Route startsWith="events">
+        <KlokoRouting />
+      </Route>
+      <Route startsWith="myevents">
         <KlokoRouting />
       </Route>
       <Route is="locations">

@@ -1,18 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import useBookings from "./context/usebookings";
 import useSearch from "./context/usesearch";
+import KlokoForm from "./klokoform";
 
 const BookingSection = (props) => {
-  const { createBooking } = useBookings();
-  const { refetchSearch } = useSearch();
+  const { cancelBooking} = useBookings();
   const { event } = props;
+  const [showBookingForm, setShowBookingForm] = useState(false);
 
   const makeBooking = async () => {
-    await createBooking({
-      event_id: event.id,
-    });
-    refetchSearch();
+    setShowBookingForm(true);
   };
   if (event.paid >= 1) {
     return <strong>You have Paid!</strong>;
@@ -24,6 +22,16 @@ const BookingSection = (props) => {
     return <strong>Event is full</strong>;
   }
 
+
+  if (showBookingForm) {
+    return (
+    <KlokoForm
+      onClose={cancelBooking}
+      event={event}
+    />
+  )}
+
+  
   return <Button onClick={makeBooking}>Book now!</Button>;
 };
 

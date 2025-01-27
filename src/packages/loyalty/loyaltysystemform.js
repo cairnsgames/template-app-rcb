@@ -161,7 +161,7 @@ const LoyaltySystemForm = () => {
         <Form.Text>This logo will be displayed on the user's Loyalty Card so make it destinctive so they know it is you!</Form.Text>
         {fileData || imageUrl ? (
           <img
-            src={fileData || `http://localhost/files/${imageUrl}`}
+            src={fileData || combineUrlAndPath(process.env.REACT_APP_FILES,imageUrl)}
             alt="Preview"
             className="img-preview"
           />

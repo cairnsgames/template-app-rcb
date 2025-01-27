@@ -79,6 +79,8 @@
     "react-jwt": "^1.2.1",
     "react-leaflet": "^4.2.1",
     "react-leaflet-cluster": "^2.1.0",
+    "react-qr-reader": "^3.0.0-beta-1",
+    "react-qr-scanner": "^1.0.0-alpha.11",
     "react-qrcode-logo": "^3.0.0",
     "sass": "1.77.6"
   }

@@ -15,6 +15,9 @@ function KlokoRouting() {
         </Route>
         <Route is={"events/myevents"}>
           <KlokoMyEvents />
+        </Route>        
+        <Route is={"myevents"}>
+          <KlokoMyEvents />
         </Route>
         <Route is={"myevents/{id}"} debug={true}>
           <KlokoMyEvents />

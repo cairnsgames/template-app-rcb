@@ -58,7 +58,8 @@ export const BreezoProvider = ({
   }, [user, token]);
 
   useEffect(() => {
-    if (orders.length > 0  && activeOrderId) {
+    console.log("Find Active Order", orders, activeOrderId)
+    if (orders.length > 0 && activeOrderId) {
       const order = orders.find((o) => o.id === Number(activeOrderId));
       setActiveOrder(order);
     } else {
