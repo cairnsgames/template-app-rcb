@@ -14,7 +14,7 @@ jobs:
       
       # Install dependencies and build for JuztDance project
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci -force
 
       - name: Build JuztDance Site
         run: npm run build
