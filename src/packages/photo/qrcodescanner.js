@@ -1,6 +1,6 @@
 import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import QrScanner from "react-qr-scanner";
+import {Scanner} from "@yudiel/react-qr-scanner";
 import { ArrowRepeat } from "react-bootstrap-icons";
 
 const QRCodeScanner = ({ onClose, onQRCode }) => {
@@ -62,11 +62,14 @@ const QRCodeScanner = ({ onClose, onQRCode }) => {
     checkCameraPermissions();
   }, []);
   
-  const handleScan = async (data) => {
-    if (data) {
+  const handleScan = async (scannedData) => {
+    console.log("Handle Scan", scannedData)
+    console.log("Handle Scan [0]", scannedData[0])
+    if (scannedData) {
+      const data = scannedData[0].rawValue;
       console.log("Scanned URL: ", data);
       // const urlParams = new URLSearchParams(data.text.split("?")[1]);
-      const id = await getIdFromUrl(data.text);
+      const id = await getIdFromUrl(data);
       console.log("GET ID FROM URL", id);
       setScannedID(id);
       setIsScanning(false);
@@ -97,7 +100,8 @@ const QRCodeScanner = ({ onClose, onQRCode }) => {
       <Modal.Body>
         {hasCameraPermission ? (
           <>
-            <QrScanner
+            <Scanner
+              delay={300} // Adjust delay as needed
               onError={handleError}
               onScan={handleScan}
               facingMode={cameraFacingMode}

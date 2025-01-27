@@ -58,6 +58,7 @@
     "@tiptap/react": "^2.9.1",
     "@tiptap/starter-kit": "^2.9.1",
     "@uiw/react-markdown-editor": "^6.1.0",
+    "@yudiel/react-qr-scanner": "^2.1.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.4",
     "firebase": "^10.8.1",
@@ -79,8 +80,6 @@
     "react-jwt": "^1.2.1",
     "react-leaflet": "^4.2.1",
     "react-leaflet-cluster": "^2.1.0",
-    "react-qr-reader": "^3.0.0-beta-1",
-    "react-qr-scanner": "^1.0.0-alpha.11",
     "react-qrcode-logo": "^3.0.0",
     "sass": "1.77.6"
   }
