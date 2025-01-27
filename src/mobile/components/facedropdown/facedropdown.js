@@ -22,6 +22,21 @@ const FaceDropdown = () => {
   const { user } = useUser();
   // const { venues } = useAssistant();
 
+  const hardReload = () => {
+    if ('caches' in window) {
+      // Clear all cached assets
+      caches.keys().then((names) => {
+        Promise.all(names.map((name) => caches.delete(name))).then(() => {
+          // Force a reload after cache is cleared
+          window.location.reload(true); // Reload the page
+        });
+      });
+    } else {
+      // If caches are not available, just reload the page
+      window.location.reload(true);
+    }
+  };
+
   return (
     <Dropdown align="end">
       <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
@@ -34,7 +49,7 @@ const FaceDropdown = () => {
         {isLoggedIn && <Dropdown.Item href="#settings">Settings</Dropdown.Item>}
         <Dropdown.Item
           onClick={() => {
-            window.location.reload(true);
+            hardReload(true);
           }}
         >
           RELOAD
