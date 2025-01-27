@@ -7,7 +7,7 @@ const QRCodeScanner = ({ onClose, onQRCode }) => {
   const [scannedID, setScannedID] = useState(null);
   const [isScanning, setIsScanning] = useState(true);
   const [cameraFacingMode, setCameraFacingMode] = useState("environment"); // Default to rear camera
-  const [hasCameraPermission, setHasCameraPermission] = useState(true);
+  const [hasCameraPermission, setHasCameraPermission] = useState(false);
 
   function extractOriginalId(expandedId) {
     if (expandedId.length <= 4) {
