@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import MobileMain from "./mobilemain";
 import useAuth from "../packages/auth/context/useauth";
 import useUser from "../packages/auth/context/useuser";
@@ -12,6 +13,9 @@ const MobileApp = () => {
   const { tenant } = useTenant();
   useTitle("Juzt.Dance");
   useFavicon("/favicons/logo.png");
+
+  useEffect(() => {
+  }, []);
 
   return (
     // <AssistantProvider user={user} token={token} tenant={tenant} >

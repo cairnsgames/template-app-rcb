@@ -5,6 +5,7 @@ import { useCart } from "./context/usecart";
 import { useOrders } from "./context/useorders";
 import { useUser } from "../auth/context/useuser";
 import PayNowButton from "./paynowbutton";
+import PayGate from "./paygate";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 
@@ -23,6 +24,10 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
   const [address, setAddress] = useState("");
   const [useDefaultAddress, setUseDefaultAddress] = useState(true);
   const [paid, setPaid] = useState(false);
+
+  const doPaid = () => {
+    setPaid(true);
+  }
 
   useEffect(() => {
     fetchCarts();
@@ -118,7 +123,9 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
               "Place Order"
             )}
           </Button> */}
-            <PayNowButton onGetOrder={getOrder} onPaid={() => setPaid(true)} />
+            {/* <PayNowButton onGetOrder={getOrder} onPaid={() => setPaid(true)} />            */}
+              
+            <PayGate onGetOrder={getOrder} onPaid={doPaid}  />
           </>
         )}
       </div>

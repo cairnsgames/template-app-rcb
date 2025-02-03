@@ -38,7 +38,6 @@ $card-spacer-x: 0.5rem;
   flex: 1;
   overflow-y: auto;
   padding-bottom: $footer-height; // To prevent overlap with footer
-  background-color: #e9ecef;
   margin-top: calc(#{$header-height} + #{$icon-bar-height}); // Start below both header and icon bar
 }
 

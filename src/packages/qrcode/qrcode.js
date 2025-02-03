@@ -13,6 +13,7 @@ const QRCode = ({
   color = Colors.primary,
   className = "",
   type = 1,
+  code = true,
   ...props
 }) => {
   const copyToClipboard = (text) => {
@@ -21,22 +22,24 @@ const QRCode = ({
   const fullLink = `${link}&t=${type}`;
   return (
     <div {...props} className={`qrcodecontainer ${className}`}>
-      <div className="shake">
-      <QRCodeLogo
-        size={size}
-        value={`${link}`}
-        fgColor={color}
-        ecLevel="H"
-        logoImage={logoImage}
-        removeQrCodeBehindLogo={true}
-        logoPadding={logoPadding}
-        logoWidth={logoWidth}
-        logoPaddingStyle="circle" // square
-        // qrStyle="dots"
-        className="qrcode"
-        quietZone={2}
-      />
-      </div>
+      {code && (
+        <div className="shake">
+          <QRCodeLogo
+            size={size}
+            value={`${link}`}
+            fgColor={color}
+            ecLevel="H"
+            logoImage={logoImage}
+            removeQrCodeBehindLogo={true}
+            logoPadding={logoPadding}
+            logoWidth={logoWidth}
+            logoPaddingStyle="circle" // square
+            // qrStyle="dots"
+            className="qrcode"
+            quietZone={2}
+          />
+        </div>
+      )}
       {allowCopyToClipboard && (
         <>
           <p />
