@@ -1,12 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import FloatingCard from "../components/react-bootstrap-mobile/floatingcard";
-import Ticket from "../components/react-bootstrap-mobile/ticket";
-import QRCode from "../packages/qrcode/qrcode";
-import { NewsItems } from "../packages/news/news";
-import { EventItems } from "../packages/kloko/klokoeventsasnews";
+import { useNews } from "../packages/news/context/newscontext";
+import { useEvents } from "../packages/kloko/context/useevents";
+import { combineUrlAndPath } from "../functions/combineurlandpath";
+import TilesLayout from "../packages/layout/Tiles";
+import TileList from "../packages/layout/TileList";
+import PartnerCard from "./partnercard";
 
 const Home = () => {
+  const { newsItems } = useNews();
+
+  const { events } = useEvents();
+
+  const [newsCards, setNewsCards] = useState([]);
+
+  useEffect(() => {
+    if (newsItems.length > 0) {
+      setNewsCards([]);
+    }
+    if (newsItems) {
+      setNewsCards(newsAsCards(newsItems));
+    }
+  }, [newsItems]);
+
+  const newsAsCards = (news) => {
+    console.log("NEWS", news);
+    return news.map((item) => {
+      return {
+        id: item.id,
+        image: combineUrlAndPath(process.env.REACT_APP_FILES, item.image_url),
+        title: item.title,
+        description: item.description,
+        footer: item.date,
+        overlayText: item.overlayText,
+      };
+    });
+  };
+
+  const eventsAsCards = (events) => {
+    return events.map((event) => {
+      return {
+        id: event.id,
+        image: combineUrlAndPath(process.env.REACT_APP_FILES, event.image),
+        title: event.title,
+        description: event.description,
+        footer: event.date,
+        overlayText: event.overlayText,
+      };
+    });
+  };
+
   const showNews = (item) => {
     console.log("Show News", item);
     window.location.hash = `#news/${item}`;
@@ -15,6 +59,20 @@ const Home = () => {
     console.log("Show Event", item);
     window.location.hash = `#events/${item}`;
   };
+
+  console.log("newsAsCards", newsCards);
+
+  return (
+    <Container fluid className="px-3">
+      <TilesLayout>
+        <TileList images={newsCards} />
+        <TileList images={eventsAsCards(events)} />
+        
+        <PartnerCard />
+      </TilesLayout>
+    </Container>
+  );
+
   return (
     <Container fluid className="px-2">
       <Row>

@@ -25,6 +25,7 @@ export const NewsItems = ({ count, layout, onClick }) => {
   
   const { newsItems } = useNews();
   const items = newsItems.slice(0, count);
+  
   return (
     <>
       {items.map((item) => {

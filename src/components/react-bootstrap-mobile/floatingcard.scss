@@ -7,6 +7,7 @@
   opacity: 1;
   transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
   cursor: pointer; /* Indicate that card is clickable */
+  max-height: 50vh;
   
   &:hover {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); /* Even darker shadow on hover */
@@ -23,8 +24,11 @@
   &-image {
     position: relative;
     width: 100%;
-    height: 200px;
-    background-size: cover;
+    height: 400px;
+    max-height: 50vh;
+    max-width: 80vw;
+    background: no-repeat;
+    background-size: contain;
     background-position: center;
   }
 

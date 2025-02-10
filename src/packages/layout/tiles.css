@@ -1,0 +1,37 @@
+/* Tiles Layout */
+.tiles {
+  column-gap: 1rem;
+}
+
+/* Prevent tile content from breaking across columns */
+.tile-wrapper .card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Add text shadow for better readability */
+.card-img-overlay .text-white {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 575.98px) { /* Extra small devices */
+  .tiles {
+    column-count: 1;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) { /* Medium devices */
+  .tiles {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 992px) { /* Large devices */
+  .tiles {
+    column-count: 3;
+  }
+}
