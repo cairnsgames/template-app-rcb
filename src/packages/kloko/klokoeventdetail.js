@@ -29,7 +29,7 @@ const KlokoEventDetail = ({ id }) => {
         <Card.Img
           variant="top"
           src={combineUrlAndPath(process.env.REACT_APP_FILES, event.image)}
-          style={{ height: "100%", width: "100%" }}
+          style={{ height: "100%", width: "100%", maxHeight: "50vh", objectFit: 'contain' }}
         />
         <Card.Body>
           <Card.Title>{event.title}</Card.Title>

@@ -53,11 +53,11 @@ const Home = () => {
 
   const showNews = (item) => {
     console.log("Show News", item);
-    window.location.hash = `#news/${item}`;
+    window.location.hash = `#news/${item.id}`;
   };
   const showEvent = (item) => {
     console.log("Show Event", item);
-    window.location.hash = `#events/${item}`;
+    window.location.hash = `#events/${item.id}`;
   };
 
   console.log("newsAsCards", newsCards);
@@ -65,8 +65,8 @@ const Home = () => {
   return (
     <Container fluid className="px-3">
       <TilesLayout>
-        <TileList images={newsCards} />
-        <TileList images={eventsAsCards(events)} />
+        <TileList images={newsCards} onClick={showNews} />
+        <TileList images={eventsAsCards(events)} onClick={showEvent} />
         
         <PartnerCard />
       </TilesLayout>

@@ -20,7 +20,8 @@ const FullNewsItem = ({ id }) => {
   return (
     <div className="full-news-item">
       {item.image_url && (
-        <img src={combineUrlAndPath(process.env.REACT_APP_FILES,`${item.image_url}`)} alt={item.title} className="full-news-image" />
+        <img src={combineUrlAndPath(process.env.REACT_APP_FILES,`${item.image_url}`)} alt={item.title} className="full-news-image" 
+        style={{maxHeight: "70vh", objectFit: 'contain' }}/>
       )}
       <h2>
         <HighlightText text={item.title} />

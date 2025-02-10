@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-const Tile = ({ data }) => {
+const Tile = ({ data, onClick }) => {
   const { title, image, description, price, overlayText = true } = data;
 
   const placeholderImage = (
@@ -11,7 +11,7 @@ const Tile = ({ data }) => {
 
   return (
     <div className="tile-wrapper mb-4">
-      <Card className="">
+      <Card className="" onClick={()=>onClick(data)}>
         {image ? (
           <Card.Img variant="top" src={image} alt={title} />
         ) : (
