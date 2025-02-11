@@ -12,6 +12,9 @@ const KlokoForm = ({ onClose, event }) => {
     email: undefined,
   });
 
+  const {activeEvent } = useEvents();
+  console.log("ACTVIE EVENT", activeEvent);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));

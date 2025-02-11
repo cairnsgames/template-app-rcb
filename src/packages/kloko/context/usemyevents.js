@@ -1,4 +1,3 @@
-
 import { useContext } from "react";
 import { KlokoMyEventContext } from "./klokomyeventprovider";
 
@@ -11,9 +10,33 @@ export const useMyEvents = () => {
     throw new Error("useEvents was used outside of its Provider");
   }
 
-  const { myEvents, upcomingEvents, createEvent, fetchEvents, fetchEventById, updateEvent, deleteEvent } = context;
+  const {
+    myEvents,
+    upcomingEvents,
+    createEvent,
+    fetchEvents,
+    fetchEventById,
+    updateEvent,
+    deleteEvent,
+    setEventId,
+    activeEvent,
+    ticketTypes,
+    ticketOptions,
+  } = context;
 
-  return { myEvents, upcomingEvents, createEvent, fetchEvents, fetchEventById, updateEvent, deleteEvent };
+  return {
+    myEvents,
+    upcomingEvents,
+    createEvent,
+    fetchEvents,
+    fetchEventById,
+    updateEvent,
+    deleteEvent,
+    setEventId,
+    activeEvent,
+    ticketTypes,
+    ticketOptions,
+  };
 };
 
 export default useMyEvents;

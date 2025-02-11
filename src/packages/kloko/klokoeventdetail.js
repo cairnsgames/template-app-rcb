@@ -6,16 +6,15 @@ import { formatEventDate, formatPrice } from "./eventfunctions";
 import BookingSection from "./klokobookingsection";
 
 const KlokoEventDetail = ({ id }) => {
-  const { myEvents } = useMyEvents();
-
-  const [event, setEvent] = useState();
-
+  const { activeEvent, setEventId } = useMyEvents();
+  
   useEffect(() => {
-    const ev = myEvents.find((event) => event.id === Number(id));
-    setEvent(ev);
-  }, [myEvents, id]);
+    if (id) {
+      setEventId(id);
+    }
+  }, [id]);
 
-  if (!event) {
+  if (!activeEvent) {
     return (
       <div>
         <Spinner />
@@ -23,28 +22,30 @@ const KlokoEventDetail = ({ id }) => {
     );
   }
 
+  console.log("Active event", activeEvent);
   return (
     <>
       <Card className="news-item">
         <Card.Img
           variant="top"
-          src={combineUrlAndPath(process.env.REACT_APP_FILES, event.image)}
+          src={combineUrlAndPath(process.env.REACT_APP_FILES, activeEvent.image)}
           style={{ height: "100%", width: "100%", maxHeight: "50vh", objectFit: 'contain' }}
         />
         <Card.Body>
-          <Card.Title>{event.title}</Card.Title>
-          {event.description}
-          <div>Price: {formatPrice(event.currency, event.price)}</div>
+          EVENT DETAIL
+          <Card.Title>{activeEvent.title}</Card.Title>
+          {activeEvent.description}
+          <div>Price: {formatPrice(activeEvent.currency, activeEvent.price)}</div>
         </Card.Body>
         <Card.Footer>
           <small className="text-muted">
-            {formatEventDate(event.start_time, event.end_time)}
+            {formatEventDate(activeEvent.start_time, activeEvent.end_time)}
           </small>
         </Card.Footer>
 
-        {event.enable_bookings && (
+        {activeEvent.enable_bookings && (
           <Card.Footer>
-            <BookingSection event={event} />
+            <BookingSection event={activeEvent} />
           </Card.Footer>
         )}
       </Card>
