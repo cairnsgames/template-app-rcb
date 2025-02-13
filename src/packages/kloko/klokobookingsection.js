@@ -84,6 +84,7 @@ const BookingSection = (props) => {
       // Add ticket type or event price
       if (ticketTypes?.length > 0) {
         const selectedType = ticketTypes.find(t => t.id === selectedTicketType);
+        console.log("Selected type", selectedType);
         if (selectedType) {
           await addItemToCart({
             item_type_id: 3,
