@@ -269,6 +269,78 @@ export const BreezoProvider = ({
     }
   };
 
+  const fetchOrCreateCart = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_BREEZO_API,
+          `api.php/user/${user.id}/cart`
+        ),
+        {
+          headers: {
+            ...headers,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+
+      if (data && data.length > 0) {
+        setCarts(data);
+        return data[0];
+      } else {
+        const createResponse = await fetch(
+          combineUrlAndPath(process.env.REACT_APP_BREEZO_API, "api.php/cart"),
+          {
+            method: "POST",
+            headers: {
+              ...headers,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userid: user.id }),
+          }
+        );
+        const newCart = await createResponse.json();
+        const cartData = Array.isArray(newCart) && newCart.length > 0 ? newCart[0] : newCart;
+        setCarts([cartData]);
+        return cartData;
+      }
+    } catch (error) {
+      console.error("Error fetching/creating cart:", error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addItemToCart = async (cartId, itemData) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        combineUrlAndPath(process.env.REACT_APP_BREEZO_API, "api.php/cart_item"),
+        {
+          method: "POST",
+          headers: {
+            ...headers,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cart_id: cartId,
+            ...itemData,
+          }),
+        }
+      );
+      await fetchCartItems();
+      return response.json();
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Create, Update, Delete functions can be added similarly
   const createOrderFromCart = async (cartId) => {
     // Create order from cart
@@ -307,7 +379,9 @@ export const BreezoProvider = ({
       deleteItem,
       setActiveOrderId,
       createOrderFromCart,
-      orderPaid
+      orderPaid,
+      fetchOrCreateCart,
+      addItemToCart
     }),
     [
       carts,

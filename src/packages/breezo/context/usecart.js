@@ -10,9 +10,9 @@ export const useCart = () => {
     throw new Error("useCart was used outside of its Provider");
   }
 
-  const { carts, cartItems, fetchCarts, loading, deleteItem } = context;
+  const { carts, cartItems, fetchCarts, loading, deleteItem, fetchOrCreateCart, addItemToCart } = context;
 
-  return { carts, cartItems, fetchCarts, loading, deleteItem };
+  return { carts, cartItems, fetchCarts, loading, deleteItem, fetchOrCreateCart, addItemToCart };
 };
 
 export default useCart;

@@ -5,12 +5,14 @@ import useMyEvents from "./context/usemyevents";
 import useUser from "../auth/context/useuser";
 import eventing from "../eventing/eventing";
 import useTenant from "../tenant/context/usetenant";
+import useCart from "../breezo/context/usecart";
 
 const BookingSection = (props) => {
   const { cancelBooking } = useBookings();
-  const { user, token } = useUser();
+  const { user } = useUser();
   const { tenant } = useTenant();
   const { ticketTypes, ticketOptions } = useMyEvents();
+  const { fetchOrCreateCart, addItemToCart } = useCart();
   const [cart, setCart] = useState(null);
   const { event } = props;
   const [quantity, setQuantity] = useState(1);
@@ -19,8 +21,6 @@ const BookingSection = (props) => {
   );
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const headers = { APP_ID: tenant, token: token };
-
   useEffect(() => {
     if (ticketTypes?.length > 0 && !selectedTicketType) {
       setSelectedTicketType(ticketTypes[0].id);
@@ -28,50 +28,15 @@ const BookingSection = (props) => {
   }, [ticketTypes]);
 
   useEffect(() => {
-    const fetchOrCreateCart = async () => {
-      try {
-        // Try to fetch existing cart
-        const response = await fetch(
-          `https://cairnsgames.co.za/php/breezo/api.php/user/${user.id}/cart`,
-          {
-            headers: {
-              ...headers,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await response.json();
-
-        if (data && data.length > 0) {
-          setCart(data[0]);
-        } else {
-          // Create new cart if none exists
-          const createResponse = await fetch(
-            "https://cairnsgames.co.za/php/breezo/api.php/cart",
-            {
-              method: "POST",
-              headers: {
-                ...headers, 
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ userid: user.id }),
-            }
-          );
-          const newCart = await createResponse.json();
-          if (Array.isArray(newCart) && newCart.length > 0) {
-            setCart(newCart[0]);
-          } else {
-          setCart(newCart);}
-        }
-      } catch (error) {
-        console.error("Error fetching/creating cart:", error);
+    const initCart = async () => {
+      if (user?.id) {
+        const cartData = await fetchOrCreateCart();
+        setCart(cartData);
       }
     };
 
-    if (user?.id) {
-      fetchOrCreateCart();
-    }
-  }, [user]);
+    initCart();
+  }, [user, fetchOrCreateCart]);
 
   if (event.paid >= 1) {
     return <strong>You have Paid!</strong>;
@@ -88,21 +53,6 @@ const BookingSection = (props) => {
     if (!cart?.id) { console.log("No Cart"); return;}
 
     try {
-      const addItemToCart = async (itemData) => {
-        console.log("Add item to cart", itemData);
-        await fetch("https://cairnsgames.co.za/php/breezo/api.php/cart_item", {
-          method: "POST",
-          headers: {
-            ...headers,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            cart_id: cart.id,
-            ...itemData,
-          }),
-        });
-      };
-
       // Add ticket type or event price
       if (ticketTypes?.length > 0) {
         const selectedType = ticketTypes.find(
@@ -110,7 +60,7 @@ const BookingSection = (props) => {
         );
         console.log("Selected type", selectedType);
         if (selectedType) {
-          await addItemToCart({
+          await addItemToCart(cart.id, {
             parent_id: event.id,
             item_type_id: 3,
             item_id: selectedType.id,
@@ -121,7 +71,7 @@ const BookingSection = (props) => {
           });
         }
       } else {
-        await addItemToCart({
+        await addItemToCart(cart.id, {
           parent_id: event.id,
           item_type_id: 1,
           item_id: event.id,
@@ -136,7 +86,7 @@ const BookingSection = (props) => {
       for (const optionId of selectedOptions) {
         const option = ticketOptions.find((opt) => opt.id === optionId);
         if (option) {
-          await addItemToCart({
+          await addItemToCart(cart.id, {
             parent_id: event.id,
             item_type_id: 4,
             item_id: option.id,
