@@ -4,16 +4,22 @@ import useBookings from "./context/usebookings";
 import useMyEvents from "./context/usemyevents";
 import useUser from "../auth/context/useuser";
 import eventing from "../eventing/eventing";
+import useTenant from "../tenant/context/usetenant";
 
 const BookingSection = (props) => {
   const { cancelBooking } = useBookings();
-  const { user } = useUser();
+  const { user, token } = useUser();
+  const { tenant } = useTenant();
   const { ticketTypes, ticketOptions } = useMyEvents();
   const [cart, setCart] = useState(null);
   const { event } = props;
   const [quantity, setQuantity] = useState(1);
-  const [selectedTicketType, setSelectedTicketType] = useState(ticketTypes?.length > 0 ? ticketTypes[0].id : null);
+  const [selectedTicketType, setSelectedTicketType] = useState(
+    ticketTypes?.length > 0 ? ticketTypes[0].id : null
+  );
   const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const headers = { APP_ID: tenant, token: token };
 
   useEffect(() => {
     if (ticketTypes?.length > 0 && !selectedTicketType) {
@@ -25,25 +31,40 @@ const BookingSection = (props) => {
     const fetchOrCreateCart = async () => {
       try {
         // Try to fetch existing cart
-        const response = await fetch(`https://cairnsgames.co.za/php/breezo/api.php/user/${user.id}/cart`);
+        const response = await fetch(
+          `https://cairnsgames.co.za/php/breezo/api.php/user/${user.id}/cart`,
+          {
+            headers: {
+              ...headers,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         const data = await response.json();
-        
+
         if (data && data.length > 0) {
           setCart(data[0]);
         } else {
           // Create new cart if none exists
-          const createResponse = await fetch('https://cairnsgames.co.za/php/breezo/api.php/cart', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userid: user.id }),
-          });
+          const createResponse = await fetch(
+            "https://cairnsgames.co.za/php/breezo/api.php/cart",
+            {
+              method: "POST",
+              headers: {
+                ...headers, 
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ userid: user.id }),
+            }
+          );
           const newCart = await createResponse.json();
-          setCart(newCart);
+          if (Array.isArray(newCart) && newCart.length > 0) {
+            setCart(newCart[0]);
+          } else {
+          setCart(newCart);}
         }
       } catch (error) {
-        console.error('Error fetching/creating cart:', error);
+        console.error("Error fetching/creating cart:", error);
       }
     };
 
@@ -63,30 +84,34 @@ const BookingSection = (props) => {
   }
 
   const handleAddToCart = async () => {
-    console.log("Adding to cart", cart)
-    if (!cart?.id) return;
+    console.log("Adding to cart", cart);
+    if (!cart?.id) { console.log("No Cart"); return;}
 
     try {
       const addItemToCart = async (itemData) => {
         console.log("Add item to cart", itemData);
-        await fetch('https://cairnsgames.co.za/php/breezo/api.php/cart_item', {
-          method: 'POST',
+        await fetch("https://cairnsgames.co.za/php/breezo/api.php/cart_item", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            ...headers,
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             cart_id: cart.id,
-            ...itemData
+            ...itemData,
           }),
         });
       };
 
       // Add ticket type or event price
       if (ticketTypes?.length > 0) {
-        const selectedType = ticketTypes.find(t => t.id === selectedTicketType);
+        const selectedType = ticketTypes.find(
+          (t) => t.id === selectedTicketType
+        );
         console.log("Selected type", selectedType);
         if (selectedType) {
           await addItemToCart({
+            parent_id: event.id,
             item_type_id: 3,
             item_id: selectedType.id,
             title: event.title,
@@ -97,6 +122,7 @@ const BookingSection = (props) => {
         }
       } else {
         await addItemToCart({
+          parent_id: event.id,
           item_type_id: 1,
           item_id: event.id,
           title: event.title,
@@ -108,9 +134,10 @@ const BookingSection = (props) => {
 
       // Add selected options
       for (const optionId of selectedOptions) {
-        const option = ticketOptions.find(opt => opt.id === optionId);
+        const option = ticketOptions.find((opt) => opt.id === optionId);
         if (option) {
           await addItemToCart({
+            parent_id: event.id,
             item_type_id: 4,
             item_id: option.id,
             title: event.title,
@@ -122,17 +149,17 @@ const BookingSection = (props) => {
       }
 
       // Could trigger a cart refresh or show success message here
-      
+
       eventing.publish("breezo", "reload", cart);
     } catch (error) {
-      console.error('Error adding items to cart:', error);
+      console.error("Error adding items to cart:", error);
     }
   };
 
   const handleOptionChange = (optionId) => {
-    setSelectedOptions(prev => {
+    setSelectedOptions((prev) => {
       if (prev.includes(optionId)) {
-        return prev.filter(id => id !== optionId);
+        return prev.filter((id) => id !== optionId);
       }
       return [...prev, optionId];
     });
@@ -174,7 +201,9 @@ const BookingSection = (props) => {
             value={quantity}
             onChange={(e) => setQuantity(parseInt(e.target.value))}
           />
-          <Form.Text>Price: {event.currency} {event.price}</Form.Text>
+          <Form.Text>
+            Price: {event.currency} {event.price}
+          </Form.Text>
         </Form.Group>
       )}
 
@@ -196,19 +225,37 @@ const BookingSection = (props) => {
 
       <div className="d-flex align-items-center justify-content-end gap-3">
         <div>
-          Total: {ticketTypes?.length > 0 
-            ? `${ticketTypes.find(t => t.id === selectedTicketType)?.currency} ${
-                ((ticketTypes.find(t => t.id === selectedTicketType)?.price || 0) + 
-                selectedOptions.reduce((sum, optId) => 
-                  sum + (ticketOptions.find(opt => opt.id === optId)?.price || 0), 0)) * quantity
+          Total:{" "}
+          {ticketTypes?.length > 0
+            ? `${
+                ticketTypes.find((t) => t.id === selectedTicketType)?.currency
+              } ${
+                ((ticketTypes.find((t) => t.id === selectedTicketType)?.price ||
+                  0) +
+                  selectedOptions.reduce(
+                    (sum, optId) =>
+                      sum +
+                      (ticketOptions.find((opt) => opt.id === optId)?.price ||
+                        0),
+                    0
+                  )) *
+                quantity
               }`
-            : `${event.currency} ${(event.price + 
-                selectedOptions.reduce((sum, optId) => 
-                  sum + (ticketOptions.find(opt => opt.id === optId)?.price || 0), 0)) * quantity
-              }`
-          }
+            : `${event.currency} ${
+                (event.price +
+                  selectedOptions.reduce(
+                    (sum, optId) =>
+                      sum +
+                      (ticketOptions.find((opt) => opt.id === optId)?.price ||
+                        0),
+                    0
+                  )) *
+                quantity
+              }`}
         </div>
-        <Button variant="primary" onClick={handleAddToCart}>Add to Cart</Button>
+        <Button variant="primary" onClick={handleAddToCart}>
+          Add to Cart
+        </Button>
       </div>
     </Form>
   );
