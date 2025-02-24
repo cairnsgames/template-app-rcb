@@ -33,7 +33,7 @@ export const KlokoMyEventProvider = ({
   const [headers, setHeaders] = useState({});
   const [canFetch, setCanFetch] = useState(false);
   const [setsearchCriteria, setSearchCriteria] = useState({});
-
+  const [tickets, setTickets] = useState([]);
 
   if (!process.env.REACT_APP_KLOKO_API) {
     throw new Error(
@@ -45,6 +45,32 @@ export const KlokoMyEventProvider = ({
     setHeaders({ APP_ID: tenant, token: token });
     setCanFetch(!!user && !!tenant && token !== "");
   }, [user, tenant, token]);
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchTickets();
+    }
+  }, [user?.id]);
+
+  const fetchTickets = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        combineUrlAndPath(process.env.REACT_APP_KLOKO_API, "api.php/usertickets"),
+        {
+          method: "POST",
+          headers: { ...headers, "Content-Type": "application/json" },
+          body: JSON.stringify({ user: user.id }),
+        }
+      );
+      const data = await response.json();
+      console.log("TICKETS", data);
+      setTickets(data);
+    } catch (error) {
+      console.error("Error fetching tickets:", error);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (canFetch) {
@@ -587,14 +613,13 @@ export const KlokoMyEventProvider = ({
     randomEventListing(-26.06, 27.9, "Salsa", "2024-07-21", "2024-07-21");
   }, [user, token]);
 
-  // Computed variable for tickets
-  const tickets = userBookings.filter((booking) => booking.status === "paid");
   const upcomingEvents = myEvents.filter(ev => new Date(ev.end_time) > new Date());
 
   const values = useMemo(
     () => ({
       calendars,
       myEvents,
+      tickets,
       eventId, setEventId,
       bookings,
       userBookings, 
@@ -630,7 +655,7 @@ export const KlokoMyEventProvider = ({
       myEvents,
       bookings,
       userBookings, // Add userBookings to dependencies
-      tickets, // Add tickets to dependencies
+      tickets,
       templates,
       activeCalendar,
       activeEvent,

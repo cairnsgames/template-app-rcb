@@ -51,7 +51,7 @@ const BreezoCart = (props) => {
               {cartItems.map((item, index) => (
                 <ListGroup.Item key={index}>
                   <div>
-                    {item.title} - R {Number(item.price).toFixed(2)}
+                    {item.quantity} x {item.title} - R {Number(item.price).toFixed(2)}
                     <Button variant="outline-primary" className="float-end">
                       <TrashFill
                         onClick={() => {
@@ -60,7 +60,7 @@ const BreezoCart = (props) => {
                       />
                     </Button>
                   </div>
-                  <div style={{ fontSize: "0.8em" }}>{item.start_time}</div>
+                  <div style={{ fontSize: "0.8em" }}>{item.item_description}</div>
                 </ListGroup.Item>
               ))}
             </ListGroup>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Spinner } from "react-bootstrap";
+import { Button, Form, Spinner, Alert } from "react-bootstrap";
 import { TrashFill } from "react-bootstrap-icons";
 import { useCart } from "./context/usecart";
 import { useOrders } from "./context/useorders";
@@ -14,7 +14,6 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
   const {
     carts,
     cartItems,
-    fetchCarts,
     loading: cartLoading,
     deleteItem,
   } = useCart();
@@ -28,10 +27,6 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
   const doPaid = () => {
     setPaid(true);
   }
-
-  useEffect(() => {
-    fetchCarts();
-  }, []);
 
   useEffect(() => {
     if (useDefaultAddress && properties) {
@@ -115,7 +110,7 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
         {!readyToPlaceOrder && <Alert variant="danger">Please enter an address</Alert>}
 
         {!paid && (
-          <>
+          <div className="mt-3">
             {/* <Button onClick={handlePlaceOrder} disabled={orderLoading}>
             {orderLoading ? (
               <Spinner animation="border" size="sm" />
@@ -126,7 +121,7 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
             {/* <PayNowButton onGetOrder={getOrder} onPaid={() => setPaid(true)} />            */}
               
             <PayGate onGetOrder={getOrder} onPaid={doPaid}  />
-          </>
+          </div>
         )}
       </div>
     </PayPalScriptProvider>

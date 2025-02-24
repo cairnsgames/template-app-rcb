@@ -7,11 +7,14 @@ import { combineUrlAndPath } from "../functions/combineurlandpath";
 import TilesLayout from "../packages/layout/Tiles";
 import TileList from "../packages/layout/TileList";
 import PartnerCard from "./partnercard";
+import useMyEvents from "../packages/kloko/context/usemyevents";
+import { formatPrice } from "../packages/kloko/eventfunctions";
 
 const Home = () => {
   const { newsItems } = useNews();
 
   const { events } = useEvents();
+  const { tickets } = useMyEvents();
 
   const [newsCards, setNewsCards] = useState([]);
 
@@ -51,6 +54,24 @@ const Home = () => {
     });
   };
 
+  const ticketsAsCards = (tickets) => {
+    return tickets.map((ticket) => {
+      const desc = [];
+      desc.push(ticket.start_time.substr(0,10) + " - " + ticket.end_time.substr(0,10));
+      desc.push(<h3>{ticket.description}</h3>);
+      return {
+        id: ticket.id,
+        image: combineUrlAndPath(process.env.REACT_APP_FILES, ticket.image),
+        title: ticket.event_title,
+        description:  desc ,
+        footer: "Admit "+ticket.quantity+" ("+formatPrice(ticket.currency, ticket.price)+")",
+        overlayText: true,
+        qrcode: true,
+        raw: ticket
+      };
+    });
+  }
+
   const showNews = (item) => {
     console.log("Show News", item);
     window.location.hash = `#news/${item.id}`;
@@ -63,10 +84,11 @@ const Home = () => {
   console.log("newsAsCards", newsCards);
 
   return (
-    <Container fluid className="px-3">
+    <Container fluid className="p-3">
       <TilesLayout>
         <TileList images={newsCards} onClick={showNews} />
         <TileList images={eventsAsCards(events)} onClick={showEvent} />
+        <TileList images={ticketsAsCards(tickets)} onClick={showEvent} />
         
         <PartnerCard />
       </TilesLayout>

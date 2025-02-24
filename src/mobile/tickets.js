@@ -5,10 +5,21 @@ import QRCode from "../packages/qrcode/qrcode";
 import { useBookings } from "../packages/kloko/context/usebookings"; // Import useBookings hook
 import InfoCard from "../components/infocard/infocard"; // Import InfoCard component
 import { Balloon, Calendar, Search } from "react-bootstrap-icons";
+import { formatPrice } from "../packages/kloko/eventfunctions";
+
+const TicketDescription = ({ ticket }) => {
+  console.log("Ticket", ticket)
+  return (
+    <div className="mt-2">
+      <p><h3>{ticket.description}</h3></p>
+      <p>{ticket.start_time.substr(0,10) + " - " + ticket.end_time.substr(0,10)}</p>
+    </div>
+  );
+};
 
 const Tickets = () => {
   const { tickets } = useBookings(); // Get tickets from useBookings hook
-
+  
   return (
     <div style={{ height: "100%" }}>
       {tickets.length === 0 ? ( // Check if there are no tickets
@@ -32,9 +43,11 @@ const Tickets = () => {
                 className="m-3"
               >
                 <Row>
+                    <Ticket.Header>{item.event_title}</Ticket.Header>
+                    </Row>
+                <Row>
                   <Col>
-                    <Ticket.Header>{item.title}</Ticket.Header>
-                    <Ticket.Body>{item.description} [{item.status}]</Ticket.Body>
+                    <Ticket.Body><TicketDescription ticket={item} /></Ticket.Body>
                   </Col>
                   <Col
                     xs={3}
@@ -46,7 +59,7 @@ const Tickets = () => {
                     }}
                   >
                     <QRCode
-                      link={item.qrcode}
+                      link={"https://juzt.dance#ticket?event=" + item?.event_id}
                       size={128}
                       logoWidth={24}
                       logoPadding={4}
@@ -54,8 +67,8 @@ const Tickets = () => {
                   </Col>
                 </Row>
                 <Ticket.Footer>
-                  <Ticket.Footer.Left>${item.price}</Ticket.Footer.Left>
-                  Admit {item.admit}
+                  <Ticket.Footer.Left>{formatPrice(item.currency,item.price)}</Ticket.Footer.Left>
+                  Admit {item.quantity}
                   <Ticket.Footer.Right>{item.time}</Ticket.Footer.Right>
                 </Ticket.Footer>
               </Ticket>

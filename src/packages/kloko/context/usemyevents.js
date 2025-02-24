@@ -22,6 +22,7 @@ export const useMyEvents = () => {
     activeEvent,
     ticketTypes,
     ticketOptions,
+    tickets,
   } = context;
 
   return {
@@ -36,6 +37,7 @@ export const useMyEvents = () => {
     activeEvent,
     ticketTypes,
     ticketOptions,
+    tickets,
   };
 };
 
