@@ -9,7 +9,7 @@ const TileDescription = ({ description }) => {
     return (
       <>
         {description.map((desc, index) => (
-          <Card.Text key={index} className="text-white">
+          <Card.Text as="div" key={index} className="text-white">
             {desc}
           </Card.Text>
         ))}

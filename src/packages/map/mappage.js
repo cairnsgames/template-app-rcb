@@ -1,11 +1,14 @@
 import MapDisplay from "./mapdisplay";
+import Tracker from "../tracker/tracker";
 
 const MapPage = () => {
   return (
-    <div>
-      <MapDisplay />
-    </div>
+    <Tracker itemtype="map" id={"page"}>
+      <div>
+        <MapDisplay />
+      </div>
+    </Tracker>
   );
-}
+};
 
 export default MapPage;
