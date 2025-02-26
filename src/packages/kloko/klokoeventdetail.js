@@ -4,6 +4,7 @@ import { Button, Card, Spinner } from "react-bootstrap";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { formatEventDate, formatPrice } from "./eventfunctions";
 import BookingSection from "./klokobookingsection";
+import Tracker from "../tracker/tracker";
 
 const KlokoEventDetail = ({ id }) => {
   const { activeEvent, setEventId } = useMyEvents();
@@ -24,7 +25,8 @@ const KlokoEventDetail = ({ id }) => {
 
   console.log("Active event", activeEvent);
   return (
-    <>
+    
+    <Tracker itemtype="event.detail" id={activeEvent.id}>
       <Card className="news-item">
         <Card.Img
           variant="top"
@@ -49,7 +51,7 @@ const KlokoEventDetail = ({ id }) => {
           </Card.Footer>
         )}
       </Card>
-    </>
+    </Tracker>
   );
 };
 

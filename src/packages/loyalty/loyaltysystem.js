@@ -13,6 +13,7 @@ import InfoBox from "../../components/infobox/infobox";
 import UserRewardModal from "./userrewardmodal";
 import LoadingSpinner from "../../components/spinner/spinner";
 import QRCodeScanner from "../photo/qrcodescanner.js";
+import Tracker from "../tracker/tracker";
 
 const Loyalty = () => {
   const {
@@ -136,7 +137,7 @@ const Loyalty = () => {
   }
 
   return (
-    <div>
+    <Tracker itemtype="partner.loyalty" id={system.id}>
       <div className="d-flex justify-content-between pb-2">
         <h2>{system.name}</h2>
         <Button className="me-3" onClick={() => setShowCamera(true)}>
@@ -148,6 +149,9 @@ const Loyalty = () => {
           src={getImageSrc(system.image)}
           alt={system.name}
           style={{ maxWidth: "min(95vw, 500px)", height: "auto" }}
+          onError={(e) => {
+            e.target.style.display = "none";
+          }}
         />
       ) : (
         <h2>{system.name}</h2>
@@ -180,7 +184,7 @@ const Loyalty = () => {
         onRedeemReward={onRedeemReward}
         onClose={onCloseCustomer}
       />
-    </div>
+    </Tracker>
   );
 };
 

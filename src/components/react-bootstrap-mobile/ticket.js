@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
 import "./ticket.scss";
+import Tracker from "../../packages/tracker/tracker";
 
 const Ticket = ({
   variant = "primary",
+  ticket,
   children,
   onClick,
   className,
@@ -10,6 +12,8 @@ const Ticket = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const ticketRef = useRef(null);
+
+  console.log("ticket", ticket);
 
   const handleClick = () => {
     setIsExpanded(true);
@@ -22,24 +26,25 @@ const Ticket = ({
   };
 
   return (
-    <div
-      className={`ticket ${variant ? `ticket-${variant}` : ""} ${
-        className || ""
-      } ${isExpanded ? "expanded" : ""}`}
-      style={style}
-      onClick={handleClick}
-      ref={ticketRef}
-      role="button"      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          handleClick(e);
-        }
-      }}
-      tabIndex={0}
-    >
-      <div className="notch notch-left"></div>
-      <div className="notch notch-right"></div>
-      {children}
-    </div>
+      <div
+        className={`ticket ${variant ? `ticket-${variant}` : ""} ${
+          className || ""
+        } ${isExpanded ? "expanded" : ""}`}
+        style={style}
+        onClick={handleClick}
+        ref={ticketRef}
+        role="button"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            handleClick(e);
+          }
+        }}
+        tabIndex={0}
+      >
+        <div className="notch notch-left"></div>
+        <div className="notch notch-right"></div>
+        {children}
+      </div>
   );
 };
 

@@ -4,6 +4,7 @@ import { useNews } from "./context/newscontext";
 import HighlightText, { formattedText } from "../../components/highlighttext";
 import { convertToMarkdown } from "../../functions/converttomarkdown";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
+import Tracker from "../tracker/tracker";
 
 const Markdown = React.lazy(() => import("react-markdown"));
 
@@ -18,6 +19,8 @@ const FullNewsItem = ({ id }) => {
   console.log("convertToMarkdown(item.body)", convertToMarkdown(item.body));
 
   return (
+    <Tracker itemtype="news.detail" id={id}>
+    
     <div className="full-news-item">
       {item.image_url && (
         <img src={combineUrlAndPath(process.env.REACT_APP_FILES,`${item.image_url}`)} alt={item.title} className="full-news-image" 
@@ -37,6 +40,7 @@ const FullNewsItem = ({ id }) => {
         <HighlightText text={item.body} terms={{"juzt.dance": "juztdance", "article": "text-event"}}/>
       </p>
     </div>
+    </Tracker>
   );
 };
 

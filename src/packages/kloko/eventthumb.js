@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { formatEventDate } from "./eventfunctions";
+import Tracker from "../tracker/tracker";
 
 const EventThumb = ({ event, onClick, onEdit }) => {
   const [imageLoaded, setImageLoaded] = useState(true); // State to track image loading
@@ -13,6 +14,8 @@ const EventThumb = ({ event, onClick, onEdit }) => {
   }
 
   return (  
+    
+    <Tracker itemtype="event.card" id={event.id}>
     <Card className="mb-3 pt-1 pb-2" onClick={clickOnCard}>
       <Card.Title className="m-1 ms-0">{event.title}</Card.Title>
       <Card.Body className="d-flex m-0 p-0">
@@ -49,6 +52,7 @@ const EventThumb = ({ event, onClick, onEdit }) => {
         </Card.Footer>
       )}
     </Card>
+    </Tracker>
   );
 };
 

@@ -9,6 +9,7 @@ import TileList from "../packages/layout/TileList";
 import PartnerCard from "./partnercard";
 import useMyEvents from "../packages/kloko/context/usemyevents";
 import { formatPrice } from "../packages/kloko/eventfunctions";
+import Tracker from "../packages/tracker/tracker";
 
 const Home = () => {
   const { newsItems } = useNews();
@@ -17,6 +18,8 @@ const Home = () => {
   const { tickets } = useMyEvents();
 
   const [newsCards, setNewsCards] = useState([]);
+  const [ticketCards, setTicketCards] = useState([]);
+  const [eventCards, setEventCards] = useState([]);
 
   useEffect(() => {
     if (newsItems.length > 0) {
@@ -27,11 +30,31 @@ const Home = () => {
     }
   }, [newsItems]);
 
+  useEffect(() => {
+    if (tickets.length > 0) {
+      setTicketCards([]);
+    }
+    if (tickets) {
+      setTicketCards(ticketsAsCards(tickets));
+    }
+  }, [tickets]);
+
+  useEffect(() => {
+    if (events.length > 0) {
+      setEventCards([]);
+    }
+    if (events) {
+      setEventCards(eventsAsCards(events));
+    }
+  }, [events]);
+
   const newsAsCards = (news) => {
     console.log("NEWS", news);
     return news.map((item) => {
+      console.log("News Item", item);
       return {
         id: item.id,
+        tracker: "news.card",
         image: combineUrlAndPath(process.env.REACT_APP_FILES, item.image_url),
         title: item.title,
         description: item.description,
@@ -45,6 +68,7 @@ const Home = () => {
     return events.map((event) => {
       return {
         id: event.id,
+        tracker: "event.card",
         image: combineUrlAndPath(process.env.REACT_APP_FILES, event.image),
         title: event.title,
         description: event.description,
@@ -60,7 +84,8 @@ const Home = () => {
       desc.push(ticket.start_time.substr(0,10) + " - " + ticket.end_time.substr(0,10));
       desc.push(<h3>{ticket.description}</h3>);
       return {
-        id: ticket.id,
+        id: ticket.ticket_id,
+        tracker: "ticket.card",
         image: combineUrlAndPath(process.env.REACT_APP_FILES, ticket.image),
         title: ticket.event_title,
         description:  desc ,
@@ -85,13 +110,16 @@ const Home = () => {
 
   return (
     <Container fluid className="p-3">
+    <Tracker itemtype="home" id={"page"}>
+      
       <TilesLayout>
         <TileList images={newsCards} onClick={showNews} />
-        <TileList images={eventsAsCards(events)} onClick={showEvent} />
-        <TileList images={ticketsAsCards(tickets)} onClick={showEvent} />
+        <TileList images={eventCards} onClick={showEvent} />
+        <TileList images={ticketCards} onClick={showEvent} />
         
         <PartnerCard />
       </TilesLayout>
+      </Tracker>
     </Container>
   );
 

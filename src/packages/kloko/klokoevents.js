@@ -10,6 +10,7 @@ import {
 import EventThumb from "./eventthumb"; // Assuming there's a component for displaying event thumbnails
 import LoadingSpinner from "../../components/spinner/spinner";
 import useMyEvents from "./context/usemyevents";
+import Tracker from "../tracker/tracker";
 
 const KlokoEvents = () => {
   const { myEvents, fetchEvents, loading } = useMyEvents();
@@ -65,6 +66,8 @@ const KlokoEvents = () => {
   }
 
   return (
+    
+    <Tracker itemtype="event" id={"page"}>
     <div className="my-events">
       <Row className="mb-3">
         <Col xs={6} lg={6}>
@@ -92,6 +95,7 @@ const KlokoEvents = () => {
         ))}
       </Row>
     </div>
+    </Tracker>
   );
 };
 
