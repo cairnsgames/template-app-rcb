@@ -28,15 +28,12 @@ const BookingSection = (props) => {
   }, [ticketTypes]);
 
   useEffect(() => {
-    const initCart = async () => {
+    console.log("User Changed", user);
       if (user?.id) {
-        const cartData = await fetchOrCreateCart();
+        const cartData = fetchOrCreateCart();
         setCart(cartData);
       }
-    };
-
-    initCart();
-  }, [user, fetchOrCreateCart]);
+  }, [user]);
 
   if (event.paid >= 1) {
     return <strong>You have Paid!</strong>;
