@@ -22,6 +22,7 @@ const useFetch = (url, options) => {
     }
     if (!options?.headers?.token) {
       options.headers.token = token;
+      options.headers.Authorization = `Bearer ${token}`;
     }
     if (!options?.headers?.APP_ID) {
       options.headers.APP_ID = tenant;
@@ -92,6 +93,7 @@ const useFetch = (url, options) => {
     isLoading: loading,
     isError: error,
     refetch: fetchData,
+    url
   };
 };
 

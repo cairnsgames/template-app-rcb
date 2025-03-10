@@ -11,7 +11,7 @@ const BookingSection = (props) => {
   const { cancelBooking } = useBookings();
   const { user } = useUser();
   const { tenant } = useTenant();
-  const { ticketTypes, ticketOptions } = useMyEvents();
+  const { TicketTypes, TicketOptions } = useMyEvents();
   const { fetchOrCreateCart, addItemToCart } = useCart();
   const [cart, setCart] = useState(null);
   const { event } = props;
@@ -20,6 +20,11 @@ const BookingSection = (props) => {
     ticketTypes?.length > 0 ? ticketTypes[0].id : null
   );
   const [selectedOptions, setSelectedOptions] = useState([]);
+
+  console.log("TicketTypes", TicketTypes);
+  console.log("TicketOptions", TicketOptions);
+  const { data: ticketTypes, loading: ticketTypesLoading } = TicketTypes;
+  const { data: ticketOptions, loading: ticketOptionsLoading } = TicketOptions;
 
   useEffect(() => {
     if (ticketTypes?.length > 0 && !selectedTicketType) {
@@ -118,6 +123,7 @@ const BookingSection = (props) => {
 
   return (
     <Form>
+      {ticketTypesLoading && <div>Loading ticket types...</div>}
       {ticketTypes?.length > 0 ? (
         <>
           <Form.Group className="mb-3">
@@ -145,7 +151,7 @@ const BookingSection = (props) => {
         </>
       ) : (
         <Form.Group className="mb-3">
-          <Form.Label>Quantity</Form.Label>
+          {/* <Form.Label>Quantity</Form.Label>
           <Form.Control
             type="number"
             min="1"
@@ -154,10 +160,11 @@ const BookingSection = (props) => {
           />
           <Form.Text>
             Price: {event.currency} {event.price}
-          </Form.Text>
+          </Form.Text> */}
         </Form.Group>
       )}
 
+      {ticketOptionsLoading && <div>Loading ticket options...</div>}
       {ticketOptions?.length > 0 && (
         <Form.Group className="mb-3">
           <Form.Label>Additional Options</Form.Label>

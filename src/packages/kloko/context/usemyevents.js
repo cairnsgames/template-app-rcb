@@ -20,8 +20,8 @@ export const useMyEvents = () => {
     deleteEvent,
     setEventId,
     activeEvent,
-    ticketTypes,
-    ticketOptions,
+    TicketTypes,
+    TicketOptions,
     tickets,
   } = context;
 
@@ -35,8 +35,10 @@ export const useMyEvents = () => {
     deleteEvent,
     setEventId,
     activeEvent,
-    ticketTypes,
-    ticketOptions,
+    // ticketTypes,
+    // ticketOptions,
+    TicketTypes,
+    TicketOptions,
     tickets,
   };
 };
