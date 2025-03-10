@@ -27,12 +27,16 @@ const BookingSection = (props) => {
     }
   }, [ticketTypes]);
 
+  const fetchCart = async() => {
+    if (user?.id) {
+      const cartData = await fetchOrCreateCart();
+      setCart(cartData);
+    }
+  }
+
   useEffect(() => {
     console.log("User Changed", user);
-      if (user?.id) {
-        const cartData = fetchOrCreateCart();
-        setCart(cartData);
-      }
+    fetchCart();
   }, [user]);
 
   if (event.paid >= 1) {
