@@ -5,7 +5,7 @@ import { Search, Plus } from "react-bootstrap-icons";
 const DesktopSearch = ({ searchQuery, setSearchQuery, setIsAddModalOpen }) => {
   return (
     <div className="d-none d-md-block bg-white border-bottom">
-      <Row className="align-items-center px-3 py-2">
+      <Row className="align-items-center px-3 py-2 mt-3">
         <Col>
           <div className="position-relative">
             <Form.Control
