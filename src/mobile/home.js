@@ -53,6 +53,7 @@ const Home = () => {
     return news.map((item) => {
       console.log("News Item", item);
       return {
+        type: "news",
         id: item.id,
         tracker: "news.card",
         image: combineUrlAndPath(process.env.REACT_APP_FILES, item.image_url),
@@ -67,6 +68,7 @@ const Home = () => {
   const eventsAsCards = (events) => {
     return events.map((event) => {
       return {
+        type: "event",
         id: event.id,
         tracker: "event.card",
         image: combineUrlAndPath(process.env.REACT_APP_FILES, event.image),
@@ -81,9 +83,9 @@ const Home = () => {
   const ticketsAsCards = (tickets) => {
     return tickets.map((ticket) => {
       const desc = [];
-      desc.push(ticket.start_time.substr(0,10) + " - " + ticket.end_time.substr(0,10));
       desc.push(<h3>{ticket.description}</h3>);
       return {
+        type: "ticket",
         id: ticket.ticket_id,
         tracker: "ticket.card",
         image: combineUrlAndPath(process.env.REACT_APP_FILES, ticket.image),

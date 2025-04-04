@@ -37,6 +37,8 @@ export const formatPrice = (currency, amount) => {
   // Use the correct locale for the currency or fallback to 'en-US'
   const locale = currencyLocaleMap[currency] || 'en-US';
 
+  console.log("formatPrice", locale, currency, amount);
+
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currency,

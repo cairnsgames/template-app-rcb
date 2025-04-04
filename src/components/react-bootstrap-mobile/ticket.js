@@ -1,15 +1,16 @@
 import React, { useState, useRef } from "react";
 import "./ticket.scss";
-import Tracker from "../../packages/tracker/tracker";
 
-const Ticket = ({
-  variant = "primary",
-  ticket,
-  children,
-  onClick,
-  className,
-  style,
-}) => {
+const Ticket = (props) => {
+  const {
+    variant = "primary",
+    ticket,
+    children,
+    onClick,
+    className,
+    style,
+  } = props;
+  console.log("Ticket Props", props);
   const [isExpanded, setIsExpanded] = useState(false);
   const ticketRef = useRef(null);
 
@@ -26,25 +27,52 @@ const Ticket = ({
   };
 
   return (
-      <div
-        className={`ticket ${variant ? `ticket-${variant}` : ""} ${
-          className || ""
-        } ${isExpanded ? "expanded" : ""}`}
-        style={style}
-        onClick={handleClick}
-        ref={ticketRef}
-        role="button"
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            handleClick(e);
-          }
-        }}
-        tabIndex={0}
-      >
-        <div className="notch notch-left"></div>
-        <div className="notch notch-right"></div>
-        {children}
-      </div>
+    <div
+      className={`ticket ${variant ? `ticket-${variant}` : ""} ${
+        className || ""
+      } ${isExpanded ? "expanded" : ""}`}
+      style={style}
+      onClick={handleClick}
+      ref={ticketRef}
+      role="button"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick(e);
+        }
+      }}
+      tabIndex={0}
+    >
+      <div className="notch notch-left"></div>
+      <div className="notch notch-right"></div>
+      {children}
+    </div>
+  );
+};
+
+const TicketDescription = ({ ticket }) => {
+  console.log("Ticket", ticket);
+  const start_time = ticket.start_time ?? ticket.raw?.start_time;
+  const end_time = ticket.end_time ?? ticket.raw?.end_time;
+
+  const formatTime = (time) => time.substr(11, 5); // Extract HH:MM
+  const formatDate = (time) => time.substr(0, 10); // Extract YYYY-MM-DD
+
+  const startDate = start_time ? formatDate(start_time) : null;
+  const endDate = end_time ? formatDate(end_time) : null;
+
+  return (
+    <div className="mt-2">
+      <p>
+        <strong>{ticket.raw?.event_description ?? ticket.description}</strong>
+      </p>
+      {start_time && end_time && (
+        <p>
+          {startDate === endDate
+            ? `${startDate} ${formatTime(start_time)} - ${formatTime(end_time)}`
+            : `${startDate} - ${endDate}`}
+        </p>
+      )}
+    </div>
   );
 };
 
@@ -83,5 +111,6 @@ Ticket.Body = TicketBody;
 Ticket.Footer = TicketFooter;
 Ticket.Footer.Left = TicketFooterLeft;
 Ticket.Footer.Right = TicketFooterRight;
+Ticket.Description = TicketDescription;
 
 export default Ticket;

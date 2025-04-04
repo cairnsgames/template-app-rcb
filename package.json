@@ -61,6 +61,7 @@
     "@yudiel/react-qr-scanner": "^2.1.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.4",
+    "date-fns": "^4.1.0",
     "firebase": "^10.8.1",
     "install": "^0.13.0",
     "jspdf": "^2.5.1",

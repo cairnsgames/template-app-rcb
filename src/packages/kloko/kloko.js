@@ -43,7 +43,7 @@ const Calendar = (props) => {
   const [showDetails, setShowDetails] = useState(false);
   const [newEvents, setNewEvents] = useState([]);
   const { myEvents, deleteEvent } = useMyEvents();
-  const [nevents, setEvents] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const setView = (event) => {
     let view = "timeGridDay";
@@ -83,7 +83,7 @@ const Calendar = (props) => {
     ]);
   };
   const handleEventClick = (arg) => {};
-  const saveEvents = (myEventsToAdd) => {
+  const saveEvents = (eventsToAdd) => {
     setEvents([...myEvents, ...eventsToAdd]);
     setNewEvents([]);
     setShowDetails(false);
@@ -135,7 +135,7 @@ const Calendar = (props) => {
     <>
       <Row className="m-2">
         <Col xs={12}>
-          <h1 class="text-center">Schedule Classes</h1>
+          <h1 className="text-center">Schedule Classes</h1>
         </Col>
         {/* <Col>
           <Form.Select onChange={setView} style={{fontSize:"10px"}}>

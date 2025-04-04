@@ -3,6 +3,8 @@
 import React, { useEffect } from "react";
 import PayGateButton from "./paygatebutton";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
+import useTenant from "../tenant/context/usetenant";
+import useUser from "../auth/context/useuser.js";
 
 const PayGate = ({ onGetOrder, onPaid }) => {
   if (!onGetOrder) {
@@ -11,6 +13,9 @@ const PayGate = ({ onGetOrder, onPaid }) => {
   if (!onPaid) {
     throw new Error("onPaid is required.");
   }
+
+  const { tenant } = useTenant();
+  const { user, token } = useUser();
 
   console.log("==== PAYGATE Button")
 
@@ -47,6 +52,8 @@ const PayGate = ({ onGetOrder, onPaid }) => {
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
+            "App_id": tenant,
+            "Authorization": `Bearer ${token}`,
           },
         }
       );
@@ -59,7 +66,7 @@ const PayGate = ({ onGetOrder, onPaid }) => {
 
       const { payment_id, checksum } = result;
 
-      console.log("==== PAYGATE (PayWeb3) Button response", result)
+      console.log("==== PAYGATE (PayWeb3) Button response", JSON.stringify(result))
 
       // Call this function after retrieving payment_id and checksum
       submitPayment(payment_id, checksum);

@@ -8,21 +8,7 @@ import { Balloon, Calendar, Search } from "react-bootstrap-icons";
 import { formatPrice } from "../packages/kloko/eventfunctions";
 import Tracker from "../packages/tracker/tracker";
 
-const TicketDescription = ({ ticket }) => {
-  console.log("Ticket", ticket);
-  return (
-    <div className="mt-2">
-      <p>
-        <h3>{ticket.description}</h3>
-      </p>
-      <p>
-        {ticket.start_time.substr(0, 10) +
-          " - " +
-          ticket.end_time.substr(0, 10)}
-      </p>
-    </div>
-  );
-};
+
 
 const Tickets = () => {
   const { tickets } = useBookings(); // Get tickets from useBookings hook
@@ -66,7 +52,7 @@ const Tickets = () => {
                     <Row>
                       <Col>
                         <Ticket.Body>
-                          <TicketDescription ticket={item} />
+                          <Ticket.Description ticket={item} />
                         </Ticket.Body>
                       </Col>
                       <Col

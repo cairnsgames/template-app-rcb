@@ -61,18 +61,19 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
     currency: "USD",
   };
 
+  const calculateTotal = cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2);
+  const currency = cartItems[0].currency || "ZAR";
+
   return (
     <PayPalScriptProvider options={initialOptions}>
       <div>
         <h3>Your Cart</h3>
-        <p>Count: {carts[0].count}</p>
-        <p>Total: ${carts[0].total}</p>
 
         <ul>
           {cartItems.map((item) => (
-            <li key={item.id}>
+            <div key={item.id}>
               <div>
-                {item.title} - ${Number(item.price).toFixed(2)}
+              {item.quantity} x {item.title} - {item.currency}{Number(item.price).toFixed(2)}
                 <Button variant="outline-primary" className="float-end">
                   <TrashFill
                     onClick={() => {
@@ -82,9 +83,12 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
                 </Button>
               </div>
               <div style={{ fontSize: "0.8em" }}>{item.start_time}</div>
-            </li>
+            </div>
           ))}
         </ul>
+
+        
+        <div className="text-end">Total: <strong>{currency}{calculateTotal}</strong></div>
 
         {needAddress && (
           <Form>

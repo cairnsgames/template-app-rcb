@@ -28,6 +28,8 @@ import MagicCodePage from "../pages/auth/magiccodepage";
 import BreezoMyOrders from "../packages/breezo/breezomyorders";
 import BreezoMyOrderDetails from "../packages/breezo/breezomyorderdetails";
 import PageFull from "../parts/pagelayouts/pagefull";
+import ClassesPage from "../packages/classes/ClassesPage";
+import MyClassesPage from "../packages/classes/MyClassesPage";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -81,6 +83,13 @@ const Routing = () => {
       <Route is={"search"}>
         <KlokoSearchPage />
       </Route>
+      
+      <Route is="calendar">
+        <MyClassesPage />
+      </Route>
+      <Route is={"classes"}>
+        <ClassesPage />
+      </Route>
       <Route is={"placeorder"}>
         <PlaceOrderPage />
       </Route>
@@ -99,9 +108,6 @@ const Routing = () => {
         <ProfilePage />
       </Route>
 
-      <Route is="calendar">
-        <Calendar />
-      </Route>
       <Route is="store">
         <ComingSoon />
       </Route>

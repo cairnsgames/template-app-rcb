@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useMemo } from "react";
 import useEventing from "../../eventing/useeventing";
 import { combineUrlAndPath } from "../../../functions/combineurlandpath";
+import eventing from "../../eventing/eventing";
 
 // Create context for Breezo API management
 export const BreezoContext = createContext();
@@ -320,6 +321,9 @@ export const BreezoProvider = ({
   };
 
   const addItemToCart = async (cartId, itemData) => {
+    if (!cartId) {
+      cartId = await fetchOrCreateCart();
+    }
     setLoading(true);
     console.log("Add Item to Cart")
     try {
@@ -338,6 +342,7 @@ export const BreezoProvider = ({
         }
       );
       console.log("Add Item to Cart")
+      eventing.publish("breezo", "reload", {});
       await fetchCartItems();
       return response.json();
     } catch (error) {

@@ -1,20 +1,22 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Form, Button, InputGroup, Spinner } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Form, Button, Spinner } from "react-bootstrap";
 import useMyEvents from "./context/usemyevents";
 import useFileLoader from "../content/usefileloader";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { extractFileName } from "../../functions/extractfilename";
 import { useToast } from "../toasts/usetoast";
 import Div from "../../components/react-bootstrap-mobile/div";
-import LocationSelect from "./LocationSelect";
+
+// Import form components
+import EventDetails from "./eventform/eventdetails";
+import CoverImage from "./eventform/coverimage";
+import DateAndDuration from "./eventform/dateandduration";
+import PricingOptions from "./eventform/pricingoptions";
+import LocationSection from "./eventform/locationsection";
+import DisplaySettings from "./eventform/displaysettings";
 
 const KlokoEventEditor = ({ id, onClose }) => {
-  const {
-    createEvent,
-    updateEvent,
-    fetchEventById, 
-    loading,
-  } = useMyEvents();
+  const { createEvent, updateEvent, fetchEventById, loading } = useMyEvents();
   const { addToast } = useToast();
 
   const [title, setTitle] = useState("");
@@ -28,9 +30,16 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const [location, setLocation] = useState("");
   const [maxParticipants, setMaxParticipants] = useState("");
   const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [enableBookings, setEnableBookings] = useState(true);
   const [showInNews, setShowInNews] = useState(false);
   const [overlayText, setOverlayText] = useState(true);
+  const [durationType, setDurationType] = useState("duration");
+  const [hasTicketTypes, setHasTicketTypes] = useState("fixed");
+  const [tickets, setTickets] = useState([]);
+  const [hasTicketOptions, setHasTicketOptions] = useState("no");
+  const [ticketOptions, setTicketOptions] = useState([]);
+  const [latlng, setLatlng] = useState({ lat: 0, lng: 0 });
 
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;
@@ -43,6 +52,10 @@ const KlokoEventEditor = ({ id, onClose }) => {
     console.error("File upload failed");
     addToast("File upload", "failed", "danger");
   };
+
+  useEffect(() => {
+    setEndTime(new Date(startTime).getTime() + duration * 60 * 1000);
+  }, [duration]);
 
   const {
     fileData,
@@ -60,6 +73,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
         console.log("Event to edit", eventToEdit);
         setTitle(eventToEdit.title);
         setDescription(eventToEdit.description);
+        setStartTime(eventToEdit.start_time);
+        setEndTime(eventToEdit.end_time);
         setCurrency(eventToEdit.currency);
         setPrice(eventToEdit.price);
         setImageUrl(eventToEdit.image_url);
@@ -68,7 +83,6 @@ const KlokoEventEditor = ({ id, onClose }) => {
         setDuration(eventToEdit.duration);
         setLocation(eventToEdit.location);
         setMaxParticipants(eventToEdit.max_participants);
-        setStartTime(eventToEdit.start_time);
         setOverlayText(eventToEdit.overlay_text === "Y");
         setEnableBookings(eventToEdit.enable_bookings === "Y");
         setShowInNews(eventToEdit.show_in_news === "Y");
@@ -76,11 +90,13 @@ const KlokoEventEditor = ({ id, onClose }) => {
     }
   }, [id, fetchEventById]);
 
+  const selectLocation = (location) => {
+    setLatlng({ lat: location.lat, lng: location.lng });
+    setLocation(location);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const endTime = new Date(
-      new Date(startTime).getTime() + duration * 60000
-    ).toISOString(); // Calculate end time
     const eventData = {
       title,
       description,
@@ -106,9 +122,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
       );
     }
     if (id) {
-      await updateEvent({ id, ...eventData }); // Update event if ID is present
+      await updateEvent({ id, ...eventData, tickets, ticketOptions }); // Update event if ID is present
     } else {
-      await createEvent(eventData); // Create event if no ID
+      await createEvent(eventData, tickets, ticketOptions); // Create event if no ID
     }
     // Reset form fields after submission
     setTitle("");
@@ -126,177 +142,70 @@ const KlokoEventEditor = ({ id, onClose }) => {
     setOverlayText(true);
   };
 
+  useEffect(() => {
+    console.log("LOCATION", location)
+  }, [location]);
+
   return (
     <Div onHide={onClose}>
       <Form onSubmit={handleSubmit}>
         <h2>{id ? "Edit Event" : "Create Event"}</h2>
-        <Form.Group controlId="title">
-          <Form.Label>Title</Form.Label>
-          <InputGroup>
-            <Form.Control
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </InputGroup>
-        </Form.Group>
 
-        <Form.Group controlId="description">
-          <Form.Label>Description</Form.Label>
-          <InputGroup>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </InputGroup>
-        </Form.Group>
+        <EventDetails
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+          eventType={eventType}
+          setEventType={setEventType}
+          maxParticipants={maxParticipants}
+          setMaxParticipants={setMaxParticipants}
+        />
 
-        <Form.Group controlId="price">
-          <Form.Label>Price</Form.Label>
-          <InputGroup>
-            <Form.Select
-              className="form-control"
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              style={{ maxWidth: "25%" }}
-            >
-              <option value="ZAR">ZAR</option>
-              <option value="USD">USD</option>
-            </Form.Select>
-            <Form.Control
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-          </InputGroup>
-        </Form.Group>
+        <CoverImage
+          imageUrl={imageUrl}
+          fileInputRef={fileInputRef}
+          loading={loading}
+          fileSelected={fileSelected}
+          fileData={fileData}
+        />
 
-        <Form.Group controlId="image">
-          <Form.Label>Image</Form.Label>
-          <InputGroup>
-            {loading ? (
-              <Spinner animation="border" />
-            ) : (
-              <>
-                <Form.Control
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    fileSelected(e);
-                  }}
-                />
-              </>
-            )}
-          </InputGroup>
-          {fileData || imageUrl ? (
-            <img
-              src={
-                fileData ||
-                combineUrlAndPath(process.env.REACT_APP_FILES, imageUrl)
-              }
-              alt="Preview"
-              className="img-preview"
-            />
-          ) : null}
-        </Form.Group>
+        <DateAndDuration
+          durationType={durationType}
+          setDurationType={setDurationType}
+          startTime={startTime}
+          setStartTime={setStartTime}
+          endTime={endTime}
+          setEndTime={setEndTime}
+          duration={duration}
+          setDuration={setDuration}
+        />
 
-        <Form.Group controlId="eventType">
-          <Form.Label>Event Type</Form.Label>
-          <InputGroup>
-            <Form.Control
-              type="text"
-              value={eventType}
-              onChange={(e) => setEventType(e.target.value)}
-              required
-            />
-          </InputGroup>
-        </Form.Group>
+        <PricingOptions
+          hasTicketTypes={hasTicketTypes}
+          setHasTicketTypes={setHasTicketTypes}
+          hasTicketOptions={hasTicketOptions}
+          setHasTicketOptions={setHasTicketOptions}
+          currency={currency}
+          setCurrency={setCurrency}
+          price={price}
+          setPrice={setPrice}
+          tickets={tickets}
+          setTickets={setTickets}
+          ticketOptions={ticketOptions}
+          setTicketOptions={setTicketOptions}
+        />
 
-        <Form.Group controlId="duration">
-          <Form.Label>Duration</Form.Label>
-          <InputGroup>
-            <Form.Control
-              as="select"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              required
-            >
-              <option value="">Select Duration</option>
-              <option value="30">30 minutes</option>
-              <option value="60">60 minutes</option>
-              <option value="90">90 minutes</option>
-              <option value="120">120 minutes</option>
-            </Form.Control>
-            <Form.Control
-              type="number"
-              placeholder="Custom Duration"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-            />
-          </InputGroup>
-        </Form.Group>
+        <LocationSection value={""} setLocation={selectLocation} />
 
-        <Form.Group controlId="location">
-          <Form.Label>Location</Form.Label>
-          <LocationSelect onChange={setLocation} />
-        </Form.Group>
-
-        <Form.Group controlId="maxParticipants">
-          <Form.Label>Max Participants</Form.Label>
-          <InputGroup>
-            <Form.Control
-              type="number"
-              value={maxParticipants}
-              onChange={(e) => setMaxParticipants(e.target.value)}
-              required
-            />
-          </InputGroup>
-        </Form.Group>
-
-        <Form.Group controlId="startTime">
-          <Form.Label>Start Time</Form.Label>
-          <InputGroup>
-            <Form.Control
-              type="datetime-local"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-              required
-            />
-          </InputGroup>
-        </Form.Group>
-
-        <Form.Group controlId="enableBookings">
-          <Form.Check
-            type="checkbox"
-            label="Enable Bookings"
-            checked={enableBookings}
-            onChange={(e) => setEnableBookings(e.target.checked)}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="showInNews">
-          <Form.Check
-            type="checkbox"
-            label="Show in News"
-            checked={showInNews}
-            onChange={(e) => setShowInNews(e.target.checked)}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="overlayText">
-          <Form.Check
-            type="checkbox"
-            label="Overlay Text"
-            checked={overlayText}
-            onChange={(e) => setOverlayText(e.target.checked)}
-          />
-        </Form.Group>
+        <DisplaySettings
+          enableBookings={enableBookings}
+          setEnableBookings={setEnableBookings}
+          showInNews={showInNews}
+          setShowInNews={setShowInNews}
+          overlayText={overlayText}
+          setOverlayText={setOverlayText}
+        />
 
         <Button
           variant="primary"

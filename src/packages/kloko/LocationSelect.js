@@ -32,8 +32,10 @@ const LocationSelect = ({ onChange, ...props }) => {
 
   const handleSelectChange = (e) => {
     const value = e.target.value;
-    setSelectedLocation(value);
-    onChange(value); // Call the onChange prop with the new value
+    const loc = userLocations.find((location) => location.id === Number(value));
+    console.log("FINDING LOCATION", value, loc, userLocations)
+    setSelectedLocation(loc);
+    onChange(loc); // Call the onChange prop with the new value
   };
 
   return (

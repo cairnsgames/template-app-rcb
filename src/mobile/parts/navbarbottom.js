@@ -10,6 +10,9 @@ import {
     QrCode,
     CalendarWeek,
     GeoAlt,
+    CalendarMonth,
+    Calendar2Date,
+    Calendar2,
     } from "react-bootstrap-icons";
 import { Container } from "react-bootstrap";
 
@@ -21,8 +24,13 @@ const NavBarbottom = () => {
         <House size={24} />
         <div style={{ fontSize: "12px", fontWeight: "600" }}>Home</div>
       </Footer.Icon>
-      <Footer.Icon href="#search">
+      {/* <Footer.Icon href="#search">
         <Search size={24} />
+        <div style={{ fontSize: "12px", fontWeight: "600" }}>Search</div>
+      </Footer.Icon> */}
+      
+      <Footer.Icon href="#classes">
+        <Calendar2 size={24} />
         <div style={{ fontSize: "12px", fontWeight: "600" }}>Search</div>
       </Footer.Icon>
       <Footer.Icon href="#tickets">

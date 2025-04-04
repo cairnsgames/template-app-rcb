@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect, useMemo } from "react";
 
-// Mocked functions for dependencies
 const useJwt = () => ({ decodedToken: null });
 const useTenant = () => ({ tenant: "mockTenant" });
 const useDeviceInfo = () => ({ deviceId: "mockDeviceId" });

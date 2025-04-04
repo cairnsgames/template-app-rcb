@@ -320,7 +320,7 @@ export const KlokoMyEventProvider = ({
     }
   };
 
-  const createEvent = async (event) => {
+  const createEvent = async (event, ticketTypes, ticketOptions) => {
     setLoading(true);
     try {
       event.calendar_id = activeCalendar;
@@ -339,6 +339,12 @@ export const KlokoMyEventProvider = ({
         return event;
       });
       setMyEvents((prev) => [...prev, ...newEvent]);
+      createTickets(
+        ticketTypes.map((t) => ({ ...t, event_id: newEvent[0].id }))
+      );
+      createTicketOptions(
+        ticketOptions.map((o) => ({ ...o, event_id: newEvent[0].id }))
+      );
       setLoading(false);
       return [newEvent];
     } catch (error) {
@@ -346,6 +352,58 @@ export const KlokoMyEventProvider = ({
       setLoading(false);
       return [];
     }
+  };
+  const createTickets = async (tickets) => {
+    setLoading(true);
+    tickets = tickets.map(async (ticket) => {
+      try {
+        const response = await fetch(
+          combineUrlAndPath(
+            process.env.REACT_APP_KLOKO_API,
+            `api.php/tickettype`
+          ),
+          {
+            method: "POST",
+            headers: { ...headers, "Content-Type": "application/json" },
+            body: JSON.stringify(ticket),
+          }
+        );
+        const newTickets = await response.json();
+        setTickets((prev) => [...prev, ...newTickets]);
+        setLoading(false);
+        return newTickets;
+      } catch (error) {
+        console.error("Error creating tickets:", error);
+        setLoading(false);
+        return [];
+      }
+    });
+  };
+
+  const createTicketOptions = async (options) => {
+    setLoading(true);
+    options = options.map(async (option) => {
+      try {
+        const response = await fetch(
+          combineUrlAndPath(
+            process.env.REACT_APP_KLOKO_API,
+            `api.php/ticketoption`
+          ),
+          {
+            method: "POST",
+            headers: { ...headers, "Content-Type": "application/json" },
+            body: JSON.stringify(option),
+          }
+        );
+        const newOption = await response.json();
+        setLoading(false);
+        return newOption;
+      } catch (error) {
+        console.error("Error creating ticket options:", error);
+        setLoading(false);
+        return [];
+      }
+    });
   };
 
   const updateEvent = async (event) => {

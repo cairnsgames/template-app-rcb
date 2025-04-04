@@ -56,7 +56,7 @@ const Tile = ({ data, onClick }) => {
   return (
     <div className="tile-wrapper mb-4">
       <Tracker itemtype={data.tracker} id={data.id}>
-        <Card className="" onClick={() => onClick(data)}>
+        <Card className={data.type} onClick={() => onClick(data)}>
           {image ? (
             <Card.Img variant="top" src={image} alt={title} />
           ) : (

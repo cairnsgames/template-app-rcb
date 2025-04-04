@@ -21,7 +21,7 @@ const AlbumCard = () => {
             This is a wider card with supporting text below as a natural lead-in
             to additional content. This content is a little bit longer.
           </Card.Text>
-          <div class="d-flex justify-content-between align-items-center">
+          <div className="d-flex justify-content-between align-items-center">
             <ButtonGroup>
               <Button size="sm" variant="outline-secondary">
                 View
@@ -30,7 +30,7 @@ const AlbumCard = () => {
                 Edit
               </Button>
             </ButtonGroup>
-            <small class="text-muted">9 mins</small>
+            <small className="text-muted">9 mins</small>
           </div>
         </Card.Body>
       </Card>
