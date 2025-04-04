@@ -1,15 +1,15 @@
 import React from "react";
 import { Form, InputGroup } from "react-bootstrap";
 
-const EventDetails = ({ 
-  title, 
-  setTitle, 
-  description, 
-  setDescription, 
-  eventType, 
-  setEventType, 
-  maxParticipants, 
-  setMaxParticipants 
+const EventDetails = ({
+  title,
+  setTitle,
+  description,
+  setDescription,
+  keywords,
+  setKeywords,
+  maxParticipants,
+  setMaxParticipants,
 }) => {
   return (
     <div className="border p-2 my-3">
@@ -41,18 +41,18 @@ const EventDetails = ({
 
       <Form.Group controlId="eventType">
         <Form.Label>
-          Event Keywords
+          Dance Styles
           <br />
           <Form.Text className="text-muted">
-            <small>Enter keywords to help users find the event</small>
+            <small>What dance styles will be included?</small>
           </Form.Text>
         </Form.Label>
         <InputGroup>
           <Form.Control
             type="text"
-            value={eventType}
-            onChange={(e) => setEventType(e.target.value)}
-            required
+            value={keywords}
+            onChange={(e) => setKeywords(e.target.value)}
+            placeholder="Salsa, Bachata, Kizomba"
           />
         </InputGroup>
       </Form.Group>
@@ -61,7 +61,7 @@ const EventDetails = ({
           Max Participants
           <br />
           <Form.Text className="text-muted">
-          <small>How many people can you handle at the event</small>
+            <small>How many people can you handle at the event</small>
           </Form.Text>
         </Form.Label>
         <InputGroup>

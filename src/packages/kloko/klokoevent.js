@@ -25,11 +25,16 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const [price, setPrice] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [keywords, setKeywords] = useState("");
-  const [eventType, setEventType] = useState("");
+  const [eventType, setEventType] = useState("event");
   const [duration, setDuration] = useState("");
   const [location, setLocation] = useState("");
   const [maxParticipants, setMaxParticipants] = useState("");
-  const [startTime, setStartTime] = useState("");
+  const [startTime, setStartTime] = useState(() => {
+    const now = new Date();
+    now.setMinutes(0, 0, 0); // Reset minutes and seconds to 0
+    now.setHours(now.getHours() + 1); // Set to the start of the next hour
+    return now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
+  });
   const [endTime, setEndTime] = useState("");
   const [enableBookings, setEnableBookings] = useState(true);
   const [showInNews, setShowInNews] = useState(false);
@@ -54,8 +59,12 @@ const KlokoEventEditor = ({ id, onClose }) => {
   };
 
   useEffect(() => {
-    setEndTime(new Date(startTime).getTime() + duration * 60 * 1000);
-  }, [duration]);
+    if (startTime && duration) {
+      const endTimeDate = new Date(new Date(startTime).getTime() + duration * 60 * 1000);
+      const formattedEndTime = endTimeDate.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
+      setEndTime(formattedEndTime);
+    }
+  }, [startTime, duration]);
 
   const {
     fileData,
@@ -132,7 +141,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
     setCurrency("ZAR");
     setPrice("");
     setImageUrl("");
-    setEventType("");
+    setEventType("event");
     setDuration("");
     setLocation("");
     setMaxParticipants("");
@@ -156,8 +165,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
           setTitle={setTitle}
           description={description}
           setDescription={setDescription}
-          eventType={eventType}
-          setEventType={setEventType}
+          keywords={keywords}
+          setKeywords={setKeywords}
           maxParticipants={maxParticipants}
           setMaxParticipants={setMaxParticipants}
         />
