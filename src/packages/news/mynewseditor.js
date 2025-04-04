@@ -19,8 +19,17 @@ const MyNewsEditor = ({ id, onClose }) => {
     useNews();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [date, setDate] = useState("");
-  const [expires, setExpires] = useState("");
+  const [date, setDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+  });
+
+  const [expires, setExpires] = useState(() => {
+    const today = new Date();
+    const futureDate = new Date(today);
+    futureDate.setDate(today.getDate() + 28); // Add 4 weeks (28 days)
+    return futureDate.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+  });
   const [imageUrl, setImageUrl] = useState("");
   const [overlayText, setOverlayText] = useState(true);
   const [hasChanges, setHasChanges] = useState(false);
@@ -140,20 +149,23 @@ const MyNewsEditor = ({ id, onClose }) => {
             {loading ? (
               <Spinner animation="border" />
             ) : (
-                <Form.Control
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    fileSelected(e);
-                    setHasChanges(true); // Mark as changed
-                  }}
-                />
+              <Form.Control
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  fileSelected(e);
+                  setHasChanges(true); // Mark as changed
+                }}
+              />
             )}
           </InputGroup>
           {fileData || imageUrl ? (
             <img
-              src={fileData || combineUrlAndPath(process.env.REACT_APP_FILES,imageUrl)}
+              src={
+                fileData ||
+                combineUrlAndPath(process.env.REACT_APP_FILES, imageUrl)
+              }
               alt="Preview"
               className="img-preview"
             />

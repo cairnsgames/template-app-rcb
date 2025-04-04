@@ -48,18 +48,39 @@ const Home = () => {
     }
   }, [events]);
 
+  const formatEventTime = (start, end) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const isSameDay = startDate.toDateString() === endDate.toDateString();
+
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    if (isSameDay) {
+      const options = { hour: '2-digit', minute: '2-digit' };
+      return `${formatDate(startDate)} ${startDate.toLocaleTimeString([], options)} - ${endDate.toLocaleTimeString([], options)}`;
+    } else {
+      return `${formatDate(startDate)} - ${formatDate(endDate)}`;
+    }
+  };
+
   const newsAsCards = (news) => {
     console.log("NEWS", news);
     return news.map((item) => {
-      console.log("News Item", item);
+      // console.log("News Item", item);
       return {
         type: "news",
         id: item.id,
         tracker: "news.card",
         image: combineUrlAndPath(process.env.REACT_APP_FILES, item.image_url),
         title: item.title,
-        description: item.description,
-        footer: item.date,
+        description: item.body,
+        footer: "",//item.date,
         overlayText: item.overlay_text === "Y",
         overlay: item.overlay_text,
       };
@@ -67,6 +88,7 @@ const Home = () => {
   };
 
   const eventsAsCards = (events) => {
+    console.log("EVENTS AS NEWS", events);
     return events.map((event) => {
       return {
         type: "event",
@@ -75,7 +97,7 @@ const Home = () => {
         image: combineUrlAndPath(process.env.REACT_APP_FILES, event.image),
         title: event.title,
         description: event.description,
-        footer: event.date,
+        footer: formatEventTime(event.start_time, event.end_time),
         overlayText: event.overlay_text === "Y",
         overlay: event.overlay_text,
       };
