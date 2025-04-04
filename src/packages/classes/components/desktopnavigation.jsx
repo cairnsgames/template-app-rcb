@@ -12,9 +12,9 @@ const DesktopNavigation = ({ weekDays, navigateWeek }) => {
             <ChevronLeft size={20} />
           </Button>
         </Col>
-        <Col className="text-center fw-medium">
+        {/* <Col className="text-center fw-medium">
           {format(weekDays[0], "MMM d")} - {format(weekDays[6], "MMM d, yyyy")}
-        </Col>
+        </Col> */}
         <Col xs="auto">
           <Button variant="link" className="p-0" onClick={() => navigateWeek("next")}>
             <ChevronRight size={20} />

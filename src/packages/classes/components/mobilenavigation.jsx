@@ -17,7 +17,7 @@ const MobileNavigation = ({
   navigateDay,
 }) => {
   return (
-    <div className="d-md-none bg-white border-bottom pt-2">
+    <div className="bg-white border-bottom pt-2">
       {role === "dancer" ? (
         <Row className="align-items-center px-3 py-2">
           <Col xs="auto">

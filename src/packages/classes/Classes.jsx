@@ -88,7 +88,7 @@ const Classes = ({ role = "dancer"}) => {
         setIsAddModalOpen={setIsAddModalOpen}
       />
 
-      <DesktopNavigation weekDays={weekDays} navigateWeek={navigateWeek} />
+      {/* <DesktopNavigation weekDays={weekDays} navigateWeek={navigateWeek} /> */}
 
       <MobileNavigation
         role={role}
@@ -99,7 +99,7 @@ const Classes = ({ role = "dancer"}) => {
         navigateDay={navigateDay}
       />
 
-      <WeekDaysHeader weekDays={weekDays} />
+      {/* <WeekDaysHeader weekDays={weekDays} /> */}
 
       <div className="flex-1 overflow-auto">
         {role === "dancer" ? (
@@ -109,16 +109,17 @@ const Classes = ({ role = "dancer"}) => {
         />
         ) : (
           <>
-            <DesktopCalendarGrid 
+            {/* <DesktopCalendarGrid 
               weekDays={weekDays} 
               getDayClasses={getDayClasses} 
               setSelectedDate={setSelectedDate} 
               handleClassClick={handleClassClick} 
-            />
+            /> */}
             
             <MobileDayView 
               selectedDate={selectedDate} 
               getDayClasses={getDayClasses} 
+              setSelectedDate={setSelectedDate} 
               handleClassClick={handleClassClick} 
             />
           </>
