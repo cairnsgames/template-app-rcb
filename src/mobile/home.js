@@ -60,7 +60,8 @@ const Home = () => {
         title: item.title,
         description: item.description,
         footer: item.date,
-        overlayText: item.overlayText,
+        overlayText: item.overlay_text === "Y",
+        overlay: item.overlay_text,
       };
     });
   };
@@ -75,7 +76,8 @@ const Home = () => {
         title: event.title,
         description: event.description,
         footer: event.date,
-        overlayText: event.overlayText,
+        overlayText: event.overlay_text === "Y",
+        overlay: event.overlay_text,
       };
     });
   };
