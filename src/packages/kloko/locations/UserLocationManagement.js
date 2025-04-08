@@ -16,6 +16,8 @@ const UserLocationManagement = () => {
     town: "",
     lat: "",
     lng: "",
+    showonmap: 1,
+    default: 0,
   });
 
   useEffect(() => {
@@ -29,11 +31,22 @@ const UserLocationManagement = () => {
         town: "",
         lat: "",
         lng: "",
+        showonmap: 1,
+        default: 0,
       });
     }
   }, [selectedLocation]);
 
   const handleSave = async () => {
+    if (details.default === 1) {
+      // Ensure only one location is set as default
+      await Promise.all(
+        userLocations
+          .filter((location) => location.default === 1)
+          .map((location) => updateUserLocation(location.id, { ...location, default: 0 }))
+      );
+    }
+
     if (selectedLocation) {
       await updateUserLocation(selectedLocation.id, details);
     } else {
@@ -48,6 +61,8 @@ const UserLocationManagement = () => {
       town: "",
       lat: "",
       lng: "",
+      showonmap: 1,
+      default: 0,
     });
   };
 
@@ -61,6 +76,17 @@ const UserLocationManagement = () => {
       await deleteUserLocation(id);
     }
   };
+
+  console.log("User Locations:", userLocations);
+
+  const getLocationAddress = (location) => {
+    const addressParts = [
+      location.address_line1,
+      location.address_line2,
+      location.town,
+    ].filter(Boolean); // Filter out any undefined or empty values
+    return addressParts.join(", ");
+  }
 
   return (
     <div>
@@ -76,6 +102,8 @@ const UserLocationManagement = () => {
           <tr>
             <th>Name</th>
             <th>Address</th>
+            <th>Show on Map</th>
+            <th>Default</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -83,7 +111,9 @@ const UserLocationManagement = () => {
           {userLocations.map((location) => (
             <tr key={location.id}>
               <td>{location.name}</td>
-              <td>{`${location.address_line1}, ${location.town}`}</td>
+              <td>{getLocationAddress(location)}</td>
+              <td>{location.showonmap === 1 ? "Yes" : "No"}</td>
+              <td>{location.default === 1 ? "Yes" : "No"}</td>
               <td>
                 <ButtonGroup>
                 <Button variant="outline-primary" onClick={() => handleEdit(location)}>

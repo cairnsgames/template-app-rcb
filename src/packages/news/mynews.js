@@ -41,7 +41,6 @@ const MyNews = () => {
 
   const handleEditorClose = () => {
     setShowEditor(false);
-    fetchMyNewsItems();
   };
 
   const handleSort = (option) => {

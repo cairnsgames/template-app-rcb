@@ -74,6 +74,14 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
               onChange={(ev) => setDetails({ ...details, showonmap: ev.target.checked ? 1 : 0})}
             />
           </Form.Group>
+          <Form.Group controlId="formDefault">
+            <Form.Check
+              type="checkbox"
+              label="Set as Default"
+              checked={details.default}
+              onChange={(ev) => setDetails({ ...details, default: ev.target.checked ? 1 : 0 })}
+            />
+          </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>

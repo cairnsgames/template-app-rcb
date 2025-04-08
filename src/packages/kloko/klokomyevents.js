@@ -36,7 +36,6 @@ const KlokoMyEvents = () => {
 
   const handleEditorClose = () => {
     setShowEditor(false);
-    fetchEvents();
   };
 
   const handleSort = (option) => {

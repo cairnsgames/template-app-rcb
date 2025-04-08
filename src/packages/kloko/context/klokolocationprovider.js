@@ -146,6 +146,27 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
     } catch (error) {
       console.error("Error updating user location:", error);
     }
+      // Update the location default
+      const locationDefaultBody = {
+        id: id,
+        default: locationData.default,
+      }
+      console.log("locationDefaultBody", locationDefaultBody);
+      const locationDefaultResponse = await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_KLOKO_API,
+          `api.php/setUserDefaultLocation`
+        ),
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            ...headers,
+          },
+          body: JSON.stringify(locationDefaultBody),
+        }
+      );
   };
 
   const deleteUserLocation = async (id) => {
