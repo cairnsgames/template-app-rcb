@@ -210,6 +210,46 @@ export const KlokoMyEventProvider = ({
     return myEvents.find((event) => event.id === id) || null; // Search for the event by ID
   };
 
+  const fetchTicketTypesByEventId = async (eventId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_KLOKO_API,
+          `api.php/event/${eventId}/tickets`
+        ),
+        { headers }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching ticket types:", error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchTicketOptionsByEventId = async (eventId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_KLOKO_API,
+          `api.php/event/${eventId}/options`
+        ),
+        { headers }
+      );
+      const data = await response.json();
+      console.log("TICKET OPTIONS", data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching ticket options:", error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch bookings
   const fetchBookings = async (eventId) => {
     setLoading(true);
@@ -353,60 +393,105 @@ export const KlokoMyEventProvider = ({
       return [];
     }
   };
-  const createTickets = async (tickets) => {
+
+  const createOrUpdateTicket = async (ticket) => {
     setLoading(true);
-    tickets = tickets.map(async (ticket) => {
-      try {
-        const response = await fetch(
-          combineUrlAndPath(
+    try {
+      const method = ticket.id ? "PUT" : "POST";
+      const url = ticket.id
+        ? combineUrlAndPath(
+            process.env.REACT_APP_KLOKO_API,
+            `api.php/tickettype/${ticket.id}`
+          )
+        : combineUrlAndPath(
             process.env.REACT_APP_KLOKO_API,
             `api.php/tickettype`
-          ),
-          {
-            method: "POST",
-            headers: { ...headers, "Content-Type": "application/json" },
-            body: JSON.stringify(ticket),
-          }
-        );
-        const newTickets = await response.json();
-        setTickets((prev) => [...prev, ...newTickets]);
-        setLoading(false);
-        return newTickets;
-      } catch (error) {
-        console.error("Error creating tickets:", error);
-        setLoading(false);
-        return [];
-      }
-    });
+          );
+
+      const response = await fetch(url, {
+        method,
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify(ticket),
+      });
+
+      const updatedTicket = await response.json();
+      setTickets((prev) =>
+        ticket.id
+          ? prev.map((t) => (t.id === updatedTicket.id ? updatedTicket : t))
+          : [...prev, updatedTicket]
+      );
+
+      return updatedTicket;
+    } catch (error) {
+      console.error("Error creating or updating ticket:", error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createTickets = async (tickets) => {
+    setLoading(true);
+    try {
+      const results = await Promise.all(
+        tickets.map((ticket) => createOrUpdateTicket(ticket))
+      );
+      return results.filter((result) => result !== null);
+    } catch (error) {
+      console.error("Error creating tickets:", error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createOrUpdateTicketOption = async (option) => {
+    setLoading(true);
+    try {
+      const method = option.id ? "PUT" : "POST";
+      const url = option.id
+        ? combineUrlAndPath(
+            process.env.REACT_APP_KLOKO_API,
+            `api.php/ticketoption/${option.id}`
+          )
+        : combineUrlAndPath(
+            process.env.REACT_APP_KLOKO_API,
+            `api.php/ticketoption`
+          );
+
+      const response = await fetch(url, {
+        method,
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify(option),
+      });
+
+      const updatedOption = await response.json();
+      return updatedOption;
+    } catch (error) {
+      console.error("Error creating or updating ticket option:", error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const createTicketOptions = async (options) => {
     setLoading(true);
-    options = options.map(async (option) => {
-      try {
-        const response = await fetch(
-          combineUrlAndPath(
-            process.env.REACT_APP_KLOKO_API,
-            `api.php/ticketoption`
-          ),
-          {
-            method: "POST",
-            headers: { ...headers, "Content-Type": "application/json" },
-            body: JSON.stringify(option),
-          }
-        );
-        const newOption = await response.json();
-        setLoading(false);
-        return newOption;
-      } catch (error) {
-        console.error("Error creating ticket options:", error);
-        setLoading(false);
-        return [];
-      }
-    });
+    try {
+      const results = await Promise.all(
+        options.map((option) => createOrUpdateTicketOption(option))
+      );
+      return results.filter((result) => result !== null);
+    } catch (error) {
+      console.error("Error creating ticket options:", error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const updateEvent = async (event) => {
+  const updateEvent = async (event, ticketTypes, ticketOptions) => {
+    console.log("UPDATE EVENT", event, ticketTypes, ticketOptions);
     setLoading(true);
     try {
       const response = await fetch(
@@ -424,6 +509,16 @@ export const KlokoMyEventProvider = ({
       setMyEvents((prev) =>
         prev.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
       );
+
+      ticketTypes.map((t) => {
+        console.log("TICKET TYPE", t);
+        createOrUpdateTicket(t);
+      });
+      ticketOptions.map((o) => {
+        console.log("TICKET OPTION", o);
+        createOrUpdateTicketOption(o);
+      });
+
       setLoading(false);
       return [updatedEvent];
     } catch (error) {
@@ -677,6 +772,8 @@ export const KlokoMyEventProvider = ({
       deleteEvent,
       fetchMyEvents,
       fetchEventById,
+      fetchTicketTypesByEventId,
+      fetchTicketOptionsByEventId,
       createBooking,
       updateBooking,
       deleteBooking,

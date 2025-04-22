@@ -46,7 +46,7 @@ const PricingOptions = ({
             enabled={hasTicketTypes === "different" ? true : false}
             label="With additional options"
             className="ms-3"
-            value="different"
+            value="options"
             checked={hasTicketOptions === "yes"}
             onChange={() =>
               setHasTicketOptions(hasTicketOptions === "yes" ? "no" : "yes")

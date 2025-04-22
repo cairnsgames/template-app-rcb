@@ -19,7 +19,7 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
             <Form.Control
               type="text"
               placeholder="Enter location name"
-              value={details.name}
+              value={details.name ?? ""}
               onChange={(ev) => setDetails({ ...details, name: ev.target.value })}
             />
           </Form.Group>
@@ -28,7 +28,7 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
             <Form.Control
               type="text"
               placeholder="Enter address line 1"
-              value={details.address_line1}
+              value={details.address_line1 ?? ""}
               onChange={(ev) => setDetails({ ...details, address_line1: ev.target.value })}
             />
           </Form.Group>
@@ -37,7 +37,7 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
             <Form.Control
               type="text"
               placeholder="Enter address line 2"
-              value={details.address_line2}
+              value={details.address_line2 ?? ""}
               onChange={(ev) => setDetails({ ...details, address_line2: ev.target.value })}
             />
           </Form.Group>
@@ -46,7 +46,7 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
             <Form.Control
               type="text"
               placeholder="Enter town"
-              value={details.town}
+              value={details.town ?? ""}
               onChange={(ev) => setDetails({ ...details, town: ev.target.value })}
             />
           </Form.Group>

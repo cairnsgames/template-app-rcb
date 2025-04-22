@@ -16,7 +16,13 @@ import LocationSection from "./eventform/locationsection";
 import DisplaySettings from "./eventform/displaysettings";
 
 const KlokoEventEditor = ({ id, onClose }) => {
-  const { createEvent, updateEvent, fetchEventById, loading } = useMyEvents();
+  const {
+    createEvent,
+    updateEvent,
+    fetchEventById,
+    loading,
+    fetchTicketTypesByEventId,fetchTicketOptionsByEventId ,
+  } = useMyEvents();
   const { addToast } = useToast();
 
   const [title, setTitle] = useState("");
@@ -60,7 +66,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
 
   useEffect(() => {
     if (startTime && duration) {
-      const endTimeDate = new Date(new Date(startTime).getTime() + duration * 60 * 1000);
+      const endTimeDate = new Date(
+        new Date(startTime).getTime() + duration * 60 * 1000
+      );
       const formattedEndTime = endTimeDate.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
       setEndTime(formattedEndTime);
     }
@@ -95,14 +103,35 @@ const KlokoEventEditor = ({ id, onClose }) => {
         setOverlayText(eventToEdit.overlay_text === "Y");
         setEnableBookings(eventToEdit.enable_bookings === "Y");
         setShowInNews(eventToEdit.show_in_news === "Y");
+        setHasTicketOptions(eventToEdit.options === "yes" ? "yes" : "no");
+        setHasTicketTypes(eventToEdit.tickettypes);
+        setDurationType(eventToEdit.period_type);
+
+        // fetch TicketTypes
+        const fetchTicketTypes = async () => {
+          // Fetch ticket types based on the event ID
+          const ticketTypes = await fetchTicketTypesByEventId(id);
+          console.log("****** Ticket Types", ticketTypes);
+          setTickets(ticketTypes);
+        };
+        fetchTicketTypes();
+
+        // Fetch TicketOptions
+        const fetchTicketOptions = async () => {
+          // Fetch ticket options based on the event ID
+          const options = await fetchTicketOptionsByEventId(id);
+          console.log("TICKET OPTIONS", options);
+          setTicketOptions(options);
+        };
+        fetchTicketOptions();
       }
     }
-  }, [id, fetchEventById]);
+  }, [id]);
 
   const selectLocation = (location) => {
     setLatlng({ lat: location.lat, lng: location.lng });
     setLocation(location);
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -121,6 +150,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
       enable_bookings: enableBookings ? "Y" : "N",
       show_in_news: showInNews ? "Y" : "N",
       overlay_text: overlayText ? "Y" : "N",
+      period_type: durationType,
+      ticketTypes: hasTicketTypes,
+      ticketOptions: hasTicketOptions,
     };
     if (isFileSelected) {
       console.log("Uploading file...");
@@ -131,7 +163,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
       );
     }
     if (id) {
-      await updateEvent({ id, ...eventData, tickets, ticketOptions }); // Update event if ID is present
+      await updateEvent(eventData, tickets, ticketOptions); // Update event if ID is present
     } else {
       await createEvent(eventData, tickets, ticketOptions); // Create event if no ID
     }
@@ -149,10 +181,15 @@ const KlokoEventEditor = ({ id, onClose }) => {
     setEnableBookings(true);
     setShowInNews(false);
     setOverlayText(true);
+    setDurationType("duration");
+    setHasTicketTypes("fixed");
+    setTickets([])  ;
+    setHasTicketOptions("no");
+    setTicketOptions([]);
   };
 
   useEffect(() => {
-    console.log("LOCATION", location)
+    console.log("LOCATION", location);
   }, [location]);
 
   return (

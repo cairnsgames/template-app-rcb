@@ -11,6 +11,7 @@ const DateAndDuration = ({
   duration,
   setDuration,
 }) => {
+  console.log("DURATION", durationType, startTime, endTime, duration);
   return (
     <div className="border p-2 my-3">
       <h3>Date and Duration</h3>
@@ -23,7 +24,7 @@ const DateAndDuration = ({
               label="Fixed"
               name="durationType"
               className="ms-3"
-              value="custom"
+              value="duration"
               checked={durationType === "duration"}
               onChange={() => setDurationType("duration")}
             />
@@ -124,7 +125,7 @@ const DateAndDuration = ({
             <InputGroup>
               <Form.Control
                 type="date"
-                value={startTime}
+                value={startTime.substring(0, 10)} 
                 onChange={(e) => {
                   setStartTime(e.target.value);
                   setEndTime(e.target.value);
@@ -142,7 +143,7 @@ const DateAndDuration = ({
               <InputGroup>
                 <Form.Control
                   type="date"
-                  value={startTime}
+                  value={startTime.substring(0, 10)} 
                   onChange={(e) => setStartTime(e.target.value)}
                   required
                 />
@@ -153,7 +154,7 @@ const DateAndDuration = ({
               <InputGroup>
                 <Form.Control
                   type="date"
-                  value={endTime}
+                  value={endTime.substring(0, 10)} 
                   onChange={(e) => setEndTime(e.target.value)}
                   required
                 />
