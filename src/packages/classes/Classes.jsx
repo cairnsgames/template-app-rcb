@@ -24,6 +24,7 @@ const Classes = ({ role = "dancer"}) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [classToEdit, setClassToEdit] = useState(null);
   const { classes } = useClasses(role);
 
   console.log("Classes to display:", classes);
@@ -76,6 +77,11 @@ const Classes = ({ role = "dancer"}) => {
     setSelectedClass(classData);
   };
 
+  const handleEditClass = (classData) => {
+    setClassToEdit(classData);
+    setIsAddModalOpen(true);
+  };
+
   return (
     <Container
       fluid
@@ -88,8 +94,6 @@ const Classes = ({ role = "dancer"}) => {
         setIsAddModalOpen={setIsAddModalOpen}
       />
 
-      {/* <DesktopNavigation weekDays={weekDays} navigateWeek={navigateWeek} /> */}
-
       <MobileNavigation
         role={role}
         searchQuery={searchQuery}
@@ -99,36 +103,29 @@ const Classes = ({ role = "dancer"}) => {
         navigateDay={navigateDay}
       />
 
-      {/* <WeekDaysHeader weekDays={weekDays} /> */}
-
       <div className="flex-1 overflow-auto">
         {role === "dancer" ? (
-        <SearchResults
-          filteredClasses={filteredClasses}
-          handleClassClick={handleClassClick}
-        />
+          <SearchResults
+            filteredClasses={filteredClasses}
+            handleClassClick={handleClassClick}
+          />
         ) : (
-          <>
-            {/* <DesktopCalendarGrid 
-              weekDays={weekDays} 
-              getDayClasses={getDayClasses} 
-              setSelectedDate={setSelectedDate} 
-              handleClassClick={handleClassClick} 
-            /> */}
-            
-            <MobileDayView 
-              selectedDate={selectedDate} 
-              getDayClasses={getDayClasses} 
-              setSelectedDate={setSelectedDate} 
-              handleClassClick={handleClassClick} 
-            />
-          </>
-        )} 
+          <MobileDayView
+            selectedDate={selectedDate}
+            getDayClasses={getDayClasses}
+            handleClassClick={handleClassClick}
+            handleEditClass={handleEditClass} // Pass handleEditClass to MobileDayView
+          />
+        )}
       </div>
 
       <AddClassModal
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setClassToEdit(null);
+        }}
+        classToEdit={classToEdit}
       />
 
       {selectedClass && (

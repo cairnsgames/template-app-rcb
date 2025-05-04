@@ -17,6 +17,8 @@ const LocationSelect = ({ onChange, ...props }) => {
     lng: '',
   });
 
+  console.log("selectedLocation", selectedLocation);
+
   const handleAddLocation = async () => {
     await createUserLocation(details);
     setShowModal(false);
@@ -43,10 +45,10 @@ const LocationSelect = ({ onChange, ...props }) => {
       <InputGroup className="mb-3">
         <Form.Select
           {...props}
-          value={selectedLocation}
+          value={selectedLocation?.id ?? 0}
           onChange={handleSelectChange} // Use the new handler
         >
-          <option value="">Select a location</option>
+          <option value="0">Select a location</option>
           {Array.isArray(userLocations) && userLocations.map((location) => (
             <option key={location.id} value={location.id}>
               {location.name}

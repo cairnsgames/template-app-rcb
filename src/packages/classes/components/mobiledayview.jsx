@@ -3,7 +3,7 @@ import { Card, Row, Col } from "react-bootstrap";
 import ClassCard from "./classcard";
 import WeekDaysHeader from "./weekdaysheader";
 
-const MobileDayView = ({ selectedDate, getDayClasses, handleClassClick }) => {
+const MobileDayView = ({ selectedDate, getDayClasses, handleClassClick, handleEditClass }) => {
   const dayClasses = getDayClasses(selectedDate);
 
   return (
@@ -15,6 +15,7 @@ const MobileDayView = ({ selectedDate, getDayClasses, handleClassClick }) => {
               key={cls.id}
               cls={cls}
               onClick={() => handleClassClick(cls)}
+              onEdit={() => handleEditClass(cls)} // Pass handleEditClass to ClassCard
               variant="mobile"
             />
             {dayClasses.length === 0 && (

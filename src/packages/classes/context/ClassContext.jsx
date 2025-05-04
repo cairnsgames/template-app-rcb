@@ -158,6 +158,15 @@ export const ClassProvider = ({ children, currentRole }) => {
   };
 
   const updateClass = (id, updatedClass) => {
+    fetch(`http://localhost/cairnsgames/php/kloko/api.php/event/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        app_id: tenant,
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updatedClass),
+    })
     setClasses(prev =>
       prev.map(cls => (cls.id === id ? { ...cls, ...updatedClass } : cls))
     );

@@ -4,8 +4,8 @@ import { startOfDay, endOfDay, startOfHour, addHours } from 'date-fns';
 import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 import LocationSelect from '../../kloko/LocationSelect';
 
-const AddClassModal = ({ isOpen, onClose }) => {
-  const { addClass } = useClasses();
+const AddClassModal = ({ isOpen, onClose, classToEdit }) => {
+  const { addClass, updateClass } = useClasses();
 
   const [formData, setFormData] = useState({
     title: '',
@@ -38,29 +38,26 @@ const AddClassModal = ({ isOpen, onClose }) => {
   }
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && classToEdit) {
+      setFormData({
+        ...classToEdit,
+        start_time: new Date(classToEdit.start_time).toISOString().slice(0, 16),
+        end_time: new Date(classToEdit.end_time).toISOString().slice(0, 16),
+        repeatPattern: { ...formData.repeatPattern, enabled: false },
+      });
+    } else if (isOpen) {
       const now = new Date();
       const nextHour = startOfHour(addHours(now, 1));
-      
-      // Format the date-time string in local timezone
-      const startTimeString = nextHour.getFullYear() + '-' +
-        String(nextHour.getMonth() + 1).padStart(2, '0') + '-' +
-        String(nextHour.getDate()).padStart(2, '0') + 'T' +
-        String(nextHour.getHours()).padStart(2, '0') + ':00';
-      
-      const endTime = addHours(nextHour, 1);
-      const endTimeString = endTime.getFullYear() + '-' +
-        String(endTime.getMonth() + 1).padStart(2, '0') + '-' +
-        String(endTime.getDate()).padStart(2, '0') + 'T' +
-        String(endTime.getHours()).padStart(2, '0') + ':00';
+      const startTimeString = nextHour.toISOString().slice(0, 16);
+      const endTimeString = addHours(nextHour, 1).toISOString().slice(0, 16);
 
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         start_time: startTimeString,
-        end_time: endTimeString
+        end_time: endTimeString,
       }));
     }
-  }, [isOpen]);
+  }, [isOpen, classToEdit]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,33 +65,19 @@ const AddClassModal = ({ isOpen, onClose }) => {
     const endDate = new Date(formData.end_time);
     const durationInMinutes = (endDate - startDate) / 60000;
     
-    const newClass = {
-      title: formData.title,
+    const classData = {
+      ...formData,
       start_time: startDate,
       end_time: endDate,
-      location: formData.location,
-      lat: formData.lat,
-      lng: formData.lng,
-      currency: formData.currency,
-      price: formData.price,
-      event_type: "class",
-      descriptions: formData.description,
-      keywords: formData.keywords,
       duration: durationInMinutes,
-      show_as_news: formData.show_as_news,
-      overlay_text: formData.overlay_text,
-      enable_bookings: formData.enable_bookings,
-      max_participants: formData.max_participants,
-      currentEnrollment: 0,
-      ...(formData.isMultiDay && { isMultiDay: true }),
-      ...(formData.repeatPattern.enabled && {
-        repeatPattern: {
-          type: formData.repeatPattern.type,
-          until: new Date(formData.repeatPattern.until)
-        }
-      })
     };
-    addClass(newClass);
+
+    if (classToEdit) {
+      updateClass(classToEdit.id, classData);
+    } else {
+      addClass(classData);
+    }
+
     onClose();
   };
 
@@ -188,7 +171,7 @@ const AddClassModal = ({ isOpen, onClose }) => {
   return (
     <Modal show={isOpen} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Add New Class</Modal.Title>
+        <Modal.Title>{classToEdit ? "Edit Class" : "Add New Class"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
@@ -272,7 +255,7 @@ const AddClassModal = ({ isOpen, onClose }) => {
               }
             />
           </Form.Group>
-          {!formData.isMultiDay && (
+          {!classToEdit && !formData.isMultiDay && (
             <Form.Check
               type="checkbox"
               id="repeatClass"
@@ -336,7 +319,7 @@ const AddClassModal = ({ isOpen, onClose }) => {
               Cancel
             </Button>
             <Button type="submit" variant="primary">
-              Add Class
+              {classToEdit ? "Update Class" : "Add Class"}
             </Button>
           </div>
         </Form>
