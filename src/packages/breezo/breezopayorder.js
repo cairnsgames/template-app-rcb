@@ -118,9 +118,6 @@ const BreezoPayNow = ({ id }) => {
         {activeOrder.status === "pending" && (
           <Row>
             <Col>
-              <PayNowButton onGetOrder={getOrder} onPaid={doPaid} />
-            </Col>
-            <Col>
               <PayGate onGetOrder={getOrder} onPaid={doPaid}  />
             </Col>
           </Row>
