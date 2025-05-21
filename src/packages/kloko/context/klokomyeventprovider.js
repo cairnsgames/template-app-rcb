@@ -491,7 +491,7 @@ export const KlokoMyEventProvider = ({
   };
 
   const updateEvent = async (event, ticketTypes, ticketOptions) => {
-    console.log("UPDATE EVENT", event, ticketTypes, ticketOptions);
+    console.log("UPDATE EVENT - myeventprovider", event, ticketTypes, ticketOptions);
     setLoading(true);
     try {
       const response = await fetch(

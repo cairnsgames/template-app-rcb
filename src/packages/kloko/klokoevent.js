@@ -35,6 +35,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const [duration, setDuration] = useState("");
   const [location, setLocation] = useState("");
   const [maxParticipants, setMaxParticipants] = useState("");
+  const [event, setEvent] = useState({});
   const [startTime, setStartTime] = useState(() => {
     const now = new Date();
     now.setMinutes(0, 0, 0); // Reset minutes and seconds to 0
@@ -86,6 +87,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
   useEffect(() => {
     if (id) {
       const eventToEdit = fetchEventById(id); // Fetch event data by ID
+      console.log("Event to edit", eventToEdit);
+      setEvent(eventToEdit);
       if (eventToEdit) {
         console.log("Event to edit", eventToEdit);
         setTitle(eventToEdit.title);
@@ -136,6 +139,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const eventData = {
+      ...event,
       title,
       description,
       currency,
