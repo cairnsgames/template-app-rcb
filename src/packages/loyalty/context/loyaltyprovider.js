@@ -24,7 +24,7 @@ export const LoyaltyProvider = ({ children }) => {
   // const { latlng } = useGeoLocation();
 
   const [loading, setLoading] = useState(false); // New loading state
-  const { user, token } = useUser();
+  const { user, token, getIdFromFullId } = useUser();
   const { addToast } = useToast();
 
   const headers = {
@@ -35,15 +35,18 @@ export const LoyaltyProvider = ({ children }) => {
 
   const fetchCustomer = () => {
     setLoading(true);
+    const userId = getIdFromFullId(customerId);
+    console.log("Fetching customer with ID:", customerId, userId);
     fetch(
       combineUrlAndPath(
         process.env.REACT_APP_LOYALTY_API,
-        `api.php/user/${customerId}`
+        `api.php/user/${userId}`
       ),
       { headers }
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log("Customer data fetched:", data);
         setCustomer(data[0]);
       })
       .catch((error) => console.error("Error fetching customer:", error))

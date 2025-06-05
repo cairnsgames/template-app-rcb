@@ -82,6 +82,7 @@ const QRCodeScanner = ({ onClose, onQRCode }) => {
 
   const handleNext = () => {
     if (onQRCode) {
+      console.log("Handle Next", scannedID);
       onQRCode(scannedID);
     }
   }
@@ -107,19 +108,19 @@ const QRCodeScanner = ({ onClose, onQRCode }) => {
               facingMode={cameraFacingMode}
               style={{ width: "100%" }}
             />
-            <InputGroup className="mb-3">
-              <InputGroup.Text>Customer ID</InputGroup.Text>
-              <Form.Control
-                value={scannedID || ''}
-                readOnly
-              />
-            </InputGroup>
+<InputGroup className="my-3">
+  <InputGroup.Text>Customer ID</InputGroup.Text>
+  <Form.Control
+    value={scannedID || ''}
+    onChange={(e) => setScannedID(e.target.value)} // Allow user input
+  />
+</InputGroup>
             <div className="d-flex justify-content-between mt-3">
               <Button variant="secondary" onClick={onClose}>Close</Button>
               <Button variant="secondary" onClick={switchCamera}><ArrowRepeat size={32} /></Button>              
               <Button variant="primary" disabled={!scannedID} onClick={handleNext}>Next</Button>
             </div>
-            {scannedID && (
+            {/* {scannedID && (
               <div style={{ position: "relative" }}>
                 <div
                   style={{
@@ -137,7 +138,7 @@ const QRCodeScanner = ({ onClose, onQRCode }) => {
                   {scannedID}
                 </div>
               </div>
-            )}
+            )} */}
           </>
         ) : (
           <div>Camera permissions are not set</div>

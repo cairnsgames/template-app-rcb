@@ -190,6 +190,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
     setTickets([])  ;
     setHasTicketOptions("no");
     setTicketOptions([]);
+    onClose();
   };
 
   useEffect(() => {

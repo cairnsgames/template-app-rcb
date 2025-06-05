@@ -98,7 +98,7 @@ const BreezoPayNow = ({ id }) => {
                   <td>{item.item_description}</td>
                   <td>{item.price}</td>
                   <td>{item.quantity}</td>
-                  <td>${(item.price * item.quantity).toFixed(2)}</td>
+                  <td>R{(item.price * item.quantity).toFixed(2)}</td>
                 </tr>
               ))
             ) : (
@@ -111,7 +111,7 @@ const BreezoPayNow = ({ id }) => {
 
         <div style={{ marginTop: "1rem", textAlign: "center" }}>
           <p>
-            <strong>Total Price:</strong> ${activeOrder.total_price}
+            <strong>Total Price:</strong> R{activeOrder.total_price}
           </p>
         </div>
 
