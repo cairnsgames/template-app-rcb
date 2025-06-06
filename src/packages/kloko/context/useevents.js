@@ -10,8 +10,8 @@ export const useEvents = () => {
     throw new Error("useEvents was used outside of its Provider");
   }
 
-  const { events } = context;
+  const { events, setEventId, activeEvent } = context;
 
-  return { events };
+  return { events, setEventId, activeEvent };
 }
 

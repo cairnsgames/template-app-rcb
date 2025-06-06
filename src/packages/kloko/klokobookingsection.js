@@ -32,12 +32,12 @@ const BookingSection = (props) => {
     }
   }, [ticketTypes]);
 
-  const fetchCart = async() => {
+  const fetchCart = async () => {
     if (user?.id) {
       const cartData = await fetchOrCreateCart();
       setCart(cartData);
     }
-  }
+  };
 
   useEffect(() => {
     console.log("User Changed", user);
@@ -56,7 +56,10 @@ const BookingSection = (props) => {
 
   const handleAddToCart = async () => {
     console.log("Adding to cart", cart);
-    if (!cart?.id) { console.log("No Cart"); return;}
+    if (!cart?.id) {
+      console.log("No Cart");
+      return;
+    }
 
     try {
       // Add ticket type or event price
@@ -181,40 +184,42 @@ const BookingSection = (props) => {
         </Form.Group>
       )}
 
-      <div className="d-flex align-items-center justify-content-end gap-3">
-        <div>
-          Total:{" "}
-          {ticketTypes?.length > 0
-            ? `${
-                ticketTypes.find((t) => t.id === selectedTicketType)?.currency
-              } ${
-                ((ticketTypes.find((t) => t.id === selectedTicketType)?.price ||
-                  0) +
-                  selectedOptions.reduce(
-                    (sum, optId) =>
-                      sum +
-                      (ticketOptions.find((opt) => opt.id === optId)?.price ||
-                        0),
-                    0
-                  )) *
-                quantity
-              }`
-            : `${event.currency} ${
-                (event.price +
-                  selectedOptions.reduce(
-                    (sum, optId) =>
-                      sum +
-                      (ticketOptions.find((opt) => opt.id === optId)?.price ||
-                        0),
-                    0
-                  )) *
-                quantity
-              }`}
+      {event.enable_bookiongs === "Y" && (
+        <div className="d-flex align-items-center justify-content-end gap-3">
+          <div>
+            Total:{" "}
+            {ticketTypes?.length > 0
+              ? `${
+                  ticketTypes.find((t) => t.id === selectedTicketType)?.currency
+                } ${
+                  ((ticketTypes.find((t) => t.id === selectedTicketType)
+                    ?.price || 0) +
+                    selectedOptions.reduce(
+                      (sum, optId) =>
+                        sum +
+                        (ticketOptions.find((opt) => opt.id === optId)?.price ||
+                          0),
+                      0
+                    )) *
+                  quantity
+                }`
+              : `${event.currency} ${
+                  (event.price +
+                    selectedOptions.reduce(
+                      (sum, optId) =>
+                        sum +
+                        (ticketOptions.find((opt) => opt.id === optId)?.price ||
+                          0),
+                      0
+                    )) *
+                  quantity
+                }`}
+          </div>
+          <Button variant="primary" onClick={handleAddToCart}>
+            Add to Cart
+          </Button>
         </div>
-        <Button variant="primary" onClick={handleAddToCart}>
-          Add to Cart
-        </Button>
-      </div>
+      )}
     </Form>
   );
 };

@@ -31,7 +31,7 @@ const MyNewsEditor = ({ id, onClose }) => {
     return futureDate.toISOString().split("T")[0]; // Format as YYYY-MM-DD
   });
   const [imageUrl, setImageUrl] = useState("");
-  const [overlayText, setOverlayText] = useState(true);
+  const [overlayText, setOverlayText] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
 
   const { addToast } = useToast();

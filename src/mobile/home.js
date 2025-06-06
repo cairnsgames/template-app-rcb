@@ -100,6 +100,7 @@ const Home = () => {
         footer: formatEventTime(event.start_time, event.end_time),
         overlayText: event.overlay_text === "Y",
         overlay: event.overlay_text,
+        taget: ""
       };
     });
   };

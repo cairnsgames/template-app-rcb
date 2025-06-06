@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useMyEvents from "./context/usemyevents";
+import { useEvents } from "./context/useevents";
 import { Button, Card, Spinner } from "react-bootstrap";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { formatEventDate, formatPrice } from "./eventfunctions";
@@ -7,7 +8,7 @@ import BookingSection from "./klokobookingsection";
 import Tracker from "../tracker/tracker";
 
 const KlokoEventDetail = ({ id }) => {
-  const { activeEvent, setEventId } = useMyEvents();
+  const { activeEvent, setEventId } = useEvents();
   
   useEffect(() => {
     if (id) {

@@ -30,7 +30,7 @@ const FullNewsItem = ({ id }) => {
         <HighlightText text={item.title} />
       </h2>
       <div className="news-footer">
-        <span>{item.author}</span>
+        <span>{item.author} {item.phone ? <span>({item.phone})</span> : null}</span>
         <span>{new Date(item.date).toLocaleDateString()}</span>
       </div>
       <p>
