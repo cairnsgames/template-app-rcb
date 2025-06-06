@@ -14,7 +14,7 @@ const Footer = () => {
           </Col>
         </Row>
         <Row>
-          <Col style={{fontSize: "smaller"}}>© 2024 Juzt.Dance</Col>
+          <Col style={{fontSize: "smaller"}}>© 2025 Juzt.Dance</Col>
         </Row>
       </Container>
     </footer>
