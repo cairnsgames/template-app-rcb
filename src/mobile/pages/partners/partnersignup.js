@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { usePartnerRoles } from "./usepartnerroles";
+import useUser from "../../../packages/auth/context/useuser";
 
 const PartnerSignupModal = ({ show, handleClose }) => {
   const [selectedRoles, setSelectedRoles] = useState([]);
@@ -13,7 +14,18 @@ const PartnerSignupModal = ({ show, handleClose }) => {
     payment_method: "",
     paypal_username: "",
   });
-  const { roles, roleList, updatePartnerRoles, bankingDetails } = usePartnerRoles();
+  
+  const [profile, setProfile] = useState({});
+  const { roles, roleList, updatePartnerRoles, bankingDetails } =
+    usePartnerRoles();
+  const { user, saveUser } = useUser();
+
+  useEffect(() => {
+    setProfile({
+      firstname: user?.firstname || "",
+      lastname: user?.lastname || "",
+    })
+  }, [user]);
 
   useEffect(() => {
     setSelectedRoles(roles || []);
@@ -21,22 +33,27 @@ const PartnerSignupModal = ({ show, handleClose }) => {
 
   useEffect(() => {
     // Ensure bankingDetails is not null or undefined
-    setBankDetails(bankingDetails || {
-      id: "",
-      partner_id: "",
-      bank_name: "",
-      account_number: "",
-      branch_code: "",
-      payment_method: "",
-      paypal_username: "",
-    });
+    setBankDetails(
+      bankingDetails || {
+        id: "",
+        partner_id: "",
+        bank_name: "",
+        account_number: "",
+        branch_code: "",
+        payment_method: "",
+        paypal_username: "",
+      }
+    );
   }, [bankingDetails]);
 
   const handleRoleChange = (role) => {
     if (hasRole(role)) {
       setSelectedRoles(selectedRoles.filter((r) => r.role_id !== role.id));
     } else {
-      setSelectedRoles([...selectedRoles, { role_id: role.id, name: role.name }]);
+      setSelectedRoles([
+        ...selectedRoles,
+        { role_id: role.id, name: role.name },
+      ]);
     }
   };
 
@@ -51,8 +68,21 @@ const PartnerSignupModal = ({ show, handleClose }) => {
     }));
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      [name]: value,
+    }));
+  };
+
   const handleJoin = () => {
     updatePartnerRoles(selectedRoles, bankDetails);
+    saveUser({
+      ...user,
+      firstname: profile.firstname,
+      lastname: profile.lastname,
+    });
     handleClose();
   };
 
@@ -67,6 +97,30 @@ const PartnerSignupModal = ({ show, handleClose }) => {
       </Modal.Header>
       <Modal.Body>
         <Form>
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group controlId="firstname">
+                <Form.Label>First Name / Venue Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="firstname"
+                  value={profile.firstname || ""}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="lastname">
+                <Form.Label>Last Name (optional)</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="lastname"
+                  value={profile.lastname || ""}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
           <Form.Group>
             <Form.Label>Select Your Role(s)</Form.Label>
             <Row>
@@ -110,7 +164,10 @@ const PartnerSignupModal = ({ show, handleClose }) => {
                 placeholder="Enter your PayPal username"
                 value={bankDetails.paypal_username}
                 onChange={(e) =>
-                  setBankDetails({ ...bankDetails, paypal_username: e.target.value })
+                  setBankDetails({
+                    ...bankDetails,
+                    paypal_username: e.target.value,
+                  })
                 }
               />
             </Form.Group>
@@ -125,7 +182,10 @@ const PartnerSignupModal = ({ show, handleClose }) => {
                   placeholder="Enter your Bank Name"
                   value={bankDetails.bank_name}
                   onChange={(e) =>
-                    setBankDetails({ ...bankDetails, bank_name: e.target.value })
+                    setBankDetails({
+                      ...bankDetails,
+                      bank_name: e.target.value,
+                    })
                   }
                 />
               </Form.Group>

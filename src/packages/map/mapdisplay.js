@@ -105,7 +105,7 @@ const MapControls = (props) => {
 };
 
 const MapDisplay = (props) => {
-  const { center, zoom, searchMapArea, markers } =
+  const { center, zoom, searchMapArea, markers, onClick } =
     useMapContext();
 
   const mapRef = useRef(null);
@@ -135,6 +135,13 @@ const MapDisplay = (props) => {
     };
   }, []);
 
+  const mapClick = (e) => {
+    console.log("Map clicked at:", e.latlng);
+    if (props.onClick) {
+      props.onClick(e);
+    }
+  }
+
   return (
     <div>
       <MapContainer
@@ -145,7 +152,7 @@ const MapDisplay = (props) => {
           mapRef.current = e.target;
           handleMapLoad();
         }}
-        onClick={props.onClick} // Added onClick event
+        onClick={mapClick} // Added onClick event
         style={{
           position: "absolute",
           top: props.offsetTop ?? "106px",

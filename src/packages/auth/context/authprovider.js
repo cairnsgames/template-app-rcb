@@ -279,6 +279,8 @@ const AuthenticationProvider = (props) => {
           permissions: data.permissions,
         };
         setUser(userDetails);
+
+        window.location.hash = "#";
         return data;
       })
       .catch((err) => {
@@ -293,15 +295,18 @@ const AuthenticationProvider = (props) => {
     const body = {
       code: email,
     };
-    return fetch(combineUrlAndPath(process.env.REACT_APP_AUTH_API, `magic.php`), {
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-        APP_ID: tenant,
-        deviceid: deviceId,
-      },
-      method: "POST",
-    })
+    return fetch(
+      combineUrlAndPath(process.env.REACT_APP_AUTH_API, `magic.php`),
+      {
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          APP_ID: tenant,
+          deviceid: deviceId,
+        },
+        method: "POST",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (typeof data === "string") {
@@ -314,11 +319,10 @@ const AuthenticationProvider = (props) => {
           onError("Auth: Unable to complete Magic Link Request", err);
         }
       });
-
   };
 
   const loginWithMagicLink = (magiccode) => {
-    console.log
+    console.log;
     const body = {
       code: magiccode,
     };

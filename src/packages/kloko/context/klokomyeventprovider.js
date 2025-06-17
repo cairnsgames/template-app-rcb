@@ -104,14 +104,11 @@ export const KlokoMyEventProvider = ({
   }, [activeCalendar]);
 
   useEffect(() => {
-    console.log("MyEvents", myEvents);
     const order = myEvents.find((event) => event.id === Number(eventId));
     if (order) {
-      console.log("Setting Event", order);
       setActiveEvent(order);
       return;
     }
-    console.log("Fetching active event");
     fetchActiveEvent();
   }, [eventId, myEvents]);
 

@@ -66,10 +66,10 @@ const Routing = () => {
         <MagicCodePage />
       </Route>
       <Route is={"referral"}>
-        <MobileAuth mode="register" onSuccess={goProfile} onClose={goHome} />
+        <MobileAuth mode="register" onSuccess={goHome} onClose={goHome} />
       </Route>
       <Route is={"register"}>
-        <MobileAuth mode="register" onSuccess={goProfile} onClose={goHome} />
+        <MobileAuth mode="register" onSuccess={goHome} onClose={goHome} />
       </Route>
 
       <Route is={"home"}>{isLoggedIn ? <Home /> : <LandingPage />}</Route>

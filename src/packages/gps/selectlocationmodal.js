@@ -35,12 +35,14 @@ const SelectLocationModal = ({ onSelectLocation }) => {
 
   const markers = marker ? [marker] : [];
 
-  const selectMapLocation = (latlng) => {
+  const selectMapLocation = (e) => {
+    const latlng = e.latlng || e;
     console.log("selectMapLocation", latlng);
-    setPosition([latlng[0].toFixed(3), latlng[1].toFixed(3)]);
+    setPosition([latlng.lat.toFixed(3), latlng.lng.toFixed(3)]);
     setMarker({
-      lat: latlng[0],
-      lng: latlng[1],
+      id: "NEWMARKER",
+      lat: latlng.lat,
+      lng: latlng.lng,
     });
   };
 

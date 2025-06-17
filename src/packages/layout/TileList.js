@@ -5,8 +5,6 @@ import TicketTile from "./TicketTile";
 const TileList = ({ images, onClick }) => {
   const sortedImages = images.sort((a, b) => b.priority - a.priority);
 
-  console.log("TileList", images);
-
   return (
     <>
       {sortedImages.map((data, index) => {

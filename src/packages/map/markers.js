@@ -13,8 +13,9 @@ const Markers = ({ markers }) => {
       showCoverageOnHover={false}
     >
       {markers.map((marker, index) => {
+        console.log("Marker", marker);
         return (
-          <Tracker itemtype="map.pin" id={marker.id}>
+          <Tracker key={marker.id} itemtype="map.pin" id={marker.id}>            
             <Marker
               key={index}
               position={[marker.lat, marker.lng]}

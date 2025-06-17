@@ -38,6 +38,11 @@ const UserLocationManagement = () => {
   }, [selectedLocation]);
 
   const handleSave = async () => {
+    if (!details.name.trim()) {
+      alert("Location name is required.");
+      return;
+    }
+
     if (details.default === 1) {
       // Ensure only one location is set as default
       await Promise.all(
@@ -97,41 +102,59 @@ const UserLocationManagement = () => {
       }}>
         Add Location
       </Button>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Show on Map</th>
-            <th>Default</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userLocations.map((location) => (
-            <tr key={location.id}>
-              <td>{location.name}</td>
-              <td>{getLocationAddress(location)}</td>
-              <td>{location.showonmap === 1 ? "Yes" : "No"}</td>
-              <td>{location.default === 1 ? "Yes" : "No"}</td>
-              <td>
-                <ButtonGroup>
-                <Button variant="outline-primary" onClick={() => handleEdit(location)}>
-                  <Pencil /> {/* Pencil icon for Edit */}
-                </Button>
-                <Button
-                  variant="outline-primary"
-                  onClick={() => handleDelete(location.id)}
-                >
-                  <Trash /> {/* Trash icon for Delete */}
-                </Button>
-                </ButtonGroup>
-              </td>
+      <div className="d-none d-md-block">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Show on Map</th>
+              <th>Default</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-
+          </thead>
+          <tbody>
+            {userLocations.map((location) => (
+              <tr key={location.id}>
+                <td>{location.name}</td>
+                <td>{getLocationAddress(location)}</td>
+                <td>{location.showonmap === 1 ? "Yes" : "No"}</td>
+                <td>{location.default === 1 ? "Yes" : "No"}</td>
+                <td>
+                  <ButtonGroup>
+                    <Button variant="outline-primary" onClick={() => handleEdit(location)}>
+                      <Pencil />
+                    </Button>
+                    <Button variant="outline-primary" onClick={() => handleDelete(location.id)}>
+                      <Trash />
+                    </Button>
+                  </ButtonGroup>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+      <div className="d-block d-md-none">
+        {userLocations.map((location) => (
+          <div key={location.id} className="card mb-3">
+            <div className="card-body">
+              <h5 className="card-title">{location.name}</h5>
+              <p className="card-text">{getLocationAddress(location)}</p>
+              <p className="card-text">Show on Map: {location.showonmap === 1 ? "Yes" : "No"}</p>
+              <p className="card-text">Default: {location.default === 1 ? "Yes" : "No"}</p>
+              <ButtonGroup>
+                <Button variant="outline-primary" onClick={() => handleEdit(location)}>
+                  <Pencil />
+                </Button>
+                <Button variant="outline-primary" onClick={() => handleDelete(location.id)}>
+                  <Trash />
+                </Button>
+              </ButtonGroup>
+            </div>
+          </div>
+        ))}
+      </div>
       <LocationEditModal
         show={showModal}
         handleClose={() => setShowModal(false)}

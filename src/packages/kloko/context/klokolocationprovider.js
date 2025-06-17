@@ -107,6 +107,7 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
           body: JSON.stringify({
             user_id: user.id,
             location_id: newLocation.id,
+            default: locationData.default || false,
           }),
         }
       );

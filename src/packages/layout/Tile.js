@@ -31,8 +31,6 @@ const Tile = ({ data, onClick }) => {
     raw = {},
   } = data;
 
-  console.log("Tile", data);
-
   const link = "https://juzt.dance#ticket?event=" + raw?.event_id;
 
   const size = 128,

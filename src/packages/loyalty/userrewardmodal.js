@@ -32,7 +32,7 @@ const UserRewardModal = ({
       // fullscreen={window.innerWidth <= 768 ? true : undefined}
     >
       <Modal.Header closeButton>
-        <Modal.Title>{customer?.firstname}'s Stamps & Rewards</Modal.Title>
+        <Modal.Title>{customer?.firstname || "Customer"}'s Stamps & Rewards</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="text-center">
