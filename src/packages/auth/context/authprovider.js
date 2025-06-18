@@ -422,7 +422,12 @@ const AuthenticationProvider = (props) => {
         },
         method: "POST",
       }
-    ).catch((err) => {
+    )
+    .then ((res) => res.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
       if (onError) {
         onError("Auth: Unable to complete Change Password", err);
       }

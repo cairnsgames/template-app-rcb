@@ -52,8 +52,12 @@ function ChangePasswordForm(props) {
     try {
       console.log("Change Password", id, oldPassword, code, newPassword, confirmPassword)
       const response = await changePassword(id, oldPassword === "" ? code : oldPassword, newPassword, confirmPassword);
+      console.log("Change Password Response", response);
       if (response && response.message === "Password changed.") {
         setSuccessMessage("Your password has been successfully updated.");
+        setTimeout(() => {
+          window.location.hash = "";
+        }, 1000);
       } else {
         setError("Unable to update your password. Please try again.");
       }
@@ -64,7 +68,7 @@ function ChangePasswordForm(props) {
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-      <Row className="mb-3">
+      <Row className="my-3">
         {error && <Alert variant="danger">{error}</Alert>}
         {successMessage && <Alert variant="success">{successMessage}</Alert>}
         {props.validateOldPassword && (
