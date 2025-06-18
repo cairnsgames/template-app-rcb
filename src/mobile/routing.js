@@ -31,6 +31,8 @@ import PageFull from "../parts/pagelayouts/pagefull";
 import ClassesPage from "../packages/classes/ClassesPage";
 import MyClassesPage from "../packages/classes/MyClassesPage";
 
+import ChangePasswordPage from "../pages/auth/changepasswordpage";
+
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("../pages/admin/admin"));
@@ -64,6 +66,9 @@ const Routing = () => {
       </Route>
       <Route is={"magic"}>
         <MagicCodePage />
+      </Route>
+      <Route is={"reset"}>
+        <ChangePasswordPage />
       </Route>
       <Route is={"referral"}>
         <MobileAuth mode="register" onSuccess={goHome} onClose={goHome} />

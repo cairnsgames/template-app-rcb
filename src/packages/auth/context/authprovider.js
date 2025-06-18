@@ -424,7 +424,7 @@ const AuthenticationProvider = (props) => {
       }
     ).catch((err) => {
       if (onError) {
-        onError("Auth: Unable to complete Chnage Password", err);
+        onError("Auth: Unable to complete Change Password", err);
       }
     });
   };

@@ -4,11 +4,6 @@ import { useAuth } from "../../auth/context/useauth";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
-// import useTranslation from "../../translation/usetranslation";
-
-// interface ILoginProps {
-//   onLogin?: (result: any) => void;
-// }
 
 const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
   const [validated, setValidated] = useState(false);
@@ -21,7 +16,6 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
   const [errors, setErrors] = useState();
   const [warning, setWarning] = useState();
 
-  // const { t } = useTranslation();
   const t = (key) => key;
 
   const handleSubmit = (event) => {
