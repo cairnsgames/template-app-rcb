@@ -52,7 +52,7 @@ function ChangePasswordForm(props) {
     try {
       console.log("Change Password", id, oldPassword, code, newPassword, confirmPassword)
       const response = await changePassword(id, oldPassword === "" ? code : oldPassword, newPassword, confirmPassword);
-      if (response && response.success) {
+      if (response && response.message === "Password changed.") {
         setSuccessMessage("Your password has been successfully updated.");
       } else {
         setError("Unable to update your password. Please try again.");
