@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import useBookings from "./context/usebookings";
-import useMyEvents from "./context/usemyevents";
+import useEvents from "./context/useevents";
 import useUser from "../auth/context/useuser";
 import eventing from "../eventing/eventing";
 import useTenant from "../tenant/context/usetenant";
@@ -11,7 +11,7 @@ const BookingSection = (props) => {
   const { cancelBooking } = useBookings();
   const { user } = useUser();
   const { tenant } = useTenant();
-  const { TicketTypes, TicketOptions } = useMyEvents();
+  const { ticketTypes, ticketOptions } = useEvents();
   const { fetchOrCreateCart, addItemToCart } = useCart();
   const [cart, setCart] = useState(null);
   const { event } = props;
@@ -21,10 +21,8 @@ const BookingSection = (props) => {
   );
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  console.log("TicketTypes", TicketTypes);
-  console.log("TicketOptions", TicketOptions);
-  const { data: ticketTypes, loading: ticketTypesLoading } = TicketTypes;
-  const { data: ticketOptions, loading: ticketOptionsLoading } = TicketOptions;
+  console.log("TicketTypes", ticketTypes);
+  console.log("TicketOptions", ticketOptions);
 
   useEffect(() => {
     if (ticketTypes?.length > 0 && !selectedTicketType) {
@@ -126,7 +124,6 @@ const BookingSection = (props) => {
 
   return (
     <Form>
-      {ticketTypesLoading && <div>Loading ticket types...</div>}
       {ticketTypes?.length > 0 ? (
         <>
           <Form.Group className="mb-3">
@@ -167,7 +164,6 @@ const BookingSection = (props) => {
         </Form.Group>
       )}
 
-      {ticketOptionsLoading && <div>Loading ticket options...</div>}
       {ticketOptions?.length > 0 && (
         <Form.Group className="mb-3">
           <Form.Label>Additional Options</Form.Label>
@@ -184,7 +180,7 @@ const BookingSection = (props) => {
         </Form.Group>
       )}
 
-      {event.enable_bookiongs === "Y" && (
+      {event.enable_bookings === "Y" && (
         <div className="d-flex align-items-center justify-content-end gap-3">
           <div>
             Total:{" "}

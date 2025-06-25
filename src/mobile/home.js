@@ -40,7 +40,8 @@ const Home = () => {
   }, [tickets]);
 
   useEffect(() => {
-    if (events.length > 0) {
+    
+    if (events?.length > 0) {
       setEventCards([]);
     }
     if (events) {
@@ -89,7 +90,8 @@ const Home = () => {
 
   const eventsAsCards = (events) => {
     console.log("EVENTS AS NEWS", events);
-    return events.map((event) => {
+    const eventsForNews = events.filter(ev => ev.show_as_news === "Y");
+    return eventsForNews.map((event) => {
       return {
         type: "event",
         id: event.id,

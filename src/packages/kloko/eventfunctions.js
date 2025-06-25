@@ -20,7 +20,7 @@ export const formatEventDate = (start_time, end_time) => {
 
 
 
-export const formatPrice = (currency, amount) => {
+export const formatPrice = (currency = "ZAR", amount) => {
   // Map each currency to its most appropriate locale
   const currencyLocaleMap = {
     USD: 'en-US',  // US Dollar

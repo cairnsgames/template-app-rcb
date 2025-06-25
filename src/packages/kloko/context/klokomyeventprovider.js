@@ -20,6 +20,7 @@ export const KlokoMyEventProvider = ({
   useSettings,
 }) => {
   const [calendars, setCalendars] = useState([]);
+  const [events, setEvents] = React.useState([]);
   const [myEvents, setMyEvents] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [userBookings, setUserBookings] = useState([]); // New state for user bookings
@@ -31,8 +32,10 @@ export const KlokoMyEventProvider = ({
   const [searchResults, setSearchResults] = useState([]);
   const [headers, setHeaders] = useState({});
   const [canFetch, setCanFetch] = useState(false);
-  const [setsearchCriteria, setSearchCriteria] = useState({});
+  const [searchCriteria, setSearchCriteria] = useState({});
   const [tickets, setTickets] = useState([]);
+  const [ticketTypes, setTicketTypes] = useState([]);
+  const [ticketOptions, setTicketOptions] = useState([]);
 
   if (!process.env.REACT_APP_KLOKO_API) {
     throw new Error(
@@ -50,21 +53,6 @@ export const KlokoMyEventProvider = ({
       fetchTickets();
     }
   }, [user?.id]);
-
-  const TicketTypes = useFetch(
-    combineUrlAndPath(
-      process.env.REACT_APP_KLOKO_API,
-      `api.php/event/${eventId}/tickets`
-    ),
-    { headers }
-  );
-  const TicketOptions = useFetch(
-    combineUrlAndPath(
-      process.env.REACT_APP_KLOKO_API,
-      `api.php/event/${eventId}/options`
-    ),
-    { headers }
-  );
 
   const fetchTickets = async () => {
     setLoading(true);
@@ -89,6 +77,30 @@ export const KlokoMyEventProvider = ({
     setLoading(false);
   };
 
+    const fetchEvents = async () => {
+      console.log("FETCHING EVENTS")
+      try {
+        setLoading(true);
+        const response = await fetch(
+          combineUrlAndPath(
+            process.env.REACT_APP_KLOKO_API,
+            `api.php/events`
+          ),
+          {
+            method: "POST",
+            headers: headers,
+          }
+        );
+        const data = await response.json();
+        console.log("EVENTS", data);
+        setEvents(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user events:", error);
+        setLoading(false);
+      }
+    };
+
   useEffect(() => {
     if (canFetch) {
       fetchCalendars();
@@ -98,15 +110,21 @@ export const KlokoMyEventProvider = ({
   }, [canFetch]);
 
   useEffect(() => {
-    if (activeCalendar) {
-      fetchMyEvents(activeCalendar);
+    if (user) {
+      fetchMyEvents(user);
+      fetchEvents();
     }
-  }, [activeCalendar]);
+  }, [user]);
 
   useEffect(() => {
-    const order = myEvents.find((event) => event.id === Number(eventId));
-    if (order) {
-      setActiveEvent(order);
+    let ev = myEvents.find((event) => event.id === Number(eventId));
+    if (ev) {
+      setActiveEvent(ev);
+      return;
+    }
+    ev = events.find((event) => event.id === Number(eventId));
+    if (ev) {
+      setActiveEvent(ev);
       return;
     }
     fetchActiveEvent();
@@ -115,6 +133,8 @@ export const KlokoMyEventProvider = ({
   useEffect(() => {
     if (activeEvent) {
       fetchBookings(activeEvent);
+      fetchTicketTypesByEventId(activeEvent.id);
+      fetchTicketOptionsByEventId(activeEvent.id);
     }
   }, [activeEvent]);
 
@@ -181,12 +201,13 @@ export const KlokoMyEventProvider = ({
   };
 
   // Fetch events
-  const fetchMyEvents = async (calendarId = activeCalendar.id) => {
+  const fetchMyEvents = async (user) => {
+    console.log("KLOKO, fetch my events", user);
     setLoading(true);
     fetch(
       combineUrlAndPath(
         process.env.REACT_APP_KLOKO_API,
-        `api.php/calendar/${calendarId}/events`
+        `api.php/user/${user.id}/events`
       ),
       { headers }
     )
@@ -208,6 +229,7 @@ export const KlokoMyEventProvider = ({
   };
 
   const fetchTicketTypesByEventId = async (eventId) => {
+    console.log("FETCHING TICKET TYPES", eventId);
     setLoading(true);
     try {
       const response = await fetch(
@@ -218,10 +240,11 @@ export const KlokoMyEventProvider = ({
         { headers }
       );
       const data = await response.json();
-      return data;
+      console.log("TICKET TYPES", data);
+      setTicketTypes(data);
     } catch (error) {
       console.error("Error fetching ticket types:", error);
-      return [];
+      setTicketTypes([]);
     } finally {
       setLoading(false);
     }
@@ -238,10 +261,10 @@ export const KlokoMyEventProvider = ({
       );
       const data = await response.json();
       console.log("TICKET OPTIONS", data);
-      return data;
+      setTicketOptions(data);
     } catch (error) {
       console.error("Error fetching ticket options:", error);
-      return [];
+      setTicketOptions([]);
     } finally {
       setLoading(false);
     }
@@ -703,11 +726,11 @@ export const KlokoMyEventProvider = ({
   };
   const refetchSearch = () => {
     searchEventListing(
-      setsearchCriteria.lat,
-      setsearchCriteria.lng,
-      setsearchCriteria.type,
-      setsearchCriteria.from,
-      setsearchCriteria.to
+      searchCriteria.lat,
+      searchCriteria.lng,
+      searchCriteria.type,
+      searchCriteria.from,
+      searchCriteria.to
     );
   };
   const randomEventListing = async (lat, lng, type, from, to) => {
@@ -747,6 +770,7 @@ export const KlokoMyEventProvider = ({
   const values = useMemo(
     () => ({
       calendars,
+      events,
       myEvents,
       tickets,
       eventId,
@@ -780,11 +804,12 @@ export const KlokoMyEventProvider = ({
       searchEventListing,
       refetchSearch,
       upcomingEvents,
-      TicketTypes,
-      TicketOptions,
+      ticketTypes,
+      ticketOptions,
     }),
     [
       calendars,
+      events,
       myEvents,
       bookings,
       userBookings, // Add userBookings to dependencies

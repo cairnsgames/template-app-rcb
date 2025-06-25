@@ -105,7 +105,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
         setMaxParticipants(eventToEdit.max_participants);
         setOverlayText(eventToEdit.overlay_text === "Y");
         setEnableBookings(eventToEdit.enable_bookings === "Y");
-        setShowInNews(eventToEdit.show_in_news === "Y");
+        setShowInNews(eventToEdit.show_as_news === "Y");
         setHasTicketOptions(eventToEdit.options === "yes" ? "yes" : "no");
         setHasTicketTypes(eventToEdit.tickettypes);
         setDurationType(eventToEdit.period_type);
@@ -152,11 +152,11 @@ const KlokoEventEditor = ({ id, onClose }) => {
       start_time: startTime,
       end_time: endTime,
       enable_bookings: enableBookings ? "Y" : "N",
-      show_in_news: showInNews ? "Y" : "N",
+      show_as_news: showInNews ? "Y" : "N",
       overlay_text: overlayText ? "Y" : "N",
       period_type: durationType,
-      ticketTypes: hasTicketTypes,
-      ticketOptions: hasTicketOptions,
+      tickettypes: hasTicketTypes,
+      ticketoptions: hasTicketOptions,
     };
     if (isFileSelected) {
       console.log("Uploading file...");

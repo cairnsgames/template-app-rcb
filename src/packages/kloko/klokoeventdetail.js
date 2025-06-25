@@ -46,7 +46,7 @@ const KlokoEventDetail = ({ id }) => {
           </small>
         </Card.Footer>
 
-        {activeEvent.enable_bookings && (
+        {activeEvent.enable_bookings === "Y" && (
           <Card.Footer>
             <BookingSection event={activeEvent} />
           </Card.Footer>
