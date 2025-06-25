@@ -9,12 +9,14 @@ import Tracker from "../tracker/tracker";
 
 const KlokoEventDetail = ({ id }) => {
   const { activeEvent, setEventId } = useEvents();
+  console.log("Kloko Event Detail", id, activeEvent);
   
   useEffect(() => {
+    console.log("Setting Event ID", id);
     if (id) {
       setEventId(id);
     }
-  }, [id]);
+  }, []);
 
   if (!activeEvent) {
     return (

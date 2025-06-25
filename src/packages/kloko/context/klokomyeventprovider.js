@@ -117,6 +117,7 @@ export const KlokoMyEventProvider = ({
   }, [user]);
 
   useEffect(() => {
+    console.log("KLOKO, useEffect - eventId changed", eventId);
     let ev = myEvents.find((event) => event.id === Number(eventId));
     if (ev) {
       setActiveEvent(ev);
@@ -128,10 +129,12 @@ export const KlokoMyEventProvider = ({
       return;
     }
     fetchActiveEvent();
-  }, [eventId, myEvents]);
+  }, [eventId, myEvents, events]);
 
   useEffect(() => {
+    console.log("ACTIVE EVENT changed", activeEvent);
     if (activeEvent) {
+      console.log("ACTIVE EVENT CHANGED", activeEvent);
       fetchBookings(activeEvent);
       fetchTicketTypesByEventId(activeEvent.id);
       fetchTicketOptionsByEventId(activeEvent.id);
