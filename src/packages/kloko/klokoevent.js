@@ -38,9 +38,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const [event, setEvent] = useState({});
   const [startTime, setStartTime] = useState(() => {
     const now = new Date();
-    now.setMinutes(0, 0, 0); // Reset minutes and seconds to 0
-    now.setHours(now.getHours() + 1); // Set to the start of the next hour
-    return now.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
+    now.setMinutes(0, 0, 0); 
+    now.setHours(now.getHours() + (24 * 7 + 1));
+    return now.toISOString().slice(0, 16); 
   });
   const [endTime, setEndTime] = useState("");
   const [enableBookings, setEnableBookings] = useState(true);
@@ -138,6 +138,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const startTimePlus1Hour = new Date(new Date(startTime).getTime() + 60 * 60 * 1000).toISOString().slice(0, 16);
+
     const eventData = {
       ...event,
       title,
@@ -150,7 +153,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
       location,
       max_participants: maxParticipants,
       start_time: startTime,
-      end_time: endTime,
+      end_time: (endTime < startTime) ? startTimePlus1Hour : endTime,
       enable_bookings: enableBookings ? "Y" : "N",
       show_as_news: showInNews ? "Y" : "N",
       overlay_text: overlayText ? "Y" : "N",
