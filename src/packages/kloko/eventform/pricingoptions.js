@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import TicketLines from "./ticketline";
+import { Input } from "postcss";
 
 const PricingOptions = ({
   hasTicketTypes,
@@ -20,9 +21,9 @@ const PricingOptions = ({
     <div className="border p-2 my-3">
       <h3>Pricing and Tickets</h3>
       <Form.Group controlId="hasTicketTypes">
-        <Form.Label>Ticket Type</Form.Label>
+        {/* <Form.Label>Ticket Type</Form.Label>
         <InputGroup>
-          <Form.Check
+           <Form.Check
             type="radio"
             label="Fixed Price"
             name="hasTicketTypes"
@@ -30,17 +31,20 @@ const PricingOptions = ({
             value="fixed"
             checked={hasTicketTypes === "fixed"}
             onChange={() => setHasTicketTypes("fixed")}
-          />
+          /> 
           <Form.Check
             type="radio"
-            label="Different Tickets"
+            label="Different Ticket Types"
             name="hasTicketTypes"
             className="ms-3"
             value="different"
             checked={hasTicketTypes === "different"}
             onChange={() => setHasTicketTypes("different")}
           />
+          <Form.Text className="ms-3">Press the add ticket type button [+] to add a new ticket. Examples of ticket types could be Full Day Pass, or Half Day Pass.</Form.Text>
 
+        </InputGroup> */}
+        <InputGroup>
           <Form.Check
             type="checkbox"
             enabled={hasTicketTypes === "different" ? true : false}
@@ -52,6 +56,9 @@ const PricingOptions = ({
               setHasTicketOptions(hasTicketOptions === "yes" ? "no" : "yes")
             }
           />
+          <Form.Text className="ms-3">
+            If you have different options such as Dinner to be Included, or Buying a branded T-Shirt
+            </Form.Text>
         </InputGroup>
       </Form.Group>
 
@@ -84,6 +91,7 @@ const PricingOptions = ({
           header="Types of Tickets"
           lines={tickets}
           setLines={setTickets}
+          FormText={<>Press the add ticket type button [+] to add a new ticket. Examples of ticket types could be Full Day Pass, or Half Day Pass.<br/>If you only have one ticket type, just add it as a single row.</>}
         />
       )}
       {hasTicketOptions === "yes" && (
@@ -91,6 +99,7 @@ const PricingOptions = ({
           header="Ticket Options"
           lines={ticketOptions}
           setLines={setTicketOptions}
+          FormText="Press the add ticket option button [+] to add a new option. Examples of options could be Dinner to be Included, or Buying a branded T-Shirt."
         />
       )}
     </div>

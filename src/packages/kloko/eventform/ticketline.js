@@ -2,11 +2,12 @@ import React from "react";
 import { Button, Form } from "react-bootstrap";
 import { Plus, Trash } from "react-bootstrap-icons";
 
-const TicketLines = ({ header, lines, setLines }) => {
+const TicketLines = ({ header, lines, setLines, FormText }) => {
   return (
     <div className="mt-3">
       <div className="d-flex justify-content-between align-items-center">
         <h4 className="text-muted">{header}</h4>
+        
         <Button
           variant="outline-primary"
           onClick={() =>
@@ -19,6 +20,7 @@ const TicketLines = ({ header, lines, setLines }) => {
           <Plus />
         </Button>
       </div>
+        <Form.Text className="ms-3">{FormText}</Form.Text>
 
       <table className="table">
         <thead>

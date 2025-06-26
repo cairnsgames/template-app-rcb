@@ -216,7 +216,7 @@ export const KlokoMyEventProvider = ({
     )
       .then((response) => response.json())
       .then((data) => {
-        setMyEvents(data);
+        setMyEvents(data ?? []);
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
@@ -766,9 +766,9 @@ export const KlokoMyEventProvider = ({
     randomEventListing(-26.06, 27.9, "Salsa", "2024-07-21", "2024-07-21");
   }, [user, token]);
 
-  const upcomingEvents = myEvents.filter(
-    (ev) => new Date(ev.end_time) > new Date()
-  );
+  const upcomingEvents = Array.isArray(myEvents)
+    ? myEvents.filter((ev) => new Date(ev.end_time) > new Date())
+    : [];
 
   const values = useMemo(
     () => ({

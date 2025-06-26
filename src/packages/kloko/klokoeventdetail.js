@@ -37,7 +37,6 @@ const KlokoEventDetail = ({ id }) => {
           style={{ height: "100%", width: "100%", maxHeight: "50vh", objectFit: 'contain' }}
         />
         <Card.Body>
-          EVENT DETAIL
           <Card.Title>{activeEvent.title}</Card.Title>
           {activeEvent.description}
           <div>Price: {formatPrice(activeEvent.currency, activeEvent.price)}</div>

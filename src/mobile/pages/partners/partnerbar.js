@@ -4,6 +4,7 @@ import {
   Balloon,
   Calendar,
   Cart,
+  Gear,
   Heart,
   InfoCircle,
   Map,
@@ -12,6 +13,7 @@ import {
 import Bar from "../../../components/react-bootstrap-mobile/bar";
 import useUser from "../../../packages/auth/context/useuser";
 import "./partnerbar.scss";
+import PartnerSignupModal from "./partnersignup";
 
 const PartnerBar = () => {
   const { user, hasAccess } = useUser();
@@ -57,6 +59,9 @@ const PartnerBar = () => {
       </Nav.Link>
       <Nav.Link eventKey="#locations">
         <Map className="ms-1" />
+      </Nav.Link>
+      <Nav.Link eventKey="#partner">
+        <Gear className="ms-1" />
       </Nav.Link>
     </Bar>
   );

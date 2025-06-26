@@ -27,16 +27,16 @@ const KlokoEvents = () => {
     }
   };
 
-  const sortedEvents = myEvents.sort((a, b) => {
-    const compareValue = sortOrder === "asc" ? 1 : -1;
+  const sortedEvents = (myEvents || []).sort((a, b) => {
+        const compareValue = sortOrder === "asc" ? 1 : -1;
 
-    if (sortOption === "title") {
-      return a.title.localeCompare(b.title) * compareValue;
-    } else if (sortOption === "start_time") {
-      return (new Date(a.start_time) - new Date(b.start_time)) * compareValue;
-    }
-    return 0;
-  });
+        if (sortOption === "title") {
+          return a.title.localeCompare(b.title) * compareValue;
+        } else if (sortOption === "start_time") {
+          return (new Date(a.start_time) - new Date(b.start_time)) * compareValue;
+        }
+        return 0;
+      });
 
   // Filter events based on the showOldEvents state
   const filteredEvents = sortedEvents.filter((event) => {

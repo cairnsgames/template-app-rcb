@@ -10,8 +10,10 @@ import PartnerCard from "./partnercard";
 import useMyEvents from "../packages/kloko/context/usemyevents";
 import { formatPrice } from "../packages/kloko/eventfunctions";
 import Tracker from "../packages/tracker/tracker";
+import { useUser } from "../packages/auth/context/useuser";
 
 const Home = () => {
+  const { hasAccess } = useUser();
   const { newsItems } = useNews();
 
   const { events } = useEvents();
@@ -146,49 +148,49 @@ const Home = () => {
         <TileList images={eventCards} onClick={showEvent} />
         <TileList images={ticketCards} onClick={showEvent} />
         
-        <PartnerCard />
+        {!hasAccess("Partner") && <PartnerCard />}
       </TilesLayout>
       </Tracker>
     </Container>
   );
 
-  return (
-    <Container fluid className="px-2">
-      <Row>
-        <Col xs={12} md={6} lg={4} xl={3}>
-          <FloatingCard
-            className="m-3 m-3"
-            style={{ backgroundColor: "purple" }}
-          >
-            <FloatingCard.Header>
-              <div className="text-center">Partner Program</div>
-            </FloatingCard.Header>
-            <FloatingCard.Body>
-              <div
-                className="fw-bold text-center"
-                style={{ fontSize: "small" }}
-              >
-                We support all vendors associated directly and indirectly with
-                the dance community value chain. We offer a Loyalty Program,
-                ticketing and scheduling support, community news and more...
-              </div>
-            </FloatingCard.Body>
-            <FloatingCard.Footer>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => (window.location.href = "#partner")}
-              >
-                Join now
-              </Button>
-            </FloatingCard.Footer>
-          </FloatingCard>
-        </Col>
-        <NewsItems items={3} layout="card" onClick={showNews} />
-        <EventItems items={3} layout="card" onClick={showEvent} />
-      </Row>
-    </Container>
-  );
+  // return (
+  //   <Container fluid className="px-2">
+  //     <Row>
+  //       <Col xs={12} md={6} lg={4} xl={3}>
+  //         <FloatingCard
+  //           className="m-3 m-3"
+  //           style={{ backgroundColor: "purple" }}
+  //         >
+  //           <FloatingCard.Header>
+  //             <div className="text-center">Partner Program</div>
+  //           </FloatingCard.Header>
+  //           <FloatingCard.Body>
+  //             <div
+  //               className="fw-bold text-center"
+  //               style={{ fontSize: "small" }}
+  //             >
+  //               We support all vendors associated directly and indirectly with
+  //               the dance community value chain. We offer a Loyalty Program,
+  //               ticketing and scheduling support, community news and more...
+  //             </div>
+  //           </FloatingCard.Body>
+  //           <FloatingCard.Footer>
+  //             <Button
+  //               variant="secondary"
+  //               size="sm"
+  //               onClick={() => (window.location.href = "#partner")}
+  //             >
+  //               Join now
+  //             </Button>
+  //           </FloatingCard.Footer>
+  //         </FloatingCard>
+  //       </Col>
+  //       <NewsItems items={3} layout="card" onClick={showNews} />
+  //       <EventItems items={3} layout="card" onClick={showEvent} />
+  //     </Row>
+  //   </Container>
+  // );
 };
 
 export default Home;

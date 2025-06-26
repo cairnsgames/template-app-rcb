@@ -47,7 +47,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const [showInNews, setShowInNews] = useState(false);
   const [overlayText, setOverlayText] = useState(false);
   const [durationType, setDurationType] = useState("duration");
-  const [hasTicketTypes, setHasTicketTypes] = useState("fixed");
+  const [hasTicketTypes, setHasTicketTypes] = useState("different");
   const [tickets, setTickets] = useState([]);
   const [hasTicketOptions, setHasTicketOptions] = useState("no");
   const [ticketOptions, setTicketOptions] = useState([]);
