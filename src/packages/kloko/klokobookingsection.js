@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Alert } from "react-bootstrap";
 import useBookings from "./context/usebookings";
 import useEvents from "./context/useevents";
 import useUser from "../auth/context/useuser";
@@ -20,6 +20,8 @@ const BookingSection = (props) => {
     ticketTypes?.length > 0 ? ticketTypes[0].id : null
   );
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   console.log("TicketTypes", ticketTypes);
   console.log("TicketOptions", ticketOptions);
@@ -52,12 +54,18 @@ const BookingSection = (props) => {
     return <strong>Event is full</strong>;
   }
 
+  const handleClose = () => {
+    window.location.hash = "#home";
+  };
+
   const handleAddToCart = async () => {
     console.log("Adding to cart", cart);
     if (!cart?.id) {
       console.log("No Cart");
       return;
     }
+
+    setIsButtonDisabled(true);
 
     try {
       // Add ticket type or event price
@@ -105,7 +113,8 @@ const BookingSection = (props) => {
         }
       }
 
-      // Could trigger a cart refresh or show success message here
+      // Show success message
+      setAlertMessage("Your tickets have been added to your cart");
 
       eventing.publish("breezo", "reload", cart);
     } catch (error) {
@@ -181,40 +190,57 @@ const BookingSection = (props) => {
       )}
 
       {event.enable_bookings === "Y" && (
-        <div className="d-flex align-items-center justify-content-end gap-3">
-          <div>
-            Total:{" "}
-            {ticketTypes?.length > 0
-              ? `${
-                  ticketTypes.find((t) => t.id === selectedTicketType)?.currency
-                } ${
-                  ((ticketTypes.find((t) => t.id === selectedTicketType)
-                    ?.price || 0) +
-                    selectedOptions.reduce(
-                      (sum, optId) =>
-                        sum +
-                        (ticketOptions.find((opt) => opt.id === optId)?.price ||
-                          0),
-                      0
-                    )) *
-                  quantity
-                }`
-              : `${event.currency} ${
-                  (event.price +
-                    selectedOptions.reduce(
-                      (sum, optId) =>
-                        sum +
-                        (ticketOptions.find((opt) => opt.id === optId)?.price ||
-                          0),
-                      0
-                    )) *
-                  quantity
-                }`}
+        <>
+          {alertMessage && (
+            <Alert variant="success" className="w-100">
+              {alertMessage}
+            </Alert>
+          )}
+          <div className="d-flex align-items-center justify-content-end gap-3">
+            <div>
+              Total:{" "}
+              {ticketTypes?.length > 0
+                ? `${
+                    ticketTypes.find((t) => t.id === selectedTicketType)
+                      ?.currency
+                  } ${
+                    ((ticketTypes.find((t) => t.id === selectedTicketType)
+                      ?.price || 0) +
+                      selectedOptions.reduce(
+                        (sum, optId) =>
+                          sum +
+                          (ticketOptions.find((opt) => opt.id === optId)?.price ||
+                            0),
+                        0
+                      )) *
+                    quantity
+                  }`
+                : `${event.currency} ${
+                    (event.price +
+                      selectedOptions.reduce(
+                        (sum, optId) =>
+                          sum +
+                          (ticketOptions.find((opt) => opt.id === optId)?.price ||
+                            0),
+                        0
+                      )) *
+                    quantity
+                  }`}
+            </div>
+            <Button
+              variant="primary"
+              onClick={handleAddToCart}
+              disabled={isButtonDisabled}
+            >
+              Add to Cart
+            </Button>
+            {isButtonDisabled && (
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            )}
           </div>
-          <Button variant="primary" onClick={handleAddToCart}>
-            Add to Cart
-          </Button>
-        </div>
+        </>
       )}
     </Form>
   );

@@ -11,8 +11,19 @@ const EventDetails = ({
   maxParticipants,
   setMaxParticipants,
 }) => {
+  const handleHomeRedirect = () => {
+    window.location.hash = "#home";
+  };
+
   return (
-    <div className="border p-2 my-3">
+    <div className="border p-2 my-3 position-relative">
+      <button
+        className="btn btn-danger position-absolute"
+        style={{ top: "10px", right: "10px" }}
+        onClick={handleHomeRedirect}
+      >
+        X
+      </button>
       <h3>Event Details</h3>
       <Form.Group controlId="title">
         <Form.Label>Title</Form.Label>
