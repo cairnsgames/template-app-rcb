@@ -52,6 +52,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const [hasTicketOptions, setHasTicketOptions] = useState("no");
   const [ticketOptions, setTicketOptions] = useState([]);
   const [latlng, setLatlng] = useState({ lat: 0, lng: 0 });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;
@@ -134,7 +135,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
+    setIsSubmitted(true); // Disable submit button immediately
+
     const startTimePlus1Hour = new Date(new Date(startTime).getTime() + 60 * 60 * 1000).toISOString().slice(0, 16);
 
     const eventData = {
@@ -149,7 +152,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
       location,
       max_participants: maxParticipants,
       start_time: startTime,
-      end_time: (endTime < startTime) ? startTimePlus1Hour : endTime,
+      end_time: endTime < startTime ? startTimePlus1Hour : endTime,
       enable_bookings: enableBookings ? "Y" : "N",
       show_as_news: showInNews ? "Y" : "N",
       overlay_text: overlayText ? "Y" : "N",
@@ -157,17 +160,20 @@ const KlokoEventEditor = ({ id, onClose }) => {
       tickettypes: hasTicketTypes,
       ticketoptions: hasTicketOptions,
     };
+
     if (isFileSelected) {
       const fileName = await uploadFile(fileInputRef.current.files);
       eventData.image = extractFileName(
         combineUrlAndPath(process.env.REACT_APP_FILES, fileName)
       );
     }
+
     if (id) {
       await updateEvent(eventData, tickets, ticketOptions); // Update event if ID is present
     } else {
       await createEvent(eventData, tickets, ticketOptions); // Create event if no ID
     }
+
     // Reset form fields after submission
     setTitle("");
     setDescription("");
@@ -257,7 +263,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
         <Button
           variant="primary"
           type="submit"
-          disabled={loading || fileLoading}
+          disabled={loading || fileLoading || isSubmitted}
         >
           {loading || fileLoading ? (
             <Spinner animation="border" size="sm" />
