@@ -18,7 +18,7 @@ const EventDetails = ({
   return (
     <div className="border p-2 my-3 position-relative">
       <button
-        className="btn btn-danger position-absolute"
+        className="btn position-absolute"
         style={{ top: "10px", right: "10px" }}
         onClick={handleHomeRedirect}
       >

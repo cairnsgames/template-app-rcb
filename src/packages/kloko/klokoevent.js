@@ -195,9 +195,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
   // }, [location]);
 
   return (
-    <Div onHide={onClose}>
+    <Div>
       <Form onSubmit={handleSubmit}>
-        <h2>{id ? "Edit Event" : "Create Event"}</h2>
 
         <EventDetails
           title={title}

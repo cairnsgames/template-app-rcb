@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { CloseButton } from 'react-bootstrap';
-import './div.scss';
+import React, { useState } from "react";
+import { CloseButton } from "react-bootstrap";
+import "./div.scss";
 
 const Div = ({ children, onHide, className, style, ...props }) => {
   const [isRendered, setIsRendered] = useState(true);
@@ -16,7 +16,9 @@ const Div = ({ children, onHide, className, style, ...props }) => {
     e.stopPropagation(); // Prevent click event propagation
     setIsVisible(false);
     if (onHide) {
-      setTimeout(() => { onHide() }, 300); // Wait for the animation to finish
+      setTimeout(() => {
+        onHide();
+      }, 300); // Wait for the animation to finish
     }
   };
 
@@ -24,13 +26,19 @@ const Div = ({ children, onHide, className, style, ...props }) => {
 
   return (
     <div
-      className={`div-container ${!isVisible ? 'hidden' : ''} ${className}`}
+      className={`div-container ${!isVisible ? "hidden" : ""} ${className}`}
       style={style}
       onTransitionEnd={handleAnimationEnd}
       {...props}
     >
       {children}
-      <CloseButton onClick={handleClose} className="close-button pe-3 pt-2" style={{zIndex: 100}} />
+      {onHide && (
+        <CloseButton
+          onClick={handleClose}
+          className="close-button pe-3 pt-2"
+          style={{ zIndex: 100 }}
+        />
+      )}
     </div>
   );
 };

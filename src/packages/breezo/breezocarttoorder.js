@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Spinner, Alert } from "react-bootstrap";
+import { Button, Form, Spinner, Alert, ListGroup } from "react-bootstrap";
 import { TrashFill } from "react-bootstrap-icons";
 import { useCart } from "./context/usecart";
 import { useOrders } from "./context/useorders";
@@ -66,29 +66,33 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
 
   return (
     <PayPalScriptProvider options={initialOptions}>
-      <div>
+      <div className="mt-3">
         <h3>Your Cart</h3>
 
-        <ul>
+        <ListGroup>
           {cartItems.map((item) => (
-            <div key={item.id}>
+            <ListGroup.Item key={item.id}>
               <div>
-              {item.quantity} x {item.title} - {item.currency}{Number(item.price).toFixed(2)}
-                <Button variant="outline-primary" className="float-end">
-                  <TrashFill
-                    onClick={() => {
-                      deleteItem(item.id);
-                    }}
-                  />
+                {item.quantity} x {item.title} - {item.currency}{Number(item.price).toFixed(2)}
+                <Button
+                  variant="outline-primary"
+                  className="float-end"
+                  onClick={() => {
+                    deleteItem(item.id);
+                  }}
+                  size="sm"
+                >
+                  <TrashFill />
                 </Button>
               </div>
               <div style={{ fontSize: "0.8em" }}>{item.start_time}</div>
-            </div>
+            </ListGroup.Item>
           ))}
-        </ul>
+        </ListGroup>
 
-        
-        <div className="text-end">Total: <strong>{currency}{calculateTotal}</strong></div>
+        <div className="text-end mt-2">
+          Total: <strong>{currency}{calculateTotal}</strong>
+        </div>
 
         {needAddress && (
           <Form>
@@ -115,16 +119,7 @@ const CartToOrder = ({paypalclientId = "Ab0yjA8p7PebhbjRYAr7T1_F2tvN9Rq2B2DH-4Jh
 
         {!paid && (
           <div className="mt-3">
-            {/* <Button onClick={handlePlaceOrder} disabled={orderLoading}>
-            {orderLoading ? (
-              <Spinner animation="border" size="sm" />
-            ) : (
-              "Place Order"
-            )}
-          </Button> */}
-            {/* <PayNowButton onGetOrder={getOrder} onPaid={() => setPaid(true)} />            */}
-              
-            <PayGate onGetOrder={getOrder} onPaid={doPaid}  />
+            <PayGate onGetOrder={getOrder} onPaid={doPaid} />
           </div>
         )}
       </div>
