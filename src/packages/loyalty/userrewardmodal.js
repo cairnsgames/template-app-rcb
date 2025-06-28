@@ -12,13 +12,7 @@ const UserRewardModal = ({
   onAddStamp,
   onRedeemReward,
 }) => {
-  console.log(
-    "$$$ UserrewwardModal",
-    show,
-    customer,
-    customerStamps,
-    customerRewards
-  );
+
   const stampsCollected =
     (Array.isArray(customerStamps) && customerStamps[0]?.stamps_collected) || 0;
   const rewardsEarned = customerRewards?.length ?? 0;

@@ -83,11 +83,9 @@ const CapturePhoto = ({ show, onPhoto, onQRCode, onClose, onId }) => {
       const code = jsQR(imageData.data, imageData.width, imageData.height);
 
       const id = getIdFromUrl(code?.data);
-      console.log("$$$ id captured", id);
       if (id && onId) {
           onId(id);
       } else if (code && onQRCode) {
-        console.log("$$$ QR Code:", code.data);
         onQRCode(code.data); // Return the decoded text from the QR code
       } else {
         setError("No QR code found");

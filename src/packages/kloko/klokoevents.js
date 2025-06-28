@@ -40,10 +40,6 @@ const KlokoEvents = () => {
 
   // Filter events based on the showOldEvents state
   const filteredEvents = sortedEvents.filter((event) => {
-    if (event.id === 24) {
-      console.log("Event", event, new Date(event.start_time) >= new Date() ||
-      new Date(event.end_time) >= new Date());
-    }
     return (
       showOldEvents ||
       new Date(event.start_time) >= new Date() ||
@@ -55,7 +51,6 @@ const KlokoEvents = () => {
     window.location.href = `#events/${eventId}`;
   }
 
-  console.log("Kloko Events: Filtered Events", filteredEvents);
 
   if (loading) {
     return (

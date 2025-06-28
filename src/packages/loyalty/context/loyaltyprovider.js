@@ -36,7 +36,6 @@ export const LoyaltyProvider = ({ children }) => {
   const fetchCustomer = () => {
     setLoading(true);
     const userId = getIdFromFullId(customerId);
-    console.log("Fetching customer with ID:", customerId, userId);
     fetch(
       combineUrlAndPath(
         process.env.REACT_APP_LOYALTY_API,
@@ -46,7 +45,6 @@ export const LoyaltyProvider = ({ children }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("Customer data fetched:", data);
         setCustomer(data[0]);
       })
       .catch((error) => console.error("Error fetching customer:", error))
@@ -220,11 +218,7 @@ export const LoyaltyProvider = ({ children }) => {
 
   const addUserStamp = (systemId, id) => {
     setLoading(true);
-    // console.log("==== Position", latlng.latitude, latlng.longitude);
-    console.log("Adding stamp without GeoPosition")
     const body = {
-      // lat: latlng.latitude,
-      // lng: latlng.longitude,
     }
     return fetch(
       combineUrlAndPath(

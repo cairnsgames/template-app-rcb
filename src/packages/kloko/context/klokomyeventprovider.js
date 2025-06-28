@@ -69,7 +69,6 @@ export const KlokoMyEventProvider = ({
         }
       );
       const data = await response.json();
-      console.log("TICKETS", data);
       setTickets(data);
     } catch (error) {
       console.error("Error fetching tickets:", error);
@@ -78,7 +77,6 @@ export const KlokoMyEventProvider = ({
   };
 
     const fetchEvents = async () => {
-      console.log("FETCHING EVENTS")
       try {
         setLoading(true);
         const response = await fetch(
@@ -92,7 +90,6 @@ export const KlokoMyEventProvider = ({
           }
         );
         const data = await response.json();
-        console.log("EVENTS", data);
         setEvents(data);
         setLoading(false);
       } catch (error) {
@@ -117,7 +114,6 @@ export const KlokoMyEventProvider = ({
   }, [user]);
 
   useEffect(() => {
-    console.log("KLOKO, useEffect - eventId changed", eventId);
     let ev = myEvents.find((event) => event.id === Number(eventId));
     if (ev) {
       setActiveEvent(ev);
@@ -132,9 +128,7 @@ export const KlokoMyEventProvider = ({
   }, [eventId, myEvents, events]);
 
   useEffect(() => {
-    console.log("ACTIVE EVENT changed", activeEvent);
     if (activeEvent) {
-      console.log("ACTIVE EVENT CHANGED", activeEvent);
       fetchBookings(activeEvent);
       fetchTicketTypesByEventId(activeEvent.id);
       fetchTicketOptionsByEventId(activeEvent.id);
@@ -205,7 +199,6 @@ export const KlokoMyEventProvider = ({
 
   // Fetch events
   const fetchMyEvents = async (user) => {
-    console.log("KLOKO, fetch my events", user);
     setLoading(true);
     fetch(
       combineUrlAndPath(
@@ -232,7 +225,6 @@ export const KlokoMyEventProvider = ({
   };
 
   const fetchTicketTypesByEventId = async (eventId) => {
-    console.log("FETCHING TICKET TYPES", eventId);
     setLoading(true);
     try {
       const response = await fetch(
@@ -243,7 +235,6 @@ export const KlokoMyEventProvider = ({
         { headers }
       );
       const data = await response.json();
-      console.log("TICKET TYPES", data);
       setTicketTypes(data);
     } catch (error) {
       console.error("Error fetching ticket types:", error);
@@ -263,7 +254,6 @@ export const KlokoMyEventProvider = ({
         { headers }
       );
       const data = await response.json();
-      console.log("TICKET OPTIONS", data);
       setTicketOptions(data);
     } catch (error) {
       console.error("Error fetching ticket options:", error);
@@ -514,7 +504,6 @@ export const KlokoMyEventProvider = ({
   };
 
   const updateEvent = async (event, ticketTypes, ticketOptions) => {
-    console.log("UPDATE EVENT - myeventprovider", event, ticketTypes, ticketOptions);
     setLoading(true);
     try {
       const response = await fetch(
@@ -534,11 +523,9 @@ export const KlokoMyEventProvider = ({
       );
 
       ticketTypes.map((t) => {
-        console.log("TICKET TYPE", t);
         createOrUpdateTicket(t);
       });
       ticketOptions.map((o) => {
-        console.log("TICKET OPTION", o);
         createOrUpdateTicketOption(o);
       });
 
@@ -570,7 +557,6 @@ export const KlokoMyEventProvider = ({
   };
 
   const createBooking = async (booking) => {
-    console.log("Creating booking", booking);
     setLoading(true);
     try {
       const response = await fetch(

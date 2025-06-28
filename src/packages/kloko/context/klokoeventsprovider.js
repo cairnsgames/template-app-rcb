@@ -27,7 +27,6 @@ export const KlokoEventsProvider = ({ children, user, tenant, token }) => {
   }, [eventId, events]);
 
   React.useEffect(() => {
-    console.log("Fetching Events for user", user)
     if (user) {
       fetchEvents();
     }

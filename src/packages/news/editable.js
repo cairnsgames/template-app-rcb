@@ -30,8 +30,6 @@ const MarkdownEditor = ({text}) => {
   const saveAsMarkdown = () => {
     const converter = new showdown.Converter();
     const markdown = converter.makeMarkdown(htmlContent);
-    console.log(markdown);
-    // Save markdown as needed (e.g., to a server or file)
   };
 
   return (

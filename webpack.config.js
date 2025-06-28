@@ -8,7 +8,6 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = (_, argv) => {
   console.log("====================================");
   console.log("Webpack Config", argv.mode);
-  console.log("Environment", process.env.NODE_ENV);
   console.log("====================================");
   return {
     resolve: {

@@ -87,10 +87,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
   useEffect(() => {
     if (id) {
       const eventToEdit = fetchEventById(id); // Fetch event data by ID
-      console.log("Event to edit", eventToEdit);
       setEvent(eventToEdit);
       if (eventToEdit) {
-        console.log("Event to edit", eventToEdit);
         setTitle(eventToEdit.title);
         setDescription(eventToEdit.description);
         setStartTime(eventToEdit.start_time);
@@ -114,7 +112,6 @@ const KlokoEventEditor = ({ id, onClose }) => {
         const fetchTicketTypes = async () => {
           // Fetch ticket types based on the event ID
           const ticketTypes = await fetchTicketTypesByEventId(id);
-          console.log("****** Ticket Types", ticketTypes);
           setTickets(ticketTypes);
         };
         fetchTicketTypes();
@@ -123,7 +120,6 @@ const KlokoEventEditor = ({ id, onClose }) => {
         const fetchTicketOptions = async () => {
           // Fetch ticket options based on the event ID
           const options = await fetchTicketOptionsByEventId(id);
-          console.log("TICKET OPTIONS", options);
           setTicketOptions(options);
         };
         fetchTicketOptions();
@@ -162,9 +158,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
       ticketoptions: hasTicketOptions,
     };
     if (isFileSelected) {
-      console.log("Uploading file...");
       const fileName = await uploadFile(fileInputRef.current.files);
-      console.log("File Uploaded", fileName);
       eventData.image = extractFileName(
         combineUrlAndPath(process.env.REACT_APP_FILES, fileName)
       );
@@ -196,9 +190,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
     onClose();
   };
 
-  useEffect(() => {
-    console.log("LOCATION", location);
-  }, [location]);
+  // useEffect(() => {
+  //   console.log("LOCATION", location);
+  // }, [location]);
 
   return (
     <Div onHide={onClose}>

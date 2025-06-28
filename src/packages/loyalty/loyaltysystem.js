@@ -59,7 +59,6 @@ const Loyalty = () => {
   };
 
   const captureId = (id) => {
-    console.log("Scanned ID", id);
     setShowCamera(false);
     setCustomerId(id);
     setShowCustomer(true);

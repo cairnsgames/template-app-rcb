@@ -56,7 +56,6 @@ export const NewsProvider = ({ children }) => {
   }, []);
 
   const fetchMyNewsItems = async () => {
-    console.log("*** News *** Fetching my news items");
     if (!user) {
       setError("User not authenticated");
       return;
@@ -92,7 +91,6 @@ export const NewsProvider = ({ children }) => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("*** News *** News item created", data);
           addToast("News", "News item created", "Success");
           fetchMyNewsItems();
         });

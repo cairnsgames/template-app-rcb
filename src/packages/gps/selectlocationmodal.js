@@ -37,7 +37,6 @@ const SelectLocationModal = ({ onSelectLocation }) => {
 
   const selectMapLocation = (e) => {
     const latlng = e.latlng || e;
-    console.log("selectMapLocation", latlng);
     setPosition([latlng.lat.toFixed(3), latlng.lng.toFixed(3)]);
     setMarker({
       id: "NEWMARKER",

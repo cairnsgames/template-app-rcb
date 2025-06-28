@@ -84,20 +84,16 @@ const ProfileForm = () => {
     setLoading(true);
     let avatarUrl = profile.avatar;
 
-    console.log("Profile", profile);
 
     if (profile.avatar && typeof profile.avatar === "string" && profile.avatar.startsWith("data:image")) {
       const avatarFile = base64ToFile(profile.avatar, "avatar.jpg");
       const fileArray = [avatarFile];
       let file = await uploadFile(fileArray);
-      console.log("File uploaded", file);
       avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, file);
     } else if (isFileSelected) {
       const file = await uploadFile(fileInputRef.current.files);
-      console.log("Image File uploaded", file);
       avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, file);
     }
-    console.log("Avatar URL", avatarUrl, );
 
     const updatedProfile = { ...profile, avatar: avatarUrl };
     saveUser(updatedProfile);
@@ -113,7 +109,6 @@ const ProfileForm = () => {
   };
 
   const handleIdCapture = (id) => {
-    console.log("Captured ID:", id);
   };
 
   if (!profile) {

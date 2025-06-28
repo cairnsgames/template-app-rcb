@@ -5,7 +5,6 @@ import useUser from '../../mocks/providers/useuser';
 
 const UserDetailsTab = () => {
   const { user } = useUser();
-  console.log("**** USER", user)
 
   return (
     <>

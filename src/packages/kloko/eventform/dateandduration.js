@@ -11,7 +11,6 @@ const DateAndDuration = ({
   duration,
   setDuration,
 }) => {
-  console.log("DURATION", durationType, startTime, endTime, duration);
   return (
     <div className="border p-2 my-3">
       <h3>Date and Duration</h3>

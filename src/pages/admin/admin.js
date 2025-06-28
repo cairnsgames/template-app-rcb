@@ -13,7 +13,6 @@ const AdminRoutes = () => {
     return <h1>Access Denied</h1>;
   }
 
-  console.log("AdminRoutes - looking for ", hash);
   return (
     <Membership>
       <Router>

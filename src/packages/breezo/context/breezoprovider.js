@@ -45,7 +45,6 @@ export const BreezoProvider = ({
   }
 
   const eventReload = () => {
-    console.log("Eventing: Reload Breezo Data");
     fetchCarts();
     fetchOrders();
   };
@@ -58,7 +57,6 @@ export const BreezoProvider = ({
   }, [user, token]);
 
   useEffect(() => {
-    console.log("Find Active Order", orders, activeOrderId)
     if (orders.length > 0 && activeOrderId) {
       const order = orders.find((o) => o.id === Number(activeOrderId));
       setActiveOrder(order);
@@ -69,7 +67,6 @@ export const BreezoProvider = ({
 
   useEffect(() => {
     if (canFetch) {
-      console.log("Can Fetch Changed");
       fetchCarts();
       fetchOrders();
       fetchInvoices();
@@ -87,14 +84,12 @@ export const BreezoProvider = ({
 
   useEffect(() => {
     if (canFetch) {
-      console.log("Carts Changed");
       fetchCartItems();
     }
   }, [carts]);
 
   // Fetch carts
   const fetchCarts = async () => {
-    console.log("Fetch Carts")
     setLoading(true);
     try {
       const response = await fetch(
@@ -114,7 +109,6 @@ export const BreezoProvider = ({
 
   // Fetch cart items
   const fetchCartItems = async () => {
-    console.log("Fetch Cart Items")
     if (carts.length === 0) {
       setCartItems([]);
       return;
@@ -264,7 +258,6 @@ export const BreezoProvider = ({
         ),
         { method: "DELETE", headers }
       );
-      console.log("Delete Cart Item")
       setCartItems((prev) => prev.filter((c) => c.id !== itemId));
       fetchCarts();
       setLoading(false);
@@ -276,7 +269,6 @@ export const BreezoProvider = ({
 
   const fetchOrCreateCart = async () => {
     setLoading(true);
-    console.log("Fetch or create Cart")
     try {
       const response = await fetch(
         combineUrlAndPath(
@@ -325,7 +317,6 @@ export const BreezoProvider = ({
       cartId = await fetchOrCreateCart();
     }
     setLoading(true);
-    console.log("Add Item to Cart")
     try {
       const response = await fetch(
         combineUrlAndPath(process.env.REACT_APP_BREEZO_API, "api.php/cart_item"),
@@ -341,7 +332,6 @@ export const BreezoProvider = ({
           }),
         }
       );
-      console.log("Add Item to Cart")
       eventing.publish("breezo", "reload", {});
       await fetchCartItems();
       return response.json();

@@ -5,11 +5,8 @@ import { formatDate, formatStartEndTime } from "./functions";
 import useUser from "../../auth/context/useuser";
 
 const ClassCard = ({ cls, onClick, onEdit, variant = "desktop" }) => {
-  console.log("ClassCard", cls, variant);
   const { user } = useUser();
   const isTeacher = Number(user?.id) === Number(cls.instructor_id);
-
-  console.log("User", user?.id, cls.instructor_id, isTeacher);
 
   const onClickClass = (e) => {
     e.stopPropagation();

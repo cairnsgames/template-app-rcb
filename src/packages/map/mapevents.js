@@ -11,7 +11,6 @@ const MapEvents = (props) => {
   const map = useMapEvents({
     
     click(e) {
-      console.log("Map clicked at:", e.latlng);
       if (onMapClick) onMapClick(e);
     },
     findMe: () => {

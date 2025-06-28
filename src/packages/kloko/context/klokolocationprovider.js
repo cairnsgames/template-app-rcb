@@ -152,7 +152,6 @@ export const KlokoLocationProvider = ({ children, user, tenant, token }) => {
         id: id,
         default: locationData.default,
       }
-      console.log("locationDefaultBody", locationDefaultBody);
       const locationDefaultResponse = await fetch(
         combineUrlAndPath(
           process.env.REACT_APP_KLOKO_API,

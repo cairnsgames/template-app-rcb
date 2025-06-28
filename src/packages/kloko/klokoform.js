@@ -13,7 +13,6 @@ const KlokoForm = ({ onClose, event }) => {
   });
 
   const {activeEvent } = useEvents();
-  console.log("ACTVIE EVENT", activeEvent);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +21,6 @@ const KlokoForm = ({ onClose, event }) => {
 
   const handleBooking = (formData) => {
     const { email, firstName, lastName, phoneNumber } = formData;
-    console.log("Creating Booking", event.id, email, firstName, lastName, phoneNumber);
     createBooking({event_id: event.id, email, firstName, lastName, phoneNumber});
   };
 

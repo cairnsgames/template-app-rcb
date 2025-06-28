@@ -30,7 +30,6 @@ const BreezoPayNow = ({ id }) => {
     return activeOrder;
   };
   const doPaid = () => {
-    console.log("PAID");
     orderPaid();
     window.location.hash = "#payorder/thankyou";
   };

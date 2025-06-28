@@ -63,14 +63,9 @@ const QRCodeScanner = ({ onClose, onQRCode }) => {
   }, []);
   
   const handleScan = async (scannedData) => {
-    console.log("Handle Scan", scannedData)
-    console.log("Handle Scan [0]", scannedData[0])
     if (scannedData) {
       const data = scannedData[0].rawValue;
-      console.log("Scanned URL: ", data);
-      // const urlParams = new URLSearchParams(data.text.split("?")[1]);
       const id = await getIdFromUrl(data);
-      console.log("GET ID FROM URL", id);
       setScannedID(id);
       setIsScanning(false);
     }
@@ -82,7 +77,6 @@ const QRCodeScanner = ({ onClose, onQRCode }) => {
 
   const handleNext = () => {
     if (onQRCode) {
-      console.log("Handle Next", scannedID);
       onQRCode(scannedID);
     }
   }

@@ -64,7 +64,6 @@ const CapturePhoto = ({
 
   const processId = (id) => {
     const tempId = getIdFromFullId(`${id}`);
-    console.log("$$$ Id, tempid", id, tempId);
     if (tempId && onId) {
       onId(tempId);
     }
@@ -104,11 +103,9 @@ const CapturePhoto = ({
       const code = jsQR(imageData.data, imageData.width, imageData.height);
 
       const id = await getIdFromUrl(code?.data);
-      console.log("$$$ id captured", id);
       if (id && onId) {
         processId(id);
       } else if (code && onQRCode) {
-        console.log("$$$ QR Code:", code.data);
         onQRCode(code.data); // Return the decoded text from the QR code
       } else {
         setError(`No QR code found, use the customer ID instead.`);

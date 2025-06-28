@@ -10,11 +10,8 @@ const Ticket = (props) => {
     className,
     style,
   } = props;
-  console.log("Ticket Props", props);
   const [isExpanded, setIsExpanded] = useState(false);
   const ticketRef = useRef(null);
-
-  console.log("ticket", ticket);
 
   const handleClick = () => {
     setIsExpanded(true);
@@ -50,7 +47,6 @@ const Ticket = (props) => {
 };
 
 const TicketDescription = ({ ticket }) => {
-  console.log("Ticket", ticket);
   const start_time = ticket.start_time ?? ticket.raw?.start_time;
   const end_time = ticket.end_time ?? ticket.raw?.end_time;
 

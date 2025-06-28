@@ -22,8 +22,6 @@ const KlokoMyEvents = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [showOldEvents, setShowOldEvents] = useState(false);
 
-  console.log("Kloko Events: My Events", myEvents);
-
   const handleAdd = () => {
     setEditItemId(null);
     setShowEditor(true);

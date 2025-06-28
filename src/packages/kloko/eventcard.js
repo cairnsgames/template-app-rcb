@@ -8,8 +8,6 @@ import { formatEventDate, formatPrice } from "./eventfunctions";
 const EventCard = ({ item, onClick }) => {
   const overlayText = item?.overlay_text === "Y" ?? false;
 
-  console.log("EventCard", item);
-
   return (
     <Col xs={12} md={6} lg={4}>
       <FloatingCard

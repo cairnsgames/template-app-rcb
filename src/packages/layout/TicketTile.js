@@ -34,7 +34,6 @@ const TicketTile = ({ data, onClick }) => {
     raw = {},
   } = data;
 
-  console.log("Ticket Tile", data);
   const item = data;
 
   const link = "https://juzt.dance#ticket?event=" + raw?.event_id;

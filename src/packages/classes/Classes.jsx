@@ -27,8 +27,6 @@ const Classes = ({ role = "dancer"}) => {
   const [classToEdit, setClassToEdit] = useState(null);
   const { classes } = useClasses(role);
 
-  console.log("Classes to display:", classes);
-
   const filteredClasses = searchQuery
     ? classes.filter((cls) =>
         cls.title.toLowerCase().includes(searchQuery.toLowerCase())

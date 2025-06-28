@@ -9,10 +9,8 @@ const EventDisplay = ({ item, onClick, layout }) => {
 
 export const EventItems = ({ count, layout, onClick }) => {
   const { events } = useEvents(); 
-  console.log("Upcoming Events", events);
   const items = events.filter(ev => ev.show_as_news === "Y").slice(0, count);
   
-  console.log("EVENTS", items);
   return (
     <>
       {items.map((item) => {

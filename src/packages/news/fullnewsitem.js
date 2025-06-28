@@ -16,8 +16,6 @@ const FullNewsItem = ({ id }) => {
     return <div>News item not found</div>;
   }
 
-  console.log("convertToMarkdown(item.body)", convertToMarkdown(item.body));
-
   return (
     <Tracker itemtype="news.detail" id={id}>
     

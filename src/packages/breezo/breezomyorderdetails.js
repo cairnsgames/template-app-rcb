@@ -7,10 +7,7 @@ const BreezoMyOrderDetails = (props) => {
   const { setActiveOrderId, activeOrder, orderItems, loading } = useOrders();
   const { id } = props;
 
-  console.log("PROPS", props);
-
   useEffect(() => {
-    console.log("Order Details", id);
     setActiveOrderId(id);
   }, [id, setActiveOrderId]);
 

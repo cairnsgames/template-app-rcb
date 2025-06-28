@@ -3,7 +3,6 @@ import { Card } from "react-bootstrap";
 import ClassCard from "./classcard";
 
 const SearchResults = ({ filteredClasses, handleClassClick }) => {
-  console.log("Filtered Classes:", filteredClasses);
   return (
     <div className="p-4">
       <Card className="shadow">

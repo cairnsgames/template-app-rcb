@@ -73,9 +73,7 @@ const Home = () => {
   };
 
   const newsAsCards = (news) => {
-    console.log("NEWS", news);
     return news.map((item) => {
-      // console.log("News Item", item);
       return {
         type: "news",
         id: item.id,
@@ -91,7 +89,6 @@ const Home = () => {
   };
 
   const eventsAsCards = (events) => {
-    console.log("EVENTS AS NEWS", events);
     const eventsForNews = events.filter(ev => ev.show_as_news === "Y");
     return eventsForNews.map((event) => {
       return {
@@ -129,15 +126,11 @@ const Home = () => {
   }
 
   const showNews = (item) => {
-    console.log("Show News", item);
     window.location.hash = `#news/${item.id}`;
   };
   const showEvent = (item) => {
-    console.log("Show Event", item);
     window.location.hash = `#events/${item.id}`;
   };
-
-  console.log("newsAsCards", newsCards);
 
   return (
     <Container fluid className="p-3">
@@ -146,7 +139,7 @@ const Home = () => {
       <TilesLayout>
         <TileList images={newsCards} onClick={showNews} />
         <TileList images={eventCards} onClick={showEvent} />
-        <TileList images={ticketCards} onClick={showEvent} />
+        {/* <TileList images={ticketCards} onClick={showEvent} /> */}
         
         {!hasAccess("Partner") && <PartnerCard />}
       </TilesLayout>

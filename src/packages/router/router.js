@@ -18,7 +18,6 @@ function checkIs(path, pattern) {
 function checkStartsWith(path, pattern) {
   const sanitizedPath = path.replace(/^#/, "");
   const regex = new RegExp(`^${pattern.replace(/{.*?}/g, ".*")}`);
-  // console.log("CHECK STARTS WITH", sanitizedPath, pattern, regex.test(sanitizedPath));
   return regex.test(sanitizedPath);
 }
 

@@ -82,8 +82,6 @@ const UserLocationManagement = () => {
     }
   };
 
-  console.log("User Locations:", userLocations);
-
   const getLocationAddress = (location) => {
     const addressParts = [
       location.address_line1,

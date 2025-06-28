@@ -23,9 +23,6 @@ const BookingSection = (props) => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
-  console.log("TicketTypes", ticketTypes);
-  console.log("TicketOptions", ticketOptions);
-
   useEffect(() => {
     if (ticketTypes?.length > 0 && !selectedTicketType) {
       setSelectedTicketType(ticketTypes[0].id);
@@ -40,7 +37,6 @@ const BookingSection = (props) => {
   };
 
   useEffect(() => {
-    console.log("User Changed", user);
     fetchCart();
   }, [user]);
 
@@ -59,9 +55,7 @@ const BookingSection = (props) => {
   };
 
   const handleAddToCart = async () => {
-    console.log("Adding to cart", cart);
     if (!cart?.id) {
-      console.log("No Cart");
       return;
     }
 
@@ -73,7 +67,6 @@ const BookingSection = (props) => {
         const selectedType = ticketTypes.find(
           (t) => t.id === selectedTicketType
         );
-        console.log("Selected type", selectedType);
         if (selectedType) {
           await addItemToCart(cart.id, {
             parent_id: event.id,

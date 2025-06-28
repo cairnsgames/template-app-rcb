@@ -17,8 +17,6 @@ const LocationSelect = ({ onChange, ...props }) => {
     lng: '',
   });
 
-  console.log("selectedLocation", selectedLocation);
-
   const handleAddLocation = async () => {
     await createUserLocation(details);
     setShowModal(false);
@@ -35,7 +33,6 @@ const LocationSelect = ({ onChange, ...props }) => {
   const handleSelectChange = (e) => {
     const value = e.target.value;
     const loc = userLocations.find((location) => location.id === Number(value));
-    console.log("FINDING LOCATION", value, loc, userLocations)
     setSelectedLocation(loc);
     onChange(loc); // Call the onChange prop with the new value
   };

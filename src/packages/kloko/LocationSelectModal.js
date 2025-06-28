@@ -4,7 +4,6 @@ import SelectLocationModal from "../gps/selectlocationmodal";
 
 const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
   const selectLocation = (latlng) => {
-    console.log("Selected location", latlng);
     setDetails({ ...details, lat: latlng[0], lng: latlng[1] });
   }
   return (

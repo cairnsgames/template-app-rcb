@@ -42,7 +42,6 @@ const MapControls = (props) => {
   };
   const goToCurrentLocation = async () => {
     getPosition((res) => {
-      console.log("CURRENT POSITION", res);
       if (res) {
         map.flyTo([res[0], res[1]], 15);
       }
@@ -136,7 +135,6 @@ const MapDisplay = (props) => {
   }, []);
 
   const mapClick = (e) => {
-    console.log("Map clicked at:", e.latlng);
     if (props.onClick) {
       props.onClick(e);
     }

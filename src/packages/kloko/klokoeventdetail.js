@@ -9,10 +9,8 @@ import Tracker from "../tracker/tracker";
 
 const KlokoEventDetail = ({ id }) => {
   const { activeEvent, setEventId } = useEvents();
-  console.log("Kloko Event Detail", id, activeEvent);
 
   useEffect(() => {
-    console.log("Setting Event ID", id);
     if (id) {
       setEventId(id);
     }
@@ -30,7 +28,6 @@ const KlokoEventDetail = ({ id }) => {
     );
   }
 
-  console.log("Active event", activeEvent);
   return (
     <div className="px-3 py-2" style={{ margin: "1rem", marginLeft: "auto", marginRight: "auto", maxWidth: "100%" }}>
       <div className="d-flex justify-content-between align-items-center p-3 border-bottom">

@@ -31,9 +31,7 @@ const AddClassModal = ({ isOpen, onClose, classToEdit }) => {
   });
 
   const setLocation = (location) => {
-    console.log("Location selected", location);
     const data = { ...formData, lat: location.lat, lng: location.lng, location: location.name };
-    console.log("Location data", data);
     setFormData(data);
   }
 
@@ -134,7 +132,6 @@ const AddClassModal = ({ isOpen, onClose, classToEdit }) => {
     const duration = (currentEndTime - new Date(formData.start_time)) / 60000; // duration in minutes
 
     const newEndTime = new Date(newStartTime.getTime() + duration * 60000);
-    console.log("New end time", newEndTime, "duration", duration, "start time", newStartTime);
     setFormData((prev) => ({
       ...prev,
       start_time: e.target.value,
