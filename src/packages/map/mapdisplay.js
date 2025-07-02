@@ -103,13 +103,49 @@ const MapControls = (props) => {
   );
 };
 
+const AddressPanel = ({ address, isLoading }) => (
+  <div
+    style={{
+      position: "absolute",
+      bottom: "0",
+      left: "0",
+      right: "0",
+      backgroundColor: "rgba(255, 255, 255, 0.8)",
+      padding: "10px",
+      textAlign: "center",
+      zIndex: "1100",
+    }}
+  >
+    <span>{isLoading ? "Loading..." : address || "No location selected"}</span>
+  </div>
+);
+
 const MapDisplay = (props) => {
   const { center, zoom, searchMapArea, markers, onClick } =
     useMapContext();
-
+  const [initialCenter, setInitialCenter] = useState(center); // State for initial center
+  const [selectedAddress, setSelectedAddress] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // State for loading spinner
   const mapRef = useRef(null);
 
-  const handleMapLoad = () => {    
+  useEffect(() => {
+    if (props.startAtMyLocation !== false && "geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const newCenter = [position.coords.latitude, position.coords.longitude];
+          setInitialCenter(newCenter);
+          if (mapRef.current) {
+            mapRef.current.setView(newCenter, zoom); // Ensure the map updates to the new center
+          }
+        },
+        () => {
+          console.warn("Unable to retrieve location. Using default center.");
+        }
+      );
+    }
+  }, [props.startAtMyLocation]);
+
+  const handleMapLoad = () => {
     const map = mapRef.current;
     if (map) {
       const bounds = map.getBounds(); // Get the initial bounds
@@ -117,40 +153,62 @@ const MapDisplay = (props) => {
     }
   };
 
-  useEffect(() => {
-    const updateLayout = () => {
-      const mapWrapper = document.querySelector(".mapwrapper");
-      if (mapWrapper) {
-        const width = mapWrapper.offsetWidth;
-        setIsSecondColBelow(width < 500);
-      }
-    };
-
-    updateLayout();
-    window.addEventListener("resize", updateLayout);
-
-    return () => {
-      window.removeEventListener("resize", updateLayout);
-    };
-  }, []);
-
-  const mapClick = (e) => {
+  const mapClick = async (e) => {
+    console.log("Map clicked event triggered", e); // Debugging log
     if (props.onClick) {
       props.onClick(e);
     }
-  }
+
+    const { lat, lng } = e.latlng;
+    console.log("Clicked location:", lat, lng); // Debugging log
+
+    setIsLoading(true); // Show spinner while loading
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      );
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("API response:", data); // Debugging log
+
+      const formattedAddress = {
+        street: data.address?.road || "Unknown Street",
+        city: data.address?.city || data.address?.town || data.address?.village || "Unknown City",
+        country: data.address?.country || "Unknown Country",
+        fullAddress: data.display_name || "Address not found",
+      };
+
+      setSelectedAddress(formattedAddress.fullAddress);
+
+      // Pass the formatted address to the modal or callback
+      if (props.onAddressSelected) {
+        props.onAddressSelected(formattedAddress);
+      }
+    } catch (error) {
+      console.error("Error fetching address:", error);
+      setSelectedAddress("Error fetching address");
+    } finally {
+      setIsLoading(false); // Hide spinner after loading
+    }
+  };
 
   return (
     <div>
       <MapContainer
-        center={center}
+        center={initialCenter} // Use initialCenter state
         zoom={zoom}
         scrollWheelZoom={true}
         whenReady={(e) => {
+          console.log("Map ready event triggered"); // Debugging log
           mapRef.current = e.target;
           handleMapLoad();
         }}
-        onClick={mapClick} // Added onClick event
+        onClick={(e) => {
+          console.log("MapContainer onClick event", e); // Debugging log
+          mapClick(e);
+        }}
         style={{
           position: "absolute",
           top: props.offsetTop ?? "106px",
@@ -165,13 +223,19 @@ const MapDisplay = (props) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* <ChangeView center={center} /> */}
-        <MapEvents onMapChange={props.onMapChange} onMapClick={props.onClick} />
-
+        <MapEvents onMapChange={props.onMapChange} onMapClick={(e) => {
+          console.log("MapEvents onMapClick event", e); // Debugging log
+          mapClick(e);
+        }} />
         <Markers markers={props.markers ?? markers} />
       </MapContainer>
+      <AddressPanel address={selectedAddress} isLoading={isLoading} />
     </div>
   );
+};
+
+MapDisplay.defaultProps = {
+  startAtMyLocation: true, // Default value for the prop
 };
 
 export default MapDisplay;

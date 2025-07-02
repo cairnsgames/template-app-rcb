@@ -37,6 +37,10 @@ const UserLocationManagement = () => {
     }
   }, [selectedLocation]);
 
+  useEffect(() => {
+    console.log("Details updated:", details);
+  }, [details]);
+
   const handleSave = async () => {
     if (!details.name.trim()) {
       alert("Location name is required.");

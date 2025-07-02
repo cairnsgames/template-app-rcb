@@ -6,6 +6,19 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
   const selectLocation = (latlng) => {
     setDetails({ ...details, lat: latlng[0], lng: latlng[1] });
   }
+
+  const setAddress = (address) => {
+    console.log("Selected address - on modal:", address);
+    const newDetails = {
+      ...details,
+      address_line1: address.street,
+      town: address.city || address.town || address.village,
+      country: address.country,
+    };
+    console.log("Updated details:", newDetails);
+    setDetails(newDetails);
+  }
+
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -76,7 +89,7 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
               }
             />
 
-            <SelectLocationModal onSelectLocation={selectLocation}/>
+            <SelectLocationModal onSelectLocation={selectLocation} onSelectAddress={setAddress} />
           </InputGroup>
         </Form>
       </Modal.Body>

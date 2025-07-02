@@ -63,6 +63,16 @@ const EventDetailsModal = ({ events, onSave, onClose }) => {
     setShowAddTemplateModal(false);
   };
 
+    const setAddress = (address) => {
+    console.log("Selected address - on modal:", address);
+    setDetails({
+      ...details,
+      address_line1: address.street || "",
+      town: address.city || address.town || address.village || "",
+      country: address.country || "",
+    });
+  }
+
   return (
     <>
       <Modal show={true} onHide={onClose}>
@@ -181,6 +191,7 @@ const EventDetailsModal = ({ events, onSave, onClose }) => {
                 onSelectLocation={(position) => {
                   selectPosition(position);
                 }}
+                onSelectAddress={setAddress} 
               />
             </InputGroup>
           </Form>

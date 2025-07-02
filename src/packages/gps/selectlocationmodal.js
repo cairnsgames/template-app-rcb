@@ -24,7 +24,7 @@ import MapDisplay from "../map/mapdisplay";
   }
 */
 
-const SelectLocationModal = ({ onSelectLocation }) => {
+const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState([26, 26]);
   const [center, setCenter] = useState([26, 26]);
@@ -36,6 +36,7 @@ const SelectLocationModal = ({ onSelectLocation }) => {
   const markers = marker ? [marker] : [];
 
   const selectMapLocation = (e) => {
+    console.log("selectMapLocation", e);
     const latlng = e.latlng || e;
     setPosition([latlng.lat.toFixed(3), latlng.lng.toFixed(3)]);
     setMarker({
@@ -95,6 +96,13 @@ const SelectLocationModal = ({ onSelectLocation }) => {
     }
   };
 
+  const setSelectedAddress = (address) => {
+    console.log("Selected address:", address);
+    if (onSelectAddress) {
+      onSelectAddress(address);
+    }
+  }
+
   return (
     <>
       <Button variant="outline-primary" onClick={handleShow}>
@@ -117,6 +125,7 @@ const SelectLocationModal = ({ onSelectLocation }) => {
             offsetTop="0px"
             markers={markers}
             onClick={selectMapLocation}
+            onAddressSelected={setSelectedAddress}
             isModal={true}
           />
         </Modal.Body>

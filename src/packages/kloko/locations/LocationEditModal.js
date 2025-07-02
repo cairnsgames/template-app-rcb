@@ -7,6 +7,21 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
     setDetails({ ...details, lat: latlng[0], lng: latlng[1] });
   }
 
+  const setAddress = (address) => {
+    console.log("Selected address - on modal:", address);
+    const newDetails = {
+      ...details,
+      address_line1: address.street,
+      town: address.city || address.town || address.village,
+      country: address.country,
+    };
+    if (newDetails.name === "") {
+      newDetails.name = address.street || address.city || address.town || address.village;
+    }
+    console.log("Updated details:", newDetails);
+    setDetails(newDetails);
+  }
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -23,6 +38,26 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
               onChange={(ev) => setDetails({ ...details, name: ev.target.value })}
             />
           </Form.Group>
+          <div className="mt-3">            
+            <Form.Label>Select Location</Form.Label>
+          </div>
+          <InputGroup className="mb-3">
+          
+            <Form.Control
+              type="text"
+              placeholder="lat"
+              value={details.lat}
+              onChange={(ev) => setDetails({ ...details, lat: ev.target.value })}
+            />
+            <Form.Control
+              type="text"
+              placeholder="lng"
+              value={details.lng}
+              onChange={(ev) => setDetails({ ...details, lng: ev.target.value })}
+            />
+            <SelectLocationModal onSelectLocation={selectLocation} onSelectAddress={setAddress} />
+            
+          </InputGroup>
           <Form.Group controlId="formAddressLine1">
             <Form.Label>Address Line 1</Form.Label>
             <Form.Control
@@ -64,7 +99,6 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
               value={details.lng}
               onChange={(ev) => setDetails({ ...details, lng: ev.target.value })}
             />
-            <SelectLocationModal onSelectLocation={selectLocation} />
           </InputGroup>
           <Form.Group controlId="formShowOnMap">
             <Form.Check
