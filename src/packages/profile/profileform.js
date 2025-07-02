@@ -84,7 +84,6 @@ const ProfileForm = () => {
     setLoading(true);
     let avatarUrl = profile.avatar;
 
-
     if (profile.avatar && typeof profile.avatar === "string" && profile.avatar.startsWith("data:image")) {
       const avatarFile = base64ToFile(profile.avatar, "avatar.jpg");
       const fileArray = [avatarFile];
@@ -156,12 +155,13 @@ const ProfileForm = () => {
               name="email"
               value={profile.email || ""}
               onChange={handleChange}
+              disabled
             />
           </Form.Group>
         </Col>
         <Col md={6}>
           <Form.Group controlId="avatar">
-            <Form.Label>Avatar</Form.Label>
+            <Form.Label>Avatar (optional)</Form.Label>
             <InputGroup>
               {fileLoading ? (
                 <Spinner animation="border" />

@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { Modal, Button, Form, InputGroup, Row, Col } from "react-bootstrap";
 import { usePartnerRoles } from "./usepartnerroles";
 import useUser from "../../../packages/auth/context/useuser";
+import UserPropertyForm from "../../../packages/profile/userpropertyform";
+import useFileLoader from "../../../packages/content/usefileloader";
+
+import CapturePhoto from "../../../packages/photo/capturephoto";
+import { Camera } from "react-bootstrap-icons";
 
 const PartnerSignupModal = ({ show, handleClose }) => {
   const [selectedRoles, setSelectedRoles] = useState([]);
@@ -14,17 +19,55 @@ const PartnerSignupModal = ({ show, handleClose }) => {
     payment_method: "",
     paypal_username: "",
   });
-  
+
   const [profile, setProfile] = useState({});
   const { roles, roleList, updatePartnerRoles, bankingDetails } =
     usePartnerRoles();
   const { user, saveUser } = useUser();
 
+  const [avatarPreview, setAvatarPreview] = useState(null);
+
+  const [showCapturePhoto, setShowCapturePhoto] = useState(false);
+  const handleFileUploadSuccess = (response) => {
+    const fileName = response.filename;
+    const avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, fileName);
+    setProfile({ ...profile, avatar: avatarUrl });
+    return fileName;
+  };
+  const handleFileUploadError = () => {
+    console.error("File upload failed");
+  };
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      fileSelected(e);
+      setAvatarPreview(URL.createObjectURL(file));
+      setProfile({ ...profile, avatar: file });
+    }
+  };
+    const handleCapturePhoto = (dataUrl) => {
+    setAvatarPreview(dataUrl);
+    setProfile({ ...profile, avatar: dataUrl });
+    setShowCapturePhoto(false);
+  };
+
+  const {
+    fileInputRef,
+    loading: fileLoading,
+    fileSelected,
+    uploadFile,
+    isFileSelected,
+  } = useFileLoader(
+    "USER_AVATAR",
+    handleFileUploadSuccess,
+    handleFileUploadError
+  );
+
   useEffect(() => {
     setProfile({
       firstname: user?.firstname || "",
       lastname: user?.lastname || "",
-    })
+    });
   }, [user]);
 
   useEffect(() => {
@@ -138,6 +181,63 @@ const PartnerSignupModal = ({ show, handleClose }) => {
             </Row>
           </Form.Group>
 
+          <Form.Group controlId="avatar">
+            <Form.Label>Avatar (optional)</Form.Label>
+            <InputGroup>
+              {fileLoading ? (
+                <Spinner animation="border" />
+              ) : (
+                <Form.Control
+                  type="file"
+                  name="avatar"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                  ref={fileInputRef}
+                />
+              )}
+
+              <Button
+                variant="primary"
+                onClick={() => setShowCapturePhoto(true)}
+              >
+                <Camera />
+              </Button>
+            </InputGroup>
+            <div
+              style={{
+                border: "1px solid #ccc",
+                padding: "5px",
+                marginTop: "5px",
+                height: "100px",
+                width: "100px",
+              }}
+            >
+              {avatarPreview ? (
+                <img
+                  src={avatarPreview}
+                  alt="Avatar Preview"
+                  className="img-preview mt-2"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : profile.avatar ? (
+                <img
+                  src={profile.avatar}
+                  alt="Avatar Preview"
+                  className="img-preview mt-2"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : null}
+            </div>
+          </Form.Group>
+
           <Form.Group className="mt-3">
             <Form.Label>Preferred Payment Method</Form.Label>
             <Form.Check
@@ -220,6 +320,14 @@ const PartnerSignupModal = ({ show, handleClose }) => {
             </>
           )}
         </Form>
+        <UserPropertyForm width={12} onSave={() => {}} />
+        <CapturePhoto
+          show={showCapturePhoto}
+          onPhoto={handleCapturePhoto}
+          onClose={() => setShowCapturePhoto(false)}
+          useRearCamera={false}
+          optionalLabel={false}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

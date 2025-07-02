@@ -178,18 +178,20 @@ const CapturePhoto = ({
         <Modal.Title>Take a Photo</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <InputGroup className="mb-2">
-          <InputGroup.Text>Customer ID</InputGroup.Text>
-          <Form.Control
-            type="text"
-            placeholder="Enter Customer ID"
-            value={input}
-            onChange={(ev) => setInput(ev.target.value)}
-          />
-          <Button variant="primary" onClick={() => processId(input)}>
-            Save
-          </Button>
-        </InputGroup>
+        {onId && (
+          <InputGroup className="mb-2">
+            <InputGroup.Text>Customer ID</InputGroup.Text>
+            <Form.Control
+              type="text"
+              placeholder="Enter Customer ID"
+              value={input}
+              onChange={(ev) => setInput(ev.target.value)}
+            />
+            <Button variant="primary" onClick={() => processId(input)}>
+              Save
+            </Button>
+          </InputGroup>
+        )}
         {photo ? (
           <img src={photo} alt="Captured" className="img-fluid" />
         ) : (
