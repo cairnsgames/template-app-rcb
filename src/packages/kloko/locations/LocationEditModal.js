@@ -58,6 +58,11 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
             <SelectLocationModal onSelectLocation={selectLocation} onSelectAddress={setAddress} />
             
           </InputGroup>
+          {!details.lat && (
+            <div className="text-muted mb-3">
+              Please select a location above before setting the address.
+            </div>
+          )}
           <Form.Group controlId="formAddressLine1">
             <Form.Label>Address Line 1</Form.Label>
             <Form.Control
@@ -65,6 +70,7 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
               placeholder="Enter address line 1"
               value={details.address_line1 ?? ""}
               onChange={(ev) => setDetails({ ...details, address_line1: ev.target.value })}
+              disabled={!details.lat}
             />
           </Form.Group>
           <Form.Group controlId="formAddressLine2">
@@ -74,6 +80,7 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
               placeholder="Enter address line 2"
               value={details.address_line2 ?? ""}
               onChange={(ev) => setDetails({ ...details, address_line2: ev.target.value })}
+              disabled={!details.lat}
             />
           </Form.Group>
           <Form.Group controlId="formTown">
@@ -83,6 +90,7 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
               placeholder="Enter town"
               value={details.town ?? ""}
               onChange={(ev) => setDetails({ ...details, town: ev.target.value })}
+              disabled={!details.lat}
             />
           </Form.Group>
           <InputGroup className="mb-3">
