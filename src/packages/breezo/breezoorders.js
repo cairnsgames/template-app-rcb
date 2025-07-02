@@ -69,6 +69,7 @@ const BreezoOrders = (props) => {
                     <strong>Total Price:</strong> R
                     {Number(order.total_price).toFixed(2)}
                   </div>
+                  <Button>Pay Now</Button>
                 </ListGroup.Item>
               ))}
             </ListGroup>
