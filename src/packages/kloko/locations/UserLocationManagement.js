@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useLocations } from "../context/uselocations";
 import { Button, ButtonGroup, Spinner, Table } from "react-bootstrap";
-import { Pencil, Trash } from 'react-bootstrap-icons'; // Importing icons
+import { Pencil, Trash } from "react-bootstrap-icons"; // Importing icons
 import LocationEditModal from "./LocationEditModal";
 
 const UserLocationManagement = () => {
-  const { loading, userLocations, createUserLocation, updateUserLocation, deleteUserLocation } = useLocations();
+  const {
+    loading,
+    userLocations,
+    createUserLocation,
+    updateUserLocation,
+    deleteUserLocation,
+  } = useLocations();
   const [showModal, setShowModal] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [details, setDetails] = useState({
@@ -52,7 +58,9 @@ const UserLocationManagement = () => {
       await Promise.all(
         userLocations
           .filter((location) => location.default === 1)
-          .map((location) => updateUserLocation(location.id, { ...location, default: 0 }))
+          .map((location) =>
+            updateUserLocation(location.id, { ...location, default: 0 })
+          )
       );
     }
 
@@ -93,17 +101,22 @@ const UserLocationManagement = () => {
       location.town,
     ].filter(Boolean); // Filter out any undefined or empty values
     return addressParts.join(", ");
-  }
+  };
 
   return (
     <div>
       <h1>User Location Management</h1>
-      <Button variant="primary" onClick={() => {
-        setSelectedLocation(null);
-        setShowModal(true);
-      }}>
-        Add Location
-      </Button>
+      <div className="my-3">
+        <Button
+          variant="primary"
+          onClick={() => {
+            setSelectedLocation(null);
+            setShowModal(true);
+          }}
+        >
+          Add Location
+        </Button>
+      </div>
       <div className="d-none d-md-block">
         <Table striped bordered hover>
           <thead>
@@ -124,10 +137,16 @@ const UserLocationManagement = () => {
                 <td>{location.default === 1 ? "Yes" : "No"}</td>
                 <td>
                   <ButtonGroup>
-                    <Button variant="outline-primary" onClick={() => handleEdit(location)}>
+                    <Button
+                      variant="outline-primary"
+                      onClick={() => handleEdit(location)}
+                    >
                       <Pencil />
                     </Button>
-                    <Button variant="outline-primary" onClick={() => handleDelete(location.id)}>
+                    <Button
+                      variant="outline-primary"
+                      onClick={() => handleDelete(location.id)}
+                    >
                       <Trash />
                     </Button>
                   </ButtonGroup>
@@ -143,13 +162,23 @@ const UserLocationManagement = () => {
             <div className="card-body">
               <h5 className="card-title">{location.name}</h5>
               <p className="card-text">{getLocationAddress(location)}</p>
-              <p className="card-text">Show on Map: {location.showonmap === 1 ? "Yes" : "No"}</p>
-              <p className="card-text">Default: {location.default === 1 ? "Yes" : "No"}</p>
+              <p className="card-text">
+                Show on Map: {location.showonmap === 1 ? "Yes" : "No"}
+              </p>
+              <p className="card-text">
+                Default: {location.default === 1 ? "Yes" : "No"}
+              </p>
               <ButtonGroup>
-                <Button variant="outline-primary" onClick={() => handleEdit(location)}>
+                <Button
+                  variant="outline-primary"
+                  onClick={() => handleEdit(location)}
+                >
                   <Pencil />
                 </Button>
-                <Button variant="outline-primary" onClick={() => handleDelete(location.id)}>
+                <Button
+                  variant="outline-primary"
+                  onClick={() => handleDelete(location.id)}
+                >
                   <Trash />
                 </Button>
               </ButtonGroup>
@@ -165,18 +194,20 @@ const UserLocationManagement = () => {
         handleSave={handleSave}
       />
       {loading && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 9999
-        }}>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
           <Spinner animation="border" variant="light" />
         </div>
       )}
