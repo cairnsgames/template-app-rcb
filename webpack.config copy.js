@@ -17,13 +17,6 @@ module.exports = (_, argv) => {
       },
     },
 
-    output: {
-      filename: "[name].[contenthash].js",        // Hash only JS bundles
-      chunkFilename: "[name].[contenthash].js",   // Hash chunk files too
-      path: path.resolve(__dirname, "dist"),
-      clean: true, // Clean output dir before each build
-    },
-
     devServer: {
       port: 3001,
       historyApiFallback: true,
@@ -66,7 +59,6 @@ module.exports = (_, argv) => {
           use: [
             {
               loader: "file-loader",
-              // No hashing here, keep original filenames
             },
           ],
         },
@@ -101,7 +93,10 @@ module.exports = (_, argv) => {
         ],
       }),
       new Dotenv({
-        path: argv.mode === "production" ? "./.env.production" : "./.env.development",
+        path:
+        argv.mode === "production"
+            ? "./.env.production"
+            : "./.env.development",
       }),
     ],
   };
