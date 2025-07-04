@@ -84,7 +84,11 @@ const ProfileForm = () => {
     setLoading(true);
     let avatarUrl = profile.avatar;
 
-    if (profile.avatar && typeof profile.avatar === "string" && profile.avatar.startsWith("data:image")) {
+    if (
+      profile.avatar &&
+      typeof profile.avatar === "string" &&
+      profile.avatar.startsWith("data:image")
+    ) {
       const avatarFile = base64ToFile(profile.avatar, "avatar.jpg");
       const fileArray = [avatarFile];
       let file = await uploadFile(fileArray);
@@ -107,8 +111,7 @@ const ProfileForm = () => {
     setShowCapturePhoto(false);
   };
 
-  const handleIdCapture = (id) => {
-  };
+  const handleIdCapture = (id) => {};
 
   if (!profile) {
     return null;
@@ -228,6 +231,6 @@ const ProfileForm = () => {
       />
     </Form>
   );
-}
+};
 
 export default ProfileForm;

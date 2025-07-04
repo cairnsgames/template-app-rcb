@@ -21,6 +21,7 @@ const AuthenticationProvider = (props) => {
   const [user, setUser] = useState();
   const { decodedToken } = useJwt(googleAccessToken || "");
   const [properties, setProperties] = useState([]);
+  const [propertiesLoaded, setPropertiesLoaded] = useState(false);
   const [roles, setRoles] = useState([]);
 
   const { tenant } = useTenant();
@@ -193,6 +194,39 @@ const AuthenticationProvider = (props) => {
       localStorage.removeItem("cg." + tenant + ".auth");
     }
   };
+
+  // Sets the user's default city property after registration
+  useEffect(() => {
+    if (!user || !propertiesLoaded) return;
+    const setUserDefaultCity = async () => {
+      if (!user) return;
+      try {
+        // Check if city property already exists (case-insensitive and value check)
+        const hasCity = properties.some(
+          (p) =>
+            p.name?.toLowerCase() === "city" &&
+            p.value?.toLowerCase() === locationData.city.toLowerCase()
+        );
+        if (!hasCity) {
+          const locationData = await window.AccessElf.getLocationData();
+          if (!locationData?.city) return;
+          // Only add if not already present
+          const updatedProperties = [
+            ...properties.filter((p) => p.name?.toLowerCase() !== "city"),
+            { name: "city", value: locationData.city },
+          ];
+          await saveProperties(updatedProperties);
+        }
+      } catch (err) {
+        if (onError) {
+          onError("Auth: Unable to set default city", err);
+        }
+      }
+    };
+
+    setUserDefaultCity();
+    // Only run when user or properties change
+  }, [user, properties, propertiesLoaded]);
 
   const register = async (email, password, confirm) => {
     const body = {
@@ -423,15 +457,15 @@ const AuthenticationProvider = (props) => {
         method: "POST",
       }
     )
-    .then ((res) => res.json())
-    .then((data) => {
-      return data;
-    })
-    .catch((err) => {
-      if (onError) {
-        onError("Auth: Unable to complete Change Password", err);
-      }
-    });
+      .then((res) => res.json())
+      .then((data) => {
+        return data;
+      })
+      .catch((err) => {
+        if (onError) {
+          onError("Auth: Unable to complete Change Password", err);
+        }
+      });
   };
 
   const impersonate = (id) => {
@@ -486,6 +520,7 @@ const AuthenticationProvider = (props) => {
   const fetchProperties = async () => {
     if (!user) {
       setProperties([]);
+      setPropertiesLoaded(false);
       return;
     }
     await fetch(
@@ -508,6 +543,7 @@ const AuthenticationProvider = (props) => {
           data = JSON.parse(data);
         }
         setProperties(data);
+        setPropertiesLoaded(true);
       })
       .catch((err) => {
         if (onError) {
@@ -614,6 +650,7 @@ const AuthenticationProvider = (props) => {
       changePassword,
       impersonate,
       properties,
+      propertiesLoaded,
       saveProperties,
       oldIdToNewMapping,
     }),

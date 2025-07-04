@@ -10,6 +10,7 @@ const UserPropertyForm = ({onSave, width=6, optionalLabel=true}) => {
   useEffect(() => {
     const defaultProperties = [
       { name: "address", value: "" },
+      { name: "city", value: "" },
       { name: "phone", value: "" },
     ];
 
@@ -31,8 +32,12 @@ const UserPropertyForm = ({onSave, width=6, optionalLabel=true}) => {
 
   const labels = {
     address: "Address",
-    phone: "Phone",
+    city: "City",
+    phone: "Phone"
   };
+  const text = {
+    city: "Used to find news and events near you."
+  }
 
   const labelFor = (name) => labels[name] || name;
 
@@ -54,6 +59,11 @@ const UserPropertyForm = ({onSave, width=6, optionalLabel=true}) => {
                 value={property.value}
                 onChange={(e) => handlePropertyChange(index, e.target.value)}
               />
+              {text[property.name] && (
+                <Form.Text className="text-muted">
+                  {text[property.name]}
+                </Form.Text>
+              )}
             </Form.Group>
           </Col>
         </Row>
