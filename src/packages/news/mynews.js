@@ -12,10 +12,12 @@ import NewsThumb from "./newsthumb";
 import { useUser } from "../auth/context/useuser";
 import LoadingSpinner from "../../components/spinner/spinner";
 import Tracker from "../tracker/tracker";
+import { useTranslation } from "react-i18next";
 
 const MyNewsEditor = React.lazy(() => import("./mynewseditor"));
 
 const MyNews = () => {
+  const { t } = useTranslation();
   const { news, fetchMyNewsItems, loading, deleteNewsItem, setFilterField } =
     useNews();
   const { user } = useUser();
@@ -86,7 +88,7 @@ const MyNews = () => {
     <Tracker itemtype="partner.news" id={"news"}>
       <div className="my-news">
         {showEditor && (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div>{t("news.loading")}</div>}>
             <MyNewsEditor id={editItemId} onClose={handleEditorClose} />
           </Suspense>
         )}
@@ -96,23 +98,27 @@ const MyNews = () => {
             <Row className="mb-3">
               <Col xs={6} lg={3}>
                 <Button variant="primary" onClick={handleAdd}>
-                  Add
+                  {t("news.add")}
                 </Button>
               </Col>
               <Col xs={6} lg={3}>
                 <DropdownButton
                   id="sort-dropdown"
-                  title={`Sort`}
+                  title={t("news.sort")}
                   onSelect={handleSort}
                 >
-                  <Dropdown.Item eventKey="title">Title</Dropdown.Item>
-                  <Dropdown.Item eventKey="expiry">Expiry Date</Dropdown.Item>
+                  <Dropdown.Item eventKey="title">
+                    {t("news.title")}
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="expiry">
+                    {t("news.expiryDate")}
+                  </Dropdown.Item>
                 </DropdownButton>
               </Col>
               <Col>
                 <Form.Check
                   type="checkbox"
-                  label="Show old news"
+                  label={t("news.showOldNews")}
                   checked={showOldNews}
                   onChange={handleCheckboxChange}
                 />
@@ -125,7 +131,7 @@ const MyNews = () => {
                   item={item}
                   onClick={() => handleEdit(item.id)}
                   onEdit={() => handleEdit(item.id)}
-                  onDelete={() => handleDelete(item.id)} // Pass onDelete prop
+                  onDelete={() => handleDelete(item.id)}
                 />
               ))}
             </Row>

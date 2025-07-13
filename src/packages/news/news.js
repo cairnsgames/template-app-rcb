@@ -5,6 +5,7 @@ import NewsThumb from "./newsthumb";
 import "./news.scss";
 import NewsCard from "./newscard";
 import Tracker from "../tracker/tracker";
+import { useTranslation } from 'react-i18next';
 
 const NewsDisplay = ({ item, onClick, layout }) => {
   if ((layout === "card")) {
@@ -39,6 +40,7 @@ export const NewsItems = ({ count, layout, onClick }) => {
 }
 
 const News = ({ layout = "default", items = 99999 }) => {
+  const { t } = useTranslation();
   const { newsItems } = useNews();
 
   const handleItemClick = (id) => {
@@ -50,7 +52,7 @@ const News = ({ layout = "default", items = 99999 }) => {
     <Tracker itemtype="news" id={"page"}>
     <div className="news">
       <div className="text-center">
-        <h3>Latest News</h3>
+        <h3>{t('news.latestNews')}</h3>
       </div>
       <NewsItems items={items} layout={layout}  onClick={handleItemClick} />
     </div>

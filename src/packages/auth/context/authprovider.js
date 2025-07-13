@@ -11,6 +11,7 @@ import useTenant from "../../tenant/context/usetenant";
 import useDeviceInfo from "../../device/usedeviceinfo";
 import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 import useEventing from "../../eventing/useeventing";
+import i18n from "i18next";
 
 const AuthenticationContext = createContext();
 
@@ -219,7 +220,7 @@ const AuthenticationProvider = (props) => {
         }
       } catch (err) {
         if (onError) {
-          onError("Auth: Unable to set default city", err);
+          // onError("Auth: Unable to set default city", err);
         }
       }
     };
@@ -668,6 +669,18 @@ const AuthenticationProvider = (props) => {
       impersonate,
     ]
   );
+
+  useEffect(() => {
+    if (propertiesLoaded) {
+      const languageProperty = properties.find((p) => p.name === "language");
+      if (languageProperty && languageProperty.value === "Portuguese") {
+        console.log("Setting language to Portuguese");
+        i18n.changeLanguage("pt");
+      } else {
+        i18n.changeLanguage("en");
+      }
+    }
+  }, [propertiesLoaded, properties]);
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>

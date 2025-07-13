@@ -11,10 +11,12 @@ import EventThumb from "./eventthumb"; // Assuming there's a component for displ
 import LoadingSpinner from "../../components/spinner/spinner";
 import useMyEvents from "./context/usemyevents";
 import Tracker from "../tracker/tracker";
+import { useTranslation } from "react-i18next";
 
 const KlokoEventEditor = React.lazy(() => import("./klokoevent"));
 
 const KlokoMyEvents = () => {
+  const { t } = useTranslation();
   const { myEvents, fetchEvents, loading } = useMyEvents();
   const [showEditor, setShowEditor] = useState(false);
   const [editItemId, setEditItemId] = useState(null);
@@ -72,7 +74,7 @@ const KlokoMyEvents = () => {
     <Tracker itemtype="partner.events" id={"events"}>
       <div className="my-events">
         {showEditor && (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<div>{t('klokoMyEvents.loading')}</div>}>
             <KlokoEventEditor id={editItemId} onClose={handleEditorClose} />
           </Suspense>
         )}
@@ -82,25 +84,23 @@ const KlokoMyEvents = () => {
             <Row className="mb-3">
               <Col xs={6} lg={3}>
                 <Button variant="primary" onClick={handleAdd}>
-                  Add Event
+                  {t('klokoMyEvents.addEvent')}
                 </Button>
               </Col>
               <Col xs={6} lg={3}>
                 <DropdownButton
                   id="sort-dropdown"
-                  title={`Sort`}
+                  title={t('klokoMyEvents.sort')}
                   onSelect={handleSort}
                 >
-                  <Dropdown.Item eventKey="title">Title</Dropdown.Item>
-                  <Dropdown.Item eventKey="start_time">
-                    Start Time
-                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="title">{t('klokoMyEvents.title')}</Dropdown.Item>
+                  <Dropdown.Item eventKey="start_time">{t('klokoMyEvents.startTime')}</Dropdown.Item>
                 </DropdownButton>
               </Col>
               <Col>
                 <Form.Check
                   type="checkbox"
-                  label="Show Old Events"
+                  label={t('klokoMyEvents.showOldEvents')}
                   checked={showOldEvents}
                   onChange={() => setShowOldEvents(!showOldEvents)}
                 />

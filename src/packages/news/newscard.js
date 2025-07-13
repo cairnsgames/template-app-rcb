@@ -5,14 +5,16 @@ import "./newsthumb.scss";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { Button, Col } from "react-bootstrap";
 import FloatingCard from "../../components/react-bootstrap-mobile/floatingcard";
+import { useTranslation } from 'react-i18next';
 
 const NewsCard = ({ item, onClick, onEdit, onDelete }) => {
+  const { t } = useTranslation();
 
   const clickOnCard = () => {
     if (onClick) {
       onClick(item.id);
     }
-  }
+  };
 
   const overlayText = item?.overlay_text === "Y" ?? true;
 
@@ -34,7 +36,7 @@ const NewsCard = ({ item, onClick, onEdit, onDelete }) => {
               <div className="news-thumb-meta">
                 <small className="news-thumb-author">{item.author}</small>
                 <small className="news-thumb-date">
-                  {new Date(item.date).toLocaleDateString()}
+                  {t('news.date', { date: new Date(item.date).toLocaleDateString() })}
                 </small>
               </div>
             </FloatingCard.Header>
@@ -42,7 +44,7 @@ const NewsCard = ({ item, onClick, onEdit, onDelete }) => {
               <HighlightText text={item.body} />
             </FloatingCard.Body>
             <FloatingCard.Footer>
-              <Button variant="primary">Book Now</Button>
+              <Button variant="primary">{t('news.bookNow')}</Button>
             </FloatingCard.Footer>
           </>
         )}

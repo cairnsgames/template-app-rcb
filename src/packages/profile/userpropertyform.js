@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import useUser from "../auth/context/useuser";
 import { Save } from "react-bootstrap-icons";
 
-const UserPropertyForm = ({onSave, width=6, optionalLabel=true}) => {
+const UserPropertyForm = ({ onSave, width = 6, optionalLabel = true }) => {
+  const { t } = useTranslation();
   const { properties, saveProperties } = useUser();
   const [mergedProperties, setMergedProperties] = useState([]);
 
   useEffect(() => {
     const defaultProperties = [
-      { name: "address", value: "" },
-      { name: "city", value: "" },
-      { name: "phone", value: "" },
+      { name: "address", value: "", type: "text" },
+      { name: "city", value: "", type: "text" },
+      { name: "phone", value: "", type: "text" },
+      {
+        name: "language",
+        value: "",
+        type: "select",
+        options: ["English", "Portuguese"],
+      },
     ];
 
     const updatedProperties = defaultProperties.map((defaultProp) => {
@@ -30,17 +38,6 @@ const UserPropertyForm = ({onSave, width=6, optionalLabel=true}) => {
     setMergedProperties(newProperties);
   };
 
-  const labels = {
-    address: "Address",
-    city: "City",
-    phone: "Phone"
-  };
-  const text = {
-    city: "Used to find news and events near you."
-  }
-
-  const labelFor = (name) => labels[name] || name;
-
   const handleSave = () => {
     onSave();
     saveProperties(mergedProperties);
@@ -48,20 +45,40 @@ const UserPropertyForm = ({onSave, width=6, optionalLabel=true}) => {
 
   return (
     <div className="mt-4">
-      <h5>User Properties</h5>
+      <h5>{t("userPropertyForm.title", "User Properties")}</h5>
       {mergedProperties?.map((property, index) => (
         <Row key={property.name}>
           <Col md={width}>
             <Form.Group controlId={`property-${property.name}`}>
-              <Form.Label>{labelFor(property.name)} {optionalLabel && "(Optional)"}</Form.Label>
-              <Form.Control
-                type="text"
-                value={property.value}
-                onChange={(e) => handlePropertyChange(index, e.target.value)}
-              />
-              {text[property.name] && (
+              <Form.Label>
+                {t(`userPropertyForm.${property.name}Label`, property.name)}{" "}
+                {optionalLabel && t("userPropertyForm.optional", "(Optional)")}
+              </Form.Label>
+              {property.type === "select" ? (
+                <Form.Control
+                  as="select"
+                  value={property.value}
+                  onChange={(e) => handlePropertyChange(index, e.target.value)}
+                >
+                  {property.options.map((option) => (
+                    <option key={option} value={option}>
+                      {t(
+                        `userPropertyForm.languageOptions.${option.toLowerCase()}`,
+                        option
+                      )}
+                    </option>
+                  ))}
+                </Form.Control>
+              ) : (
+                <Form.Control
+                  type="text"
+                  value={property.value}
+                  onChange={(e) => handlePropertyChange(index, e.target.value)}
+                />
+              )}
+              {t(`userPropertyForm.${property.name}Description`) && (
                 <Form.Text className="text-muted">
-                  {text[property.name]}
+                  {t(`userPropertyForm.${property.name}Description`)}
                 </Form.Text>
               )}
             </Form.Group>
@@ -69,15 +86,12 @@ const UserPropertyForm = ({onSave, width=6, optionalLabel=true}) => {
         </Row>
       ))}
 
-      <Button
-        variant="primary mt-3"
-        onClick={handleSave}
-      >
-        <Save className="me-2"/>
-        Save
+      <Button variant="primary mt-3" onClick={handleSave}>
+        <Save className="me-2" />
+        {t("userPropertyForm.saveButton", "Save")}
       </Button>
     </div>
   );
-}
+};
 
 export default UserPropertyForm;

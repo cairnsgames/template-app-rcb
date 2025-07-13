@@ -33,6 +33,8 @@ import MyClassesPage from "../packages/classes/MyClassesPage";
 
 import ChangePasswordPage from "../pages/auth/changepasswordpage";
 
+import './i18n';
+
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("../pages/admin/admin"));

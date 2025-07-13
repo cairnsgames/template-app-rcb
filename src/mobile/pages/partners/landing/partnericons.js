@@ -2,62 +2,55 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import {
   Calendar,
   Cart,
-  CardImage,
   Receipt,
   Balloon,
   InfoCircle,
   Heart,
 } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
 const PartnerIcons = () => {
+  const { t } = useTranslation();
+
   const features = [
     {
       icon: Heart,
-      title: "Loyalty System",
-      description:
-        "Build loyalty with your dancers by using the loyalty system. Manage and scan dancers' cards to add stamps, reward consistent participation, and foster a dedicated community around your classes.",
+      title: t("landingPage.loyaltySystemTitle"),
+      description: t("landingPage.loyaltySystemDescription"),
       href: "#partner/loyalty",
     },
     {
       icon: InfoCircle,
-      title: "News Management",
-      description:
-        "Keep your dancers informed by adding and updating news items about your classes, events, and special announcements. Stay connected with your community and share important updates seamlessly.",
+      title: t("landingPage.newsManagementTitle"),
+      description: t("landingPage.newsManagementDescription"),
     },
     {
       icon: Calendar,
-      title: "Access Your Calendar (for Classes)",
-      description:
-        "Manage your class schedule effortlessly using this calendar feature. It allows you to organize and track upcoming classes, helping you stay on top of your teaching plans.",
+      title: t("landingPage.accessYourCalendarTitle"),
+      description: t("landingPage.accessYourCalendarDescription"),
     },
     {
       icon: Cart,
-      title: "Your Store (Coming Soon)",
-      description:
-        "Set up and manage your own store for selling merchandise directly to your audience. This feature will enable you to offer products like apparel, accessories, and more, all in one convenient place.",
+      title: t("landingPage.yourStoreTitle"),
+      description: t("landingPage.yourStoreDescription"),
     },
     {
       icon: Receipt,
-      title: "Order Management (Coming Soon)",
-      description:
-        "Keep track of your ticket sales and merchandise purchases in one place. This tool will streamline the process of managing orders, ensuring a smooth experience for you and your customers.",
+      title: t("landingPage.orderManagementTitle"),
+      description: t("landingPage.orderManagementDescription"),
     },
     {
       icon: Balloon,
-      title: "Event Management (Coming Soon)",
-      description:
-        "Organize and promote your events easily. This feature will help you create, manage, and share event details with your audience, boosting participation and engagement.",
+      title: t("landingPage.eventManagementTitle"),
+      description: t("landingPage.eventManagementDescription"),
     },
   ];
 
   return (
     <div className="py-5">
-      <h2 className="text-center pb-4">The Partner Bar</h2>
+      <h2 className="text-center pb-4">{t("partnerBar.title")}</h2>
       <Container>
-        The partner bar is exclusively available to our Partners, providing
-        access to a range of features that help you manage your classes, store,
-        events, and more. Explore the tools below to make the most out of our
-        partnership.
+        {t("partnerBar.description")}
         <Row className="g-4">
           {features.map((feature, index) => (
             <Col key={index} xs={12} md={6} lg={4}>

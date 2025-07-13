@@ -15,6 +15,7 @@ import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import useToast from "../toasts/usetoast";
 import CapturePhoto from "../photo/capturephoto";
 import { Camera } from "react-bootstrap-icons";
+import { useTranslation } from 'react-i18next';
 
 const ProfileForm = () => {
   const { user, saveUser } = useUser();
@@ -24,6 +25,7 @@ const ProfileForm = () => {
   const [showCapturePhoto, setShowCapturePhoto] = useState(false);
 
   const { addToast } = useToast();
+    const { t } = useTranslation();
 
   const handleFileUploadSuccess = (response) => {
     const fileName = response.filename;
@@ -121,14 +123,13 @@ const ProfileForm = () => {
     <Form>
       {!profile.firstname && (
         <Alert variant="info">
-          Please fill in your profile details below, then use the save button at
-          the bottom of the form to save your changes.
+          {t('profileForm.alertMessage')}
         </Alert>
       )}
       <Row>
         <Col md={6}>
           <Form.Group controlId="firstname">
-            <Form.Label>First Name / Venue Name</Form.Label>
+            <Form.Label>{t('profileForm.firstNameLabel')}</Form.Label>
             <Form.Control
               type="text"
               name="firstname"
@@ -139,7 +140,7 @@ const ProfileForm = () => {
         </Col>
         <Col md={6}>
           <Form.Group controlId="lastname">
-            <Form.Label>Last Name (optional)</Form.Label>
+            <Form.Label>{t('profileForm.lastNameLabel')}</Form.Label>
             <Form.Control
               type="text"
               name="lastname"
@@ -152,7 +153,7 @@ const ProfileForm = () => {
       <Row>
         <Col md={6}>
           <Form.Group controlId="email">
-            <Form.Label>Email</Form.Label>
+            <Form.Label>{t('profileForm.emailLabel')}</Form.Label>
             <Form.Control
               type="email"
               name="email"
@@ -164,7 +165,7 @@ const ProfileForm = () => {
         </Col>
         <Col md={6}>
           <Form.Group controlId="avatar">
-            <Form.Label>Avatar (optional)</Form.Label>
+            <Form.Label>{t('profileForm.avatarLabel')}</Form.Label>
             <InputGroup>
               {fileLoading ? (
                 <Spinner animation="border" />
@@ -197,7 +198,7 @@ const ProfileForm = () => {
               {avatarPreview ? (
                 <img
                   src={avatarPreview}
-                  alt="Avatar Preview"
+                  alt={t('profileForm.avatarPreviewAlt')}
                   className="img-preview mt-2"
                   style={{
                     width: "100px",
@@ -208,7 +209,7 @@ const ProfileForm = () => {
               ) : profile.avatar ? (
                 <img
                   src={profile.avatar}
-                  alt="Avatar Preview"
+                  alt={t('profileForm.avatarPreviewAlt')}
                   className="img-preview mt-2"
                   style={{
                     width: "100px",

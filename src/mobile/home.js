@@ -11,6 +11,7 @@ import useMyEvents from "../packages/kloko/context/usemyevents";
 import { formatPrice } from "../packages/kloko/eventfunctions";
 import Tracker from "../packages/tracker/tracker";
 import { useUser } from "../packages/auth/context/useuser";
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   const { hasAccess } = useUser();
@@ -22,6 +23,8 @@ const Home = () => {
   const [newsCards, setNewsCards] = useState([]);
   const [ticketCards, setTicketCards] = useState([]);
   const [eventCards, setEventCards] = useState([]);
+  
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (newsItems.length > 0) {
@@ -134,8 +137,7 @@ const Home = () => {
 
   return (
     <Container fluid className="p-3">
-    <Tracker itemtype="home" id={"page"}>
-      
+    <Tracker itemtype="home" id={"page"}>      
       <TilesLayout>
         <TileList images={newsCards} onClick={showNews} />
         <TileList images={eventCards} onClick={showEvent} />

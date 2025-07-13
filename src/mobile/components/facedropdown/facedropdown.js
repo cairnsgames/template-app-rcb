@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Dropdown, Navbar, Nav, Image } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import useAuth from "../../../packages/auth/context/useauth";
 import useUser from "../../../packages/auth/context/useuser";
 import { Person, PersonCircle } from "react-bootstrap-icons";
@@ -18,6 +19,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 ));
 
 const FaceDropdown = () => {
+  const { t } = useTranslation();
   const { logout, isLoggedIn } = useAuth();
   const { user } = useUser();
   // const { venues } = useAssistant();
@@ -43,21 +45,18 @@ const FaceDropdown = () => {
         <PersonCircle size={24} className="ms-3" style={{ color: "white" }} />
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {isLoggedIn && <Dropdown.Item>Welcome {user.firstname}</Dropdown.Item>}
-        {isLoggedIn && <Dropdown.Item href="#profile">Profile</Dropdown.Item>}
-        {isLoggedIn && <Dropdown.Item href="#partner">Partner</Dropdown.Item>}
-        {isLoggedIn && <Dropdown.Item href="#settings">Settings</Dropdown.Item>}
+        {isLoggedIn && <Dropdown.Item>{t('faceDropdown.welcome')} {user.firstname}</Dropdown.Item>}
+        {isLoggedIn && <Dropdown.Item href="#profile">{t('faceDropdown.profile')}</Dropdown.Item>}
+        {isLoggedIn && <Dropdown.Item href="#partner">{t('faceDropdown.partner')}</Dropdown.Item>}
+        {isLoggedIn && <Dropdown.Item href="#settings">{t('faceDropdown.settings')}</Dropdown.Item>}
         <Dropdown.Item
           onClick={() => {
             hardReload(true);
           }}
         >
-          RELOAD
+          {t('faceDropdown.reload')}
         </Dropdown.Item>
-        {/* {venues?.length > 0 && (
-          <Dropdown.Item href="#assitant/select">Assistant</Dropdown.Item>
-        )} */}
-        <Dropdown.Item href="#landing">About</Dropdown.Item>
+        <Dropdown.Item href="#landing">{t('faceDropdown.about')}</Dropdown.Item>
         {isLoggedIn && (
           <Dropdown.Item
             onClick={() => {
@@ -65,10 +64,10 @@ const FaceDropdown = () => {
               window.location.hash = "home";
             }}
           >
-            Logout
+            {t('faceDropdown.logout')}
           </Dropdown.Item>
         )}
-        {!isLoggedIn && <Dropdown.Item href="#login">Login</Dropdown.Item>}
+        {!isLoggedIn && <Dropdown.Item href="#login">{t('faceDropdown.login')}</Dropdown.Item>}
       </Dropdown.Menu>
     </Dropdown>
   );

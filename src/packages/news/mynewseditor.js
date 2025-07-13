@@ -13,8 +13,10 @@ import { extractFileName } from "../../functions/extractfilename";
 import Div from "../../components/react-bootstrap-mobile/div";
 import { useToast } from "../toasts/usetoast";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
+import { useTranslation } from 'react-i18next';
 
 const MyNewsEditor = ({ id, onClose }) => {
+  const { t } = useTranslation();
   const { createNewsItem, updateNewsItem, myNewsItems, fetchMyNewsItems } =
     useNews();
   const [title, setTitle] = useState("");
@@ -117,9 +119,9 @@ const MyNewsEditor = ({ id, onClose }) => {
   return (
     <Div onHide={onClose}>
       <Form onSubmit={handleSubmit}>
-        <h2>{id ? "Update News" : "Create News"}</h2>
+        <h2>{id ? t('news.updateNews') : t('news.createNews')}</h2>
         <Form.Group controlId="title">
-          <Form.Label>Title</Form.Label>
+          <Form.Label>{t('news.title')}</Form.Label>
           <InputGroup>
             <Form.Control
               type="text"
@@ -131,7 +133,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         </Form.Group>
 
         <Form.Group controlId="body">
-          <Form.Label>Body</Form.Label>
+          <Form.Label>{t('news.body')}</Form.Label>
           <InputGroup>
             <Form.Control
               as="textarea"
@@ -144,7 +146,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         </Form.Group>
 
         <Form.Group controlId="image">
-          <Form.Label>Image</Form.Label>
+          <Form.Label>{t('news.image')}</Form.Label>
           <InputGroup>
             {loading ? (
               <Spinner animation="border" />
@@ -166,7 +168,7 @@ const MyNewsEditor = ({ id, onClose }) => {
                 fileData ||
                 combineUrlAndPath(process.env.REACT_APP_FILES, imageUrl)
               }
-              alt="Preview"
+              alt={t('news.preview')}
               className="img-preview"
             />
           ) : null}
@@ -175,7 +177,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         <Form.Group controlId="overlayText">
           <Form.Check
             type="checkbox"
-            label="Show overlay text"
+            label={t('news.showOverlayText')}
             checked={overlayText}
             onChange={(e) => {
               setOverlayText(e.target.checked);
@@ -185,7 +187,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         </Form.Group>
 
         <Form.Group controlId="date">
-          <Form.Label>Display to users from</Form.Label>
+          <Form.Label>{t('news.displayFrom')}</Form.Label>
           <InputGroup>
             <Form.Control
               type="date"
@@ -197,7 +199,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         </Form.Group>
 
         <Form.Group controlId="expires">
-          <Form.Label>Expires</Form.Label>
+          <Form.Label>{t('news.expires')}</Form.Label>
           <InputGroup>
             <Form.Control
               type="date"
@@ -214,7 +216,7 @@ const MyNewsEditor = ({ id, onClose }) => {
             type="submit"
             disabled={!hasChanges || loading || !canSave}
           >
-            {id ? "Update News" : "Create News"}
+            {id ? t('news.updateNews') : t('news.createNews')}
           </Button>
         </div>
 

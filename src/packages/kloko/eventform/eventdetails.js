@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, InputGroup } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const EventDetails = ({
   title,
@@ -11,6 +12,8 @@ const EventDetails = ({
   maxParticipants,
   setMaxParticipants,
 }) => {
+  const { t } = useTranslation();
+
   const handleHomeRedirect = () => {
     window.location.hash = "#home";
   };
@@ -22,11 +25,11 @@ const EventDetails = ({
         style={{ top: "10px", right: "10px" }}
         onClick={handleHomeRedirect}
       >
-        X
+        {t('eventDetails.closeButton')}
       </button>
-      <h3>Event Details</h3>
+      <h3>{t('eventDetails.eventDetailsTitle')}</h3>
       <Form.Group controlId="title">
-        <Form.Label>Title</Form.Label>
+        <Form.Label>{t('eventDetails.title')}</Form.Label>
         <InputGroup>
           <Form.Control
             type="text"
@@ -38,7 +41,7 @@ const EventDetails = ({
       </Form.Group>
 
       <Form.Group controlId="description">
-        <Form.Label>Description</Form.Label>
+        <Form.Label>{t('eventDetails.description')}</Form.Label>
         <InputGroup>
           <Form.Control
             as="textarea"
@@ -52,10 +55,10 @@ const EventDetails = ({
 
       <Form.Group controlId="eventType">
         <Form.Label>
-          Dance Styles
+          {t('eventDetails.danceStyles')}
           <br />
           <Form.Text className="text-muted">
-            <small>What dance styles will be included?</small>
+            <small>{t('eventDetails.danceStylesHint')}</small>
           </Form.Text>
         </Form.Label>
         <InputGroup>
@@ -69,10 +72,10 @@ const EventDetails = ({
       </Form.Group>
       <Form.Group controlId="maxParticipants">
         <Form.Label>
-          Max Participants
+          {t('eventDetails.maxParticipants')}
           <br />
           <Form.Text className="text-muted">
-            <small>How many people can you handle at the event</small>
+            <small>{t('eventDetails.maxParticipantsHint')}</small>
           </Form.Text>
         </Form.Label>
         <InputGroup>

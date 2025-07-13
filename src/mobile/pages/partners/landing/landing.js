@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import Hero from "./hero";
 import PartnerBenefits from "./benefits";
 import Footer from "./footer";
@@ -9,6 +10,7 @@ import CallToAction from "./calltoaction";
 import PartnerIcons from "./partnericons";
 
 const LandingPage = ({ roles = [] }) => {
+  const { t } = useTranslation();
   const [modalShow, setModalShow] = useState(false);
 
   const openSignup = () => {
@@ -30,16 +32,17 @@ const LandingPage = ({ roles = [] }) => {
       className="px-2"
       style={{ overflowY: "auto", overflowX: "hidden" }}
     >
-      <Hero openSignup={openSignup} roles={roles} />
-      {roles.length > 0 && <PartnerIcons />}
-      <Features />
-      <PartnerBenefits />
-      {roles.length === 0 && <CallToAction showSignup={openSignup} />}
-      <Footer showSignup={openSignup} />
+      <Hero openSignup={openSignup} roles={roles} t={t} />
+      {roles.length > 0 && <PartnerIcons t={t} />}
+      <Features t={t} />
+      <PartnerBenefits t={t} />
+      {roles.length === 0 && <CallToAction showSignup={openSignup} t={t} />}
+      <Footer showSignup={openSignup} t={t} />
       <PartnerSignupModal
         show={modalShow}
         handleClose={closeSignup}
         joinPartnerProgram={joinPartnerProgram}
+        t={t}
       />
     </Container>
   );

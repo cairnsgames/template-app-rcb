@@ -2,8 +2,11 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import "./newsitem.scss";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
+import { useTranslation } from 'react-i18next';
 
 const NewsItem = ({ item, onClick }) => {
+  const { t } = useTranslation();
+
   const clickOnCard = () => {
     if (onClick) {
       onClick(item.id);
@@ -22,7 +25,7 @@ const NewsItem = ({ item, onClick }) => {
       </Card.Body>
       <Card.Footer>
         <small className="text-muted">
-          {new Date(item.date).toLocaleDateString()}
+          {t('news.date', { date: new Date(item.date).toLocaleDateString() })}
         </small>
         <div className="news-item-menu">...</div>
       </Card.Footer>

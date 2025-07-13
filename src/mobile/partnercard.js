@@ -1,7 +1,10 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const PartnerCard = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="tile-wrapper mb-4">
       <Card
@@ -10,14 +13,12 @@ const PartnerCard = () => {
       >
         <Card.Header>
           <div className="text-center">
-            <h3>Partner Program</h3>
+            <h3>{t("partnerCard.title")}</h3>
           </div>
         </Card.Header>
         <Card.Body>
           <div className="fw-bold text-center" style={{ fontSize: "small" }}>
-            We support all vendors associated directly and indirectly with the
-            dance community value chain. We offer a Loyalty Program, ticketing
-            and scheduling support, community news and more...
+            {t("partnerCard.description")}
           </div>
         </Card.Body>
         <Card.Footer className="text-center">
@@ -26,7 +27,7 @@ const PartnerCard = () => {
             size="sm"
             onClick={() => (window.location.href = "#partner")}
           >
-            Join now
+            {t("partnerCard.button")}
           </Button>
         </Card.Footer>
       </Card>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, InputGroup, Spinner } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 
 const CoverImage = ({ 
@@ -9,12 +10,14 @@ const CoverImage = ({
   fileSelected, 
   fileData 
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="border p-2 my-3">
-      <h3>Cover Image</h3>
+      <h3>{t('coverImage.title')}</h3>
       <Form.Group controlId="image">
         <Form.Label>
-          Image <small>Displayed on home page</small>
+          {t('coverImage.image')} <small>{t('coverImage.displayedOnHomePage')}</small>
         </Form.Label>
         <InputGroup>
           {loading ? (
@@ -38,7 +41,7 @@ const CoverImage = ({
               fileData ||
               combineUrlAndPath(process.env.REACT_APP_FILES, imageUrl)
             }
-            alt="Preview"
+            alt={t('coverImage.preview')}
             className="img-preview"
           />
         ) : null}

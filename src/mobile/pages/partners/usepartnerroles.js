@@ -4,6 +4,7 @@ import useUser from "../../../packages/auth/context/useuser";
 import useTenant from "../../../packages/tenant/context/usetenant";
 import useToast from "../../../packages/toasts/usetoast";
 import eventing from "../../../packages/eventing/eventing";
+import { useTranslation } from "react-i18next";
 
 export const usePartnerRoles = () => {
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ export const usePartnerRoles = () => {
   const { user, token } = useUser();
   const { tenant } = useTenant();
   const { addToast } = useToast();
+  const { t } = useTranslation();
 
   const headers = {
     "Content-Type": "application/json",
@@ -23,11 +25,11 @@ export const usePartnerRoles = () => {
   };
 
   const [roleList] = useState([
-    { id: 26, name: "Teacher" },
-    { id: 27, name: "DJ" },
-    { id: 28, name: "Venue" },
-    { id: 29, name: "Event Coordinator" },
-    { id: 30, name: "Supplier" },
+    { id: 26, name: t("roles.teacher") },
+    { id: 27, name: t("roles.dj") },
+    { id: 28, name: t("roles.venue") },
+    { id: 29, name: t("roles.eventCoordinator") },
+    { id: 30, name: t("roles.supplier") },
   ]);
 
   if (!process.env.REACT_APP_PARTNER_API) {

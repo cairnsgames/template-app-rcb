@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form, InputGroup, Row, Col } from "react-bootstrap";
+import { Modal, Button, Form, InputGroup, Row, Col, Spinner } from "react-bootstrap";
 import { usePartnerRoles } from "./usepartnerroles";
 import useUser from "../../../packages/auth/context/useuser";
 import UserPropertyForm from "../../../packages/profile/userpropertyform";
@@ -7,8 +7,10 @@ import useFileLoader from "../../../packages/content/usefileloader";
 
 import CapturePhoto from "../../../packages/photo/capturephoto";
 import { Camera } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
 const PartnerSignupModal = ({ show, handleClose }) => {
+  const { t } = useTranslation();
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [bankDetails, setBankDetails] = useState({
     id: "",
@@ -45,7 +47,7 @@ const PartnerSignupModal = ({ show, handleClose }) => {
       setProfile({ ...profile, avatar: file });
     }
   };
-    const handleCapturePhoto = (dataUrl) => {
+  const handleCapturePhoto = (dataUrl) => {
     setAvatarPreview(dataUrl);
     setProfile({ ...profile, avatar: dataUrl });
     setShowCapturePhoto(false);
@@ -136,14 +138,14 @@ const PartnerSignupModal = ({ show, handleClose }) => {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Join Partner Program</Modal.Title>
+        <Modal.Title>{t('partnerSignup.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Row className="mb-3">
             <Col md={6}>
               <Form.Group controlId="firstname">
-                <Form.Label>First Name / Venue Name</Form.Label>
+                <Form.Label>{t('partnerSignup.firstNameLabel')}</Form.Label>
                 <Form.Control
                   type="text"
                   name="firstname"
@@ -154,7 +156,7 @@ const PartnerSignupModal = ({ show, handleClose }) => {
             </Col>
             <Col md={6}>
               <Form.Group controlId="lastname">
-                <Form.Label>Last Name (optional)</Form.Label>
+                <Form.Label>{t('partnerSignup.lastNameLabel')}</Form.Label>
                 <Form.Control
                   type="text"
                   name="lastname"
@@ -165,7 +167,7 @@ const PartnerSignupModal = ({ show, handleClose }) => {
             </Col>
           </Row>
           <Form.Group>
-            <Form.Label>Select Your Role(s)</Form.Label>
+            <Form.Label>{t('partnerSignup.selectRolesLabel')}</Form.Label>
             <Row>
               {roleList.map((role) => (
                 <Col key={role.id} xs={6}>
@@ -182,7 +184,7 @@ const PartnerSignupModal = ({ show, handleClose }) => {
           </Form.Group>
 
           <Form.Group controlId="avatar">
-            <Form.Label>Avatar (optional)</Form.Label>
+            <Form.Label>{t('partnerSignup.avatarLabel')}</Form.Label>
             <InputGroup>
               {fileLoading ? (
                 <Spinner animation="border" />
@@ -239,17 +241,17 @@ const PartnerSignupModal = ({ show, handleClose }) => {
           </Form.Group>
 
           <Form.Group className="mt-3">
-            <Form.Label>Preferred Payment Method</Form.Label>
+            <Form.Label>{t('partnerSignup.preferredPaymentLabel')}</Form.Label>
             <Form.Check
               type="radio"
-              label="PayPal"
+              label={t('partnerSignup.paypalLabel')}
               value="paypal"
               checked={bankDetails.payment_method === "paypal"}
               onChange={() => handlePaymentMethodChange("paypal")}
             />
             <Form.Check
               type="radio"
-              label="Bank Deposit"
+              label={t('partnerSignup.bankDepositLabel')}
               value="bank"
               checked={bankDetails.payment_method === "bank"}
               onChange={() => handlePaymentMethodChange("bank")}
@@ -258,10 +260,10 @@ const PartnerSignupModal = ({ show, handleClose }) => {
 
           {bankDetails.payment_method === "paypal" && (
             <Form.Group className="mt-3">
-              <Form.Label>PayPal Username</Form.Label>
+              <Form.Label>{t('partnerSignup.paypalUsernameLabel')}</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter your PayPal username"
+                placeholder={t('partnerSignup.paypalUsernameLabel')}
                 value={bankDetails.paypal_username}
                 onChange={(e) =>
                   setBankDetails({
@@ -276,10 +278,10 @@ const PartnerSignupModal = ({ show, handleClose }) => {
           {bankDetails.payment_method === "bank" && (
             <>
               <Form.Group className="mt-3">
-                <Form.Label>Bank Name</Form.Label>
+                <Form.Label>{t('partnerSignup.bankNameLabel')}</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter your Bank Name"
+                  placeholder={t('partnerSignup.bankNameLabel')}
                   value={bankDetails.bank_name}
                   onChange={(e) =>
                     setBankDetails({
@@ -290,10 +292,10 @@ const PartnerSignupModal = ({ show, handleClose }) => {
                 />
               </Form.Group>
               <Form.Group className="mt-3">
-                <Form.Label>Account Number</Form.Label>
+                <Form.Label>{t('partnerSignup.accountNumberLabel')}</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter your Account Number"
+                  placeholder={t('partnerSignup.accountNumberLabel')}
                   value={bankDetails.account_number}
                   onChange={(e) =>
                     setBankDetails({
@@ -304,10 +306,10 @@ const PartnerSignupModal = ({ show, handleClose }) => {
                 />
               </Form.Group>
               <Form.Group className="mt-3">
-                <Form.Label>Branch Code</Form.Label>
+                <Form.Label>{t('partnerSignup.branchCodeLabel')}</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter your Branch Code"
+                  placeholder={t('partnerSignup.branchCodeLabel')}
                   value={bankDetails.branch_code}
                   onChange={(e) =>
                     setBankDetails({
@@ -331,10 +333,10 @@ const PartnerSignupModal = ({ show, handleClose }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Close
+          {t('partnerSignup.closeButton')}
         </Button>
         <Button variant="primary" onClick={handleJoin}>
-          Join
+          {t('partnerSignup.joinButton')}
         </Button>
       </Modal.Footer>
     </Modal>

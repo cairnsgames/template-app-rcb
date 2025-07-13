@@ -11,8 +11,10 @@ import {
 import { getImageSrc } from "../getimagesrc";
 import { convertBytes } from "../media";
 const MarkdownEditor = React.lazy(() => import("@uiw/react-markdown-editor"));
+import { useTranslation } from "react-i18next";
 
 const ImageEdit = (props) => {
+  const { t } = useTranslation();
   const { item, setItem, style, className } = props;
   const {
     fileInputRef,
@@ -49,11 +51,11 @@ const ImageEdit = (props) => {
             >
               <ProgressBar now={percent} label={`${percent}%`} />
               <Row>
-                <Col>File Size: {convertBytes(fileSpecs?.size)}</Col>
+                <Col>{t('imageEdit.fileSize')}: {convertBytes(fileSpecs?.size)}</Col>
               </Row>
               {status && (
                 <Row>
-                  <Col>Status: {status}</Col>
+                  <Col>{t('imageEdit.status')}: {status}</Col>
                 </Row>
               )}
             </div>
@@ -85,7 +87,7 @@ const ImageEdit = (props) => {
                   fileInputRef.current.click();
                 }}
               >
-                Choose File
+                {t('imageEdit.chooseFile')}
               </Button>
             </div>
             <input
@@ -98,11 +100,11 @@ const ImageEdit = (props) => {
           </div>
           {fileSpecs?.size > 1024 * 1024 * 3 ? (
             <Alert variant="danger">
-              File size is very large, will take along time to upload
+              {t('imageEdit.fileSizeDanger')}
             </Alert>
           ) : fileSpecs?.size > 1024 * 512 ? (
             <Alert variant="warning">
-              File size is large, will take a while to upload
+              {t('imageEdit.fileSizeWarning')}
             </Alert>
           ) : null}
         </>
@@ -110,7 +112,7 @@ const ImageEdit = (props) => {
       <h3>
         <InputGroup className="m-2">
           <InputGroup.Text>
-            <h3>Display</h3>
+            <h3>{t('imageEdit.display')}</h3>
           </InputGroup.Text>
           <Form.Select
             value={item.type}
@@ -118,18 +120,18 @@ const ImageEdit = (props) => {
               setItem({ ...item, type: Number(ev.target.value) });
             }}
           >
-            <option value={1}>Image Only</option>
-            <option value={8}>Image with Description Below</option>
-            <option value={4}>Overlay Card</option>
-            <option value={3}>Plain Text</option>
-            <option value={5}>Markdown (with Image)</option>
-            <option value={6}>Markdown (no Image)</option>
+            <option value={1}>{t('imageEdit.imageOnly')}</option>
+            <option value={8}>{t('imageEdit.imageWithDescription')}</option>
+            <option value={4}>{t('imageEdit.overlayCard')}</option>
+            <option value={3}>{t('imageEdit.plainText')}</option>
+            <option value={5}>{t('imageEdit.markdownWithImage')}</option>
+            <option value={6}>{t('imageEdit.markdownNoImage')}</option>
           </Form.Select>
         </InputGroup>
         {showHeader && (
           <InputGroup className="m-2">
             <InputGroup.Text>
-              <h3>Title</h3>
+              <h3>{t('imageEdit.title')}</h3>
             </InputGroup.Text>
             <Form.Control
               value={item.title}
@@ -144,7 +146,7 @@ const ImageEdit = (props) => {
       </h3>
       {showText && (
         <MarkdownEditor
-          value={item.content.replace(/\\n/g, "\n")}
+          value={item.content.replace(/\n/g, "\n")}
           onChange={(value, viewUpdate) => {
             setItem({ ...item, content: value });
           }}

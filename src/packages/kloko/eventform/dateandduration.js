@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, InputGroup } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const DateAndDuration = ({
   durationType,
@@ -11,16 +12,18 @@ const DateAndDuration = ({
   duration,
   setDuration,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="border p-2 my-3">
-      <h3>Date and Duration</h3>
+      <h3>{t('dateAndDuration.title')}</h3>
       <Form.Group controlId="duration">
         <Form.Group controlId="durationType">
-          <Form.Label>Duration Type</Form.Label>
+          <Form.Label>{t('dateAndDuration.durationType')}</Form.Label>
           <InputGroup>
             <Form.Check
               type="radio"
-              label="Fixed"
+              label={t('dateAndDuration.fixed')}
               name="durationType"
               className="ms-3"
               value="duration"
@@ -29,7 +32,7 @@ const DateAndDuration = ({
             />
             <Form.Check
               type="radio"
-              label="Custom"
+              label={t('dateAndDuration.custom')}
               name="durationType"
               className="ms-3"
               value="custom"
@@ -38,7 +41,7 @@ const DateAndDuration = ({
             />
             <Form.Check
               type="radio"
-              label="Full Day"
+              label={t('dateAndDuration.fullDay')}
               name="durationType"
               className="ms-3"
               value="fullDay"
@@ -47,7 +50,7 @@ const DateAndDuration = ({
             />
             <Form.Check
               type="radio"
-              label="Multiday"
+              label={t('dateAndDuration.multiday')}
               name="durationType"
               className="ms-3"
               value="multiday"
@@ -60,7 +63,7 @@ const DateAndDuration = ({
         {durationType === "duration" && (
           <>
             <Form.Group controlId="startTime">
-              <Form.Label>Start Time</Form.Label>
+              <Form.Label>{t('dateAndDuration.startTime')}</Form.Label>
               <InputGroup>
                 <Form.Control
                   type="datetime-local"
@@ -71,14 +74,14 @@ const DateAndDuration = ({
               </InputGroup>
             </Form.Group>
             <Form.Group controlId="durationDuration">
-              <Form.Label>Custom Duration (in minutes)</Form.Label>
+              <Form.Label>{t('dateAndDuration.customDuration')}</Form.Label>
               <InputGroup>
                 <Form.Select
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                   required
                 >
-                  <option value="">Select Duration</option>
+                  <option value="">{t('dateAndDuration.selectDuration')}</option>
                   <option value="20">20 minutes</option>
                   <option value="60">60 minutes</option>
                   <option value="90">90 minutes</option>
@@ -92,7 +95,7 @@ const DateAndDuration = ({
         {durationType === "custom" && (
           <>
             <Form.Group controlId="startTime">
-              <Form.Label>Start Time</Form.Label>
+              <Form.Label>{t('dateAndDuration.startTime')}</Form.Label>
               <InputGroup>
                 <Form.Control
                   type="datetime-local"
@@ -103,7 +106,7 @@ const DateAndDuration = ({
               </InputGroup>
             </Form.Group>
             <Form.Group controlId="customDuration">
-              <Form.Label>Custom Duration (in minutes)</Form.Label>
+              <Form.Label>{t('dateAndDuration.customDuration')}</Form.Label>
               <InputGroup>
                 <Form.Control
                   type="number"
@@ -120,7 +123,7 @@ const DateAndDuration = ({
 
         {durationType === "fullDay" && (
           <Form.Group controlId="startTime">
-            <Form.Label>Start Time</Form.Label>
+            <Form.Label>{t('dateAndDuration.startTime')}</Form.Label>
             <InputGroup>
               <Form.Control
                 type="date"
@@ -138,7 +141,7 @@ const DateAndDuration = ({
         {durationType === "multiday" && (
           <>
             <Form.Group controlId="startTime">
-              <Form.Label>Start Time</Form.Label>
+              <Form.Label>{t('dateAndDuration.startTime')}</Form.Label>
               <InputGroup>
                 <Form.Control
                   type="date"
@@ -149,7 +152,7 @@ const DateAndDuration = ({
               </InputGroup>
             </Form.Group>
             <Form.Group controlId="endDate">
-              <Form.Label>End Date</Form.Label>
+              <Form.Label>{t('dateAndDuration.endDate')}</Form.Label>
               <InputGroup>
                 <Form.Control
                   type="date"

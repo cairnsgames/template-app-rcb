@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Spinner } from "react-bootstrap";
+import { useTranslation } from 'react-i18next';
+
 import useMyEvents from "./context/usemyevents";
 import useFileLoader from "../content/usefileloader";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
@@ -16,6 +18,7 @@ import LocationSection from "./eventform/locationsection";
 import DisplaySettings from "./eventform/displaysettings";
 
 const KlokoEventEditor = ({ id, onClose }) => {
+  const { t } = useTranslation();
   const {
     createEvent,
     updateEvent,
@@ -268,9 +271,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
           {loading || fileLoading ? (
             <Spinner animation="border" size="sm" />
           ) : id ? (
-            "Update Event"
+            t('updateEvent')
           ) : (
-            "Create Event"
+            t('events.createEvent')
           )}
         </Button>
       </Form>
