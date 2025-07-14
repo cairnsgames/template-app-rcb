@@ -26,7 +26,17 @@ const UserPropertyForm = ({ onSave, width = 6, optionalLabel = true }) => {
       const existingProp = properties.find(
         (prop) => prop.name === defaultProp.name
       );
-      return existingProp || defaultProp;
+      if (existingProp) {
+        return {
+          ...defaultProp,
+          ...existingProp,
+          options:
+            defaultProp.type === "select"
+              ? defaultProp.options
+              : undefined,
+        };
+      }
+      return defaultProp;
     });
 
     setMergedProperties(updatedProperties);

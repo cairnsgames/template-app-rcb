@@ -44,7 +44,7 @@
     "suppliersTitle": "Suppliers",
     "suppliersDescription": "Open a shop and sell merchandise directly. We take 10% per order.",
     "footerText": "Brought to you by Juzt.Dance",
-    "footerCopyright": "© 2024 Juzt.Dance",
+    "footerCopyright": "© 2025 Juzt.Dance",
     "featuresTitle": "Features",
     "classManagementTitle": "Class & Event Management",
     "classManagementDescription": "Easily manage classes and events with robust scheduling and booking features.",
@@ -67,7 +67,15 @@
     "analyticsTitle": "Analytics",
     "analyticsDescription": "Gain insights into your business performance.",
     "communityTitle": "Community",
-    "communityDescription": "Engage with a thriving community of partners."
+    "communityDescription": "Engage with a thriving community of partners.",
+    "newsManagementTitle": "News Management",
+    "newsManagementDescription": "Stay updated with the latest news and manage your announcements.",
+    "accessYourCalendarTitle": "Access Your Calendar",
+    "accessYourCalendarDescription": "Keep track of your events and schedules effortlessly.",
+    "yourStoreTitle": "Your Store",
+    "yourStoreDescription": "Manage your store and sell your products seamlessly.",
+    "orderManagementTitle": "Order Management",
+    "orderManagementDescription": "Track and manage your orders efficiently."
   },
   "faceDropdown": {
     "welcome": "Welcome",
@@ -244,5 +252,9 @@
     "rewardHint": "What will a user get when they reach 10 stamps?",
     "update": "Update",
     "create": "Create"
+  },
+  "partnerBar": {
+    "title": "Partner Bar",
+    "description": "Manage your partnerships and collaborations effectively."
   }
 }
