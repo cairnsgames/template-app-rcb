@@ -1,8 +1,11 @@
 import React from 'react';
 import { Card, Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Postage } from 'react-bootstrap-icons';
+import { useTranslation } from 'react-i18next';
 
 const StampsTable = ({ stamps }) => {
+  const { t } = useTranslation();
+
   const rows = [];
   for (let i = 0; i < stamps.length; i += 5) {
     rows.push(stamps.slice(i, i + 5));
@@ -10,7 +13,7 @@ const StampsTable = ({ stamps }) => {
 
   return (
     <Card>
-      <Card.Header>Stamps</Card.Header>
+      <Card.Header>{t('loyalty.stamps')}</Card.Header>
       <Table bordered>
         <tbody>
           {rows.map((row, rowIndex) => (
@@ -21,7 +24,7 @@ const StampsTable = ({ stamps }) => {
                   placement="top"
                   overlay={
                     <Tooltip id={`tooltip-${stamp.id}`}>
-                      {stamp.id} - Earned on: {stamp.date_created}
+                      {stamp.id} - {t('loyalty.earnedOn')}: {stamp.date_created}
                     </Tooltip>
                   }
                 >

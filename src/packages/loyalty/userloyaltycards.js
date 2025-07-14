@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useUserLoyalty } from "./context/userloyaltyprovider";
 import { Tabs, Tab, Card, Collapse, ListGroup, Button } from "react-bootstrap";
 import StampsCard from "./stampscard";
+import { useTranslation } from "react-i18next";
 
 const UserLoyaltyCards = () => {
+  const { t } = useTranslation();
+
   const { cards, rewards, stamps, selectedCard, setSelectedCard } =
     useUserLoyalty();
   const [open, setOpen] = useState(false);
@@ -14,16 +17,17 @@ const UserLoyaltyCards = () => {
 
   return (
     <Tabs defaultActiveKey="home">
-      <Tab eventKey="home" title="Home">
+      <Tab eventKey="home" title={t("loyalty.loyaltyCards")}>
         <Card>
-          <Card.Header>Loyalty Cards</Card.Header>
+          <Card.Header>{t("loyalty.loyaltyCards")}</Card.Header>
           <ListGroup variant="flush">
             {cards.map((card) => (
               <ListGroup.Item
                 key={card.id}
                 onClick={() => handleCardClick(card.id)}
               >
-                Card ID: {card.id} - Stamps Collected: {card.stamps_collected}
+                {t("loyalty.cardDetails")}: {card.id} -{" "}
+                {t("loyalty.stampsCollected")}: {card.stamps_collected}
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -31,14 +35,15 @@ const UserLoyaltyCards = () => {
 
         {selectedCard && (
           <Card>
-            <Card.Header>Card Details</Card.Header>
+            <Card.Header>{t("loyalty.cardDetails")}</Card.Header>
             <ListGroup variant="flush">
               {cards
                 .filter((card) => card.id === selectedCard)
                 .map((card) => (
                   <ListGroup.Item key={card.id}>
-                    Card ID: {card.id} - QR Code: {card.qr_code} - Stamps
-                    Collected: {card.stamps_collected}
+                    {t("loyalty.cardDetails")}: {card.id} - {t("loyalty.qrCode")}:{" "}
+                    {card.qr_code} -{" "}
+                    {t("loyalty.stampsCollected")}: {card.stamps_collected}
                   </ListGroup.Item>
                 ))}
             </ListGroup>
@@ -46,14 +51,15 @@ const UserLoyaltyCards = () => {
           </Card>
         )}
       </Tab>
-      <Tab eventKey="profile" title="Rewards">
+      <Tab eventKey="profile" title={t("loyalty.rewards")}>
         <Card>
-          <Card.Header>All Rewards</Card.Header>
+          <Card.Header>{t("loyalty.allRewards")}</Card.Header>
           <ListGroup variant="flush">
             {rewards.map((reward) => (
               <ListGroup.Item key={reward.id}>
-                {reward.reward_description} - Earned on: {reward.date_earned} -
-                Redeemed on: {reward.date_redeemed}
+                {reward.reward_description} - {t("loyalty.earnedOn")}:{" "}
+                {reward.date_earned} - {t("loyalty.redeemedOn")}:{" "}
+                {reward.date_redeemed}
               </ListGroup.Item>
             ))}
           </ListGroup>

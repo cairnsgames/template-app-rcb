@@ -202,5 +202,30 @@
     "showOverlayText": "Mostrar texto sobreposto",
     "displayFrom": "Exibir para os usuários a partir de",
     "expires": "Expira"
+  },
+  "loyalty": {
+    "programTitle": "Programa de Fidelidade",
+    "aboutPrograms": "Sobre Programas de Fidelidade",
+    "programDescription": "Nosso Programa de Fidelidade recompensa seus clientes por seu apoio contínuo. Os clientes ganham carimbos a cada compra qualificada, garantindo visitas de retorno e conscientização.",
+    "howItWorks": "Como Funciona:",
+    "joinProgram": "Participe do Programa:",
+    "joinProgramDescription": "Desenhe seu próprio Cartão de Fidelidade e programa. Os clientes participam do seu programa escaneando seu xxxxxx. Os clientes apresentam seu Código QR único durante suas compras e são recompensados com seu carimbo.",
+    "earningStamps": "Ganhando Carimbos:",
+    "earningStampsDescription": "Para cada compra qualificada, os parceiros escaneiam o código QR do cliente para alocar um carimbo na conta do cliente.",
+    "rewardsInfo": "Recompensas:",
+    "rewardsDescription": "Depois que o cliente coletar a quantidade necessária de carimbos, ele estará elegível para uma recompensa — normalmente um item adicional do mesmo tipo que estava comprando.",
+    "dancingMessage": "... Agora estamos dançando!!",
+    "unclaimedRewards": "Recompensas não reivindicadas",
+    "redeemedRewardsCount": "Número de recompensas já resgatadas",
+    "nameProgram": "Nomeie seu Programa de Fidelidade",
+    "nameProgramHint": "Este é o nome que os usuários verão quando visualizarem seu cartão.",
+    "stampCardLogo": "Logo do Cartão de Carimbos",
+    "stampCardLogoHint": "Este logotipo será exibido no Cartão de Fidelidade do usuário, então torne-o distinto para que eles saibam que é você!",
+    "stampsRequired": "Carimbos Necessários",
+    "stampsRequiredPlaceholder": "Insira os Carimbos Necessários",
+    "reward": "Recompensa",
+    "rewardHint": "O que o usuário receberá quando atingir 10 carimbos?",
+    "update": "Atualizar",
+    "create": "Criar"
   }
 }

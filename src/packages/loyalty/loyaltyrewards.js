@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next';
+
 const LoyaltyRewards = ({data}) => {
+    const { t } = useTranslation();
+
     let redeemedCount = 0;
     let notRedeemedCount = 0;
     
@@ -10,10 +14,12 @@ const LoyaltyRewards = ({data}) => {
             notRedeemedCount++;
         }
     });
-    return (<div>
-        <p>Unclaimed rewards: {notRedeemedCount}</p>
-        <p>Number of rewards already redeemed: {redeemedCount}</p>
-        </div>);
+    return (
+        <div>
+            <p>{t('loyalty.unclaimedRewards')}: {notRedeemedCount}</p>
+            <p>{t('loyalty.redeemedRewardsCount')}: {redeemedCount}</p>
+        </div>
+    );
 }
 
 export default LoyaltyRewards;

@@ -14,8 +14,10 @@ import UserRewardModal from "./userrewardmodal";
 import LoadingSpinner from "../../components/spinner/spinner";
 import QRCodeScanner from "../photo/qrcodescanner.js";
 import Tracker from "../tracker/tracker";
+import { useTranslation } from 'react-i18next';
 
 const Loyalty = () => {
+  const { t } = useTranslation();
   const {
     loading,
     system,
@@ -35,17 +37,17 @@ const Loyalty = () => {
   const [showCustomer, setShowCustomer] = useState(false);
 
   if (!user) {
-    return <div>Loading user...</div>;
+    return <div>{t('loyalty.loadingUser')}</div>;
   }
 
   const onAddStamp = () => {
     addUserStamp(system.id, customer.id);
-    addToast("Loyalty", "Stamp added", "success");
+    addToast(t('loyalty.stampAdded'), 'success');
     clearCustomer();
   };
   const onRedeemReward = () => {
     redeemUserReward(system.id, customer.id);
-    addToast("Loyalty", "Reward redeemed", "info");
+    addToast(t('loyalty.rewardRedeemed'), 'info');
     clearCustomer();
   };
 
@@ -74,56 +76,39 @@ const Loyalty = () => {
   if (!system) {
     return (
       <div className="m-3">
-        <h2>Loyalty Program</h2>
+        <h2>{t('loyalty.programTitle')}</h2>
         <InfoBox>
           <InfoBox.Header varaint="primary">
             <em>
-              <InfoCircleFill /> About Loyalty Programs
+              <InfoCircleFill /> {t('loyalty.aboutPrograms')}
             </em>
           </InfoBox.Header>
           <InfoBox.Body>
-            <p>
-              Our Loyalty Program rewards your customers for their continued
-              support. Customers earn stamps with every qualifying purchase,
-              ensuring return visits and awareness.
-            </p>
-            <p>How It Works:</p>
+            <p>{t('loyalty.programDescription')}</p>
+            <p>{t('loyalty.howItWorks')}</p>
             <ul>
               <li>
                 <p>
-                  <strong>Join the Program:</strong>
+                  <strong>{t('loyalty.joinProgram')}</strong>
                 </p>
-                <p>
-                  Design your own Loyalty Card and program
-                  <br />
-                  Customers join your program by scanning your xxxxxx <br />
-                  Customers present their unique QR Code during their purchases
-                  and are rewarded with your stamp
-                </p>
+                <p>{t('loyalty.joinProgramDescription')}</p>
               </li>
 
               <li>
                 <p>
-                  <strong>Earning Stamps:</strong>
+                  <strong>{t('loyalty.earningStamps')}</strong>
                 </p>
-                <p>
-                  For every qualifying purchase, partners scan the customer's QR
-                  code to allocate a stamp to the customer's account.
-                </p>
+                <p>{t('loyalty.earningStampsDescription')}</p>
               </li>
 
               <li>
                 <p>
-                  <strong>Rewards:</strong>
+                  <strong>{t('loyalty.rewardsInfo')}</strong>
                 </p>
-                <p>
-                  Once the customer has collected your required amount of
-                  stamps, they are eligible for a reward — typically an
-                  additional item of the same type they were buying.
-                </p>
+                <p>{t('loyalty.rewardsDescription')}</p>
               </li>
             </ul>
-            ... Now we're dancing!!
+            {t('loyalty.dancingMessage')}
           </InfoBox.Body>
         </InfoBox>
         <LoyaltySystemForm />
@@ -155,9 +140,9 @@ const Loyalty = () => {
       ) : (
         <h2>{system.name}</h2>
       )}
-      <h2>Stamps</h2>
+      <h2>{t('loyalty.stamps')}</h2>
       <StampsBarChart data={cards} />
-      <h2>Rewards</h2>
+      <h2>{t('loyalty.rewards')}</h2>
       <LoyaltyRewards data={rewards} />
 
       {showCamera && (
@@ -167,13 +152,6 @@ const Loyalty = () => {
         />
       )}
 
-      {/* <CapturePhoto
-        show={showCamera}
-        onId={captureId}
-        onPhoto={capturePhoto}
-        onQRCode={captureQRCode}
-        onClose={() => setShowCamera(false)} 
-      />*/}
       <UserRewardModal
         show={showCustomer}
         customer={customer}

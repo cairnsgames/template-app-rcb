@@ -6,8 +6,10 @@ import useTenant from "../tenant/context/usetenant";
 import useUser from "../auth/context/useuser";
 import { useToast } from "../../packages/toasts/usetoast";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
+import { useTranslation } from 'react-i18next';
 
 const LoyaltySystemForm = () => {
+  const { t } = useTranslation();
   const { createSystem, updateSystem, system } = useContext(LoyaltyContext);
   const { tenant } = useTenant();
   const { user, token } = useUser();
@@ -119,28 +121,18 @@ const LoyaltySystemForm = () => {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formStartDate">
-        <Form.Label>Name your Loyalty Program</Form.Label>
+        <Form.Label>{t('loyalty.nameProgram')}</Form.Label>
         <Form.Control
           type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
         />
-        <Form.Text>This is the name users will see when they view their card.</Form.Text>
+        <Form.Text>{t('loyalty.nameProgramHint')}</Form.Text>
       </Form.Group>
 
-      {/* <Form.Group>
-        <Form.Label>Description</Form.Label>
-        <Form.Control
-          type="text"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-        />
-      </Form.Group> */}
-
       <Form.Group controlId="formImage">
-        <Form.Label>Stamp Card Logo</Form.Label>
+        <Form.Label>{t('loyalty.stampCardLogo')}</Form.Label>
         <InputGroup>
           {loading ? (
             <Spinner animation="border" />
@@ -158,10 +150,10 @@ const LoyaltySystemForm = () => {
             </>
           )}
         </InputGroup>
-        <Form.Text>This logo will be displayed on the user's Loyalty Card so make it destinctive so they know it is you!</Form.Text>
+        <Form.Text>{t('loyalty.stampCardLogoHint')}</Form.Text>
         {fileData || imageUrl ? (
           <img
-            src={fileData || combineUrlAndPath(process.env.REACT_APP_FILES,imageUrl)}
+            src={fileData || combineUrlAndPath(process.env.REACT_APP_FILES, imageUrl)}
             alt="Preview"
             className="img-preview"
           />
@@ -169,7 +161,7 @@ const LoyaltySystemForm = () => {
       </Form.Group>
 
       <Form.Group>
-        <Form.Label>Stamps Required</Form.Label>
+        <Form.Label>{t('loyalty.stampsRequired')}</Form.Label>
         <Form.Control
           type="number"
           readOnly
@@ -177,19 +169,19 @@ const LoyaltySystemForm = () => {
           name="stamps_required"
           value={formData.stamps_required}
           onChange={handleChange}
-          placeholder="Enter Stamps Required"
+          placeholder={t('loyalty.stampsRequiredPlaceholder')}
         />
       </Form.Group>
 
       <Form.Group controlId="formEndDate">
-        <Form.Label>Reward</Form.Label>
+        <Form.Label>{t('loyalty.reward')}</Form.Label>
         <Form.Control
           type="text"
           name="reward_description"
           value={formData.reward_description}
           onChange={handleChange}
         />
-        <Form.Text>What will a user get when they reach 10 stamps?</Form.Text>
+        <Form.Text>{t('loyalty.rewardHint')}</Form.Text>
       </Form.Group>
 
       <div className="py-3">
@@ -198,7 +190,7 @@ const LoyaltySystemForm = () => {
           type="submit"
           disabled={!hasChanges || loading || !canSave}
         >
-          {system ? "Update" : "Create"}
+          {system ? t('loyalty.update') : t('loyalty.create')}
         </Button>
       </div>
       {status && <div>{status}</div>}

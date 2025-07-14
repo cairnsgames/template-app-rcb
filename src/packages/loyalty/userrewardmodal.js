@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
+import { useTranslation } from 'react-i18next';
 
 const UserRewardModal = ({
   show,
@@ -12,6 +13,7 @@ const UserRewardModal = ({
   onAddStamp,
   onRedeemReward,
 }) => {
+  const { t } = useTranslation();
 
   const stampsCollected =
     (Array.isArray(customerStamps) && customerStamps[0]?.stamps_collected) || 0;
@@ -23,10 +25,11 @@ const UserRewardModal = ({
       onHide={() => onClose()}
       dialogClassName="user-reward-modal"
       centered
-      // fullscreen={window.innerWidth <= 768 ? true : undefined}
     >
       <Modal.Header closeButton>
-        <Modal.Title>{customer?.firstname || "Customer"}'s Stamps & Rewards</Modal.Title>
+        <Modal.Title>
+          {t('loyalty.customerStampsRewards', { customer: customer?.firstname || t('loyalty.customer') })}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="text-center">
@@ -43,17 +46,17 @@ const UserRewardModal = ({
             />
           </div>
         )}
-        <p>Stamps Collected: {stampsCollected}</p>
-        <p>Rewards Earned: {rewardsEarned}</p>
+        <p>{t('loyalty.stampsCollectedCount', { count: stampsCollected })}</p>
+        <p>{t('loyalty.rewardsEarnedCount', { count: rewardsEarned })}</p>
       </Modal.Body>
       <Modal.Footer>
         {rewardsEarned > 0 && (
           <Button variant="success" onClick={() => onRedeemReward()}>
-            Redeem Reward
+            {t('loyalty.redeemReward')}
           </Button>
         )}
         <Button variant="primary" onClick={() => onAddStamp()}>
-          Add Stamp
+          {t('loyalty.addStamp')}
         </Button>
       </Modal.Footer>
     </Modal>
