@@ -673,10 +673,27 @@ const AuthenticationProvider = (props) => {
   useEffect(() => {
     if (propertiesLoaded) {
       const languageProperty = properties.find((p) => p.name === "language");
-      if (languageProperty && languageProperty.value === "Portuguese") {
-        console.log("Setting language to Portuguese");
-        i18n.changeLanguage("pt");
+      console.log("Language Property", languageProperty);
+      if (languageProperty) {
+        switch (languageProperty.value.toLowerCase()) {
+          case "portuguese":
+            console.log("Changing language to Portuguese");
+            i18n.changeLanguage("pt");
+            break;
+          case "french":
+            console.log("Changing language to French");
+            i18n.changeLanguage("fr");
+            break;
+          case "spanish":
+            console.log("Changing language to Spanish");
+            i18n.changeLanguage("es");
+            break;
+          default:
+            console.log("No specific language set");
+            i18n.changeLanguage("en");
+        }
       } else {
+        console.log("No language property found, defaulting to English");
         i18n.changeLanguage("en");
       }
     }

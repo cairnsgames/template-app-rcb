@@ -52,7 +52,7 @@ const BookingModal = ({ isOpen, onClose, classData }) => {
               {formatStartEndTime(classData.start_time,classData.end_time)}
             </span>
         </div>
-        <p className="text-muted mb-1">Instructor: {classData.instructor}</p>
+        <p className="text-muted mb-1">Organiser: {classData.instructor}</p>
         <p className="text-muted mb-1">
           {classData.currency} {classData.price} per participant
         </p>

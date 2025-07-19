@@ -80,7 +80,7 @@ const ClassCard = ({ cls, onClick, onEdit, variant = "desktop" }) => {
         </div>
       )}
       <Card.Text className="text-muted text-sm">
-        Instructor: {cls.instructor}
+        Organiser: {cls.instructor}
       </Card.Text>
       <div className="d-flex justify-content-between">
         <div>

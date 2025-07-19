@@ -18,7 +18,7 @@ const UserPropertyForm = ({ onSave, width = 6, optionalLabel = true }) => {
         name: "language",
         value: "",
         type: "select",
-        options: ["English", "Portuguese"],
+        options: ["English", "Portuguese", "French", "Spanish"],
       },
     ];
 

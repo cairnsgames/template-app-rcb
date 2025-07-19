@@ -23,13 +23,15 @@ const MyNewsEditor = ({ id, onClose }) => {
   const [body, setBody] = useState("");
   const [date, setDate] = useState(() => {
     const today = new Date();
-    return today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+    const futureDate = new Date(today);
+    futureDate.setDate(today.getDate() + 7); // Add 1 week (7 days)
+    return futureDate.toISOString().split("T")[0]; // Format as YYYY-MM-DD
   });
 
   const [expires, setExpires] = useState(() => {
     const today = new Date();
     const futureDate = new Date(today);
-    futureDate.setDate(today.getDate() + 28); // Add 4 weeks (28 days)
+    futureDate.setDate(today.getDate() + 14); // Add 2 weeks (14 days)
     return futureDate.toISOString().split("T")[0]; // Format as YYYY-MM-DD
   });
   const [imageUrl, setImageUrl] = useState("");
