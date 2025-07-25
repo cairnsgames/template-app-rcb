@@ -6,8 +6,10 @@ import Row from "react-bootstrap/Row";
 import Alert from "react-bootstrap/Alert";
 import { useAuth } from "../../auth/context/useauth";
 import { useUser } from "../../auth/context/useuser";
+import { useTranslation } from 'react-i18next';
 
 function ChangePasswordForm(props) {
+  const { t } = useTranslation();
   const [validated, setValidated] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -73,50 +75,47 @@ function ChangePasswordForm(props) {
         {successMessage && <Alert variant="success">{successMessage}</Alert>}
         {props.validateOldPassword && (
           <Form.Group>
-            <Form.Label>Old Password</Form.Label>
-            <InputGroup hasValidation>
-              <Form.Control
-                type="password"
-                required
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-              />
-              <Form.Control.Feedback type="invalid">
-                Please enter your old password.
-              </Form.Control.Feedback>
-            </InputGroup>
+            <Form.Label>{t('changePasswordForm.oldPasswordLabel')}</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder={t('changePasswordForm.oldPasswordPlaceholder')}
+              required
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+            />
+            <Form.Control.Feedback type="invalid">
+              {t('changePasswordForm.oldPasswordValidation')}
+            </Form.Control.Feedback>
           </Form.Group>
         )}
         <Form.Group>
-          <Form.Label>New Password</Form.Label>
-          <InputGroup hasValidation>
-            <Form.Control
-              type="password"
-              required
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <Form.Control.Feedback type="invalid">
-              Please enter your new password.
-            </Form.Control.Feedback>
-          </InputGroup>
+          <Form.Label>{t('changePasswordForm.newPasswordLabel')}</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder={t('changePasswordForm.newPasswordPlaceholder')}
+            required
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <Form.Control.Feedback type="invalid">
+            {t('changePasswordForm.newPasswordValidation')}
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group>
-          <Form.Label>Confirm Password</Form.Label>
-          <InputGroup hasValidation>
-            <Form.Control
-              type="password"
-              required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <Form.Control.Feedback type="invalid">
-              Please confirm your new password.
-            </Form.Control.Feedback>
-          </InputGroup>
+          <Form.Label>{t('changePasswordForm.confirmPasswordLabel')}</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder={t('changePasswordForm.confirmPasswordPlaceholder')}
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <Form.Control.Feedback type="invalid">
+            {t('changePasswordForm.confirmPasswordValidation')}
+          </Form.Control.Feedback>
         </Form.Group>
       </Row>
-      <Button type="submit">Change Password</Button>
+      <Button type="submit">{t('changePasswordForm.submitButton')}</Button>
     </Form>
   );
 }

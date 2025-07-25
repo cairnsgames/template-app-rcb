@@ -24,6 +24,10 @@ const FaceDropdown = () => {
   const { user } = useUser();
   // const { venues } = useAssistant();
 
+  if (!user) {
+    return null; 
+  }
+
   const hardReload = () => {
     if ('caches' in window) {
       // Clear all cached assets

@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Form, Button, InputGroup, Row, Col, Alert, ButtonGroup } from "react-bootstrap";
 import { useAuth } from "../../auth/context/useauth";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
-
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
+import { useTranslation } from 'react-i18next';
 
 const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
+  const { t } = useTranslation();
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,8 +16,6 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
   const { login, setgoogleAccessToken } = useAuth();
   const [errors, setErrors] = useState();
   const [warning, setWarning] = useState();
-
-  const t = (key) => key;
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -64,11 +63,11 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
       )}
       <Row className="mb-3">
         <Form.Group>
-          <Form.Label>{t("Email")}</Form.Label>
+          <Form.Label>{t('loginForm.emailLabel')}</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
               type="email"
-              placeholder="name@domain.com"
+              placeholder={t('loginForm.emailPlaceholder')}
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -104,7 +103,7 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
       {!rememberMe && (
         <Form.Group className="mb-3">
           <Form.Check
-            label="Keep me logged in"
+            label={t('loginForm.keepMeLoggedIn')}
             checked={keep}
             onChange={() => {
               setKeep(!keep);

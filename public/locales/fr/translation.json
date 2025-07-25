@@ -256,5 +256,61 @@
   "partnerBar": {
     "title": "Bar Partenaire",
     "description": "Gérez efficacement vos partenariats et collaborations."
+  },
+  "registerForm": {
+    "error": "Impossible de s'inscrire",
+    "submitButton": "S'inscrire",
+    "firstNameLabel": "Prénom",
+    "firstNamePlaceholder": "Entrez votre prénom",
+    "firstNameValidation": "Votre prénom est obligatoire.",
+    "lastNameLabel": "Nom de famille",
+    "lastNamePlaceholder": "Entrez votre nom de famille",
+    "lastNameValidation": "Votre nom de famille est obligatoire.",
+    "emailLabel": "Adresse e-mail",
+    "emailPlaceholder": "nom@domaine.com",
+    "emailValidation": "Votre adresse e-mail est obligatoire.",
+    "passwordLabel": "Mot de passe",
+    "passwordValidation": "Veuillez entrer un nouveau mot de passe sécurisé.",
+    "confirmPasswordLabel": "Confirmer le mot de passe",
+    "confirmPasswordValidation": "Veuillez entrer le même mot de passe qu'au-dessus."
+  },
+  "forgotForm": {
+    "error": "Impossible d'envoyer le lien de réinitialisation du mot de passe. Veuillez réessayer.",
+    "successMessage": "Un lien de réinitialisation du mot de passe a été envoyé à votre adresse e-mail.",
+    "instructions": "Veuillez entrer votre adresse e-mail. Si nous trouvons un compte avec votre adresse e-mail, nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "nom@domaine.com",
+    "emailValidation": "Votre adresse e-mail est requise pour réinitialiser votre mot de passe.",
+    "submitButton": "Soumettre"
+  },
+  "loginForm": {
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "nom@domaine.com",
+    "submitButton": "Connexion"
+  },
+  "magicLinkForm": {
+    "instructions": "Vous devez être un utilisateur enregistré pour obtenir un lien magique. Veuillez entrer votre adresse e-mail. Si nous trouvons un compte avec votre adresse e-mail, nous vous enverrons un lien que vous pouvez utiliser pour vous connecter automatiquement (valable pendant 7 jours).",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "nom@domaine.com",
+    "emailValidation": "Votre adresse e-mail est requise pour obtenir un lien magique.",
+    "submitButton": "Soumettre"
+  },
+  "changePasswordForm": {
+    "oldPasswordLabel": "Ancien mot de passe",
+    "oldPasswordPlaceholder": "Entrez votre ancien mot de passe",
+    "oldPasswordValidation": "L'ancien mot de passe est requis.",
+    "newPasswordLabel": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Entrez votre nouveau mot de passe",
+    "newPasswordValidation": "Le nouveau mot de passe est requis.",
+    "confirmPasswordLabel": "Confirmer le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre nouveau mot de passe",
+    "confirmPasswordValidation": "La confirmation du mot de passe est requise.",
+    "submitButton": "Changer le mot de passe"
+  },
+  "mobileAuth": {
+    "registerTitle": "Créer un compte",
+    "forgotTitle": "Mot de passe oublié",
+    "magicLinkTitle": "Lien magique",
+    "loginTitle": "Connexion mobile"
   }
 }

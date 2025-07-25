@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import { Table, Row, Col } from "react-bootstrap";
 import { useOrders } from "./context/useorders";
 import useUser from "../auth/context/useuser";
-import PayNowButton from "./paynowbutton";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import PayGateButton from "./paygatebutton";
 import PayGate from "./paygate";
 
 const BreezoPayNow = ({ id }) => {

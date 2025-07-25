@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { Button, Modal, ListGroup, Badge } from "react-bootstrap";
 import { CartFill, TrashFill } from "react-bootstrap-icons";
 import useCart from "./context/usecart";
+import useUser from "../auth/context/useuser";
 
 const BreezoCart = (props) => {
   const { carts, cartItems, deleteItem } = useCart();
   const [show, setShow] = useState(false);
+  const { user } = useUser();
+
+  if (!user) {
+    return null;
+  }
 
   // Assuming the first cart is the active one
   const activeCart = carts.length > 0 ? carts[0] : null;

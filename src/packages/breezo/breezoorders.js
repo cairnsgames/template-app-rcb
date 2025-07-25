@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal, ListGroup, Badge } from "react-bootstrap";
 import { CartFill, CashStack } from "react-bootstrap-icons";
 import useOrders from "./context/useorders";
+import useUser from "../auth/context/useuser";
 
 const BreezoOrders = (props) => {
   const { orders, fetchOrders, setActiveOrderId, loading } = useOrders();
   const [show, setShow] = useState(false);
   const [pendingOrders, setPendingOrders] = useState([]);
+  const { user } = useUser();
 
   // Filter for pending orders
   useEffect(() => {
@@ -14,7 +16,10 @@ const BreezoOrders = (props) => {
       setPendingOrders(orders.filter((order) => order.status === "pending"));
     }
   }, [orders, loading]);
-
+  
+  if (!user) {
+    return null;
+  }
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 

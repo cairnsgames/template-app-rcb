@@ -1,19 +1,29 @@
 import React, { useState } from "react";
-import { Form, Button, InputGroup, Row, Alert } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  InputGroup,
+  Row,
+  Col,
+  Alert,
+  Dropdown,
+} from "react-bootstrap";
 import { useAuth } from "../../auth/context/useauth";
 import { Eye } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
-function RegisterForm({ onSuccess }) {
+function RegisterForm({ language, onSuccess }) {
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [seePassword, setSeePassword] = useState(false);
   const [error, setError] = useState();
 
   const { register } = useAuth();
-  // const { t } = useTranslation();
-  const t = (key) => key;
+  const { t } = useTranslation();
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -26,7 +36,7 @@ function RegisterForm({ onSuccess }) {
       return;
     }
 
-    register(email, password, confirm)
+    register(email, password, confirm, firstName, lastName, language)
       .then((result) => {
         if (result.errors) {
           setError(result.errors[0].message);
@@ -41,37 +51,68 @@ function RegisterForm({ onSuccess }) {
         return;
       });
     setValidated(true);
-    // if (onSuccess) {
-    //   onSuccess();
-    // }
   };
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       {error && (
         <Alert variant="danger">
-          {t("Cannot register: ")}: {error}
+          {t("registerForm.error")}: {error}
         </Alert>
       )}
       <Row className="mb-3">
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>{t("registerForm.firstNameLabel")}</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder={t("registerForm.firstNamePlaceholder")}
+              required
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              autoComplete="given-name"
+            />
+            <Form.Control.Feedback type="invalid">
+              {t("registerForm.firstNameValidation")}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>{t("registerForm.lastNameLabel")}</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder={t("registerForm.lastNamePlaceholder")}
+              required
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              autoComplete="family-name"
+            />
+            <Form.Control.Feedback type="invalid">
+              {t("registerForm.lastNameValidation")}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row className="mb-3">
         <Form.Group>
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>{t("registerForm.emailLabel")}</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
               type="email"
-              placeholder="name@domain.com"
+              placeholder={t("registerForm.emailPlaceholder")}
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
             />
             <Form.Control.Feedback type="invalid">
-              Your email address is required.
+              {t("registerForm.emailValidation")}
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
         <Form.Group>
-          <Form.Label>Password</Form.Label>
+          <Form.Label>{t("registerForm.passwordLabel")}</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
               type={seePassword ? "text" : "password"}
@@ -84,12 +125,12 @@ function RegisterForm({ onSuccess }) {
               <Eye />
             </Button>
             <Form.Control.Feedback type="invalid">
-              Please enter a new, secure password.
+              {t("registerForm.passwordValidation")}
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
         <Form.Group>
-          <Form.Label>Confirm Password</Form.Label>
+          <Form.Label>{t("registerForm.confirmPasswordLabel")}</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
               type={seePassword ? "text" : "password"}
@@ -99,12 +140,12 @@ function RegisterForm({ onSuccess }) {
               autoComplete="confirm-password"
             />
             <Form.Control.Feedback type="invalid">
-              Please enter the same password as above.
+              {t("registerForm.confirmPasswordValidation")}
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
       </Row>
-      <Button type="submit">Register</Button>
+      <Button type="submit">{t("registerForm.submitButton")}</Button>
     </Form>
   );
 }

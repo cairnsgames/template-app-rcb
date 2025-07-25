@@ -239,5 +239,61 @@
   "partnerBar": {
     "title": "Barra de Parceiros",
     "description": "Gerencie suas parcerias e colaborações de forma eficaz."
+  },
+  "registerForm": {
+    "error": "Não é possível registrar",
+    "submitButton": "Registrar",
+    "firstNameLabel": "Nome",
+    "firstNamePlaceholder": "Digite seu nome",
+    "firstNameValidation": "Seu nome é obrigatório.",
+    "lastNameLabel": "Sobrenome",
+    "lastNamePlaceholder": "Digite seu sobrenome",
+    "lastNameValidation": "Seu sobrenome é obrigatório.",
+    "emailLabel": "Endereço de e-mail",
+    "emailPlaceholder": "nome@dominio.com",
+    "emailValidation": "Seu endereço de e-mail é obrigatório.",
+    "passwordLabel": "Senha",
+    "passwordValidation": "Por favor, insira uma nova senha segura.",
+    "confirmPasswordLabel": "Confirmar senha",
+    "confirmPasswordValidation": "Por favor, insira a mesma senha que acima."
+  },
+  "loginForm": {
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "nome@dominio.com",
+    "submitButton": "Entrar"
+  },
+  "forgotForm": {
+    "error": "Não foi possível enviar o link para redefinir a senha. Por favor, tente novamente.",
+    "successMessage": "Um link para redefinir a senha foi enviado para o seu e-mail.",
+    "instructions": "Por favor, insira seu endereço de e-mail. Se encontrarmos uma conta com seu endereço de e-mail, enviaremos um link para redefinir sua senha.",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "nome@dominio.com",
+    "emailValidation": "Seu endereço de e-mail é necessário para redefinir sua senha.",
+    "submitButton": "Enviar"
+  },
+  "magicLinkForm": {
+    "instructions": "Você precisa ser um usuário registrado para obter um link mágico. Por favor, insira seu endereço de e-mail. Se encontrarmos uma conta com seu endereço de e-mail, enviaremos um link que você pode usar para fazer login automaticamente (válido por 7 dias).",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "nome@dominio.com",
+    "emailValidation": "Seu endereço de e-mail é necessário para obter um link mágico.",
+    "submitButton": "Enviar"
+  },
+  "changePasswordForm": {
+    "oldPasswordLabel": "Senha antiga",
+    "oldPasswordPlaceholder": "Digite sua senha antiga",
+    "oldPasswordValidation": "A senha antiga é obrigatória.",
+    "newPasswordLabel": "Nova senha",
+    "newPasswordPlaceholder": "Digite sua nova senha",
+    "newPasswordValidation": "A nova senha é obrigatória.",
+    "confirmPasswordLabel": "Confirmar senha",
+    "confirmPasswordPlaceholder": "Confirme sua nova senha",
+    "confirmPasswordValidation": "A confirmação da senha é obrigatória.",
+    "submitButton": "Alterar senha"
+  },
+  "mobileAuth": {
+    "registerTitle": "Registrar uma conta",
+    "forgotTitle": "Esqueci minha senha",
+    "magicLinkTitle": "Link mágico",
+    "loginTitle": "Login móvel"
   }
 }

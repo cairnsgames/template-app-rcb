@@ -256,5 +256,61 @@
   "partnerBar": {
     "title": "Barra de socios",
     "description": "Gestiona tus asociaciones y colaboraciones de manera efectiva."
+  },
+  "registerForm": {
+    "error": "No se puede registrar",
+    "submitButton": "Registrar",
+    "firstNameLabel": "Nombre",
+    "firstNamePlaceholder": "Ingrese su nombre",
+    "firstNameValidation": "Su nombre es obligatorio.",
+    "lastNameLabel": "Apellido",
+    "lastNamePlaceholder": "Ingrese su apellido",
+    "lastNameValidation": "Su apellido es obligatorio.",
+    "emailLabel": "Dirección de correo electrónico",
+    "emailPlaceholder": "nombre@dominio.com",
+    "emailValidation": "Su dirección de correo electrónico es obligatoria.",
+    "passwordLabel": "Contraseña",
+    "passwordValidation": "Por favor, ingrese una nueva contraseña segura.",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "confirmPasswordValidation": "Por favor, ingrese la misma contraseña que arriba."
+  },
+  "forgotForm": {
+    "error": "No se pudo enviar el enlace para restablecer la contraseña. Por favor, inténtelo de nuevo.",
+    "successMessage": "Se ha enviado un enlace para restablecer la contraseña a su correo electrónico.",
+    "instructions": "Por favor, introduzca su dirección de correo electrónico. Si encontramos una cuenta con su dirección de correo electrónico, le enviaremos un enlace para restablecer su contraseña.",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "nombre@dominio.com",
+    "emailValidation": "Se requiere su dirección de correo electrónico para restablecer su contraseña.",
+    "submitButton": "Enviar"
+  },
+  "loginForm": {
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "nombre@dominio.com",
+    "submitButton": "Iniciar sesión"
+  },
+  "magicLinkForm": {
+    "instructions": "Debe ser un usuario registrado para obtener un enlace mágico. Por favor, introduzca su dirección de correo electrónico. Si encontramos una cuenta con su dirección de correo electrónico, le enviaremos un enlace que puede usar para iniciar sesión automáticamente (válido por 7 días).",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "nombre@dominio.com",
+    "emailValidation": "Se requiere su dirección de correo electrónico para obtener un enlace mágico.",
+    "submitButton": "Enviar"
+  },
+  "changePasswordForm": {
+    "oldPasswordLabel": "Contraseña antigua",
+    "oldPasswordPlaceholder": "Introduzca su contraseña antigua",
+    "oldPasswordValidation": "Se requiere la contraseña antigua.",
+    "newPasswordLabel": "Nueva contraseña",
+    "newPasswordPlaceholder": "Introduzca su nueva contraseña",
+    "newPasswordValidation": "Se requiere la nueva contraseña.",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Confirme su nueva contraseña",
+    "confirmPasswordValidation": "Se requiere la confirmación de la contraseña.",
+    "submitButton": "Cambiar contraseña"
+  },
+  "mobileAuth": {
+    "registerTitle": "Registrar una cuenta",
+    "forgotTitle": "Olvidé mi contraseña",
+    "magicLinkTitle": "Enlace mágico",
+    "loginTitle": "Inicio de sesión móvil"
   }
 }

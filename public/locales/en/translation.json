@@ -256,5 +256,61 @@
   "partnerBar": {
     "title": "Partner Bar",
     "description": "Manage your partnerships and collaborations effectively."
+  },
+  "registerForm": {
+    "error": "Cannot register",
+    "submitButton": "Register",
+    "firstNameLabel": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "firstNameValidation": "Your first name is required.",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "lastNameValidation": "Your last name is required.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "name@domain.com",
+    "emailValidation": "Your email address is required.",
+    "passwordLabel": "Password",
+    "passwordValidation": "Please enter a new, secure password.",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordValidation": "Please enter the same password as above."
+  },
+  "forgotForm": {
+    "error": "Unable to send password reset link. Please try again.",
+    "successMessage": "A password reset link has been sent to your email.",
+    "instructions": "Please enter your email address. If we find an account with your email address, we will send you a link to reset your password.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@domain.com",
+    "emailValidation": "Your email address is required to reset your password.",
+    "submitButton": "Submit"
+  },
+  "loginForm": {
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@domain.com",
+    "submitButton": "Login"
+  },
+  "magicLinkForm": {
+    "instructions": "You need to be a registered user to get a Magic Link. Please enter your email address. If we find an account with your email address, we will send you a link that you can use to login automatically (valid for 7 days).",
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@domain.com",
+    "emailValidation": "Your email address is required to get a Magic Link.",
+    "submitButton": "Submit"
+  },
+  "changePasswordForm": {
+    "oldPasswordLabel": "Old Password",
+    "oldPasswordPlaceholder": "Enter your old password",
+    "oldPasswordValidation": "Old password is required.",
+    "newPasswordLabel": "New Password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "newPasswordValidation": "New password is required.",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your new password",
+    "confirmPasswordValidation": "Confirmation password is required.",
+    "submitButton": "Change Password"
+  },
+  "mobileAuth": {
+    "registerTitle": "Register an Account",
+    "forgotTitle": "Forgot Password",
+    "magicLinkTitle": "Magic Link",
+    "loginTitle": "Mobile Login"
   }
 }

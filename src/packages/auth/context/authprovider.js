@@ -34,6 +34,8 @@ const AuthenticationProvider = (props) => {
     );
   }
 
+  console.log("==== AUTH PROVIDER", process.env.REACT_APP_AUTH_API);
+
   useEffect(() => {
     if (token) {
       localStorage.setItem("cg." + tenant + ".auth", token);
@@ -229,11 +231,14 @@ const AuthenticationProvider = (props) => {
     // Only run when user or properties change
   }, [user, properties, propertiesLoaded]);
 
-  const register = async (email, password, confirm) => {
+  const register = async (email, password, confirm, firstName, lastName, language) => {
     const body = {
       email: email,
       password: password,
       confirm: confirm,
+      firstname: firstName,
+      lastname: lastName,
+      language: language,
     };
     return fetch(
       combineUrlAndPath(

@@ -5,8 +5,10 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Alert from 'react-bootstrap/Alert';
 import { useAuth } from '../../auth/context/useauth';
+import { useTranslation } from 'react-i18next';
 
 function ForgotPasswordForm({ onSuccess }) {
+  const { t } = useTranslation();
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState('');
   const [error, setError] = useState(null);
@@ -41,28 +43,28 @@ function ForgotPasswordForm({ onSuccess }) {
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Row className="mb-3">
-        {error && <Alert variant="danger">{error}</Alert>}
-        {successMessage && <Alert variant="success">{successMessage}</Alert>}
+        {error && <Alert variant="danger">{t('forgotForm.error')}</Alert>}
+        {successMessage && <Alert variant="success">{t('forgotForm.successMessage')}</Alert>}
         <div className="m-3">
-          Please enter your email address. If we find an account with your email address, we will send you a link to reset your password.
+          {t('forgotForm.instructions')}
         </div>
         <Form.Group>
-          <Form.Label>Email</Form.Label>
+          <Form.Label>{t('forgotForm.emailLabel')}</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
               type="email"
-              placeholder="name@domain.com"
+              placeholder={t('forgotForm.emailPlaceholder')}
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <Form.Control.Feedback type="invalid">
-              Your email address is required to reset your password.
+              {t('forgotForm.emailValidation')}
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
       </Row>
-      <Button type="submit">Submit</Button>
+      <Button type="submit">{t('forgotForm.submitButton')}</Button>
     </Form>
   );
 }

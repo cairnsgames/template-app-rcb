@@ -5,12 +5,14 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import { useAuth } from "../../auth/context/useauth";
 import { useToast } from "../../toasts/usetoast";
+import { useTranslation } from 'react-i18next';
 
 function MagicLinkForm({ onSuccess }) {
   const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState("");
   const { requestMagicLink } = useAuth();
   const { addToast } = useToast();
+  const { t } = useTranslation();
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -34,23 +36,25 @@ function MagicLinkForm({ onSuccess }) {
     <Form noValidate validated={validated}>
       <Row className="mb-3">
         <div className="m-3">
-          <p>You need to be a registered user to get a Magic Link</p>
-          Please enter your email address. If we find an account with your email
-          address we will send you a link that you can use to login
-          automatically (valid for 7 days).
+          <p>{t('magicLinkForm.instructions')}</p>
+          <Form.Group>
+            <Form.Label>{t('magicLinkForm.emailLabel')}</Form.Label>
+            <InputGroup hasValidation>
+              <Form.Control
+                type="text"
+                placeholder={t('magicLinkForm.emailPlaceholder')}
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Form.Control.Feedback type="invalid">
+                {t('magicLinkForm.emailValidation')}
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form.Group>
         </div>
-        <Form.Group>
-          <Form.Label>Email</Form.Label>
-          <InputGroup hasValidation>
-            <Form.Control type="text" placeholder="name@domain.com" required 
-            value={email} onChange={(e) => setEmail(e.target.value)} />
-            <Form.Control.Feedback type="invalid">
-              Your email address is required to get a Magic Link.
-            </Form.Control.Feedback>
-          </InputGroup>
-        </Form.Group>
       </Row>
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button onClick={handleSubmit}>{t('magicLinkForm.submitButton')}</Button>
     </Form>
   );
 }
