@@ -93,6 +93,11 @@ function RegisterForm({ language, onSuccess }) {
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
+        <Col md={12}>
+          <Form.Text className="text-muted">
+            {t("registerForm.nameHelp")}
+          </Form.Text>
+        </Col>
       </Row>
       <Row className="mb-3">
         <Form.Group>

@@ -272,7 +272,8 @@
     "passwordLabel": "Mot de passe",
     "passwordValidation": "Veuillez entrer un nouveau mot de passe sécurisé.",
     "confirmPasswordLabel": "Confirmer le mot de passe",
-    "confirmPasswordValidation": "Veuillez entrer le même mot de passe qu'au-dessus."
+    "confirmPasswordValidation": "Veuillez entrer le même mot de passe qu'au-dessus.",
+    "nameHelp": "Le nom de famille est facultatif. Les lieux et les écoles peuvent simplement entrer un prénom."
   },
   "forgotForm": {
     "error": "Impossible d'envoyer le lien de réinitialisation du mot de passe. Veuillez réessayer.",

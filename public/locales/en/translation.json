@@ -272,7 +272,8 @@
     "passwordLabel": "Password",
     "passwordValidation": "Please enter a new, secure password.",
     "confirmPasswordLabel": "Confirm Password",
-    "confirmPasswordValidation": "Please enter the same password as above."
+    "confirmPasswordValidation": "Please enter the same password as above.",
+    "nameHelp": "Last name is optional. Venues and Schools can just enter a first name."
   },
   "forgotForm": {
     "error": "Unable to send password reset link. Please try again.",

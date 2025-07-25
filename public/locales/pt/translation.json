@@ -255,7 +255,8 @@
     "passwordLabel": "Senha",
     "passwordValidation": "Por favor, insira uma nova senha segura.",
     "confirmPasswordLabel": "Confirmar senha",
-    "confirmPasswordValidation": "Por favor, insira a mesma senha que acima."
+    "confirmPasswordValidation": "Por favor, insira a mesma senha que acima.",
+    "nameHelp": "O sobrenome é opcional. Locais e escolas podem apenas inserir um primeiro nome."
   },
   "loginForm": {
     "emailLabel": "E-mail",

@@ -272,7 +272,8 @@
     "passwordLabel": "Contraseña",
     "passwordValidation": "Por favor, ingrese una nueva contraseña segura.",
     "confirmPasswordLabel": "Confirmar contraseña",
-    "confirmPasswordValidation": "Por favor, ingrese la misma contraseña que arriba."
+    "confirmPasswordValidation": "Por favor, ingrese la misma contraseña que arriba.",
+    "nameHelp": "El apellido es opcional. Los lugares y las escuelas pueden ingresar solo un nombre."
   },
   "forgotForm": {
     "error": "No se pudo enviar el enlace para restablecer la contraseña. Por favor, inténtelo de nuevo.",
