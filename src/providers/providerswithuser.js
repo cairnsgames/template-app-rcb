@@ -8,6 +8,7 @@ import SettingsProvider from "../packages/settings/settingsprovider";
 import useSettings from "../packages/settings/usesettings";
 import useFeatureFlag from "../packages/featureflags/usefeatureflags";
 import { NewsProvider } from "../packages/news/context/newscontext";
+import { TrackerProvider } from "../packages/tracker/trackercontext";
 
 const ProvidersWithSettingsAndFeatures = ({
   children,
@@ -43,13 +44,15 @@ const ProvidersWithUser = ({ children }) => {
   return (
     <FeatureFlagProvider user={user} tenant={tenant} token={token}>
       <SettingsProvider user={user} tenant={tenant} token={token}>
-        <ProvidersWithSettingsAndFeatures
-          user={user}
-          tenant={tenant}
-          token={token}
-        >
-          {children}
-        </ProvidersWithSettingsAndFeatures>
+        <TrackerProvider>
+          <ProvidersWithSettingsAndFeatures
+            user={user}
+            tenant={tenant}
+            token={token}
+          >
+            {children}
+          </ProvidersWithSettingsAndFeatures>
+        </TrackerProvider>
       </SettingsProvider>
     </FeatureFlagProvider>
   );

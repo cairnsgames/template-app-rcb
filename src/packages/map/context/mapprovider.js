@@ -75,6 +75,9 @@ export const MapProvider = ({ children }) => {
 
         // Set color based on category
         const updatedMarkers = data.map((marker) => {
+          if (marker.title === "My Pin" && !!marker.name ) {
+            marker.title = marker.name;
+          }
           marker.subcategory = JSON.parse(marker.subcategory || "");
           switch (marker.category.toLowerCase()) {
             case "event":
@@ -89,9 +92,25 @@ export const MapProvider = ({ children }) => {
                   break;
               }
             case "partner":
-              const roleNames = marker.subcategory || [];
-              const role =
-                roleNames.length > 0 ? roleNames[0].toLowerCase() : "";
+                let roleNames = marker.subcategory;
+                if (typeof roleNames === "string") {
+                try {
+                  roleNames = JSON.parse(roleNames);
+                } catch {
+                  roleNames = [];
+                }
+                }
+                // Treat [null] or [undefined] as empty
+                if (
+                Array.isArray(roleNames) &&
+                (roleNames.length === 0 ||
+                  (roleNames.length === 1 &&
+                  (roleNames[0] === null ||
+                    roleNames[0] === undefined)))
+                ) {
+                roleNames = [];
+                }
+                const role = roleNames.length > 0 ? String(roleNames[0]).toLowerCase() : "";
               switch (role) {
                 case "venue":
                   marker.color = "blue";

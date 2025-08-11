@@ -17,6 +17,7 @@ import AuthenticationProvider from "./mocks/providers/authprovider";
 import { ToastsProvider } from "./mocks/toasts/toastsprovider";
 import useUser from "./mocks/providers/useuser";
 import SettingsProvider from "./mocks/providers/settingsprovider";
+import TrackerProvider from "../../../src/packages/tracker/trackercontext";
 
 const PrivateRoute = ({ children }) => {
   const { isLoggedIn } = useUser();
@@ -28,55 +29,57 @@ const App = () => {
     <TenantProvider applicationId="5a962c6c-bfaa-11ef-b768-1a220d8ac2c9">
       <AuthenticationProvider googleClientId="mockGoogleClientId">
         <SettingsProvider>
-          <ToastsProvider>
-            <SubscriptionProvider>
-              <Router>
-                <Routes>
-                  <Route path="/" element={<LandingPage />} />
-                  <Route
-                    path="/app"
-                    element={
-                      <PrivateRoute>
-                        <Dashboard />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/stats"
-                    element={
-                      <PrivateRoute>
-                        <Stats />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/alerts"
-                    element={
-                      <PrivateRoute>
-                        <Alerts />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/settings"
-                    element={
-                      <PrivateRoute>
-                        <Settings />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/profile"
-                    element={
-                      <PrivateRoute>
-                        <Profile />
-                      </PrivateRoute>
-                    }
-                  />
-                </Routes>
-              </Router>
-            </SubscriptionProvider>
-          </ToastsProvider>
+          <TrackerProvider>
+            <ToastsProvider>
+              <SubscriptionProvider>
+                <Router>
+                  <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route
+                      path="/app"
+                      element={
+                        <PrivateRoute>
+                          <Dashboard />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/stats"
+                      element={
+                        <PrivateRoute>
+                          <Stats />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/alerts"
+                      element={
+                        <PrivateRoute>
+                          <Alerts />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/settings"
+                      element={
+                        <PrivateRoute>
+                          <Settings />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/profile"
+                      element={
+                        <PrivateRoute>
+                          <Profile />
+                        </PrivateRoute>
+                      }
+                    />
+                  </Routes>
+                </Router>
+              </SubscriptionProvider>
+            </ToastsProvider>
+          </TrackerProvider>
         </SettingsProvider>
       </AuthenticationProvider>
     </TenantProvider>

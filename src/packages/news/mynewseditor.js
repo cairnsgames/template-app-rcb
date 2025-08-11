@@ -24,7 +24,6 @@ const MyNewsEditor = ({ id, onClose }) => {
   const [date, setDate] = useState(() => {
     const today = new Date();
     const futureDate = new Date(today);
-    futureDate.setDate(today.getDate() + 7); // Add 1 week (7 days)
     return futureDate.toISOString().split("T")[0]; // Format as YYYY-MM-DD
   });
 

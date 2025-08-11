@@ -6,13 +6,14 @@ const Map = () => {
   const { markers, addMarker } = useMapContext();
   const { getLocationDetails } = useGPS();
   const mapChanged = (south, west, north, east) => {
+    console.log("Map changed", { south, west, north, east });
   };
   const mapClick = async (lat, lng) => {
     // const details = await getLocationDetails(lat, lng);
     addMarker(lat, lng, details.suburb ?? details.city);
   };
   return (
-      <MapDisplay onMapChange={mapChanged} onMapClick={mapClick} />
+      <MapDisplay mustSelect={false} onMapChange={mapChanged} onMapClick={mapClick} />
   );
 };
 

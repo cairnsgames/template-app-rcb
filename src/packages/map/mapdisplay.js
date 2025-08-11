@@ -34,7 +34,6 @@ const MapControls = (props) => {
   const { searchMapArea } = useMapContext();
   const map = useMap();
 
-  
   const { getPosition } = useGeoLocation();
 
   const goToLocation = (lat, lng) => {
@@ -121,8 +120,8 @@ const AddressPanel = ({ address, isLoading }) => (
 );
 
 const MapDisplay = (props) => {
-  const { center, zoom, searchMapArea, markers, onClick } =
-    useMapContext();
+  const { mustSelect = true, onMapChange, onMapClick } = props;
+  const { center, zoom, searchMapArea, markers, onClick } = useMapContext();
   const [initialCenter, setInitialCenter] = useState(center); // State for initial center
   const [selectedAddress, setSelectedAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false); // State for loading spinner
@@ -132,7 +131,10 @@ const MapDisplay = (props) => {
     if (props.startAtMyLocation !== false && "geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const newCenter = [position.coords.latitude, position.coords.longitude];
+          const newCenter = [
+            position.coords.latitude,
+            position.coords.longitude,
+          ];
           setInitialCenter(newCenter);
           if (mapRef.current) {
             mapRef.current.setView(newCenter, zoom); // Ensure the map updates to the new center
@@ -149,7 +151,12 @@ const MapDisplay = (props) => {
     const map = mapRef.current;
     if (map) {
       const bounds = map.getBounds(); // Get the initial bounds
-      searchMapArea(bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast());
+      searchMapArea(
+        bounds.getSouth(),
+        bounds.getWest(),
+        bounds.getNorth(),
+        bounds.getEast()
+      );
     }
   };
 
@@ -175,7 +182,11 @@ const MapDisplay = (props) => {
 
       const formattedAddress = {
         street: data.address?.road || "Unknown Street",
-        city: data.address?.city || data.address?.town || data.address?.village || "Unknown City",
+        city:
+          data.address?.city ||
+          data.address?.town ||
+          data.address?.village ||
+          "Unknown City",
         country: data.address?.country || "Unknown Country",
         fullAddress: data.display_name || "Address not found",
       };
@@ -223,13 +234,18 @@ const MapDisplay = (props) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <MapEvents onMapChange={props.onMapChange} onMapClick={(e) => {
-          console.log("MapEvents onMapClick event", e); // Debugging log
-          mapClick(e);
-        }} />
+        <MapEvents
+          onMapChange={props.onMapChange}
+          onMapClick={(e) => {
+            console.log("MapEvents onMapClick event", e); // Debugging log
+            mapClick(e);
+          }}
+        />
         <Markers markers={props.markers ?? markers} />
       </MapContainer>
-      <AddressPanel address={selectedAddress} isLoading={isLoading} />
+      {mustSelect && (
+        <AddressPanel address={selectedAddress} isLoading={isLoading} />
+      )}
     </div>
   );
 };

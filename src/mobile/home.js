@@ -11,7 +11,7 @@ import useMyEvents from "../packages/kloko/context/usemyevents";
 import { formatPrice } from "../packages/kloko/eventfunctions";
 import Tracker from "../packages/tracker/tracker";
 import { useUser } from "../packages/auth/context/useuser";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const { hasAccess } = useUser();
@@ -23,7 +23,7 @@ const Home = () => {
   const [newsCards, setNewsCards] = useState([]);
   const [ticketCards, setTicketCards] = useState([]);
   const [eventCards, setEventCards] = useState([]);
-  
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -45,7 +45,6 @@ const Home = () => {
   }, [tickets]);
 
   useEffect(() => {
-    
     if (events?.length > 0) {
       setEventCards([]);
     }
@@ -62,14 +61,17 @@ const Home = () => {
 
     const formatDate = (date) => {
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     };
 
     if (isSameDay) {
-      const options = { hour: '2-digit', minute: '2-digit' };
-      return `${formatDate(startDate)} ${startDate.toLocaleTimeString([], options)} - ${endDate.toLocaleTimeString([], options)}`;
+      const options = { hour: "2-digit", minute: "2-digit" };
+      return `${formatDate(startDate)} ${startDate.toLocaleTimeString(
+        [],
+        options
+      )} - ${endDate.toLocaleTimeString([], options)}`;
     } else {
       return `${formatDate(startDate)} - ${formatDate(endDate)}`;
     }
@@ -84,7 +86,7 @@ const Home = () => {
         image: combineUrlAndPath(process.env.REACT_APP_FILES, item.image_url),
         title: item.title,
         description: item.body,
-        footer: "",//item.date,
+        footer: "", //item.date,
         overlayText: item.overlay_text === "Y",
         overlay: item.overlay_text,
       };
@@ -92,7 +94,7 @@ const Home = () => {
   };
 
   const eventsAsCards = (events) => {
-    const eventsForNews = events.filter(ev => ev.show_as_news === "Y");
+    const eventsForNews = events.filter((ev) => ev.show_as_news === "Y");
     return eventsForNews.map((event) => {
       return {
         type: "event",
@@ -104,7 +106,7 @@ const Home = () => {
         footer: formatEventTime(event.start_time, event.end_time),
         overlayText: event.overlay_text === "Y",
         overlay: event.overlay_text,
-        taget: ""
+        taget: "",
       };
     });
   };
@@ -119,14 +121,19 @@ const Home = () => {
         tracker: "ticket.card",
         image: combineUrlAndPath(process.env.REACT_APP_FILES, ticket.image),
         title: ticket.event_title,
-        description:  desc ,
-        footer: "Admit "+ticket.quantity+" ("+formatPrice(ticket.currency, ticket.price)+")",
+        description: desc,
+        footer:
+          "Admit " +
+          ticket.quantity +
+          " (" +
+          formatPrice(ticket.currency, ticket.price) +
+          ")",
         overlayText: true,
         qrcode: true,
-        raw: ticket
+        raw: ticket,
       };
     });
-  }
+  };
 
   const showNews = (item) => {
     window.location.hash = `#news/${item.id}`;
@@ -137,14 +144,14 @@ const Home = () => {
 
   return (
     <Container fluid className="p-3">
-    <Tracker itemtype="home" id={"page"}>      
-      <TilesLayout>
-        <TileList images={newsCards} onClick={showNews} />
-        <TileList images={eventCards} onClick={showEvent} />
-        {/* <TileList images={ticketCards} onClick={showEvent} /> */}
-        
-        {!hasAccess("Partner") && <PartnerCard />}
-      </TilesLayout>
+      <Tracker itemtype="home" id={"page"}>
+        <TilesLayout>
+          <TileList images={newsCards} onClick={showNews} />
+          <TileList images={eventCards} onClick={showEvent} />
+          {/* <TileList images={ticketCards} onClick={showEvent} /> */}
+
+          {!hasAccess("Partner") && <PartnerCard />}
+        </TilesLayout>
       </Tracker>
     </Container>
   );

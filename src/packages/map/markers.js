@@ -13,9 +13,9 @@ const Markers = ({ markers }) => {
       showCoverageOnHover={false}
     >
       {markers.map((marker, index) => {
-        console.log("Marker", marker);
+        const cat = [marker.category, ...marker.subcategory].filter(Boolean).join(", ");
         return (
-          <Tracker key={marker.id} itemtype="map.pin" id={marker.id}>            
+          <Tracker key={marker.pinid} itemtype="map.pin" id={marker.id}>
             <Marker
               key={index}
               position={[marker.lat, marker.lng]}
@@ -26,16 +26,18 @@ const Markers = ({ markers }) => {
               <Popup offset={[0, -30]} autoPan={false}>
                 <Tracker itemtype="map.popup" id={marker.id}>
                   <div>
-                    <div className="me-1" style={{ display: "inline-block" }}>
-                      <Image
-                        roundedCircle
-                        src={marker.image ?? "person1.jpeg"}
-                        width="40px"
-                        onError={(e) => {
-                          e.target.style.display = "none";
-                        }}
-                      />
-                    </div>
+                    {marker.image && (
+                      <div className="me-1" style={{ display: "inline-block" }}>
+                        <Image
+                          roundedCircle
+                          src={marker.image ?? "person1.jpeg"}
+                          width="40px"
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                          }}
+                        />
+                      </div>
+                    )}
                     <div style={{ display: "inline-block" }}>
                       <Button
                         variant="light"
@@ -48,11 +50,13 @@ const Markers = ({ markers }) => {
                     </div>
                     <div>
                       {marker.more && <FormattedText text={marker.more} />}
-                      {marker.category},{" "}
-                      {marker.subcategory?.length > 0
-                        ? marker.subcategory[0]
-                        : "none"}
-                      , {marker.keywords}
+                      {cat}
+                      {marker.keywords && (
+                        <div>
+                          <br />
+                          <strong>Keywords:</strong> {marker.keywords}
+                        </div>
+                      )}
                       <br />
                     </div>
                   </div>
