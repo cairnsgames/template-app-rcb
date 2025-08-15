@@ -113,19 +113,19 @@ export const MapProvider = ({ children }) => {
                 const role = roleNames.length > 0 ? String(roleNames[0]).toLowerCase() : "";
               switch (role) {
                 case "venue":
-                  marker.color = "blue";
+                  marker.color = "rgb(233, 64, 87)";
                   break;
                 case "supplier":
-                  marker.color = "green";
+                  marker.color = "rgb(142,0,125)";
                   break;
                 case "teacher":
-                  marker.color = "red";
+                  marker.color = "rgb(46,117,182)";
                   break;
                 case "dj":
-                  marker.color = "yellow";
+                  marker.color = "rgb(255,207,0)";
                   break;
                 case "event coordinator":
-                  marker.color = "purple";
+                  marker.color = "rgb(0, 153, 132)";
                   break;
               }
               break;

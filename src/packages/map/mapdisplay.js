@@ -81,22 +81,22 @@ const MapControls = (props) => {
               </Button>
             </ButtonGroup>
           </Col>
-          {!isModal && (
-            <Col xs={12} className={isSecondColBelow ? "mt-3" : ""}>
-              {isMapSearchVisible && (
-                <MapSearch onClose={() => setIsMapSearchVisible(false)} />
-              )}
-              {showFilter && (
-                <MapFilterModal
-                  onHide={() => setShowFilter(false)}
-                  show={showFilter}
-                />
-              )}
-            </Col>
-          )}
         </Row>
       </div>
 
+      {!isModal && (
+        <>
+          {isMapSearchVisible && (
+            <MapSearch onClose={() => setIsMapSearchVisible(false)} />
+          )}
+          {showFilter && (
+            <MapFilterModal
+              onHide={() => setShowFilter(false)}
+              show={showFilter}
+            />
+          )}
+        </>
+      )}
       {isModal && isMapSearchVisible && <MapSearch />}
     </div>
   );

@@ -46,6 +46,7 @@ export function MapSearch(props) {
   }, [debouncedSearchTerm]);
 
   const getSuburbs = (name) => {
+    console.log("Get suburbs for", name);
     fetch(
       `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=50&featureType=settlement&city=${name}`
     )
@@ -77,33 +78,42 @@ export function MapSearch(props) {
 
   return (
     <div className="mapsearch">
-        <div style={{width: "100%", display: "block"}}>
-        <CloseButton style={{float:"right",marginTop:"0.5rem"}} onClick={() => props.onClose(false)} />
-          <InputGroup className="mb-3 me-5" style={{width: "calc(100% - 75px)"}}>
-            <InputGroup.Text>Search </InputGroup.Text>
-            <Form.Control
-              type="text"
-              placeholder="Search"
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <InputGroup.Text>
-              <Search />
-            </InputGroup.Text>
-          </InputGroup>
+      <div style={{ width: "100%", display: "block" }}>
+        <CloseButton
+          style={{ float: "right", marginTop: "0.5rem" }}
+          onClick={() => props.onClose(false)}
+        />
+        <InputGroup
+          className="mb-3 me-5"
+          style={{ width: "calc(100% - 55px)" }}
+        >
+          <InputGroup.Text>Search </InputGroup.Text>
+          <Form.Control
+            type="text"
+            placeholder="Search"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <InputGroup.Text>
+            <Search />
+          </InputGroup.Text>
+        </InputGroup>
+      </div>
+      <div style={{ width: "100%", overflowY: "auto", height: "90%" }}>
+        <div className="places">
+          {places?.map((place) => (
+            <div
+              onClick={() => {
+                goto(place);
+              }}
+            >
+              {place.display_name}{" "}
+              <span style={{ color: "#888888" }}>
+                ({place.distance.toFixed(0)} km)
+              </span>
+            </div>
+          ))}
         </div>
-      <div style={{width: "100%", overflowY:"auto", height:"90%"}}>
-          <div className="places">
-            {places?.map((place) => (
-                <div
-                  onClick={() => {
-                    goto(place);
-                  }}
-                >
-                  {place.display_name} <span style={{color:"#888888"}}>({place.distance.toFixed(0)} km)</span>
-                </div>
-            ))}
-          </div>
-        </div>
+      </div>
     </div>
   );
 }
