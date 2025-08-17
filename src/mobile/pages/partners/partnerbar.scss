@@ -1,4 +1,10 @@
 .partner-bar {
+    background-color: black;
+
+    .primary {
+      background-color: black !important; 
+      color: white;
+    }
     .nav-link {
       box-sizing: border-box;
       border: 1px solid transparent;
@@ -8,7 +14,7 @@
       
       &:hover {
         color: white;
-        border: 1px solid var(--bs-secondary);
+        border: 1px solid white; //var(--bs-secondary);
         border-radius: 50%;
       }
     }
