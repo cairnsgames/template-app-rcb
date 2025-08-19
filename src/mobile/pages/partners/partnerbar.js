@@ -33,21 +33,21 @@ const PartnerBar = () => {
           <Calendar className="ms-1" />
         </Nav.Link>
       )}
-      {hasAccess("Store") && (
+      {/* {hasAccess("Store") && (
         <Nav.Link eventKey="#store">
           <Cart className="ms-1" />
         </Nav.Link>
-      )}
+      )} */}
       {hasAccess("Loyalty") && (
         <Nav.Link eventKey="#partner/loyalty">
           <Heart className="ms-1" />
         </Nav.Link>
       )}
-      {hasAccess("Orders") && (
+      {/* {hasAccess("Orders") && (
         <Nav.Link eventKey="#orders">
           <Receipt className="ms-1" />
         </Nav.Link>
-      )}
+      )} */}
 
       {hasAccess("Events") && (
         <Nav.Link eventKey="#events/myevents">
