@@ -173,7 +173,7 @@ const PartnerSignupModal = ({ show, handleClose }) => {
                 <Col key={role.id} xs={6}>
                   <Form.Check
                     type="checkbox"
-                    label={role.name}
+                    label={t(role.name)}
                     value={role.id}
                     checked={hasRole(role)}
                     onChange={() => handleRoleChange(role)}

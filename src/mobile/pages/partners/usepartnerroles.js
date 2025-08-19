@@ -25,11 +25,11 @@ export const usePartnerRoles = () => {
   };
 
   const [roleList] = useState([
-    { id: 26, name: t("roles.teacher") },
-    { id: 27, name: t("roles.dj") },
-    { id: 28, name: t("roles.venue") },
-    { id: 29, name: t("roles.eventCoordinator") },
-    { id: 30, name: t("roles.supplier") },
+    { id: 26, name: "roles.teacher" },
+    { id: 27, name: "roles.dj" },
+    { id: 28, name: "roles.venue" },
+    { id: 29, name: "roles.eventCoordinator" },
+    { id: 30, name: "roles.supplier" },
   ]);
 
   if (!process.env.REACT_APP_PARTNER_API) {
