@@ -36,7 +36,7 @@ const Tile = ({ data, onClick }) => {
   const size = 128,
     logoPadding = 4,
     logoWidth = 64,
-    logoImage = "favicon.png",
+    logoImage = "logo192.png",
     color = Colors.primary;
 
   const placeholderImage = (

@@ -1,7 +1,7 @@
 import { QRCode as QRCodeLogo } from "react-qrcode-logo";
 import "./qrcode.scss";
 
-const QRCode = ({ link, allowCopyToClipboard = true, size = 255, logoPadding = 4, logoWidth=64, logoImage="favicon.png", color = "purple" }) => {
+const QRCode = ({ link, allowCopyToClipboard = true, size = 255, logoPadding = 4, logoWidth=64, logoImage="logo192.png", color = "purple" }) => {
   return (
     <div>
       <div className="qrcodecontainer">
