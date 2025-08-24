@@ -12,6 +12,7 @@ import { usePartnerRoles } from "./usepartnerroles";
 import useUser from "../../../packages/auth/context/useuser";
 import UserPropertyForm from "../../../packages/profile/userpropertyform";
 import useFileLoader from "../../../packages/content/usefileloader";
+import useToast from "../../../packages/toasts/usetoast";
 
 import CapturePhoto from "../../../packages/photo/capturephoto";
 import { Camera } from "react-bootstrap-icons";
@@ -29,6 +30,7 @@ const PartnerForm = ({ show, handleClose }) => {
     payment_method: "",
     paypal_username: "",
   });
+    const { addToast } = useToast();
 
   const [profile, setProfile] = useState({});
   const { roles, roleList, updatePartnerRoles, bankingDetails } =
@@ -156,7 +158,7 @@ const PartnerForm = ({ show, handleClose }) => {
   };
 
   const handleSave = async () => {
-    setLoading(true);
+    // setLoading(true);
     let avatarUrl = profile.avatar;
 
     if (
@@ -177,7 +179,9 @@ const PartnerForm = ({ show, handleClose }) => {
     saveUser(updatedProfile);
     addToast("Profile Updated", "Your profile has been updated", "success");
 
-    setLoading(false);
+    updatePartnerRoles(selectedRoles, bankDetails);
+
+    // setLoading(false);
   };
 
   return (
