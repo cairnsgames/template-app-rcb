@@ -33,7 +33,7 @@ import MyClassesPage from "../packages/classes/MyClassesPage";
 
 import ChangePasswordPage from "../pages/auth/changepasswordpage";
 
-import './i18n';
+import "./i18n";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -90,7 +90,7 @@ const Routing = () => {
       <Route is={"search"}>
         <KlokoSearchPage />
       </Route>
-      
+
       <Route is="calendar">
         <MyClassesPage />
       </Route>
@@ -114,6 +114,11 @@ const Routing = () => {
       <Route is={"profile"}>
         <ProfilePage />
       </Route>
+      <Route is="partner">
+        <Suspense>
+          <PartnersPage />
+        </Suspense>
+      </Route>
 
       <Route is="store">
         <ComingSoon />
@@ -125,7 +130,7 @@ const Routing = () => {
       </Route>
 
       <Route is="orders/{id}">
-          <BreezoMyOrderDetails />
+        <BreezoMyOrderDetails />
       </Route>
       <Route startsWith="events">
         <KlokoRouting />
@@ -146,9 +151,6 @@ const Routing = () => {
       </Route>
       <Route startsWith={"loyalty"}>
         <LoyaltyPage />
-      </Route>
-      <Route startsWith={"partner"}>
-        <PartnersPage />
       </Route>
 
       <Route startsWith={"map"}>

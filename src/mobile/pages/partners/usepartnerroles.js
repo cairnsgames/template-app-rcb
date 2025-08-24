@@ -37,6 +37,10 @@ export const usePartnerRoles = () => {
   }
 
   const fetchPartnerBankingDetails = useCallback(async () => {
+    if (!user?.id) {
+      console.error("User ID is not available");
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -63,7 +67,7 @@ export const usePartnerRoles = () => {
     } finally {
       setLoading(false);
     }
-  }, [token, tenant, user.id]);
+  }, [token, tenant, user?.id]);
 
   const updatePartnerRoles = useCallback(
     async (roles, payments) => {

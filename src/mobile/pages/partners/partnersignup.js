@@ -34,6 +34,11 @@ const PartnerSignupModal = ({ show, handleClose }) => {
     const fileName = response.filename;
     const avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, fileName);
     setProfile({ ...profile, avatar: avatarUrl });
+    // Immediately save the updated avatar to the user profile
+    saveUser({
+      ...user,
+      avatar: avatarUrl,
+    });
     return fileName;
   };
   const handleFileUploadError = () => {
@@ -50,6 +55,11 @@ const PartnerSignupModal = ({ show, handleClose }) => {
   const handleCapturePhoto = (dataUrl) => {
     setAvatarPreview(dataUrl);
     setProfile({ ...profile, avatar: dataUrl });
+    // Immediately save the captured photo as avatar
+    saveUser({
+      ...user,
+      avatar: dataUrl,
+    });
     setShowCapturePhoto(false);
   };
 
@@ -66,9 +76,11 @@ const PartnerSignupModal = ({ show, handleClose }) => {
   );
 
   useEffect(() => {
+    console.log("PARTNER USER",user);
     setProfile({
       firstname: user?.firstname || "",
       lastname: user?.lastname || "",
+      avatar: user?.picture || user?.avatar || null,
     });
   }, [user]);
 

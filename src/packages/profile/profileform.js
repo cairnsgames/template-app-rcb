@@ -136,6 +136,7 @@ const ProfileForm = () => {
           {t('profileForm.alertMessage')}
         </Alert>
       )}
+      <h1>User Profile</h1>
       <Row>
         <Col md={6}>
           <Form.Group controlId="firstname">

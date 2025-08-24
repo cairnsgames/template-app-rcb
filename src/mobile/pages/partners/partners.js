@@ -1,19 +1,24 @@
 import Router, { Route } from "../../../packages/router/router";
 import PartnerLandingPage from "./landing/landing";
+import PartnerForm from "./partnerform";
 import Loyalty from "../../../packages/loyalty/loyalty";
 import LoyaltyProvider from "../../../packages/loyalty/context/loyaltyprovider";
 import { usePartnerRoles } from "./usepartnerroles";
+import { useUser } from "../../../packages/auth/context/useuser";
+import PageFull from "../../../parts/pagelayouts/pagefull";
 
 const PartnersPage = (props) => {
+  const { user } = useUser();
   const { roles } = usePartnerRoles();
+  console.log("HERE", user);
   return (
-    <>
+    <PageFull>
       <Router>
-        <Route if={!props.isLoggedIn}>
+        <Route if={!user}>
           <PartnerLandingPage />
         </Route>
-        <Route is="partner">          
-          <PartnerLandingPage roles={roles} />
+        <Route is="partner">
+          <PartnerForm roles={roles} />
         </Route>
         <Route is="partner/loyalty">
           <LoyaltyProvider>
@@ -21,7 +26,7 @@ const PartnersPage = (props) => {
           </LoyaltyProvider>
         </Route>
       </Router>
-    </>
+    </PageFull>
   );
 };
 
