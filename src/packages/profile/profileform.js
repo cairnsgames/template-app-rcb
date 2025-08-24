@@ -61,12 +61,22 @@ const ProfileForm = () => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  const handleAvatarChange = (e) => {
+  const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       fileSelected(e);
       setAvatarPreview(URL.createObjectURL(file));
-      setProfile({ ...profile, avatar: file });
+      setProfile((prev) => ({ ...prev, avatar: file }));
+      // Upload the file and save avatar immediately
+      try {
+        const uploadedFileName = await uploadFile([file]);
+        const avatarUrl = combineUrlAndPath(process.env.REACT_APP_FILES, uploadedFileName);
+        setProfile((prev) => ({ ...prev, avatar: avatarUrl }));
+        saveUser({ ...profile, avatar: avatarUrl });
+        addToast("Avatar Updated", "Your avatar has been updated", "success");
+      } catch (err) {
+        addToast("Avatar Upload Failed", "There was a problem uploading your avatar", "danger");
+      }
     }
   };
 
