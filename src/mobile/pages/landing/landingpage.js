@@ -5,6 +5,7 @@ import Hero from "./hero";
 import Footer from "./footer";
 import Testimonials from "./testimonial";
 import PartnerProgramHero from "./partnerprogram";
+import JuztDanceVideo from "../../../components/JuztDanceVideo";
 
 const LandingPage = ({ subTitle }) => {
   const heroRef = useRef();
@@ -13,10 +14,22 @@ const LandingPage = ({ subTitle }) => {
   const albumRef = useRef();
 
   return (
-    <Container fluid className="px-2" style={{ minHeight: "85%", maxHeight: "calc(100vh - 160px)", overflowY: "auto", overflowX: "hidden" }}>
+    <Container
+      fluid
+      className="px-2"
+      style={{
+        minHeight: "85%",
+        maxHeight: "calc(100vh - 160px)",
+        overflowY: "auto",
+        overflowX: "hidden",
+      }}
+    >
       <div ref={heroRef}>
         <Hero />
       </div>
+
+      <JuztDanceVideo />
+
       {subTitle && <h2 className="text-center mt-4">{subTitle}</h2>}
       <div ref={featureRef}>
         <Features />

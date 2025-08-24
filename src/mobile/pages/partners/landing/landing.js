@@ -8,6 +8,7 @@ import Features from "./features";
 import PartnerSignupModal from "../partnersignup";
 import CallToAction from "./calltoaction";
 import PartnerIcons from "./partnericons";
+import DancePartnersVideo from "../../../../components/DancePartnersVideo";
 
 const LandingPage = ({ roles = [] }) => {
   const { t } = useTranslation();
@@ -33,6 +34,7 @@ const LandingPage = ({ roles = [] }) => {
       style={{ overflowY: "auto", overflowX: "hidden" }}
     >
       <Hero openSignup={openSignup} roles={roles} t={t} />
+      <DancePartnersVideo />
       {roles.length > 0 && <PartnerIcons t={t} />}
       <Features t={t} />
       <PartnerBenefits t={t} />
