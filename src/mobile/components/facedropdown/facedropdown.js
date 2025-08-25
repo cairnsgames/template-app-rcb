@@ -49,18 +49,18 @@ const FaceDropdown = () => {
         <PersonCircle size={24} className="ms-3" style={{ color: "white" }} />
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {isLoggedIn && <Dropdown.Item>{t('faceDropdown.welcome')} {user.firstname}</Dropdown.Item>}
+        {isLoggedIn && <Dropdown.Item disabled>{t('faceDropdown.welcome')} {user.firstname}</Dropdown.Item>}
         {isLoggedIn && <Dropdown.Item href="#profile">{t('faceDropdown.profile')}</Dropdown.Item>}
         {isLoggedIn && <Dropdown.Item href="#partner">{t('faceDropdown.partner')}</Dropdown.Item>}
-        {isLoggedIn && <Dropdown.Item href="#settings">{t('faceDropdown.settings')}</Dropdown.Item>}
+        {/* {isLoggedIn && <Dropdown.Item href="#settings">{t('faceDropdown.settings')}</Dropdown.Item>} */}
         {isLoggedIn && <Dropdown.Item href="#orders">{t('faceDropdown.myorders')}</Dropdown.Item>}
-        <Dropdown.Item
+        {/* <Dropdown.Item
           onClick={() => {
             hardReload(true);
           }}
         >
           {t('faceDropdown.reload')}
-        </Dropdown.Item>
+        </Dropdown.Item> */}
         <Dropdown.Item href="#landing">{t('faceDropdown.about')}</Dropdown.Item>
         {isLoggedIn && (
           <Dropdown.Item

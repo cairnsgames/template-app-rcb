@@ -199,7 +199,6 @@ const ProfileForm = () => {
             </InputGroup>
             <div
               style={{
-                border: "1px solid #ccc",
                 padding: "5px",
                 marginTop: "5px",
                 height: "100px",
@@ -210,7 +209,7 @@ const ProfileForm = () => {
                 <img
                   src={avatarPreview}
                   alt={t('profileForm.avatarPreviewAlt')}
-                  className="img-preview mt-2"
+                  className="img-preview m-0"
                   style={{
                     width: "100px",
                     height: "100px",
@@ -221,7 +220,7 @@ const ProfileForm = () => {
                 <img
                   src={profile.avatar}
                   alt={t('profileForm.avatarPreviewAlt')}
-                  className="img-preview mt-2"
+                  className="img-preview m-0"
                   style={{
                     width: "100px",
                     height: "100px",

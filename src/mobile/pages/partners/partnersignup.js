@@ -219,7 +219,6 @@ const PartnerSignupModal = ({ show, handleClose }) => {
             </InputGroup>
             <div
               style={{
-                border: "1px solid #ccc",
                 padding: "5px",
                 marginTop: "5px",
                 height: "100px",
