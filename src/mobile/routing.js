@@ -58,6 +58,7 @@ const Routing = () => {
     }
     return <LandingPage />;
   }
+
   return (
     <Router isLoggedIn={isLoggedIn}>
       <Route is={"login"}>
@@ -114,7 +115,7 @@ const Routing = () => {
       <Route is={"profile"}>
         <ProfilePage />
       </Route>
-      <Route is="partner">
+      <Route startsWith="partner">
         <Suspense>
           <PartnersPage />
         </Suspense>
