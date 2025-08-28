@@ -9,7 +9,7 @@ const Hero = () => {
   return (
     <div className="mb-5 text-center">
       <FavIcon size={128} color={"purple"} lineWidth="3" />
-      <h1 className="display-5 fw-bold">Juzt.Dance</h1>
+      {/* <h1 className="display-5 fw-bold">Juzt.Dance</h1> */}
       <p className="lead mb-4">
         Maximize your dance experience here. Discover events and parties, book classes and earn rewards with our partners - all in one place!
       </p>

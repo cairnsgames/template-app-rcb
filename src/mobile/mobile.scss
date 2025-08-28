@@ -37,8 +37,12 @@ $card-spacer-x: 0.5rem;
 .content-section {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: $footer-height; // To prevent overlap with footer
-  margin-top: calc(#{$header-height} + #{$icon-bar-height}); // Start below both header and icon bar
+  padding-bottom: $footer-height; 
+  
+  margin-top: calc(#{$header-height} + 10px); 
+  .logged-out {
+    padding-top: calc(#{$header-height} + #{$icon-bar-height}); 
+  }
 }
 
 .footer-nav {
