@@ -43,6 +43,10 @@ $card-spacer-x: 0.5rem;
   .logged-out {
     padding-top: calc(#{$header-height} + #{$icon-bar-height}); 
   }
+
+  &.partner {
+    margin-top: calc(#{$header-height} + #{$icon-bar-height});
+  }
 }
 
 .footer-nav {

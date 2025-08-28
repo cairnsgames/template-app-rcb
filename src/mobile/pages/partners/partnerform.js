@@ -17,6 +17,7 @@ import useToast from "../../../packages/toasts/usetoast";
 import CapturePhoto from "../../../packages/photo/capturephoto";
 import { Camera } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
+import { Tabs, Tab } from "react-bootstrap";
 
 const PartnerForm = ({ show, handleClose }) => {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ const PartnerForm = ({ show, handleClose }) => {
     payment_method: "",
     paypal_username: "",
   });
-    const { addToast } = useToast();
+  const { addToast } = useToast();
 
   const [profile, setProfile] = useState({});
   const { roles, roleList, updatePartnerRoles, bankingDetails } =
@@ -186,183 +187,200 @@ const PartnerForm = ({ show, handleClose }) => {
   return (
     <Form>
       <h1>Partner Profile</h1>
-      <Row className="mb-3">
-        <Col md={6}>
-          <Form.Group controlId="firstname">
-            <Form.Label>{t("partnerSignup.firstNameLabel")}</Form.Label>
-            <Form.Control
-              type="text"
-              name="firstname"
-              value={profile.firstname || ""}
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group controlId="lastname">
-            <Form.Label>{t("partnerSignup.lastNameLabel")}</Form.Label>
-            <Form.Control
-              type="text"
-              name="lastname"
-              value={profile.lastname || ""}
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
-      <Form.Group>
-        <Form.Label>{t("partnerSignup.selectRolesLabel")}</Form.Label>
-        <Row>
-          {roleList.map((role) => (
-            <Col key={role.id} xs={6}>
-              <Form.Check
-                type="checkbox"
-                label={t(role.name)}
-                value={role.id}
-                checked={hasRole(role)}
-                onChange={() => handleRoleChange(role)}
-              />
+      <Tabs defaultActiveKey="profile" id="partner-form-tabs" className="mb-3">
+        <Tab eventKey="profile" title={t("Profile")}>
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group controlId="firstname">
+                <Form.Label>{t("partnerSignup.firstNameLabel")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="firstname"
+                  value={profile.firstname || ""}
+                  onChange={handleChange}
+                />
+              </Form.Group>
             </Col>
-          ))}
-        </Row>
-      </Form.Group>
+            <Col md={6}>
+              <Form.Group controlId="lastname">
+                <Form.Label>{t("partnerSignup.lastNameLabel")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="lastname"
+                  value={profile.lastname || ""}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Form.Group>
+            <Form.Label>{t("partnerSignup.selectRolesLabel")}</Form.Label>
+            <Row>
+              {roleList.map((role) => (
+                <Col key={role.id} xs={6}>
+                  <Form.Check
+                    type="checkbox"
+                    label={t(role.name)}
+                    value={role.id}
+                    checked={hasRole(role)}
+                    onChange={() => handleRoleChange(role)}
+                  />
+                </Col>
+              ))}
+            </Row>
+          </Form.Group>
 
-      <Form.Group controlId="avatar">
-        <Form.Label>{t("partnerSignup.avatarLabel")}</Form.Label>
-        <InputGroup>
-          {fileLoading ? (
-            <Spinner animation="border" />
-          ) : (
-            <Form.Control
-              type="file"
-              name="avatar"
-              accept="image/*"
-              onChange={handleAvatarChange}
-              ref={fileInputRef}
+          <Form.Group controlId="avatar">
+            <Form.Label>{t("partnerSignup.avatarLabel")}</Form.Label>
+            <InputGroup>
+              {fileLoading ? (
+                <Spinner animation="border" />
+              ) : (
+                <Form.Control
+                  type="file"
+                  name="avatar"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                  ref={fileInputRef}
+                />
+              )}
+
+              <Button
+                variant="primary"
+                onClick={() => setShowCapturePhoto(true)}
+              >
+                <Camera />
+              </Button>
+            </InputGroup>
+            <div
+              style={{
+                border: "1px solid #ccc",
+                padding: "5px",
+                marginTop: "5px",
+                height: "100px",
+                width: "100px",
+              }}
+            >
+              {avatarPreview ? (
+                <img
+                  src={avatarPreview}
+                  alt="Avatar Preview"
+                  className="img-preview mt-2"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : profile.avatar ? (
+                <img
+                  src={profile.avatar}
+                  alt="Avatar Preview"
+                  className="img-preview mt-2"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : null}
+            </div>
+          </Form.Group>
+
+          <Form.Group className="mt-3">
+            <Form.Label>{t("partnerSignup.preferredPaymentLabel")}</Form.Label>
+            <Form.Check
+              type="radio"
+              label={t("partnerSignup.paypalLabel")}
+              value="paypal"
+              checked={bankDetails.payment_method === "paypal"}
+              onChange={() => handlePaymentMethodChange("paypal")}
             />
+            <Form.Check
+              type="radio"
+              label={t("partnerSignup.bankDepositLabel")}
+              value="bank"
+              checked={bankDetails.payment_method === "bank"}
+              onChange={() => handlePaymentMethodChange("bank")}
+            />
+          </Form.Group>
+
+          {bankDetails.payment_method === "paypal" && (
+            <Form.Group className="mt-3">
+              <Form.Label>{t("partnerSignup.paypalUsernameLabel")}</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={t("partnerSignup.paypalUsernameLabel")}
+                value={bankDetails.paypal_username}
+                onChange={(e) =>
+                  setBankDetails({
+                    ...bankDetails,
+                    paypal_username: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
           )}
 
-          <Button variant="primary" onClick={() => setShowCapturePhoto(true)}>
-            <Camera />
-          </Button>
-        </InputGroup>
-        <div
-          style={{
-            border: "1px solid #ccc",
-            padding: "5px",
-            marginTop: "5px",
-            height: "100px",
-            width: "100px",
-          }}
-        >
-          {avatarPreview ? (
-            <img
-              src={avatarPreview}
-              alt="Avatar Preview"
-              className="img-preview mt-2"
-              style={{
-                width: "100px",
-                height: "100px",
-                objectFit: "cover",
-              }}
-            />
-          ) : profile.avatar ? (
-            <img
-              src={profile.avatar}
-              alt="Avatar Preview"
-              className="img-preview mt-2"
-              style={{
-                width: "100px",
-                height: "100px",
-                objectFit: "cover",
-              }}
-            />
-          ) : null}
-        </div>
-      </Form.Group>
+          {bankDetails.payment_method === "bank" && (
+            <>
+              <Form.Group className="mt-3">
+                <Form.Label>{t("partnerSignup.bankNameLabel")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={t("partnerSignup.bankNameLabel")}
+                  value={bankDetails.bank_name}
+                  onChange={(e) =>
+                    setBankDetails({
+                      ...bankDetails,
+                      bank_name: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>{t("partnerSignup.accountNumberLabel")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={t("partnerSignup.accountNumberLabel")}
+                  value={bankDetails.account_number}
+                  onChange={(e) =>
+                    setBankDetails({
+                      ...bankDetails,
+                      account_number: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mt-3">
+                <Form.Label>{t("partnerSignup.branchCodeLabel")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={t("partnerSignup.branchCodeLabel")}
+                  value={bankDetails.branch_code}
+                  onChange={(e) =>
+                    setBankDetails({
+                      ...bankDetails,
+                      branch_code: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </>
+          )}
+          <UserPropertyForm width={12} onSave={handleSave} />
+        </Tab>
+        {selectedRoles.map((roleObj) => {
+          const role = roleList.find((r) => r.id === roleObj.role_id);
+          if (!role) return null;
+          return (
+            <Tab key={role.id} eventKey={role.name} title={t(role.name)}>
+              {/* Empty tab for {role.name} */}
+            </Tab>
+          );
+        })}
+      </Tabs>
 
-      <Form.Group className="mt-3">
-        <Form.Label>{t("partnerSignup.preferredPaymentLabel")}</Form.Label>
-        <Form.Check
-          type="radio"
-          label={t("partnerSignup.paypalLabel")}
-          value="paypal"
-          checked={bankDetails.payment_method === "paypal"}
-          onChange={() => handlePaymentMethodChange("paypal")}
-        />
-        <Form.Check
-          type="radio"
-          label={t("partnerSignup.bankDepositLabel")}
-          value="bank"
-          checked={bankDetails.payment_method === "bank"}
-          onChange={() => handlePaymentMethodChange("bank")}
-        />
-      </Form.Group>
-
-      {bankDetails.payment_method === "paypal" && (
-        <Form.Group className="mt-3">
-          <Form.Label>{t("partnerSignup.paypalUsernameLabel")}</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder={t("partnerSignup.paypalUsernameLabel")}
-            value={bankDetails.paypal_username}
-            onChange={(e) =>
-              setBankDetails({
-                ...bankDetails,
-                paypal_username: e.target.value,
-              })
-            }
-          />
-        </Form.Group>
-      )}
-
-      {bankDetails.payment_method === "bank" && (
-        <>
-          <Form.Group className="mt-3">
-            <Form.Label>{t("partnerSignup.bankNameLabel")}</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder={t("partnerSignup.bankNameLabel")}
-              value={bankDetails.bank_name}
-              onChange={(e) =>
-                setBankDetails({
-                  ...bankDetails,
-                  bank_name: e.target.value,
-                })
-              }
-            />
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>{t("partnerSignup.accountNumberLabel")}</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder={t("partnerSignup.accountNumberLabel")}
-              value={bankDetails.account_number}
-              onChange={(e) =>
-                setBankDetails({
-                  ...bankDetails,
-                  account_number: e.target.value,
-                })
-              }
-            />
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>{t("partnerSignup.branchCodeLabel")}</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder={t("partnerSignup.branchCodeLabel")}
-              value={bankDetails.branch_code}
-              onChange={(e) =>
-                setBankDetails({
-                  ...bankDetails,
-                  branch_code: e.target.value,
-                })
-              }
-            />
-          </Form.Group>
-        </>
-      )}
-      <UserPropertyForm width={12} onSave={handleSave} />
       <CapturePhoto
         show={showCapturePhoto}
         onPhoto={handleCapturePhoto}

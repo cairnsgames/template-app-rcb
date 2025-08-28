@@ -6,6 +6,7 @@ import LoyaltyProvider from "../../../packages/loyalty/context/loyaltyprovider";
 import { usePartnerRoles } from "./usepartnerroles";
 import { useUser } from "../../../packages/auth/context/useuser";
 import PageFull from "../../../parts/pagelayouts/pagefull";
+import PartnerProfilePage from "../../../pages/partner/partnerprofilepage";
 
 const PartnersPage = (props) => {
   const { user } = useUser();
@@ -17,7 +18,7 @@ const PartnersPage = (props) => {
           <PartnerLandingPage />
         </Route>
         <Route is="partner">
-          <PartnerForm roles={roles} />
+          <PartnerProfilePage roles={roles} />
         </Route>
         <Route is="partner/loyalty">
           <LoyaltyProvider>
