@@ -42,14 +42,17 @@ const Markers = ({ markers }) => {
                       </div>
                     )}
                     <div style={{ display: "inline-block" }}>
-                      <Button
+                      <div
+                        className="h5 m-2 p-2"
+                        style={{ backgroundColor: "lightGrey", borderRadius:"10px", border: "1px solid lightgray" }}
+                        //
                         variant="light"
-                        onClick={() => {
-                          alert(marker.title);
-                        }}
+                        // onClick={() => {
+                        //   alert(marker.title);
+                        // }}
                       >
                         {marker.title}
-                      </Button>
+                      </div>
                     </div>
                     <div>
                       {marker.more && <FormattedText text={marker.more} />}
