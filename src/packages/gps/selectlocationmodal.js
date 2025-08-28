@@ -36,7 +36,6 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
   const markers = marker ? [marker] : [];
 
   const selectMapLocation = (e) => {
-    console.log("selectMapLocation", e);
     const latlng = e.latlng || e;
     setPosition([latlng.lat.toFixed(3), latlng.lng.toFixed(3)]);
     setMarker({
@@ -100,7 +99,6 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
   };
 
   const setSelectedAddress = (address) => {
-    console.log("Selected address:", address);
     if (onSelectAddress) {
       onSelectAddress(address);
     }
@@ -111,7 +109,7 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
       <Button variant="outline-primary" onClick={handleShow}>
         <Map />
       </Button>
-      <Modal show={show} onHide={handleClose}>
+  <Modal show={show} onHide={handleClose} backdropClassName="custom-dark-backdrop">
         <Modal.Header closeButton closeVariant="white">
           <Modal.Title>Select Location</Modal.Title>
         </Modal.Header>

@@ -9,7 +9,6 @@ import MyNewsEditor from "./mynewseditor";
 import PageFull from "../../parts/pagelayouts/pagefull";
 
 function NewsRouting() {
-  console.log("NewsSample");
   return (
     <PageFull className="my-3">
         <Router>

@@ -6,7 +6,6 @@ import FormattedText from "../utilities/formattedtext";
 import Tracker from "../tracker/tracker";
 
 const Markers = ({ markers }) => {
-  console.log("MARKERS!!!!!!!!", markers)
   return (
     <MarkerClusterGroup
       chunkedLoading
@@ -14,9 +13,9 @@ const Markers = ({ markers }) => {
       showCoverageOnHover={false}
     >
       {markers && markers.map((marker, index) => {
-        let cat = [marker.category, ...marker.subcategory].filter(Boolean).join(", ");
-        if (!Array.isArray(cat)) {
-          cat = ["New Pin"];
+        let cat = marker.subcategory.filter(Boolean).join(", ");
+        if (cat === "") {
+          cat = ["Partner"];
         }
         return (
           <Tracker key={marker.pinid} itemtype="map.pin" id={marker.id}>
@@ -54,7 +53,9 @@ const Markers = ({ markers }) => {
                     </div>
                     <div>
                       {marker.more && <FormattedText text={marker.more} />}
+                      <span style={{ fontStyle: "italic", textTransform: "capitalize" }}>
                       {cat}
+                      </span>
                       {marker.keywords && (
                         <div>
                           <br />

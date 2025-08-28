@@ -257,13 +257,13 @@ export default function Week() {
               //
               dateClick={handleDateClick}
               eventAdd={(e) => {
-                console.log("eventAdd", e);
+                // console.log("eventAdd", e);
               }}
               eventChange={(e) => {
-                console.log("eventChange", e);
+                // console.log("eventChange", e);
               }}
               eventRemove={(e) => {
-                console.log("eventRemove", e);
+                // console.log("eventRemove", e);
               }}
             />
           </Col>

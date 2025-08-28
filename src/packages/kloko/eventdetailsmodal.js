@@ -64,7 +64,6 @@ const EventDetailsModal = ({ events, onSave, onClose }) => {
   };
 
     const setAddress = (address) => {
-    console.log("Selected address - on modal:", address);
     setDetails({
       ...details,
       address_line1: address.street || "",

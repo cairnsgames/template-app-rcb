@@ -8,14 +8,12 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
   }
 
   const setAddress = (address) => {
-    console.log("Selected address - on modal:", address);
     const newDetails = {
       ...details,
       address_line1: address.street,
       town: address.city || address.town || address.village,
       country: address.country,
     };
-    console.log("Updated details:", newDetails);
     setDetails(newDetails);
   }
 

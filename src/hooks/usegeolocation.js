@@ -22,7 +22,6 @@ const useGeoLocation = (onChange, live = false) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setlatlng(position.coords);
-          console.log("Found Location", [position.coords.latitude, position.coords.longitude]);
           if (onChange) {
             onChange(position.coords);
           }

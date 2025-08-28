@@ -86,7 +86,6 @@ const PartnerForm = ({ show, handleClose }) => {
   );
 
   useEffect(() => {
-    console.log("PARTNER USER", user);
     setProfile({
       firstname: user?.firstname || "",
       lastname: user?.lastname || "",

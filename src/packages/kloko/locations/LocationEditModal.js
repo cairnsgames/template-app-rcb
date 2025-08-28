@@ -8,7 +8,6 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
   }
 
   const setAddress = (address) => {
-    console.log("Selected address - on modal:", address);
     const newDetails = {
       ...details,
       address_line1: address.street,
@@ -18,7 +17,6 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
     if (newDetails.name === "") {
       newDetails.name = address.street || address.city || address.town || address.village;
     }
-    console.log("Updated details:", newDetails);
     setDetails(newDetails);
   }
 

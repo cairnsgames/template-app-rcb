@@ -161,13 +161,13 @@ const MapDisplay = (props) => {
   };
 
   const mapClick = async (e) => {
-    console.log("Map clicked event triggered", e); // Debugging log
+    // console.log("Map clicked event triggered", e); // Debugging log
     if (props.onClick) {
       props.onClick(e);
     }
 
     const { lat, lng } = e.latlng;
-    console.log("Clicked location:", lat, lng); // Debugging log
+    // console.log("Clicked location:", lat, lng); // Debugging log
 
     setIsLoading(true); // Show spinner while loading
     try {
@@ -178,7 +178,7 @@ const MapDisplay = (props) => {
         throw new Error(`API request failed with status ${response.status}`);
       }
       const data = await response.json();
-      console.log("API response:", data); // Debugging log
+      // console.log("API response:", data); // Debugging log
 
       const formattedAddress = {
         street: data.address?.road || "Unknown Street",
@@ -212,12 +212,12 @@ const MapDisplay = (props) => {
         zoom={zoom}
         scrollWheelZoom={true}
         whenReady={(e) => {
-          console.log("Map ready event triggered"); // Debugging log
+          // console.log("Map ready event triggered"); // Debugging log
           mapRef.current = e.target;
           handleMapLoad();
         }}
         onClick={(e) => {
-          console.log("MapContainer onClick event", e); // Debugging log
+          // console.log("MapContainer onClick event", e); // Debugging log
           mapClick(e);
         }}
         style={{
@@ -237,7 +237,7 @@ const MapDisplay = (props) => {
         <MapEvents
           onMapChange={props.onMapChange}
           onMapClick={(e) => {
-            console.log("MapEvents onMapClick event", e); // Debugging log
+            // console.log("MapEvents onMapClick event", e); // Debugging log
             mapClick(e);
           }}
         />

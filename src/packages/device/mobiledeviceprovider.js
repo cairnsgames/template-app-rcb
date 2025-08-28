@@ -102,7 +102,7 @@ const MobileDeviceProvider = (props) => {
   const getDeliveredNotifications = async () => {
     const notificationList =
       await PushNotifications.getDeliveredNotifications();
-    console.log("#### delivered notifications", notificationList);
+    // console.log("#### delivered notifications", notificationList);
   };
 
   return (

@@ -6,7 +6,7 @@ const Map = () => {
   const { markers, addMarker } = useMapContext();
   const { getLocationDetails } = useGPS();
   const mapChanged = (south, west, north, east) => {
-    console.log("Map changed", { south, west, north, east });
+    // console.log("Map changed", { south, west, north, east });
   };
   const mapClick = async (lat, lng) => {
     // const details = await getLocationDetails(lat, lng);

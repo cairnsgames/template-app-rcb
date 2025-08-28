@@ -34,8 +34,6 @@ const AuthenticationProvider = (props) => {
     );
   }
 
-  console.log("==== AUTH PROVIDER", process.env.REACT_APP_AUTH_API);
-
   useEffect(() => {
     if (token) {
       localStorage.setItem("cg." + tenant + ".auth", token);
@@ -678,7 +676,6 @@ const AuthenticationProvider = (props) => {
   useEffect(() => {
     if (propertiesLoaded) {
       const languageProperty = properties.find((p) => p.name === "language");
-      console.log("Language Property", languageProperty);
       if (languageProperty) {
         switch (languageProperty.value.toLowerCase()) {
           case "portuguese":

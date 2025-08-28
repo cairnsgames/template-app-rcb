@@ -8,8 +8,6 @@ const BreezoMyOrders = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  console.log("ORDERS", orders);
-
   useEffect(() => {
     let updatedOrders = [...orders];
 
@@ -24,8 +22,6 @@ const BreezoMyOrders = () => {
     } else {
       updatedOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
-
-    console.log("UPDATED ORDERS", updatedOrders);
 
     setFilteredOrders(updatedOrders);
   }, [orders, statusFilter, sortOrder]);

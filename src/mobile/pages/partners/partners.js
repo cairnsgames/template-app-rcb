@@ -10,7 +10,6 @@ import PageFull from "../../../parts/pagelayouts/pagefull";
 const PartnersPage = (props) => {
   const { user } = useUser();
   const { roles } = usePartnerRoles();
-  console.log("HERE", user);
   return (
     <PageFull>
       <Router>

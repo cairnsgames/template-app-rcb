@@ -46,7 +46,6 @@ export function MapSearch(props) {
   }, [debouncedSearchTerm]);
 
   const getSuburbs = (name) => {
-    console.log("Get suburbs for", name);
     fetch(
       `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=50&featureType=settlement&city=${name}`
     )
