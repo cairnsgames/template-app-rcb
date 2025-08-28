@@ -34,6 +34,7 @@ import MyClassesPage from "../packages/classes/MyClassesPage";
 import ChangePasswordPage from "../pages/auth/changepasswordpage";
 
 import "./i18n";
+import FinancesPage from "./pages/finances/finances";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -119,6 +120,9 @@ const Routing = () => {
         <Suspense>
           <PartnersPage />
         </Suspense>
+      </Route>
+      <Route is="finances">
+        <FinancesPage />
       </Route>
 
       <Route is="store">

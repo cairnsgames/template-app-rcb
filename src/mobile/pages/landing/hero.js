@@ -11,9 +11,7 @@ const Hero = () => {
       <FavIcon size={128} color={"purple"} lineWidth="3" />
       <h1 className="display-5 fw-bold">Juzt.Dance</h1>
       <p className="lead mb-4">
-        Maximize your dance experience with our platform! Discover events, book
-        classes, and earn rewards with our partners. Get the latest news and
-        shop for merchandise—all in one place.
+        Maximize your dance experience here. Discover events and parties, book classes and earn rewards with our partners - all in one place!
       </p>
       <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
         {!isLoggedIn && (

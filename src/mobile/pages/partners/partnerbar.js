@@ -4,6 +4,7 @@ import {
   Balloon,
   Calendar,
   Cart,
+  CurrencyDollar,
   Gear,
   Heart,
   InfoCircle,
@@ -59,6 +60,9 @@ const PartnerBar = () => {
       </Nav.Link>
       <Nav.Link eventKey="#locations">
         <Map className="ms-1" />
+      </Nav.Link>
+      <Nav.Link eventKey="#finances">
+        <CurrencyDollar className="ms-1" />
       </Nav.Link>
       <Nav.Link eventKey="#partner">
         <Gear className="ms-1" />

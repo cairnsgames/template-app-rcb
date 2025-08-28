@@ -10,7 +10,7 @@ const Hero = ({ openSignup, roles }) => {
 
   if (roles.length > 0) {
     return (
-      <div className="my-5 text-center">
+      <div className="my-4 text-center">
         {/* <Image className="mb-4" src="./favicon.png" alt="" width="72" /> */}
         <FavIcon  className="me-3" size={128} color={"purple"} lineWidth="3" />
         <h1 className="display-5 fw-bold">{t('landingPage.welcomePartner')}</h1>
