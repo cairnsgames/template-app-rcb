@@ -6,14 +6,18 @@ import FormattedText from "../utilities/formattedtext";
 import Tracker from "../tracker/tracker";
 
 const Markers = ({ markers }) => {
+  console.log("MARKERS!!!!!!!!", markers)
   return (
     <MarkerClusterGroup
       chunkedLoading
       maxClusterRadius={30}
       showCoverageOnHover={false}
     >
-      {markers.map((marker, index) => {
-        const cat = [marker.category, ...marker.subcategory].filter(Boolean).join(", ");
+      {markers && markers.map((marker, index) => {
+        let cat = [marker.category, ...marker.subcategory].filter(Boolean).join(", ");
+        if (!Array.isArray(cat)) {
+          cat = ["New Pin"];
+        }
         return (
           <Tracker key={marker.pinid} itemtype="map.pin" id={marker.id}>
             <Marker

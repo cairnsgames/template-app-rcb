@@ -43,6 +43,9 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
       id: "NEWMARKER",
       lat: latlng.lat,
       lng: latlng.lng,
+      category: "",
+      subcategory: [],
+      color: "blue",
     });
   };
 
