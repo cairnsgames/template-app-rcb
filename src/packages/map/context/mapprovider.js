@@ -78,7 +78,6 @@ export const MapProvider = ({ children }) => {
           if (marker.title === "My Pin" && !!marker.name ) {
             marker.title = marker.name;
           }
-          marker.subcategory = JSON.parse(marker.subcategory || "");
           switch (marker.category.toLowerCase()) {
             case "event":
               const eventtype = marker.subcategory.length > 0 ? marker.subcategory[0].toLowerCase() : "event";
