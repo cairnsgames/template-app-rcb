@@ -32,11 +32,12 @@ body {
   // min-height: 100%;
 }
 body {
-  overflow-y: scroll;
+  /* Remove forced scroll to allow modal to control scrolling */
+  overflow-y: auto;
 }
 .container-fluid {
   max-width: 100%;
-  overflow-y: scroll;
+  /* Remove scroll from container-fluid to prevent double scrollbars */
   overflow-x: hidden;
 }
 
@@ -132,3 +133,36 @@ button.navbar-toggler {
 .qrcode {
   color: black;
 }
+
+.modal {
+  max-height: 75vh;
+}
+// .modal {
+//   max-height: 75vh;
+//   display: flex;
+//   flex-direction: column;
+//   border-radius: 1rem; // Restore border radius
+//   // overflow: hidden; // Ensure children respect border radius
+
+//   .modal-header {
+//     flex-shrink: 0;
+//     background: inherit;
+//     position: sticky;
+//     z-index: 1;
+//   }
+//   .modal-body {
+//     overflow-y: auto;
+//     flex: 1 1 auto;
+//     min-height: 0;
+//     max-height: 50vh; // Adjust as needed to fit your design
+//     margin-bottom: 50px;
+//   }
+
+//   .modal-footer {
+//     flex-shrink: 0;
+//     background: inherit;
+//     z-index: 2;
+//     position: sticky;
+//     bottom: 0;
+//   }
+// }
