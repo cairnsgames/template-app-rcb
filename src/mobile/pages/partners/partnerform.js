@@ -18,7 +18,10 @@ import CapturePhoto from "../../../packages/photo/capturephoto";
 import { Camera } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import { Tabs, Tab } from "react-bootstrap";
+
 import OfferingTab from "./offeringtab";
+import { useOfferings } from "./offeringscontext";
+
 
 const PartnerForm = ({ show, handleClose, offerings = [], offeringsLoading = false, offeringsError = null }) => {
 
@@ -36,12 +39,13 @@ const PartnerForm = ({ show, handleClose, offerings = [], offeringsLoading = fal
   const { addToast } = useToast();
 
   const [profile, setProfile] = useState({});
-  const [partnerOfferings, setPartnerOfferings] = useState([]);
   const { roles, roleList, updatePartnerRoles, bankingDetails } =
     usePartnerRoles();
   const { user, saveUser } = useUser();
 
+
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const { toggleOffering } = useOfferings();
 
   const [showCapturePhoto, setShowCapturePhoto] = useState(false);
   const handleFileUploadSuccess = (response) => {
@@ -59,18 +63,7 @@ const PartnerForm = ({ show, handleClose, offerings = [], offeringsLoading = fal
     console.error("File upload failed");
   };
 
-  const handleOfferingItemSelect = (item, isSelected) => {
-    if (isSelected) {
-      partnerOfferings.push(item.id);
-    } else {
-      const index = partnerOfferings.indexOf(item.id);
-      if (index > -1) {
-        partnerOfferings.splice(index, 1);
-      }
-    }
-    setPartnerOfferings([...partnerOfferings]);
-    console.log("Updated Active Items", partnerOfferings);
-  };
+
   
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -393,7 +386,7 @@ const PartnerForm = ({ show, handleClose, offerings = [], offeringsLoading = fal
           return (
             <Tab key={role.id} eventKey={role.name} title={t(role.name)}>
               {/* Empty tab for {role.name} */}
-              <OfferingTab role={role} active={partnerOfferings} offeringToggle={handleOfferingItemSelect} />
+              <OfferingTab role={role} />
             </Tab>
           );
         })}

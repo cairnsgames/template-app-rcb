@@ -20,8 +20,8 @@ const OfferingItem = ({ item, active, onChange }) => {
   );
 };
 
-const OfferingTab = ({ role, active, offeringToggle }) => {
-  const { offeringsForRole } = useOfferings();
+const OfferingTab = ({ role }) => {
+  const { offeringsForRole, activeOffering, toggleOffering } = useOfferings();
   const offerings = offeringsForRole(role.id);
 
   console.log(`Offerings for ${role.name}:`, offerings);
@@ -30,13 +30,16 @@ const OfferingTab = ({ role, active, offeringToggle }) => {
     return <Spinner animation="border" />;
   }
 
-  console.log("Active Items", active)
+  const offeringToggle = (itemId) => {
+    toggleOffering(itemId);
+  };
+
   // Only 1 collection so only show internals
   if (offerings.length === 1) {
     return (
       <div>
         {offerings[0].items.map((item) => (
-          <OfferingItem key={item.id} item={item} active={active.includes(item.id)} onChange={offeringToggle} />
+          <OfferingItem key={item.id} item={item} active={activeOffering(item.id)} onChange={() => offeringToggle(item.id)} />
         ))}
       </div>
     );
@@ -56,7 +59,7 @@ const OfferingTab = ({ role, active, offeringToggle }) => {
             <div>
               <h3>{offering.group_name}</h3>
               {offering.items.map((item) => (
-                <OfferingItem key={item.id} item={item} active={active.includes(item.id)} onChange={offeringToggle} />
+                <OfferingItem key={item.id} item={item} active={activeOffering(item.id)} onChange={() => offeringToggle(item.id)} />
               ))}
             </div>
           </Col>
@@ -68,7 +71,7 @@ const OfferingTab = ({ role, active, offeringToggle }) => {
               <div key={offering.id} className="mb-5">
                 <h3>{offering.group_name}</h3>
                 {offering.items.map((item) => (
-                  <OfferingItem key={item.id} item={item} active={active.includes(item.id)} onChange={offeringToggle} />
+                  <OfferingItem key={item.id} item={item} active={activeOffering(item.id)} onChange={() => offeringToggle(item.id)} />
                 ))}
               </div>
             ))}

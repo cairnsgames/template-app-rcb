@@ -62,3 +62,10 @@ $card-spacer-x: 0.5rem;
   width: 100%; // Ensure footer takes full width
   z-index: 999;
 }
+
+.xsmall {
+  font-size: 0.75rem; // extra small
+}
+.xxsmall {
+  font-size: 0.625rem; // extra extra small
+}

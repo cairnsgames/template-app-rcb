@@ -57,12 +57,14 @@ const Markers = ({ markers }) => {
                             border: "1px solid lightgray",
                           }}
                         >
-                          {marker.title}
+                          {marker.name}
+                          <div className="xsmall">{marker.title}</div>
                         </div>
                       </div>
                       <div>
                         {marker.more && <FormattedText text={marker.more} />}
                         <div
+                          className=""
                           style={{
                             textTransform: "capitalize",
                           }}
@@ -71,10 +73,13 @@ const Markers = ({ markers }) => {
                         </div>
                         {Array.isArray(marker.offerings) &&
                           marker.offerings.length > 0 && (
-                            <div style={{
-                            fontStyle: "italic",
-                            textTransform: "capitalize",
-                          }}>
+                            <div
+                              style={{
+                                fontStyle: "italic",
+                                textTransform: "capitalize",
+                              }}
+                              className="text-muted"
+                            >
                               <strong>Offerings:</strong>{" "}
                               {marker.offerings.map((off, i) => {
                                 if (specialGroupIds.includes(off.group_id)) {
@@ -101,7 +106,6 @@ const Markers = ({ markers }) => {
                           )}
                         {marker.keywords && (
                           <div>
-                            <br />
                             <strong>Keywords:</strong> {marker.keywords}
                           </div>
                         )}
