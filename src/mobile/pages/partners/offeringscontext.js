@@ -103,6 +103,7 @@ export const OfferingsProvider = ({ children }) => {
     return offerings.filter((offering) => offering.forrole === roleId);
   };
 
+
   return (
     <OfferingsContext.Provider
       value={{
