@@ -96,9 +96,9 @@ See the colors.js file in root
 
 # Deployed directories
 
-http://cairnsgames.co.za/rcb has the main project
-http://cairnsgames.co.za/zharo has the shared Zharo libraries
-http://cairnsgames.co.za/zharo/test/ has the test file (TODO: Allow sharing of any content share file)
+https://cairnsgames.co.za/rcb has the main project
+https://cairnsgames.co.za/zharo has the shared Zharo libraries
+https://cairnsgames.co.za/zharo/test/ has the test file (TODO: Allow sharing of any content share file)
 
 # Google OAuth Token
 

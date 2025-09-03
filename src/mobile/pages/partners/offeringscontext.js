@@ -17,7 +17,7 @@ export const OfferingsProvider = ({ children }) => {
 
   // Fetch all offerings (group)
   useEffect(() => {
-    fetch('http://cairnsgames.co.za/php/offerings/api.php/group', {
+    fetch('https://cairnsgames.co.za/php/offerings/api.php/group', {
       headers: {
         'app_id': tenant,
         'authorization': `Bearer ${token}`,
@@ -42,7 +42,7 @@ export const OfferingsProvider = ({ children }) => {
     if (!user?.id || !token || !tenant) return;
     setUserOfferingsLoading(true);
     setUserOfferingsError(null);
-    fetch(`http://cairnsgames.co.za/php/offerings/api.php/user/${user.id}/offerings`, {
+    fetch(`https://cairnsgames.co.za/php/offerings/api.php/user/${user.id}/offerings`, {
       headers: {
         'app_id': tenant,
         'authorization': `Bearer ${token}`,
@@ -74,7 +74,7 @@ export const OfferingsProvider = ({ children }) => {
   const toggleOffering = async (offering_id) => {
     if (!user?.id || !token || !tenant) return;
     try {
-      const res = await fetch('http://cairnsgames.co.za/php/offerings/api.php/toggle', {
+      const res = await fetch('https://cairnsgames.co.za/php/offerings/api.php/toggle', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
