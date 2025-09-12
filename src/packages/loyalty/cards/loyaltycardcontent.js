@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, Table } from "react-bootstrap";
-import { Gift, Star, StarFill } from "react-bootstrap-icons";
+import { Gift, Heart as Stamp, HeartFill as StampFill } from "react-bootstrap-icons";
+import "./loyaltycardcontent.css";
 import useUser from "../../auth/context/useuser";
 import pluralize from "pluralize";
 import { combineUrlAndPath } from "../../../functions/combineurlandpath";
@@ -100,11 +101,11 @@ const LoyaltyCardContent = ({ item, index, of, reward }) => {
                       // For the first 9 stars
                       return starIndex < item.stamps_collected ? (
                         <td key={starIndex}>
-                          <StarFill size={32} style={{ color: "purple" }} />
+                            <span className=""><StampFill size={32} style={{ color: "purple" }} /></span>
                         </td>
                       ) : (
                         <td key={starIndex}>
-                          <Star size={32} style={{ color: "lightgrey" }} />
+                          <Stamp size={32} style={{ color: "lightgrey" }} />
                         </td>
                       );
                     } else {
@@ -122,9 +123,9 @@ const LoyaltyCardContent = ({ item, index, of, reward }) => {
             {/* 10th Star */}
             <td>
               {item.stamps_collected >= 10 ? (
-                <StarFill size={32} style={{ color: "purple" }} />
+                <span className="stamp-glow"><StampFill size={32} style={{ color: "purple" }} /></span>
               ) : (
-                <Star size={32} style={{ color: "lightgrey" }} />
+                <Stamp size={32} style={{ color: "lightgrey" }} />
               )}
             </td>
             {/* Prize Icon */}

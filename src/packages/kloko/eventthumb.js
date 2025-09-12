@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import FavoriteIcon from "./FavoriteIcon";
 import { Card, Button } from "react-bootstrap";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { formatEventDate } from "./eventfunctions";
@@ -20,12 +21,17 @@ const EventThumb = ({ event, onClick, onEdit }) => {
       <Card.Title className="m-1 ms-0">{event.title}</Card.Title>
       <Card.Body className="d-flex m-0 p-0">
         {imageLoaded && (
-          <img
-            src={combineUrlAndPath(process.env.REACT_APP_FILES, event.image)}
-            alt="Event"
-            style={{ maxWidth: "25%", marginRight: "15px", height: "auto", objectFit: "cover" }}
-            onError={() => setImageLoaded(false)} // Set to false if image fails to load
-          />
+          <div style={{ position: "relative", display: "inline-block", maxWidth: "25%", marginRight: "15px" }}>
+            <img
+              src={combineUrlAndPath(process.env.REACT_APP_FILES, event.image)}
+              alt="Event"
+              style={{ width: "100%", height: "auto", objectFit: "cover", borderRadius: "4px" }}
+              onError={() => setImageLoaded(false)} // Set to false if image fails to load
+            />
+            <div style={{ position: "absolute", top: 4, right: 4, zIndex: 2 }}>
+              <FavoriteIcon event_id={event.id} favorite={event.favorite} />
+            </div>
+          </div>
         )}
         <div>
           <Card.Text>

@@ -328,6 +328,42 @@ export const KlokoMyEventProvider = ({
     }
   };
 
+    // Toggle favorite status for an event
+    const toggleFavorite = async (eventId) => {
+      try {
+        const response = await fetch(
+          "http://cairnsgames.co.za/php/favorite/toggle.php",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              app_id: tenant,
+              authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ event_id: eventId }),
+          }
+        );
+        const result = await response.json();
+        if (result.success) {
+          setEvents((prevEvents) =>
+            prevEvents.map((event) =>
+              event.id === eventId
+                ? { ...event, favorite: result.action === "added" ? 1 : 0 }
+                : event
+            )
+          );
+          if (activeEvent && activeEvent.id === eventId) {
+            setActiveEvent((prevEvent) => ({
+              ...prevEvent,
+              favorite: result.action === "added" ? 1 : 0
+            }));
+          }
+        }
+      } catch (error) {
+        console.error("Error toggling favorite:", error);
+      }
+    };
+
   const updateCalendar = async (calendar) => {
     setLoading(true);
     try {
@@ -795,6 +831,7 @@ export const KlokoMyEventProvider = ({
       upcomingEvents,
       ticketTypes,
       ticketOptions,
+      toggleFavorite
     }),
     [
       calendars,
@@ -808,6 +845,7 @@ export const KlokoMyEventProvider = ({
       activeEvent,
       loading,
       searchResults,
+      toggleFavorite
     ]
   );
 

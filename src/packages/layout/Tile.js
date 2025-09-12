@@ -1,4 +1,5 @@
 import React from "react";
+import FavoriteIcon from "../../packages/kloko/FavoriteIcon";
 import { Card } from "react-bootstrap";
 import { QRCode as QRCodeLogo } from "react-qrcode-logo";
 import { Colors } from "../../styles/colors";
@@ -33,6 +34,8 @@ const Tile = ({ data, onClick }) => {
 
   const link = "https://juzt.dance#ticket?event=" + raw?.event_id;
 
+  console.log("EVENT CARD", data);
+
   const size = 128,
     logoPadding = 4,
     logoWidth = 64,
@@ -51,15 +54,71 @@ const Tile = ({ data, onClick }) => {
     ></div>
   );
 
+  // Determine star icon
+  let showStar = false;
+  let starFilled = false;
+  if (raw && typeof raw.favorite !== "undefined") {
+    if (raw.favorite === 1) {
+      showStar = true;
+      starFilled = true;
+    } else if (data.type === "event") {
+      showStar = true;
+      starFilled = false;
+    }
+  } else if (data.type === "event") {
+    showStar = true;
+    starFilled = false;
+  }
+
   return (
     <div className="tile-wrapper mb-4">
       <Tracker itemtype={data.tracker} id={data.id}>
         <Card className={data.type} onClick={() => onClick(data)}>
-          {image ? (
-            <Card.Img variant="top" src={image} alt={title} />
-          ) : (
-            placeholderImage
-          )}
+          <div style={{ position: "relative" }}>
+            {image ? (
+              <div style={{ position: "relative" }}>
+                <Card.Img variant="top" src={image} alt={title} />
+                {showStar && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      zIndex: 10,
+                      filter: "drop-shadow(0 0 8px #a020f0)",
+                    }}
+                  >
+                    <FavoriteIcon
+                      event_id={data.id}
+                      favorite={raw.favorite}
+                      style={{ verticalAlign: "middle" }}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                {placeholderImage}
+                {showStar && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      zIndex: 10,
+                      filter: "drop-shadow(0 0 8px #a020f0)",
+                    }}
+                  >
+                    <FavoriteIcon
+                      event_id={raw.event_id}
+                      favorite={raw.favorite}
+                      style={{ verticalAlign: "middle" }}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
           {overlayText && (
             <Card.ImgOverlay className="d-flex flex-column justify-content-between p-2 px-3">
               <Card.Header className="text-white bg-transparent border-0 text-center">

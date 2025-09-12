@@ -8,7 +8,7 @@ export const KlokoEventsProvider = ({ children, user, tenant, token }) => {
   const [loading, setLoading] = React.useState(false);
   const [activeEvent, setActiveEvent] = useState();
   const [eventId, setEventId] = useState();
-
+  
   if (!process.env.REACT_APP_KLOKO_API) {
     throw new Error(
       "KlokoEventsProvider: REACT_APP_KLOKO_API environment variable is required"
@@ -36,10 +36,7 @@ export const KlokoEventsProvider = ({ children, user, tenant, token }) => {
     try {
       setLoading(true);
       const response = await fetch(
-        combineUrlAndPath(
-          process.env.REACT_APP_KLOKO_API,
-          `api.php/events`
-        ),
+        combineUrlAndPath(process.env.REACT_APP_KLOKO_API, `api.php/events`),
         {
           method: "POST",
           headers: headers,
@@ -55,8 +52,16 @@ export const KlokoEventsProvider = ({ children, user, tenant, token }) => {
   };
 
   return (
-    <KlokoEventsContext.Provider value={{ events, loading, activeEvent, eventId, setEventId }}>
+    <KlokoEventsContext.Provider
+      value={{
+        events,
+        loading,
+        activeEvent,
+        eventId,
+        setEventId
+      }}
+    >
       {children}
     </KlokoEventsContext.Provider>
   );
-}
+};

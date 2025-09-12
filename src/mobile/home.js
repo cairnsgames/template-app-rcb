@@ -89,6 +89,7 @@ const Home = () => {
         footer: "", //item.date,
         overlayText: item.overlay_text === "Y",
         overlay: item.overlay_text,
+        raw: item,
       };
     });
   };
@@ -107,6 +108,7 @@ const Home = () => {
         overlayText: event.overlay_text === "Y",
         overlay: event.overlay_text,
         taget: "",
+        raw: event,
       };
     });
   };

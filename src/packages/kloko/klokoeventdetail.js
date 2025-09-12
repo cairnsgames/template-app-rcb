@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import FavoriteIcon from "./FavoriteIcon";
 import useMyEvents from "./context/usemyevents";
 import { useEvents } from "./context/useevents";
 import { Button, Card, Spinner } from "react-bootstrap";
@@ -32,22 +33,30 @@ const KlokoEventDetail = ({ id }) => {
     <div className="px-3 py-2" style={{ margin: "1rem", marginLeft: "auto", marginRight: "auto", maxWidth: "100%" }}>
       <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
         <h2 className="m-0">{activeEvent.title}</h2>
-        <button
+        {/* <button
           className="btn btn-outline-secondary"
           onClick={handleHomeRedirect}
         >
           X
-        </button>
-      </div>
+        </button>*/}
+      </div> 
 
       <Tracker itemtype="event.detail" id={activeEvent.id}>
         <Card className="news-item">
-          <Card.Img
-            variant="top"
-            src={combineUrlAndPath(process.env.REACT_APP_FILES, activeEvent.image)}
-            style={{ height: "100%", width: "100%", maxHeight: "50vh", objectFit: 'contain' }}
-            className="m-3"
-          />
+          {/* Image with Favorite Star Button overlay */}
+          <div style={{ position: "relative" }}>
+            <Card.Img
+              variant="top"
+              src={combineUrlAndPath(process.env.REACT_APP_FILES, activeEvent.image)}
+              style={{ height: "100%", width: "100%", maxHeight: "50vh", objectFit: 'contain' }}
+              className="m-3"
+            />
+            <FavoriteIcon
+              event_id={activeEvent.id}
+              favorite={activeEvent.favorite}
+              style={{ position: "absolute", top: 24, right: 32, zIndex: 2 }}
+            />
+          </div>
           <Card.Body>
             {activeEvent.description}
             {/* <div>Price: {formatPrice(activeEvent.currency, activeEvent.price)}</div> */}
@@ -70,3 +79,4 @@ const KlokoEventDetail = ({ id }) => {
 };
 
 export default KlokoEventDetail;
+                    
