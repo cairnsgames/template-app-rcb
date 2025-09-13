@@ -332,7 +332,7 @@ export const KlokoMyEventProvider = ({
     const toggleFavorite = async (eventId) => {
       try {
         const response = await fetch(
-          "http://cairnsgames.co.za/php/favorite/toggle.php",
+          combineUrlAndPath(process.env.REACT_APP_FAVORTITE_API, "toggle.php"),
           {
             method: "POST",
             headers: {

@@ -10,4 +10,5 @@ REACT_APP_CONTENT_API=http://localhost/cairnsgames/php/content/
 REACT_APP_REVIEW_API=http://localhost/cairnsgames/php/reviews/
 REACT_APP_FILES=http://localhost/files/
 
+REACT_APP_FAVORTITE_API=https://cairnsgames.co.za/php/favorite
 
