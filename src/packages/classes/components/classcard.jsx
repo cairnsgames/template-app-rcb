@@ -18,6 +18,8 @@ const ClassCard = ({ cls, onClick, onEdit, variant = "desktop" }) => {
     onEdit(cls);
   };
 
+  console.log("Cls", cls);
+
   if (variant === "desktop") {
     return (
       <div
@@ -62,21 +64,18 @@ const ClassCard = ({ cls, onClick, onEdit, variant = "desktop" }) => {
         <Card.Title className="h5 mb-0">
         {cls.title}
         </Card.Title>
+
         <div>
         <button className="btn btn-sm btn-outline-primary me-2" onClick={onEditClass}>Edit</button>
         {/* <button className="btn btn-sm btn-outline-danger">Delete</button> */}
         </div>
       </div>
-      {variant === "search" && (
-        <>
         {formatDate(cls.start_time)}{" "}
         {formatStartEndTime(cls.start_time, cls.end_time)}
-        </>
-      )}
 
       {cls.isMultiDay && (
         <div className="text-purple-600 mt-1">
-        {cls.start_time} - {cls.end_time}
+        {formatDate(cls.start_time)} - {formatDate(cls.end_time)}
         </div>
       )}
       <Card.Text className="text-muted text-sm">
