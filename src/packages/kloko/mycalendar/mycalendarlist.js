@@ -8,6 +8,7 @@ import {
   StarFill,
 } from "react-bootstrap-icons";
 import { useEvents } from "./mycalendarcontext";
+import LoadingSpinner from "../../../components/spinner/spinner";
 import { useRef, useState, useEffect } from "react";
 
 export const EventList = () => {
@@ -17,6 +18,7 @@ export const EventList = () => {
     getEventsForDate,
     getNextEventDate,
     getPreviousEventDate,
+    loading,
   } = useEvents();
 
   const [pointerStartX, setPointerStartX] = useState(null);
@@ -255,13 +257,23 @@ export const EventList = () => {
   const hasPreviousEvent = getPreviousEventDate(currentDate) !== null;
   const hasNextEvent = getNextEventDate(currentDate) !== null;
 
+  console.log('loading:', loading, 'currentDate:', currentDate);
+
+  if (loading || !currentDate) {
+    return (
+      <Container fluid className="py-4 h-100 d-flex justify-content-center align-items-center">
+        <LoadingSpinner />
+      </Container>
+    );
+  }
+
   return (
     <Container fluid className="py-4 h-100">
       <Row className="mb-4">
         <Col>
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="mb-0 text-center flex-grow-1">
-              {formatDate(currentDate)}
+              {loading ? <LoadingSpinner /> : formatDate(currentDate)}
             </h2>
           </div>
           <div className="d-flex justify-content-center gap-2">

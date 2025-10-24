@@ -1,12 +1,13 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from "react";
 import { useUser } from "../../auth/context/useuser";
-import {useTenant} from "../../tenant/context/usetenant";
+import { useTenant } from "../../tenant/context/usetenant";
 
 const EventContext = createContext(undefined);
 
 export const EventProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [loading, setLoading] = useState(true);
+  const [currentDate, setCurrentDate] = useState();
 
   const { tenant } = useTenant();
   const { user, token } = useUser();
@@ -20,7 +21,7 @@ export const EventProvider = ({ children }) => {
   const parseDateTime = (s) => {
     if (!s) return null;
     // API returns 'YYYY-MM-DD HH:mm:SS' — convert to ISO-like string
-    const iso = s.replace(' ', 'T');
+    const iso = s.replace(" ", "T");
     const d = new Date(iso);
     if (isNaN(d.getTime())) return new Date(s);
     return d;
@@ -28,21 +29,27 @@ export const EventProvider = ({ children }) => {
 
   const fetchEvents = async () => {
     try {
+      setLoading(true);
       const headers = {
-        'app_id': tenant || '',
+        app_id: tenant || "",
       };
-      if (token) headers['Authorization'] = `Bearer ${token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      const res = await fetch('https://cairnsgames.co.za/php/kloko/api.php/mycalendar', { headers });
+      const res = await fetch(
+        "https://cairnsgames.co.za/php/kloko/api.php/mycalendar",
+        { headers }
+      );
       if (!res.ok) {
         // fallback: keep events empty
         setEvents([]);
+        setLoading(false);
         return;
       }
 
       const data = await res.json();
       if (!Array.isArray(data)) {
         setEvents([]);
+        setLoading(false);
         return;
       }
 
@@ -50,19 +57,22 @@ export const EventProvider = ({ children }) => {
       const mapped = data.map((it, idx) => {
         const start = parseDateTime(it.start_time || it.startTime || it.start);
 
-        const uniqueId = it.event_id ? `${it.event_id}_${it.ticket_id ?? idx}` : (it.id ?? idx);
+        const uniqueId = it.event_id
+          ? `${it.event_id}_${it.ticket_id ?? idx}`
+          : it.id ?? idx;
 
         return {
           id: uniqueId,
           name: it.title ?? it.name ?? `Event ${it.event_id ?? idx}`,
-          description: it.description ?? '',
+          description: it.description ?? "",
           currency: it.currency,
           price: Number(it.price) || 0,
           image: it.image,
           keywords: it.keywords,
-          type: it.enable_bookings === 'Y' ? 'booked' : (it.event_type || 'event'),
+          type:
+            it.enable_bookings === "Y" ? "booked" : it.event_type || "event",
           duration: Number(it.duration) || 0,
-          location: it.location || '',
+          location: it.location || "",
           lat: Number(it.lat) || 0,
           lng: Number(it.lng) || 0,
           startTime: start, // Date object
@@ -72,9 +82,38 @@ export const EventProvider = ({ children }) => {
       });
 
       setEvents(mapped);
+      let tempNextDate;
+      // set currentDate to first future event's day if user hasn't chosen a date
+      try {
+        const now = new Date();
+        const firstFuture = mapped
+          .map((e) => ({
+            ...e,
+            startTime: e.startTime ? new Date(e.startTime) : null,
+          }))
+          .filter((e) => e.startTime && e.startTime >= now)
+          .sort((a, b) => a.startTime - b.startTime)[0];
+
+        if (firstFuture) {
+          const day = new Date(firstFuture.startTime);
+          day.setHours(0, 0, 0, 0);
+          const initialToday = new Date();
+          initialToday.setHours(0, 0, 0, 0);
+          const currDay = new Date(currentDate);
+          currDay.setHours(0, 0, 0, 0);
+          tempNextDate = day;
+        }
+      } catch (err) {
+        // ignore
+        tempNextDate = new Date();
+      }
+      setCurrentDate(tempNextDate || new Date());
     } catch (err) {
       // on error keep existing events or set empty
+      setCurrentDate(new Date());
       setEvents([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,10 +123,15 @@ export const EventProvider = ({ children }) => {
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
-    return events.filter(event => {
-      const eventDate = new Date(event.startTime);
-      return eventDate >= startOfDay && eventDate <= endOfDay;
-    }).sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+    return events
+      .filter((event) => {
+        const eventDate = new Date(event.startTime);
+        return eventDate >= startOfDay && eventDate <= endOfDay;
+      })
+      .sort(
+        (a, b) =>
+          new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+      );
   };
 
   const getNextEventDate = (fromDate) => {
@@ -96,8 +140,11 @@ export const EventProvider = ({ children }) => {
     startOfNextDay.setDate(startOfNextDay.getDate() + 1);
 
     const futureEvents = events
-      .filter(event => new Date(event.startTime) >= startOfNextDay)
-      .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+      .filter((event) => new Date(event.startTime) >= startOfNextDay)
+      .sort(
+        (a, b) =>
+          new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+      );
 
     if (futureEvents.length > 0) {
       const nextEventDate = new Date(futureEvents[0].startTime);
@@ -113,12 +160,15 @@ export const EventProvider = ({ children }) => {
     startOfCurrentDay.setHours(0, 0, 0, 0);
 
     const pastEvents = events
-      .filter(event => {
+      .filter((event) => {
         const eventDate = new Date(event.startTime);
         eventDate.setHours(0, 0, 0, 0);
         return eventDate < startOfCurrentDay;
       })
-      .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+      .sort(
+        (a, b) =>
+          new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+      );
 
     if (pastEvents.length > 0) {
       const prevEventDate = new Date(pastEvents[0].startTime);
@@ -130,7 +180,17 @@ export const EventProvider = ({ children }) => {
   };
 
   return (
-    <EventContext.Provider value={{ events, currentDate, setCurrentDate, getEventsForDate, getNextEventDate, getPreviousEventDate }}>
+    <EventContext.Provider
+      value={{
+        events,
+        loading,
+        currentDate,
+        setCurrentDate,
+        getEventsForDate,
+        getNextEventDate,
+        getPreviousEventDate,
+      }}
+    >
       {children}
     </EventContext.Provider>
   );
@@ -139,7 +199,7 @@ export const EventProvider = ({ children }) => {
 export const useEvents = () => {
   const context = useContext(EventContext);
   if (context === undefined) {
-    throw new Error('useEvents must be used within an EventProvider');
+    throw new Error("useEvents must be used within an EventProvider");
   }
   return context;
 };
