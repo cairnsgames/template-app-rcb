@@ -356,7 +356,7 @@ export const EventList = () => {
                         className="shadow-sm"
                         style={{
                           borderColor:
-                            event.type === "booked" ? "#000000" : "#8b5cf6",
+                            event.type === "booked" ? "purple" : "black",
                           borderWidth: "2px",
                         }}
                       >
@@ -369,7 +369,7 @@ export const EventList = () => {
                           <div
                             className="position-absolute"
                             style={{
-                              color: "#8b5cf6",
+                              color: "purple",
                               top: "0.5rem",
                               right: "0.5rem",
                             }}
