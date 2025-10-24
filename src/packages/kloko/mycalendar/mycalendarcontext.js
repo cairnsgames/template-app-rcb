@@ -33,7 +33,7 @@ export const EventProvider = ({ children }) => {
       };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      const res = await fetch('http://cairnsgames.co.za/php/kloko/api.php/mycalendar', { headers });
+      const res = await fetch('https://cairnsgames.co.za/php/kloko/api.php/mycalendar', { headers });
       if (!res.ok) {
         // fallback: keep events empty
         setEvents([]);
