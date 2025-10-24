@@ -15,7 +15,7 @@ import MobileAuth from "./pages/mobileauth";
 import NewsRouting from "../packages/news/newsrouting";
 
 import QRCodePage from "./pages/qrcodepage";
-import MyCalendar from "./pages/mycalendar";
+// import MyCalendarOld from "./pages/mycalendar";
 import ProfilePage from "../pages/profile/profilepage";
 import LandingPage from "./pages/landing/landingpage";
 import ComingSoon from "../components/comingsoon/comingsoon";
@@ -35,6 +35,7 @@ import ChangePasswordPage from "../pages/auth/changepasswordpage";
 
 import "./i18n";
 import FinancesPage from "./pages/finances/finances";
+import MyCalendar from "./pages/mycalendar/mycalendar";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -168,6 +169,7 @@ const Routing = () => {
         <QRCodePage />
       </Route>
       <Route startsWith={"mycalendar"}>
+        {/* <MyCalendar /> */}
         <MyCalendar />
       </Route>
 

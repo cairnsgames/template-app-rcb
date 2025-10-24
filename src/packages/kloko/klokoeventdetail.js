@@ -30,8 +30,8 @@ const KlokoEventDetail = ({ id }) => {
   }
 
   return (
-    <div className="px-3 py-2" style={{ margin: "1rem", marginLeft: "auto", marginRight: "auto", maxWidth: "100%" }}>
-      <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
+    <div className="" style={{ marginLeft: "auto", marginRight: "auto", maxWidth: "100%" }}>
+      <div className="mb-3">
         <h2 className="m-0">{activeEvent.title}</h2>
         {/* <button
           className="btn btn-outline-secondary"
@@ -49,7 +49,7 @@ const KlokoEventDetail = ({ id }) => {
               variant="top"
               src={combineUrlAndPath(process.env.REACT_APP_FILES, activeEvent.image)}
               style={{ height: "100%", width: "100%", maxHeight: "50vh", objectFit: 'contain' }}
-              className="m-3"
+              className=""
             />
             <FavoriteIcon
               event_id={activeEvent.id}

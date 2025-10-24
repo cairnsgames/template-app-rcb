@@ -14,7 +14,7 @@ import {
 import PageCentered from "../../parts/pagelayouts/pagecentered";
 import "./mycalendar.scss";
 
-const MyCalendar = () => {
+const MyCalendarOld = () => {
     const calendarRef = useRef(null);
   return (
     <PageCentered className="myCalendar" style={{height: "100%"}}>
