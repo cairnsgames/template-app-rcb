@@ -256,7 +256,7 @@ export const EventList = () => {
   const hasNextEvent = getNextEventDate(currentDate) !== null;
 
   return (
-    <Container fluid className="py-4">
+    <Container fluid className="py-4 h-100">
       <Row className="mb-4">
         <Col>
           <div className="d-flex justify-content-between align-items-center mb-3">
@@ -298,7 +298,7 @@ export const EventList = () => {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         className="g-3"
-        style={{ touchAction: "pan-y" }}
+        style={{ touchAction: "pan-y", minHeight: "60vh" }}
       >
   {/* placeholder removed */}
 

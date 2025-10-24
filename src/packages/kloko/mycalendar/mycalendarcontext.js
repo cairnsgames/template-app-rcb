@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { mockEvents } from './mockmycalendar';
+import { useUser } from "../../auth/context/useuser";
+import {useTenant} from "../../tenant/context/usetenant";
 
 const EventContext = createContext(undefined);
 
@@ -7,12 +8,74 @@ export const EventProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  const { tenant } = useTenant();
+  const { user, token } = useUser();
 
-  const fetchEvents = () => {
-    setEvents(mockEvents);
+  useEffect(() => {
+    // fetch when tenant/token available or on mount
+    fetchEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tenant, token]);
+
+  const parseDateTime = (s) => {
+    if (!s) return null;
+    // API returns 'YYYY-MM-DD HH:mm:SS' — convert to ISO-like string
+    const iso = s.replace(' ', 'T');
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return new Date(s);
+    return d;
+  };
+
+  const fetchEvents = async () => {
+    try {
+      const headers = {
+        'app_id': tenant || '',
+      };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch('http://cairnsgames.co.za/php/kloko/api.php/mycalendar', { headers });
+      if (!res.ok) {
+        // fallback: keep events empty
+        setEvents([]);
+        return;
+      }
+
+      const data = await res.json();
+      if (!Array.isArray(data)) {
+        setEvents([]);
+        return;
+      }
+
+      // Map API items to internal event shape used by EventList
+      const mapped = data.map((it, idx) => {
+        const start = parseDateTime(it.start_time || it.startTime || it.start);
+
+        const uniqueId = it.event_id ? `${it.event_id}_${it.ticket_id ?? idx}` : (it.id ?? idx);
+
+        return {
+          id: uniqueId,
+          name: it.title ?? it.name ?? `Event ${it.event_id ?? idx}`,
+          description: it.description ?? '',
+          currency: it.currency,
+          price: Number(it.price) || 0,
+          image: it.image,
+          keywords: it.keywords,
+          type: it.enable_bookings === 'Y' ? 'booked' : (it.event_type || 'event'),
+          duration: Number(it.duration) || 0,
+          location: it.location || '',
+          lat: Number(it.lat) || 0,
+          lng: Number(it.lng) || 0,
+          startTime: start, // Date object
+          endTime: parseDateTime(it.end_time || it.endTime),
+          raw: it,
+        };
+      });
+
+      setEvents(mapped);
+    } catch (err) {
+      // on error keep existing events or set empty
+      setEvents([]);
+    }
   };
 
   const getEventsForDate = (date) => {

@@ -4,7 +4,7 @@ import { EventList } from './mycalendarlist'
 const MyCalendar = () => {
   return (
     <EventProvider>
-      <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+      <div style={{ backgroundColor: '#f8f9fa'}}>
         <EventList />
       </div>
     </EventProvider>

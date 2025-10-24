@@ -35,7 +35,7 @@ import ChangePasswordPage from "../pages/auth/changepasswordpage";
 
 import "./i18n";
 import FinancesPage from "./pages/finances/finances";
-import MyCalendar from "./pages/mycalendar/mycalendar";
+import MyCalendar from "../packages/kloko/mycalendar/mycalendar";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
