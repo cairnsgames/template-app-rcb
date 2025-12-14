@@ -11,9 +11,10 @@ import EventThumb from "./eventthumb"; // Assuming there's a component for displ
 import LoadingSpinner from "../../components/spinner/spinner";
 import useEvents from "./context/useevents";
 import Tracker from "../tracker/tracker";
+import LocationSearch from "../../external/LocationSearch";
 
 const KlokoEvents = () => {
-  const { events, loading } = useEvents();
+  const { events, loading, location, setLocation } = useEvents();
   const [sortOption, setSortOption] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
   const [showOldEvents, setShowOldEvents] = useState(false);
@@ -65,6 +66,9 @@ const KlokoEvents = () => {
     <Tracker itemtype="event" id={"page"}>
     <div className="my-events">
       <Row className="mb-3">
+        <Col xs={12} md={12} className="my-2">
+            <LocationSearch onSelected={setLocation} />
+        </Col>
         <Col xs={6} lg={6}>
           <DropdownButton
             id="sort-dropdown"

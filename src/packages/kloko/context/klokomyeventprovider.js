@@ -36,6 +36,7 @@ export const KlokoMyEventProvider = ({
   const [tickets, setTickets] = useState([]);
   const [ticketTypes, setTicketTypes] = useState([]);
   const [ticketOptions, setTicketOptions] = useState([]);
+  const [location, setLocation] = useState();
 
   if (!process.env.REACT_APP_KLOKO_API) {
     throw new Error(
@@ -77,6 +78,12 @@ export const KlokoMyEventProvider = ({
   };
 
     const fetchEvents = async () => {
+      const body = {};
+      console.log("Fetching events with location:", location);
+      if (location && location.lat && location.lon) {
+        body.lat = location.lat;
+        body.lng = location.lon;
+      }
       try {
         setLoading(true);
         const response = await fetch(
@@ -87,6 +94,7 @@ export const KlokoMyEventProvider = ({
           {
             method: "POST",
             headers: headers,
+            body: JSON.stringify(body)
           }
         );
         const data = await response.json();
@@ -107,11 +115,13 @@ export const KlokoMyEventProvider = ({
   }, [canFetch]);
 
   useEffect(() => {
+    
+    console.log("Fetch Events - Location", location)
     if (user) {
       fetchMyEvents(user);
       fetchEvents();
     }
-  }, [user]);
+  }, [user, location]);
 
   useEffect(() => {
     let ev = myEvents.find((event) => event.id === Number(eventId));
@@ -831,7 +841,9 @@ export const KlokoMyEventProvider = ({
       upcomingEvents,
       ticketTypes,
       ticketOptions,
-      toggleFavorite
+      toggleFavorite,
+      location, 
+      setLocation
     }),
     [
       calendars,
@@ -845,7 +857,8 @@ export const KlokoMyEventProvider = ({
       activeEvent,
       loading,
       searchResults,
-      toggleFavorite
+      toggleFavorite,
+      location, setLocation
     ]
   );
 
