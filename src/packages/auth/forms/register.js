@@ -31,15 +31,53 @@ function RegisterForm({ language, onSuccess }) {
     event.preventDefault();
     event.stopPropagation();
 
+    // Clear any previous errors
+    setError(null);
+
+    // Client-side validation
+    let validationErrors = [];
+    
+    if (!firstName.trim()) {
+      validationErrors.push("First name is required.");
+    }
+    
+    if (!lastName.trim()) {
+      validationErrors.push("Last name is required.");
+    }
+    
+    if (password !== confirm) {
+      validationErrors.push("Passwords do not match.");
+    }
+    
+    if (validationErrors.length > 0) {
+      setError(validationErrors.join(' '));
+      setValidated(true);
+      return;
+    }
+
     if (form.checkValidity() === false) {
       console.log("Form is invalid, please check the fields and try again.");
+      setValidated(true);
       return;
     }
 
     register(email, password, confirm, firstName, lastName, language)
       .then((result) => {
+        // Handle errors returned as an array of objects with 'message' property
+        if (Array.isArray(result) && result.length > 0 && result[0].message) {
+          // Combine all error messages
+          const errorMessages = result.map(err => err.message).join(' ');
+          setError(errorMessages);
+          return;
+        }
+        // Handle errors in result.errors format
         if (result.errors) {
-          setError(result.errors[0].message);
+          if (Array.isArray(result.errors) && result.errors[0]?.message) {
+            const errorMessages = result.errors.map(err => err.message).join(' ');
+            setError(errorMessages);
+          } else {
+            setError(result.errors);
+          }
           return;
         }
         if (result && onSuccess) {
@@ -47,7 +85,7 @@ function RegisterForm({ language, onSuccess }) {
         }
       })
       .catch((error) => {
-        setError(error);
+        setError(error?.message || error?.toString() || 'An error occurred during registration');
         return;
       });
     setValidated(true);
@@ -71,6 +109,7 @@ function RegisterForm({ language, onSuccess }) {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               autoComplete="given-name"
+              isInvalid={validated && !firstName.trim()}
             />
             <Form.Control.Feedback type="invalid">
               {t("registerForm.firstNameValidation")}
@@ -87,6 +126,7 @@ function RegisterForm({ language, onSuccess }) {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               autoComplete="family-name"
+              isInvalid={validated && !lastName.trim()}
             />
             <Form.Control.Feedback type="invalid">
               {t("registerForm.lastNameValidation")}
@@ -125,6 +165,7 @@ function RegisterForm({ language, onSuccess }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
+              isInvalid={validated && password !== confirm}
             />
             <Button onClick={() => setSeePassword(!seePassword)}>
               <Eye />
@@ -143,6 +184,7 @@ function RegisterForm({ language, onSuccess }) {
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               autoComplete="confirm-password"
+              isInvalid={validated && password !== confirm}
             />
             <Form.Control.Feedback type="invalid">
               {t("registerForm.confirmPasswordValidation")}

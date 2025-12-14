@@ -210,7 +210,8 @@
     "preview": "Aperçu",
     "showOverlayText": "Afficher le texte superposé",
     "displayFrom": "Afficher aux utilisateurs à partir de",
-    "expires": "Expire"
+    "expires": "Expire",
+    "location": "Emplacement"
   },
   "loyalty": {
     "loadingUser": "Chargement de l'utilisateur...",

@@ -210,7 +210,8 @@
     "preview": "Preview",
     "showOverlayText": "Show overlay text",
     "displayFrom": "Display to users from",
-    "expires": "Expires"
+    "expires": "Expires",
+    "location": "Location"
   },
   "loyalty": {
     "loadingUser": "Loading user...",

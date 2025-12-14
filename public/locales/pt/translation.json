@@ -210,7 +210,8 @@
     "preview": "Pré-visualização",
     "showOverlayText": "Mostrar texto sobreposto",
     "displayFrom": "Exibir para os usuários a partir de",
-    "expires": "Expira"
+    "expires": "Expira",
+    "location": "Localização"
   },
   "loyalty": {
     "programTitle": "Programa de Fidelidade",

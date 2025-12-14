@@ -13,7 +13,9 @@ import { extractFileName } from "../../functions/extractfilename";
 import Div from "../../components/react-bootstrap-mobile/div";
 import { useToast } from "../toasts/usetoast";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+
+import LocationSelect from "../../packages/kloko/LocationSelect";
 
 const MyNewsEditor = ({ id, onClose }) => {
   const { t } = useTranslation();
@@ -36,6 +38,8 @@ const MyNewsEditor = ({ id, onClose }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [overlayText, setOverlayText] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [latlng, setLatlng] = useState({ lat: 0, lng: 0 });
+  const [location, setLocation] = useState("");
 
   const { addToast } = useToast();
 
@@ -88,6 +92,11 @@ const MyNewsEditor = ({ id, onClose }) => {
     setHasChanges(true); // Mark as changed
   };
 
+  const selectLocation = (location) => {
+    setLatlng({ lat: location.lat, lng: location.lng });
+    setLocation(location);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formattedDate = `${date} 00:00:00`; // Append time to date
@@ -120,9 +129,9 @@ const MyNewsEditor = ({ id, onClose }) => {
   return (
     <Div onHide={onClose}>
       <Form onSubmit={handleSubmit}>
-        <h2>{id ? t('news.updateNews') : t('news.createNews')}</h2>
+        <h2>{id ? t("news.updateNews") : t("news.createNews")}</h2>
         <Form.Group controlId="title">
-          <Form.Label>{t('news.title')}</Form.Label>
+          <Form.Label>{t("news.title")}</Form.Label>
           <InputGroup>
             <Form.Control
               type="text"
@@ -134,7 +143,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         </Form.Group>
 
         <Form.Group controlId="body">
-          <Form.Label>{t('news.body')}</Form.Label>
+          <Form.Label>{t("news.body")}</Form.Label>
           <InputGroup>
             <Form.Control
               as="textarea"
@@ -147,7 +156,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         </Form.Group>
 
         <Form.Group controlId="image">
-          <Form.Label>{t('news.image')}</Form.Label>
+          <Form.Label>{t("news.image")}</Form.Label>
           <InputGroup>
             {loading ? (
               <Spinner animation="border" />
@@ -169,7 +178,7 @@ const MyNewsEditor = ({ id, onClose }) => {
                 fileData ||
                 combineUrlAndPath(process.env.REACT_APP_FILES, imageUrl)
               }
-              alt={t('news.preview')}
+              alt={t("news.preview")}
               className="img-preview"
             />
           ) : null}
@@ -178,7 +187,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         <Form.Group controlId="overlayText">
           <Form.Check
             type="checkbox"
-            label={t('news.showOverlayText')}
+            label={t("news.showOverlayText")}
             checked={overlayText}
             onChange={(e) => {
               setOverlayText(e.target.checked);
@@ -188,7 +197,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         </Form.Group>
 
         <Form.Group controlId="date">
-          <Form.Label>{t('news.displayFrom')}</Form.Label>
+          <Form.Label>{t("news.displayFrom")}</Form.Label>
           <InputGroup>
             <Form.Control
               type="date"
@@ -200,7 +209,7 @@ const MyNewsEditor = ({ id, onClose }) => {
         </Form.Group>
 
         <Form.Group controlId="expires">
-          <Form.Label>{t('news.expires')}</Form.Label>
+          <Form.Label>{t("news.expires")}</Form.Label>
           <InputGroup>
             <Form.Control
               type="date"
@@ -211,13 +220,21 @@ const MyNewsEditor = ({ id, onClose }) => {
           </InputGroup>
         </Form.Group>
 
+        <Form.Group controlId="location">
+          <Form.Label>{t("news.location")}</Form.Label>
+          <LocationSelect value={location} onChange={setLocation} />
+          <Form.Text className="text-muted">
+            {t("locationSection.locationHint")}
+          </Form.Text>
+        </Form.Group>
+
         <div className="p-3">
           <Button
             variant="primary"
             type="submit"
             disabled={!hasChanges || loading || !canSave}
           >
-            {id ? t('news.updateNews') : t('news.createNews')}
+            {id ? t("news.updateNews") : t("news.createNews")}
           </Button>
         </div>
 
