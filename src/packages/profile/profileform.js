@@ -16,6 +16,7 @@ import useToast from "../toasts/usetoast";
 import CapturePhoto from "../photo/capturephoto";
 import { Camera } from "react-bootstrap-icons";
 import { useTranslation } from 'react-i18next';
+import LocationSearch from "../../external/LocationSearch";
 
 const ProfileForm = () => {
   const { user, saveUser } = useUser();
@@ -125,6 +126,11 @@ const ProfileForm = () => {
 
   const handleIdCapture = (id) => {};
 
+  const handleLocationSelected = (location) => {
+    const cityName = location.address.suburb || location.address.town || location.address.village || location.address.city || "";
+    setProfile({ ...profile, homecity: cityName, homelat: location.lat, homelng: location.lon });
+  };
+
   if (!profile) {
     return null;
   }
@@ -174,6 +180,19 @@ const ProfileForm = () => {
             />
           </Form.Group>
         </Col>
+        <Col md={6}>
+          <Form.Group controlId="homecity">
+            <Form.Label>Home City</Form.Label>
+            <LocationSearch
+              value={profile.homecity || ""}
+              onSelected={handleLocationSelected}
+              lat={profile.homelat}
+              lng={profile.homelng}
+            />
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row>
         <Col md={6}>
           <Form.Group controlId="avatar">
             <Form.Label>{t('profileForm.avatarLabel')}</Form.Label>

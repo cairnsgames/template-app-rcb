@@ -546,7 +546,23 @@ const AuthenticationProvider = (props) => {
         if (typeof data === "string") {
           data = JSON.parse(data);
         }
-        setProperties(data);
+        // Decode properties that are JSON strings
+        const decodedProperties = data.map(property => {
+          if (typeof property.value === 'string' && 
+              (property.value.startsWith('[') || property.value.startsWith('{'))) {
+            try {
+              return {
+                ...property,
+                value: JSON.parse(property.value)
+              };
+            } catch (e) {
+              // If decode fails, use as string
+              return property;
+            }
+          }
+          return property;
+        });
+        setProperties(decodedProperties);
         setPropertiesLoaded(true);
       })
       .catch((err) => {
@@ -568,6 +584,14 @@ const AuthenticationProvider = (props) => {
 
       const method = property.id ? "PUT" : "POST";
 
+      // Encode array/object values as JSON strings
+      const encodedProperty = {
+        ...property,
+        value: (typeof property.value === 'object' && property.value !== null)
+          ? JSON.stringify(property.value)
+          : property.value
+      };
+
       return fetch(url, {
         headers: {
           "Content-Type": "application/json",
@@ -575,7 +599,7 @@ const AuthenticationProvider = (props) => {
           token: token,
         },
         method: method,
-        body: JSON.stringify(property),
+        body: JSON.stringify(encodedProperty),
       });
     });
 

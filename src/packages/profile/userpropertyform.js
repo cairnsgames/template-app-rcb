@@ -3,16 +3,19 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import useUser from "../auth/context/useuser";
 import { Save } from "react-bootstrap-icons";
+import LocationSearch from "../../external/LocationSearch";
 
-const UserPropertyForm = ({ onSave, width = 6, optionalLabel = true }) => {
+const UserPropertyForm = ({ onSave, optionalLabel = true }) => {
   const { t } = useTranslation();
   const { properties, saveProperties } = useUser();
   const [mergedProperties, setMergedProperties] = useState([]);
 
+  console.log("Properties", properties);
+
   useEffect(() => {
     const defaultProperties = [
       { name: "address", value: "", type: "text" },
-      { name: "city", value: "", type: "text" },
+      { name: "city", value: "", type: "city_lookup" },
       { name: "phone", value: "", type: "text" },
       {
         name: "language",
@@ -31,9 +34,7 @@ const UserPropertyForm = ({ onSave, width = 6, optionalLabel = true }) => {
           ...defaultProp,
           ...existingProp,
           options:
-            defaultProp.type === "select"
-              ? defaultProp.options
-              : undefined,
+            defaultProp.type === "select" ? defaultProp.options : undefined,
         };
       }
       return defaultProp;
@@ -56,9 +57,9 @@ const UserPropertyForm = ({ onSave, width = 6, optionalLabel = true }) => {
   return (
     <div className="mt-4">
       <h5>{t("userPropertyForm.title", "User Properties")}</h5>
-      {mergedProperties?.map((property, index) => (
-        <Row key={property.name}>
-          <Col md={width}>
+      <Row>
+        {mergedProperties?.map((property, index) => (
+          <Col key={property.name} zs={12} md={6}>
             <Form.Group controlId={`property-${property.name}`}>
               <Form.Label>
                 {t(`userPropertyForm.${property.name}Label`, property.name)}{" "}
@@ -79,6 +80,13 @@ const UserPropertyForm = ({ onSave, width = 6, optionalLabel = true }) => {
                     </option>
                   ))}
                 </Form.Control>
+              ) : property.type === "city_lookup" ? (
+                <LocationSearch
+                  value={property.value}
+                  onSelected={(nominatimResult) =>
+                    handlePropertyChange(index, nominatimResult)
+                  }
+                />
               ) : (
                 <Form.Control
                   type="text"
@@ -93,8 +101,8 @@ const UserPropertyForm = ({ onSave, width = 6, optionalLabel = true }) => {
               )}
             </Form.Group>
           </Col>
-        </Row>
-      ))}
+        ))}
+      </Row>
 
       <Button variant="primary mt-3" onClick={handleSave}>
         <Save className="me-2" />
