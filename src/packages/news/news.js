@@ -6,6 +6,8 @@ import "./news.scss";
 import NewsCard from "./newscard";
 import Tracker from "../tracker/tracker";
 import { useTranslation } from 'react-i18next';
+import { Row, Col } from "react-bootstrap";
+import LocationSearch from "../../external/LocationSearch";
 
 const NewsDisplay = ({ item, onClick, layout }) => {
   if ((layout === "card")) {
@@ -41,7 +43,7 @@ export const NewsItems = ({ count, layout, onClick }) => {
 
 const News = ({ layout = "default", items = 99999 }) => {
   const { t } = useTranslation();
-  const { newsItems } = useNews();
+  const { newsItems, setLocation } = useNews();
 
   const handleItemClick = (id) => {
     window.location.hash = `#news/${id}`;
@@ -54,6 +56,11 @@ const News = ({ layout = "default", items = 99999 }) => {
       <div className="text-center">
         <h3>{t('news.latestNews')}</h3>
       </div>
+      <Row className="mb-3">
+        <Col xs={12} md={12} className="my-2">
+          <LocationSearch onSelected={setLocation} />
+        </Col>
+      </Row>
       <NewsItems items={items} layout={layout}  onClick={handleItemClick} />
     </div>
     </Tracker>

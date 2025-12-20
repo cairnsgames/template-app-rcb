@@ -14,6 +14,7 @@ export const NewsProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({ newItemsOnly: true }); // Filters object
+  const [location, setLocation] = useState(null);
 
   const { addToast } = useToast();
 
@@ -145,6 +146,48 @@ export const NewsProvider = ({ children }) => {
     }
   };
 
+  const fetchLocalNews = async (lat, lng, distance = 50) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const body = { distance };
+      
+      // Only include lat/lng if provided
+      if (lat !== undefined && lat !== null) {
+        body.lat = lat;
+      }
+      if (lng !== undefined && lng !== null) {
+        body.lng = lng;
+      }
+
+      const response = await fetch(
+        combineUrlAndPath(process.env.REACT_APP_NEWS_API, "api.php/localnews"),
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            app_id: tenant,
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch local news");
+      }
+
+      const data = await response.json();
+      setNewsItems(data);
+    } catch (err) {
+      setError(err.message);
+      console.error("Error fetching local news:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getNewsById = (id) => {
     return newsItems.find((item) => item.id === Number(id));
   };
@@ -164,6 +207,14 @@ export const NewsProvider = ({ children }) => {
     setFilters({ newItemsOnly: true }); // Reset filters to default state
   };
 
+  // Auto-fetch local news when location changes
+  useEffect(() => {
+    if (location && location.lat && location.lng) {
+      console.log("Fetching local news with location:", location);
+      fetchLocalNews(location.lat, location.lng, location.distance || 50);
+    }
+  }, [location]);
+
   return (
     <NewsContext.Provider
       value={{
@@ -175,12 +226,15 @@ export const NewsProvider = ({ children }) => {
         updateNewsItem,
         deleteNewsItem,
         fetchMyNewsItems,
+        fetchLocalNews,
         getNewsById,
         news, // Expose the filtered news variable
         filters, // Expose the filters object
         setFilters, // Expose the setter for filters
         setFilterField, // Expose the function to set a specific filter field
         clearFilters, // Expose the function to clear filters
+        location,
+        setLocation,
       }}
     >
       {children}
