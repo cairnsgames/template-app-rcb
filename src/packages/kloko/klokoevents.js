@@ -12,12 +12,15 @@ import LoadingSpinner from "../../components/spinner/spinner";
 import useEvents from "./context/useevents";
 import Tracker from "../tracker/tracker";
 import LocationSearch from "../../external/LocationSearch";
+import { useTranslation } from "react-i18next";
+import EventItem from "./eventitem";
 
 const KlokoEvents = () => {
   const { events, loading, location, setLocation } = useEvents();
   const [sortOption, setSortOption] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
   const [showOldEvents, setShowOldEvents] = useState(false);
+  const { t } = useTranslation();
 
   const handleSort = (option) => {
     if (sortOption === option) {
@@ -29,15 +32,15 @@ const KlokoEvents = () => {
   };
 
   const sortedEvents = (events || []).sort((a, b) => {
-        const compareValue = sortOrder === "asc" ? 1 : -1;
+    const compareValue = sortOrder === "asc" ? 1 : -1;
 
-        if (sortOption === "title") {
-          return a.title.localeCompare(b.title) * compareValue;
-        } else if (sortOption === "start_time") {
-          return (new Date(a.start_time) - new Date(b.start_time)) * compareValue;
-        }
-        return 0;
-      });
+    if (sortOption === "title") {
+      return a.title.localeCompare(b.title) * compareValue;
+    } else if (sortOption === "start_time") {
+      return (new Date(a.start_time) - new Date(b.start_time)) * compareValue;
+    }
+    return 0;
+  });
 
   // Filter events based on the showOldEvents state
   const filteredEvents = sortedEvents.filter((event) => {
@@ -50,8 +53,7 @@ const KlokoEvents = () => {
 
   const showEvent = (eventId) => {
     window.location.href = `#events/${eventId}`;
-  }
-
+  };
 
   if (loading) {
     return (
@@ -62,38 +64,44 @@ const KlokoEvents = () => {
   }
 
   return (
-    
     <Tracker itemtype="event" id={"page"}>
-    <div className="my-events">
-      <Row className="mb-3">
-        <Col xs={12} md={12} className="my-2">
+      <div className="my-events">
+        <div className="text-center">
+          <h3>{t("events.upcomingEvents")}</h3>
+        </div>
+        <Row className="mb-3">
+          <Col xs={12} md={12} className="my-2">
             <LocationSearch onSelected={setLocation} />
-        </Col>
-        <Col xs={6} lg={6}>
-          <DropdownButton
-            id="sort-dropdown"
-            title={`Sort`}
-            onSelect={handleSort}
-          >
-            <Dropdown.Item eventKey="title">Title</Dropdown.Item>
-            <Dropdown.Item eventKey="start_time">Start Time</Dropdown.Item>
-          </DropdownButton>
-        </Col>
-        <Col>
-          <Form.Check
-            type="checkbox"
-            label="Show Old Events"
-            checked={showOldEvents}
-            onChange={() => setShowOldEvents(!showOldEvents)}
-          />
-        </Col>
-      </Row>
-      <Row>
-        {filteredEvents.map((event) => (
-          <EventThumb key={event.id} event={event} onClick={showEvent} />
-        ))}
-      </Row>
-    </div>
+          </Col>
+          <Col xs={6} lg={6}>
+            <DropdownButton
+              id="sort-dropdown"
+              title={`Sort`}
+              onSelect={handleSort}
+            >
+              <Dropdown.Item eventKey="title">Title</Dropdown.Item>
+              <Dropdown.Item eventKey="start_time">Start Time</Dropdown.Item>
+            </DropdownButton>
+          </Col>
+          <Col>
+            <Form.Check
+              type="checkbox"
+              label="Show Old Events"
+              checked={showOldEvents}
+              onChange={() => setShowOldEvents(!showOldEvents)}
+            />
+          </Col>
+        </Row>
+        <Row>
+          {filteredEvents.map((event) => (
+            <Col xs={12} md={6} lg={4} key={`news-${event.id}`}>
+              <EventItem item={event}>
+                <EventThumb key={event.id} event={event} onClick={showEvent} />
+              </EventItem>
+            </Col>
+          ))}
+        </Row>
+      </div>
     </Tracker>
   );
 };

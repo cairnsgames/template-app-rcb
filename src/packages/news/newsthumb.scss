@@ -13,7 +13,9 @@
     width: 25%;
     height: auto;
     max-height: 150px; /* Ensure the image height */
-    object-fit: cover;
+    object-fit: contain; /* show the whole image, do not crop */
+    background-color: #f7f7f7;
+    display: block;
     margin-right: 15px;
   }
 

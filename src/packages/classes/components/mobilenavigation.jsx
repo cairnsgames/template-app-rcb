@@ -32,7 +32,7 @@ const MobileNavigation = ({
           <Col>
             <Form.Control
               type="text"
-              placeholder="Search classes..."
+              placeholder="..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

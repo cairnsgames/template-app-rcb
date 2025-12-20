@@ -10,7 +10,7 @@ const DesktopSearch = ({ searchQuery, setSearchQuery, setIsAddModalOpen }) => {
           <div className="position-relative">
             <Form.Control
               type="text"
-              placeholder="Search classes..."
+              placeholder="Search classes now..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="ps-4"

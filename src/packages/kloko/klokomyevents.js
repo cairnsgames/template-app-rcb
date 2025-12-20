@@ -74,7 +74,7 @@ const KlokoMyEvents = () => {
     <Tracker itemtype="partner.events" id={"events"}>
       <div className="my-events">
         {showEditor && (
-          <Suspense fallback={<div>{t('klokoMyEvents.loading')}</div>}>
+          <Suspense fallback={<div>{t('events.loading')}</div>}>
             <KlokoEventEditor id={editItemId} onClose={handleEditorClose} />
           </Suspense>
         )}
@@ -84,23 +84,23 @@ const KlokoMyEvents = () => {
             <Row className="mb-3">
               <Col xs={6} lg={3}>
                 <Button variant="primary" onClick={handleAdd}>
-                  {t('klokoMyEvents.addEvent')}
+                  {t('events.addEvent')}
                 </Button>
               </Col>
               <Col xs={6} lg={3}>
                 <DropdownButton
                   id="sort-dropdown"
-                  title={t('klokoMyEvents.sort')}
+                  title={t('events.sort')}
                   onSelect={handleSort}
                 >
-                  <Dropdown.Item eventKey="title">{t('klokoMyEvents.title')}</Dropdown.Item>
-                  <Dropdown.Item eventKey="start_time">{t('klokoMyEvents.startTime')}</Dropdown.Item>
+                  <Dropdown.Item eventKey="title">{t('events.title')}</Dropdown.Item>
+                  <Dropdown.Item eventKey="start_time">{t('events.startTime')}</Dropdown.Item>
                 </DropdownButton>
               </Col>
               <Col>
                 <Form.Check
                   type="checkbox"
-                  label={t('klokoMyEvents.showOldEvents')}
+                  label={t('events.showOldEvents')}
                   checked={showOldEvents}
                   onChange={() => setShowOldEvents(!showOldEvents)}
                 />

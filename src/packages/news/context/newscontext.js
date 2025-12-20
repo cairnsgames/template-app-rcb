@@ -33,27 +33,10 @@ export const NewsProvider = ({ children }) => {
     );
   }
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          combineUrlAndPath(process.env.REACT_APP_NEWS_API, `api.php/news`),
-          { headers }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch news");
-        }
-        const data = await response.json();
-        setNewsItems(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+     useEffect(() => {
 
-    fetchNews();
+
+    fetchLocalNews();
   }, []);
 
   const fetchMyNewsItems = async () => {

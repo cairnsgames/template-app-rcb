@@ -29,7 +29,7 @@ const NavBarbottom = () => {
         <div style={{ fontSize: "12px", fontWeight: "600" }}>Search</div>
       </Footer.Icon> */}
       
-      <Footer.Icon href="#classes">
+      <Footer.Icon href="#search">
         <Calendar2 size={24} />
         <div style={{ fontSize: "12px", fontWeight: "600" }}>Search</div>
       </Footer.Icon>

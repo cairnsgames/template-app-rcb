@@ -129,14 +129,6 @@
     "eventCoordinator": "Coordinateur d'événements",
     "supplier": "Fournisseur"
   },
-  "klokoMyEvents": {
-    "addEvent": "Ajouter un événement",
-    "sort": "Trier",
-    "title": "Titre",
-    "startTime": "Heure de début",
-    "showOldEvents": "Afficher les anciens événements",
-    "loading": "Chargement..."
-  },
   "eventDetails": {
     "eventDetailsTitle": "Détails de l'événement",
     "title": "Titre",
@@ -191,7 +183,15 @@
   },
   "events": {
     "createEvent": "Créer un nouvel événement",
-    "updateEvent": "Mettre à jour l'événement existant"
+    "updateEvent": "Mettre à jour l'événement existant",
+    "upcomingEvents": "Événements à venir",
+    "date": "Date de l'événement: {{date}}",
+    "addEvent": "Ajouter un événement",
+    "sort": "Trier",
+    "title": "Titre",
+    "startTime": "Heure de début",
+    "showOldEvents": "Afficher les anciens événements",
+    "loading": "Chargement..."
   },
   "news": {
     "latestNews": "Dernières nouvelles",
@@ -315,5 +315,8 @@
     "forgotTitle": "Mot de passe oublié",
     "magicLinkTitle": "Lien magique",
     "loginTitle": "Connexion mobile"
+  },
+  "search": {
+    "search": "Search"
   }
 }

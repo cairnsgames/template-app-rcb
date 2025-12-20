@@ -36,6 +36,8 @@ import ChangePasswordPage from "../pages/auth/changepasswordpage";
 import "./i18n";
 import FinancesPage from "./pages/finances/finances";
 import MyCalendar from "../packages/kloko/mycalendar/mycalendar";
+import Search from "../packages/search/search";
+import SearchRouting from "../packages/search/searchrouting";
 
 const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
@@ -91,7 +93,7 @@ const Routing = () => {
         <NewsRouting />
       </Route>
       <Route is={"search"}>
-        <KlokoSearchPage />
+        <SearchRouting />
       </Route>
 
       <Route is="calendar">
