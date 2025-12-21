@@ -1,0 +1,57 @@
+.event-item {
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  
+    .card {
+      border: none;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+  
+    .card-img-top {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+  
+    .card-body {
+      padding: 15px;
+  
+      .card-title {
+        font-size: 1.25em;
+        margin-bottom: 0;
+        color: #333;
+      }
+    }
+  
+    .card-footer {
+      padding: 10px 15px;
+      background-color: #f8f9fa;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+      small.text-muted {
+        color: #777;
+      }
+  
+      .event-item-menu {
+        font-size: 1.5em;
+        color: #777;
+        cursor: pointer;
+  
+        &:hover {
+          color: #333;
+        }
+      }
+    }
+  }
+  
