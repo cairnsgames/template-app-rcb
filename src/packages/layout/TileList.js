@@ -1,5 +1,5 @@
 import React from "react";
-import Tile from "./Tile";
+import TileFormat from "./TileFormat";
 import TicketTile from "./TicketTile";
 
 const TileList = ({ images, onClick }) => {
@@ -12,7 +12,7 @@ const TileList = ({ images, onClick }) => {
           return <TicketTile key={data.id} data={data} index={index} onClick={onClick} />;
         }
         return (
-          <Tile key={data.id} data={data} index={index} onClick={onClick} />
+          <TileFormat key={data.id} data={data} index={index} onClick={onClick} />
         );
       })}
     </>

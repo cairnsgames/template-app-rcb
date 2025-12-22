@@ -19,11 +19,11 @@ const NewsDisplay = ({ item, onClick, layout }) => {
     return <NewsThumb item={item} onClick={onClick} />;
   }
   return (
-    <div className="tile-wrapper mb-4">
+    <Tile>
       <Tracker itemtype="news.card" id={item.id}>
         <NewsItem key={item.id} item={item} onClick={onClick} />
       </Tracker>
-    </div>
+    </Tile>
   );
 };
 
