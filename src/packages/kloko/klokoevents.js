@@ -14,6 +14,7 @@ import Tracker from "../tracker/tracker";
 import LocationSearch from "../../external/LocationSearch";
 import { useTranslation } from "react-i18next";
 import EventItem from "./eventitem";
+import TilesLayout from "../layout/Tiles";
 
 const KlokoEvents = () => {
   const { events, loading, location, setLocation } = useEvents();
@@ -92,15 +93,15 @@ const KlokoEvents = () => {
             />
           </Col>
         </Row>
-        <Row>
+        <TilesLayout>
           {filteredEvents.map((event) => (
-            <Col xs={12} md={6} lg={4} key={`news-${event.id}`}>
+            <div className="tile-wrapper mb-4">
               <EventItem item={event}>
                 <EventThumb key={event.id} event={event} onClick={showEvent} />
               </EventItem>
-            </Col>
+            </div>
           ))}
-        </Row>
+        </TilesLayout>
       </div>
     </Tracker>
   );

@@ -15,6 +15,7 @@ import EventItem from "../kloko/eventitem";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import useTenant from "../tenant/context/usetenant";
 import useUser from "../auth/context/useuser";
+import TilesLayout from "../layout/Tiles";
 
 const SearchDisplay = ({ item, onClick, layout }) => {
   if (layout === "card") {
@@ -243,7 +244,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
             setSelectedRoles([]);
           }}
         />
-        <Row>
+        <TilesLayout>
           {sortedItems.map((item, index) => {
             const distance =
               item.distance !== undefined && item.distance !== null
@@ -253,36 +254,36 @@ const Search = ({ layout = "default", items = 99999 }) => {
             switch (item.itemType) {
               case "event":
                 return (
-                  <Col xs={12} md={6} lg={4} key={`event-${item.id}`}>
+                  <div className="tile-wrapper mb-4">
                     <EventItem item={item}>
                       <EventThumb event={item} onClick={handleEventClick} />
                       <div className="text-muted small mb-3">
                         This Event is {distance} from you
                       </div>
                     </EventItem>
-                  </Col>
+                  </div>
                 );
               case "partner":
                 return (
-                  <Col xs={12} md={6} lg={4} key={`partner-${item.user_id + "-" + item.location_id|| item.name}`}>
+                  <div className="tile-wrapper mb-4">
                     <Partner item={item} index={index} />
                     <div className="text-muted small mb-3">
                       This Partner is {distance} from you
                     </div>
-                  </Col>
+                  </div>
                 );
               default:
                 return (
-                  <Col xs={12} md={6} lg={4} key={`news-${item.id}`}>
+                  <div className="tile-wrapper mb-4">
                     <SearchDisplay item={item} layout={layout} onClick={handleItemClick} />
                     <div className="text-muted small mb-3">
                       This News is {distance} from you
                     </div>
-                  </Col>
+                  </div>
                 );
             }
           })}
-        </Row>
+        </TilesLayout>
       </div>
     </Tracker>
   );

@@ -8,6 +8,8 @@ import Tracker from "../tracker/tracker";
 import { useTranslation } from "react-i18next";
 import { Row, Col } from "react-bootstrap";
 import LocationSearch from "../../external/LocationSearch";
+import TilesLayout from "../layout/Tiles";
+import Tile from "../layout/Tile";
 
 const NewsDisplay = ({ item, onClick, layout }) => {
   if (layout === "card") {
@@ -17,11 +19,11 @@ const NewsDisplay = ({ item, onClick, layout }) => {
     return <NewsThumb item={item} onClick={onClick} />;
   }
   return (
-    <Col xs={12} md={6} lg={4} key={`news-${item.id}`}>
+    <div className="tile-wrapper mb-4">
       <Tracker itemtype="news.card" id={item.id}>
         <NewsItem key={item.id} item={item} onClick={onClick} />
       </Tracker>
-    </Col>
+    </div>
   );
 };
 
@@ -33,7 +35,7 @@ export const NewsItems = ({ count, layout, onClick }) => {
 
   return (
     <>
-      <Row>
+      <TilesLayout>
         {items.map((item) => {
           return (
             <NewsDisplay
@@ -44,7 +46,7 @@ export const NewsItems = ({ count, layout, onClick }) => {
             />
           );
         })}
-      </Row>
+      </TilesLayout>
     </>
   );
 };
