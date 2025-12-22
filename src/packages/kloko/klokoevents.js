@@ -15,6 +15,7 @@ import LocationSearch from "../../external/LocationSearch";
 import { useTranslation } from "react-i18next";
 import EventItem from "./eventitem";
 import TilesLayout from "../layout/Tiles";
+import Tile from "../layout/Tile";
 
 const KlokoEvents = () => {
   const { events, loading, location, setLocation } = useEvents();
@@ -95,11 +96,11 @@ const KlokoEvents = () => {
         </Row>
         <TilesLayout>
           {filteredEvents.map((event) => (
-            <div className="tile-wrapper mb-4">
+            <Tile key={event.id}>
               <EventItem item={event}>
                 <EventThumb key={event.id} event={event} onClick={showEvent} />
               </EventItem>
-            </div>
+            </Tile>
           ))}
         </TilesLayout>
       </div>

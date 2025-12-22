@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import FavoriteIcon from "./FavoriteIcon";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup, Card } from "react-bootstrap";
 import { Pencil, Trash } from "react-bootstrap-icons";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { formatEventDate } from "./eventfunctions";
@@ -25,7 +25,7 @@ const EventThumb = ({ event, onClick, onEdit, onDelete }) => {
 
   return (
     <Tracker itemtype="event.card" id={event.id}>
-      <div className="event-thumb" onClick={clickOnCard}>
+      <Card className="event-thumb" onClick={clickOnCard}>
         {imageLoaded && event.image && (
           <div className="event-thumb-image-container">
             <img
@@ -72,7 +72,7 @@ const EventThumb = ({ event, onClick, onEdit, onDelete }) => {
             {event.location && `${event.location}`}{event.location && event.max_participants && ' • '}{event.max_participants && `Max: ${event.max_participants}`}
           </div>
         </div>
-      </div>
+      </Card>
     </Tracker>
   );
 };

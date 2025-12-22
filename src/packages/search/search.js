@@ -6,7 +6,7 @@ import "../news/news.scss";
 import NewsCard from "../news/newscard";
 import Tracker from "../tracker/tracker";
 import { useTranslation } from "react-i18next";
-import { Row, Col, Button, Modal, Form } from "react-bootstrap";
+import { Row, Col, Button, Card } from "react-bootstrap";
 import LocationSearch from "../../external/LocationSearch";
 import SearchFilterModal from "./SearchFilterModal";
 import useEvents from "../kloko/context/useevents";
@@ -16,6 +16,7 @@ import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import useTenant from "../tenant/context/usetenant";
 import useUser from "../auth/context/useuser";
 import TilesLayout from "../layout/Tiles";
+import Tile from "../layout/Tile";
 
 const SearchDisplay = ({ item, onClick, layout }) => {
   if (layout === "card") {
@@ -52,8 +53,10 @@ export const SearchItems = ({ count, layout, onClick }) => {
 };
 
 const Partner = ({ item, index }) => {
-  return (<div className="partner-card" key={item.user_id+"-"+index}>    
-    <h5>{item.name}</h5>
+  return (<Card className="partner-card" key={item.user_id+"-"+index}>    
+    <Card.Header><h5>{item.firstname} {item.lastname}</h5></Card.Header>
+    <Card.Body>
+      
     {item.avatar && (
       <div className="partner-avatar">
         <img
@@ -63,17 +66,25 @@ const Partner = ({ item, index }) => {
         />
       </div>
     )}
-    <p>{item.firstname} {item.lastname}</p>
+    {Array.isArray(item.offerings) && item.offerings.length > 0 ? (
+        <div>
+          <strong>Offerings:</strong>{" "}
+          {item.offerings.map(o => (o && typeof o === "object" ? o.name : o)).filter(Boolean).join(", ")}
+        </div>
+      ) : null}
+    
+    </Card.Body>
     {Array.isArray(item.roles) && item.roles.length > 0 ? (
-      <p>
+      <Card.Footer>
         <strong>Roles:</strong>{" "}
         {item.roles.map(r => (r && typeof r === "object" ? r.name : r)).filter(Boolean).join(", ")}
-      </p>
+      </Card.Footer>
     ) : (
-      <p><strong>Roles:</strong> None</p>
+      <Card.Footer><strong>Roles:</strong> None</Card.Footer>
     )}
+      
     <p><strong>Distance:</strong> {item.distance ? `${item.distance.toFixed(1)} km` : 'Unknown'}</p>
-  </div>);
+  </Card>);
 }
 
 const Search = ({ layout = "default", items = 99999 }) => {
@@ -254,32 +265,32 @@ const Search = ({ layout = "default", items = 99999 }) => {
             switch (item.itemType) {
               case "event":
                 return (
-                  <div className="tile-wrapper mb-4">
+                  <Tile key={item.id}>
                     <EventItem item={item}>
                       <EventThumb event={item} onClick={handleEventClick} />
                       <div className="text-muted small mb-3">
                         This Event is {distance} from you
                       </div>
                     </EventItem>
-                  </div>
+                  </Tile>
                 );
               case "partner":
                 return (
-                  <div className="tile-wrapper mb-4">
+                  <Tile key={item.user_id+"-"+index}>
                     <Partner item={item} index={index} />
                     <div className="text-muted small mb-3">
                       This Partner is {distance} from you
                     </div>
-                  </div>
+                  </Tile>
                 );
               default:
                 return (
-                  <div className="tile-wrapper mb-4">
+                  <Tile key={item.id}>
                     <SearchDisplay item={item} layout={layout} onClick={handleItemClick} />
                     <div className="text-muted small mb-3">
                       This News is {distance} from you
                     </div>
-                  </div>
+                  </Tile>
                 );
             }
           })}
