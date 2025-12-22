@@ -43,6 +43,8 @@ const EventThumb = ({ event, onClick, onEdit, onDelete }) => {
           className="event-thumb-content"
           style={{ width: event.image ? "75%" : "100%" }}
         >
+          
+        Fav {event.favorite}
           <div className="event-thumb-header">
             <strong className="event-thumb-title">{event.title}</strong>
             <ButtonGroup>

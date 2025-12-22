@@ -266,6 +266,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
               case "event":
                 return (
                   <Tile key={item.id}>
+                    {item.itemType} {item.favorite}
                     <EventItem item={item}>
                       <EventThumb event={item} onClick={handleEventClick} />
                       <div className="text-muted small mb-3">
@@ -277,6 +278,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
               case "partner":
                 return (
                   <Tile key={item.user_id+"-"+index}>
+                    {item.itemType}
                     <Partner item={item} index={index} />
                     <div className="text-muted small mb-3">
                       This Partner is {distance} from you
@@ -286,6 +288,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
               default:
                 return (
                   <Tile key={item.id}>
+                    {item.itemType}
                     <SearchDisplay item={item} layout={layout} onClick={handleItemClick} />
                     <div className="text-muted small mb-3">
                       This News is {distance} from you

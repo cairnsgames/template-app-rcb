@@ -3,6 +3,7 @@ import { Card } from "react-bootstrap";
 import "./eventitem.scss";
 import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { useTranslation } from 'react-i18next';
+import FavoriteIcon from "./FavoriteIcon";
 
 const EventItem = ({ item, onClick }) => {
   const { t } = useTranslation();
@@ -17,11 +18,18 @@ const EventItem = ({ item, onClick }) => {
 
   return (
     <Card className="news-item" onClick={clickOnCard}>
-      <Card.Img
-        variant="top"
-        src={combineUrlAndPath(process.env.REACT_APP_FILES, item.image)}
-        style={{ height: "100%", width: "100%" }}
-      />
+      <div style={{ position: 'relative' }}>
+        <Card.Img
+          variant="top"
+          src={combineUrlAndPath(process.env.REACT_APP_FILES, item.image)}
+          style={{ height: "100%", width: "100%" }}
+        />
+        {item.image && (
+          <div style={{ position: 'absolute', top: 8, right: 8 }} className="favorite-icon-overlay">
+            <FavoriteIcon event_id={item.id} favorite={item.favorite} />
+          </div>
+        )}
+      </div>
       <Card.Body>
         <Card.Title>{item.title}</Card.Title>
       </Card.Body>

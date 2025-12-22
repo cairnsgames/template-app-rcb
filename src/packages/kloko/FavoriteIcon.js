@@ -8,6 +8,7 @@ const FavoriteIcon = ({ event_id, favorite, style }) => {
 
   const handleClick = (e) => {
     e.stopPropagation();
+    e.preventDefault();
     console.log("Toggle favorite for event:", event_id);
     if (toggleFavorite) {
       console.log("TOGGLE")
