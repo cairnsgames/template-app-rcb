@@ -32,12 +32,17 @@ export const NewsProvider = ({ children }) => {
       "NewsProvider: REACT_APP_NEWS_API environment variable is required"
     );
   }
-
-     useEffect(() => {
-
-
+  useEffect(() => {
     fetchLocalNews();
   }, []);
+
+  useEffect(() => {
+    console.log("Getting Local News for location change:", location);    
+    const lat = location?.lat ?? location?.latitude ?? -26.096;
+    const lng = location?.lon ?? location?.lng ?? location?.longitude ?? 28.009;
+    const distance = location?.distance ?? 50;
+    fetchLocalNews(lat, lng, distance);
+  }, [location]);
 
   const fetchMyNewsItems = async () => {
     if (!user) {
@@ -99,7 +104,7 @@ export const NewsProvider = ({ children }) => {
       }
 
       const updatedItem = await response.json();
-      
+
       addToast("News", "News item updated", "Success");
 
       fetchMyNewsItems();
@@ -135,14 +140,15 @@ export const NewsProvider = ({ children }) => {
 
     try {
       const body = { distance };
-      
+
       // Only include lat/lng if provided
       if (lat !== undefined && lat !== null) {
-        body.lat = lat;
+        body.lat = Number(lat);
       }
       if (lng !== undefined && lng !== null) {
-        body.lng = lng;
-      }
+        body.lng = Number(lng);
+      } 
+      body.distance = distance || 50;
 
       const response = await fetch(
         combineUrlAndPath(process.env.REACT_APP_NEWS_API, "api.php/localnews"),
@@ -176,14 +182,16 @@ export const NewsProvider = ({ children }) => {
   };
 
   const filterNewsItems = () => {
-    const today = new Date().toISOString().split('T')[0] + " 00:00:00"; // Get today's date in the required format
-    return filters.newItemsOnly ? myNewsItems.filter(item => item.expires >= today) : myNewsItems; // Filter based on filters object
+    const today = new Date().toISOString().split("T")[0] + " 00:00:00"; // Get today's date in the required format
+    return filters.newItemsOnly
+      ? myNewsItems.filter((item) => item.expires >= today)
+      : myNewsItems; // Filter based on filters object
   };
 
   const news = filterNewsItems(); // Call the filter function
 
   const setFilterField = (field, value) => {
-    setFilters(prevFilters => ({ ...prevFilters, [field]: value })); // Update specific filter field
+    setFilters((prevFilters) => ({ ...prevFilters, [field]: value })); // Update specific filter field
   };
 
   const clearFilters = () => {

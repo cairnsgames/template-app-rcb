@@ -89,7 +89,8 @@ const Partner = ({ item, index }) => {
 
 const Search = ({ layout = "default", items = 99999 }) => {
   const { t } = useTranslation();
-  const { newsItems, location, setLocation } = useNews();
+  const { newsItems, location, setLocation: setNewsLocation } = useNews();
+  const { setLocation: setEventLocation } = useEvents();
   const { events } = useEvents();
   const { tenant } = useTenant();
   const { token } = useUser();
@@ -109,7 +110,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
 
   React.useEffect(() => {
     const lat = location?.lat ?? location?.latitude ?? -26.096;
-    const lng = location?.lng ?? location?.longitude ?? 28.009;
+    const lng = location?.lon ?? location?.lng ?? location?.longitude ?? 28.009;
     const distance = location?.distance ?? 50;
 
     // fetchPartners is defined later in this component
@@ -229,6 +230,12 @@ const Search = ({ layout = "default", items = 99999 }) => {
     })
     .slice(0, items);
 
+  const setLocation = (location) => {
+    console.log("Search setting location:", location);
+    setNewsLocation(location);
+    setEventLocation(location);
+  }
+
   return (
     <Tracker itemtype="news" id={"page"}>
       <div className="news">
@@ -291,7 +298,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
                     {item.itemType}
                     <SearchDisplay item={item} layout={layout} onClick={handleItemClick} />
                     <div className="text-muted small mb-3">
-                      This News is {distance} from you
+                      This {item.globalNews ? "GLOBAL News" : "News"} is {distance} from you
                     </div>
                   </Tile>
                 );

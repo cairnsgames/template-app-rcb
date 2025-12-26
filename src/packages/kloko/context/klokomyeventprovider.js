@@ -77,34 +77,31 @@ export const KlokoMyEventProvider = ({
     setLoading(false);
   };
 
-    const fetchEvents = async () => {
-      const body = {};
-      console.log("Fetching events with location:", location);
-      if (location && location.lat && location.lon) {
-        body.lat = location.lat;
-        body.lng = location.lon;
-      }
-      try {
-        setLoading(true);
-        const response = await fetch(
-          combineUrlAndPath(
-            process.env.REACT_APP_KLOKO_API,
-            `api.php/events`
-          ),
-          {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(body)
-          }
-        );
-        const data = await response.json();
-        setEvents(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user events:", error);
-        setLoading(false);
-      }
-    };
+  const fetchEvents = async () => {
+    const body = {};
+    console.log("Fetching events with location:", location);
+    if (location && location.lat && location.lon) {
+      body.lat = location.lat;
+      body.lng = location.lon;
+    }
+    try {
+      setLoading(true);
+      const response = await fetch(
+        combineUrlAndPath(process.env.REACT_APP_KLOKO_API, `api.php/events`),
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(body),
+        }
+      );
+      const data = await response.json();
+      setEvents(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching user events:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (canFetch) {
@@ -115,8 +112,7 @@ export const KlokoMyEventProvider = ({
   }, [canFetch]);
 
   useEffect(() => {
-    
-    console.log("Fetch Events - Location", location)
+    console.log("Fetch Events - Location", location);
     if (user) {
       fetchMyEvents(user);
       fetchEvents();
@@ -338,41 +334,41 @@ export const KlokoMyEventProvider = ({
     }
   };
 
-    // Toggle favorite status for an event
-    const toggleFavorite = async (eventId) => {
-      try {
-        const response = await fetch(
-          combineUrlAndPath(process.env.REACT_APP_FAVORTITE_API, "toggle.php"),
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              app_id: tenant,
-              authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ event_id: eventId }),
-          }
-        );
-        const result = await response.json();
-        if (result.success) {
-          setEvents((prevEvents) =>
-            prevEvents.map((event) =>
-              event.id === eventId
-                ? { ...event, favorite: result.action === "added" ? 1 : 0 }
-                : event
-            )
-          );
-          if (activeEvent && activeEvent.id === eventId) {
-            setActiveEvent((prevEvent) => ({
-              ...prevEvent,
-              favorite: result.action === "added" ? 1 : 0
-            }));
-          }
+  // Toggle favorite status for an event
+  const toggleFavorite = async (eventId) => {
+    try {
+      const response = await fetch(
+        combineUrlAndPath(process.env.REACT_APP_FAVORTITE_API, "toggle.php"),
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            app_id: tenant,
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ event_id: eventId }),
         }
-      } catch (error) {
-        console.error("Error toggling favorite:", error);
+      );
+      const result = await response.json();
+      if (result.success) {
+        setEvents((prevEvents) =>
+          prevEvents.map((event) =>
+            event.id === eventId
+              ? { ...event, favorite: result.action === "added" ? 1 : 0 }
+              : event
+          )
+        );
+        if (activeEvent && activeEvent.id === eventId) {
+          setActiveEvent((prevEvent) => ({
+            ...prevEvent,
+            favorite: result.action === "added" ? 1 : 0,
+          }));
+        }
       }
-    };
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
+  };
 
   const updateCalendar = async (calendar) => {
     setLoading(true);
@@ -842,8 +838,8 @@ export const KlokoMyEventProvider = ({
       ticketTypes,
       ticketOptions,
       toggleFavorite,
-      location, 
-      setLocation
+      location,
+      setLocation,
     }),
     [
       calendars,
@@ -858,7 +854,8 @@ export const KlokoMyEventProvider = ({
       loading,
       searchResults,
       toggleFavorite,
-      location, setLocation
+      location,
+      setLocation,
     ]
   );
 
