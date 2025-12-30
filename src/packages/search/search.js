@@ -111,13 +111,13 @@ const Search = ({ layout = "default", items = 99999 }) => {
   React.useEffect(() => {
     const lat = location?.lat ?? location?.latitude ?? -26.096;
     const lng = location?.lon ?? location?.lng ?? location?.longitude ?? 28.009;
-    const distance = location?.distance ?? 50;
+    const distance = location?.distance ?? 50000;
 
     // fetchPartners is defined later in this component
     fetchPartners(lat, lng, distance);
   }, [location]);
 
-  const fetchPartners = async (lat = -26.096, lng = 28.009, distance = 50) => {
+  const fetchPartners = async (lat = -26.096, lng = 28.009, distance = 50000) => {
     const url = combineUrlAndPath(
       process.env.REACT_APP_PARTNER_API,
       "api.php/localpartners"

@@ -40,7 +40,7 @@ export const NewsProvider = ({ children }) => {
     console.log("Getting Local News for location change:", location);    
     const lat = location?.lat ?? location?.latitude ?? -26.096;
     const lng = location?.lon ?? location?.lng ?? location?.longitude ?? 28.009;
-    const distance = location?.distance ?? 50;
+    const distance = location?.distance ?? 50000;
     fetchLocalNews(lat, lng, distance);
   }, [location]);
 
@@ -134,7 +134,7 @@ export const NewsProvider = ({ children }) => {
     }
   };
 
-  const fetchLocalNews = async (lat, lng, distance = 50) => {
+  const fetchLocalNews = async (lat, lng, distance = 50000) => {
     setLoading(true);
     setError(null);
 
