@@ -148,7 +148,7 @@ export const NewsProvider = ({ children }) => {
       if (lng !== undefined && lng !== null) {
         body.lng = Number(lng);
       } 
-      body.distance = distance || 50;
+      body.distance = distance || 50000;
 
       const response = await fetch(
         combineUrlAndPath(process.env.REACT_APP_NEWS_API, "api.php/localnews"),
@@ -202,7 +202,7 @@ export const NewsProvider = ({ children }) => {
   useEffect(() => {
     if (location && location.lat && location.lng) {
       console.log("Fetching local news with location:", location);
-      fetchLocalNews(location.lat, location.lng, location.distance || 50);
+      fetchLocalNews(location.lat, location.lng, location.distance || 50000);
     }
   }, [location]);
 
