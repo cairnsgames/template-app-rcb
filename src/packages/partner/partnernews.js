@@ -1,6 +1,10 @@
 import React from 'react';
+import NewsItem from "../news/newsitem";
+import TilesLayout from "../layout/Tiles";
+import Tile from "../layout/Tile";
+import Tracker from "../tracker/tracker";
 
-function PartnerNews({ items = [], open = true, toggle = () => {} }) {
+function PartnerNews({ items = [], open = true, toggle = () => {}, onClick = null }) {
   const hasItems = Array.isArray(items) && items.length > 0;
   const isOpen = hasItems ? open : true; // expand when empty
 
@@ -20,15 +24,16 @@ function PartnerNews({ items = [], open = true, toggle = () => {} }) {
       </div>
 
       <div className="pd-section__body">
-        {hasItems ? (
-          <ul className="pd-list">
-            {items.map(n => (
-              <li key={n?.id || n?.title || Math.random()} className="pd-item">
-                <strong>{n.title || n.name || 'News item'}</strong>
-                <div className="pd-item__meta">{n.excerpt || n.summary || ''}</div>
-              </li>
+        {hasItems && isOpen ? (
+          <TilesLayout>
+            {items.map((item) => (
+              <Tile key={item?.id || item?.title || Math.random()}>
+                <Tracker itemtype="news.card" id={item.id}>
+                  <NewsItem key={item.id} item={item} onClick={onClick} />
+                </Tracker>
+              </Tile>
             ))}
-          </ul>
+          </TilesLayout>
         ) : (
           <div className="pagePartnerDetail__placeholder">No news published yet.</div>
         )}

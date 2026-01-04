@@ -8,6 +8,9 @@ import PartnerClasses from "./partnerclasses";
 
 function PartnerDetail(props) {
   const { match, id } = props;
+
+  console.log("AAAA PartnerDetail props:", props);
+  
   const partnerId = match?.params?.id ?? id ?? props?.id ?? null;
   const {
     setActivePartnerId,

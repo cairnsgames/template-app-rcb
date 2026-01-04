@@ -75,6 +75,94 @@ export const PartnerProvider = ({ children }) => {
     setActivePartner(found || null);
   }, [activePartnerId, partners]);
 
+  // When an active partner id is set, fetch that partner's events (and classes)
+  useEffect(() => {
+    const fetchPartnerEvents = async (partnerId) => {
+      if (!process.env.REACT_APP_KLOKO_API) return;
+      const url = combineUrlAndPath(process.env.REACT_APP_KLOKO_API, `api.php/user/${partnerId}/events`);
+
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            app_id: tenant,
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          const txt = await res.text().catch(() => "");
+          throw new Error(`Partner events API error ${res.status} ${txt}`);
+        }
+
+        const json = await res.json();
+        const list = Array.isArray(json) ? json : json.data || [];
+
+        // split into events and classes based on event_type
+        const eventsList = [];
+        const classesList = [];
+        (list || []).forEach((item) => {
+          const type = (item && item.event_type) ? String(item.event_type).toLowerCase() : "event";
+          if (type === "class" || type === "classes") {
+            classesList.push(item);
+          } else {
+            eventsList.push(item);
+          }
+        });
+
+        setEvents(eventsList);
+        setClasses(classesList);
+        return list;
+      } catch (err) {
+        console.error("fetchPartnerEvents failed:", err);
+        setEvents([]);
+        setClasses([]);
+        return null;
+      }
+    };
+
+    const fetchPartnerNews = async (partnerId) => {
+      if (!process.env.REACT_APP_NEWS_API) return;
+      const url = combineUrlAndPath(process.env.REACT_APP_NEWS_API, `api.php/user/${partnerId}/news`);
+
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            app_id: tenant,
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          const txt = await res.text().catch(() => "");
+          throw new Error(`Partner news API error ${res.status} ${txt}`);
+        }
+
+        const json = await res.json();
+        const list = Array.isArray(json) ? json : json.data || [];
+        setNews(list);
+        return list;
+      } catch (err) {
+        console.error("fetchPartnerNews failed:", err);
+        setNews([]);
+        return null;
+      }
+    };
+
+    if (activePartnerId === undefined || activePartnerId === null) {
+      setEvents([]);
+      setClasses([]);
+      return;
+    }
+
+    // fetch events/classes and partner-specific news in parallel
+    fetchPartnerEvents(activePartnerId);
+    fetchPartnerNews(activePartnerId);
+  }, [activePartnerId, tenant, token]);
+
   return (
     <PartnerContext.Provider
       value={{

@@ -8,6 +8,9 @@ import FavoriteIcon from "./FavoriteIcon";
 const EventItem = ({ item, onClick }) => {
   const { t } = useTranslation();
 
+  const hasImage = item?.image && item.image.length > 0;
+  const keywordsStr = Array.isArray(item?.keywords) ? item.keywords.join(', ') : item?.keywords;
+
   const clickOnCard = () => {
     console.log("Clicked on EventItem:", item.id);
     if (onClick) {
@@ -36,6 +39,16 @@ const EventItem = ({ item, onClick }) => {
       </div>
       <Card.Body>
         <Card.Title>{item.title}</Card.Title>
+        {!hasImage && (
+          <>
+            {item?.description ? (
+              <Card.Text>{item.description}</Card.Text>
+            ) : null}
+            {keywordsStr ? (
+              <Card.Text className="text-muted small">Keywords: {keywordsStr}</Card.Text>
+            ) : null}
+          </>
+        )}
       </Card.Body>
       <Card.Footer>
         <small className="text-muted">

@@ -8,6 +8,15 @@ const NewsItem = ({ item, onClick }) => {
   const { t } = useTranslation();
 
   const clickOnCard = () => {
+    // always set the location to the news detail
+    try {
+      if (item && item.id !== undefined && item.id !== null) {
+        window.location.hash = `#news/${item.id}`;
+      }
+    } catch (err) {
+      // ignore in non-browser environments
+    }
+
     if (onClick) {
       onClick(item.id);
     }
