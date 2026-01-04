@@ -11,6 +11,12 @@ export const PartnerProvider = ({ children }) => {
   const { token } = useUser();
   const [partners, setPartners] = useState([]);
   const [location, setLocation] = useState({});
+  // partner-related collections (populated by future endpoints)
+  const [classes, setClasses] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [news, setNews] = useState([]);
+  const [activePartnerId, setActivePartnerId] = useState(null);
+  const [activePartner, setActivePartner] = useState(null);
 
   useEffect(() => {
     console.log("ZZZZ PartnerProvider fetching partners with location:", location);
@@ -51,8 +57,43 @@ export const PartnerProvider = ({ children }) => {
     }
   };
 
+  // Keep activePartner in sync with activePartnerId and partners list
+  useEffect(() => {
+    if (activePartnerId === undefined || activePartnerId === null) {
+      setActivePartner(null);
+      return;
+    }
+
+    const idStr = String(activePartnerId);
+    const found = (partners || []).find((p) => {
+      // match against user_id or id fields
+      const pid = p?.user_id ?? p?.id;
+      if (pid === undefined || pid === null) return false;
+      return String(pid) === idStr;
+    });
+
+    setActivePartner(found || null);
+  }, [activePartnerId, partners]);
+
   return (
-    <PartnerContext.Provider value={{ partners, fetchPartners, setPartners, location, setLocation }}>
+    <PartnerContext.Provider
+      value={{
+        partners,
+        fetchPartners,
+        setPartners,
+        location,
+        setLocation,
+        classes,
+        setClasses,
+        events,
+        setEvents,
+        news,
+        setNews,
+        activePartnerId,
+        setActivePartnerId,
+        activePartner,
+      }}
+    >
       {children}
     </PartnerContext.Provider>
   );
@@ -65,9 +106,39 @@ export const usePartner = () => {
     throw new Error("usePartner was used outside of its Provider");
   }
   
-  const { partners, fetchPartners, setPartners, location, setLocation } = context;
+  const {
+    partners,
+    fetchPartners,
+    setPartners,
+    location,
+    setLocation,
+    classes,
+    setClasses,
+    events,
+    setEvents,
+    news,
+    setNews,
+    activePartnerId,
+    setActivePartnerId,
+    activePartner,
+  } = context;
 
-  return { partners, fetchPartners, setPartners, location, setLocation };
+  return {
+    partners,
+    fetchPartners,
+    setPartners,
+    location,
+    setLocation,
+    classes,
+    setClasses,
+    events,
+    setEvents,
+    news,
+    setNews,
+    activePartnerId,
+    setActivePartnerId,
+    activePartner,
+  };
 };
 
 export default PartnerContext;
