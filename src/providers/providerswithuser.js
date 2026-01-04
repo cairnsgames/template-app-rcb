@@ -9,6 +9,7 @@ import useSettings from "../packages/settings/usesettings";
 import useFeatureFlag from "../packages/featureflags/usefeatureflags";
 import { NewsProvider } from "../packages/news/context/newscontext";
 import { TrackerProvider } from "../packages/tracker/trackercontext";
+import { PartnerProvider } from "../packages/partner/context/partnercontext";
 
 const ProvidersWithSettingsAndFeatures = ({
   children,
@@ -50,7 +51,7 @@ const ProvidersWithUser = ({ children }) => {
             tenant={tenant}
             token={token}
           >
-            {children}
+            <PartnerProvider>{children}</PartnerProvider>
           </ProvidersWithSettingsAndFeatures>
         </TrackerProvider>
       </SettingsProvider>

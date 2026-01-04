@@ -12,9 +12,7 @@ import SearchFilterModal from "./SearchFilterModal";
 import useEvents from "../kloko/context/useevents";
 import EventThumb from "../kloko/eventthumb";
 import EventItem from "../kloko/eventitem";
-import { combineUrlAndPath } from "../../functions/combineurlandpath";
-import useTenant from "../tenant/context/usetenant";
-import useUser from "../auth/context/useuser";
+import { usePartner } from "../partner/context/partnercontext";
 import TilesLayout from "../layout/Tiles";
 import Tile from "../layout/Tile";
 import Filter from "../../components/icons/filter";
@@ -112,8 +110,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
   const { t } = useTranslation();
   const { newsItems, location, setLocation: setNewsLocation } = useNews();
   const { setLocation: setEventLocation, classes, events } = useEvents();
-  const { tenant } = useTenant();
-  const { token } = useUser();
+  const { partners, setLocation: setPartnerLocation } = usePartner();
 
   const handleItemClick = (id) => {
     window.location.hash = `#news/${id}`;
@@ -124,56 +121,42 @@ const Search = ({ layout = "default", items = 99999 }) => {
     window.location.hash = `#events/${eventId}`;
   };
 
-  const [partners, setPartners] = React.useState([]);
   const [showFilterModal, setShowFilterModal] = React.useState(false);
   const [selectedTypes, setSelectedTypes] = React.useState(new Set()); // 'news','event'
   const [selectedRoles, setSelectedRoles] = React.useState([]); // role ids
+  // Known partner role ids (kept in sync with SearchFilterModal.PARTNER_ROLES)
+  const PARTNER_ROLE_IDS = [26, 27, 28, 29, 30];
 
-  React.useEffect(() => {
-    const lat = location?.lat ?? location?.latitude ?? -26.096;
-    const lng = location?.lon ?? location?.lng ?? location?.longitude ?? 28.009;
-    const distance = location?.distance ?? 50000;
+  const toggleRole = (roleId) => {
+    const current = Array.isArray(selectedRoles) ? [...selectedRoles] : [];
+    const has = current.includes(roleId);
 
-    // fetchPartners is defined later in this component
-    fetchPartners(lat, lng, distance);
-  }, [location]);
-
-  const fetchPartners = async (
-    lat = -26.096,
-    lng = 28.009,
-    distance = 50000
-  ) => {
-    const url = combineUrlAndPath(
-      process.env.REACT_APP_PARTNER_API,
-      "api.php/localpartners"
-    );
-
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          app_id: tenant,
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ lat, lng, distance }),
-      });
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        throw new Error(`Partner API error ${res.status} ${text}`);
+    if (roleId === "ALL_PARTNERS") {
+      if (!has) {
+        // Select ALL and ensure all individual role ids are selected too
+        const next = Array.from(new Set(["ALL_PARTNERS", ...current, ...PARTNER_ROLE_IDS]));
+        setSelectedRoles(next);
+      } else {
+        // Unselect ALL and remove individual role ids as well
+        const next = current.filter((r) => r !== "ALL_PARTNERS" && !PARTNER_ROLE_IDS.includes(r));
+        setSelectedRoles(next);
       }
-
-      console.log("fetchPartners response:", res);
-
-      const json = await res.json();
-      setPartners(Array.isArray(json) ? json : json.data || []);
-      console.log("Partners:", json);
-      return json;
-    } catch (err) {
-      console.error("fetchPartners failed:", err);
-      return null;
+      return;
     }
+
+    if (!has) {
+      // add this role
+      const next = Array.from(new Set([...current, roleId]));
+      // if all individual roles selected, add ALL_PARTNERS
+      const allPresent = PARTNER_ROLE_IDS.every((id) => next.includes(id));
+      if (allPresent && !next.includes("ALL_PARTNERS")) next.push("ALL_PARTNERS");
+      setSelectedRoles(next);
+    } else {
+      // remove this role and clear ALL_PARTNERS if present
+      const next = current.filter((r) => r !== roleId && r !== "ALL_PARTNERS");
+      setSelectedRoles(next);
+    }
+    console.log("Toggled role:", roleId, selectedRoles);
   };
 
   const toggleType = (type) => {
@@ -181,13 +164,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
     if (next.has(type)) next.delete(type);
     else next.add(type);
     setSelectedTypes(next);
-  };
-
-  const toggleRole = (roleId) => {
-    const idx = selectedRoles.indexOf(roleId);
-    if (idx === -1) setSelectedRoles([...selectedRoles, roleId]);
-    else setSelectedRoles(selectedRoles.filter((r) => r !== roleId));
-    console.log("Toggled role:", roleId, selectedRoles);
   };
 
   // Filter out old events
@@ -214,8 +190,8 @@ const Search = ({ layout = "default", items = 99999 }) => {
     ...partners.map((partner) => ({ ...partner, itemType: "partner" })),
   ];
 
-  console.log("CLasses:", classes);
-  console.log("Filtered Classes:", filteredClasses);
+  console.log("XXXX CLasses:", classes);
+  console.log("XXXX Filtered Classes:", filteredClasses);
 
   // Apply filters (types and partner roles)
   const typeFilterActive = selectedTypes && selectedTypes.size > 0;
@@ -228,6 +204,10 @@ const Search = ({ layout = "default", items = 99999 }) => {
     // Handle partners
     if (item.itemType === "partner") {
       if (roleFilterActive) {
+        // If the special ALL_PARTNERS sentinel is selected, include all partners
+        if (selectedRoles.includes && selectedRoles.includes("ALL_PARTNERS")) {
+          return true;
+        }
         const roles = Array.isArray(item.roles) ? item.roles : [];
         const roleIds = roles
           .map((r) => (r && typeof r === "object" ? r.id : Number(r)))
@@ -245,13 +225,20 @@ const Search = ({ layout = "default", items = 99999 }) => {
       return false;
     }
 
-    // Handle news/events
-    if (item.itemType === "news" || item.itemType === "event") {
+    // Handle news/events/classes
+    if (
+      item.itemType === "news" ||
+      item.itemType === "event" ||
+      item.itemType === "class"
+    ) {
       if (typeFilterActive) {
-        // If filtering by event type, allow news if selected
+        // If filtering by news type, allow news only if selected
         if (item.itemType === "news") return selectedTypes.has("news");
 
-        // For events, respect the event/class selections
+        // If item is explicitly a class, respect class selection
+        if (item.itemType === "class") return selectedTypes.has("class");
+
+        // For events, respect the event/class selections (some events may be classes)
         if (item.itemType === "event") {
           const et = (item.event_type || "").toString().toLowerCase();
           const isClass = et === "class";
@@ -260,7 +247,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
         }
         return false;
       }
-      // If role filter is active but no type filter, exclude news/events
+      // If role filter is active but no type filter, exclude news/events/classes
       if (roleFilterActive && !typeFilterActive) return false;
       return true;
     }
@@ -278,9 +265,10 @@ const Search = ({ layout = "default", items = 99999 }) => {
     .slice(0, items);
 
   const setLocation = (location) => {
-    console.log("Search setting location:", location);
+    console.log("ZZZZ Search setting location:", location);
     setNewsLocation(location);
     setEventLocation(location);
+    setPartnerLocation(location);
   };
 
   return (

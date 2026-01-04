@@ -37,7 +37,7 @@ export const NewsProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log("Getting Local News for location change:", location);    
+    console.log("ZZZZ Getting Local News for location change:", location);    
     const lat = location?.lat ?? location?.latitude ?? -26.096;
     const lng = location?.lon ?? location?.lng ?? location?.longitude ?? 28.009;
     const distance = location?.distance ?? 50000;

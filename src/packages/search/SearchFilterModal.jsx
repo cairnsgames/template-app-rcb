@@ -55,16 +55,28 @@ export default function SearchFilterModal({
           <Form.Group className="mt-3">
             <Form.Label>Partner Roles (multi-select)</Form.Label>
             <div>
-              {PARTNER_ROLES.map((r) => (
-                <Form.Check
-                  key={r.id}
-                  type="checkbox"
-                  id={`role-${r.id}`}
-                  label={r.name}
-                  checked={Array.isArray(selectedRoles) && selectedRoles.includes(r.id)}
-                  onChange={() => toggleRole(r.id)}
-                />
-              ))}
+              <Form.Check
+                type="checkbox"
+                id="role-all"
+                label="All partners"
+                checked={Array.isArray(selectedRoles) && selectedRoles.includes("ALL_PARTNERS")}
+                onChange={() => toggleRole("ALL_PARTNERS")}
+              />
+              <div style={{ paddingLeft: 18 }}>
+                {PARTNER_ROLES.map((r) => (
+                  <Form.Check
+                    key={r.id}
+                    type="checkbox"
+                    id={`role-${r.id}`}
+                    label={r.name}
+                    checked={
+                      Array.isArray(selectedRoles) &&
+                      (selectedRoles.includes(r.id) || selectedRoles.includes("ALL_PARTNERS"))
+                    }
+                    onChange={() => toggleRole(r.id)}
+                  />
+                ))}
+              </div>
             </div>
           </Form.Group>
         </Form>
