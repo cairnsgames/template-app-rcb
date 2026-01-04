@@ -43,7 +43,7 @@ const BreezoPayNow = ({ id }) => {
   return (
     <PayPalScriptProvider options={{ clientId: paypalclientId }}>
       <div
-        className="p-3 mt-3"
+        className="p-3 mt-3 packagesBreezoPayOrder"
         style={{ backgroundColor: "white", borderRadius: "10px" }}
       >
         <h2>Order Details</h2>

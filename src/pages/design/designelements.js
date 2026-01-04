@@ -36,7 +36,7 @@ const DesignElements = () => {
   }
 
   return (
-  <Container className="mt-3">
+  <Container className="mt-3 pagesDesignElements">
       <a href="#design/accordian">Accordians</a>
       <br />
       <a href="#design/alert">Alerts</a>

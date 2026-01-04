@@ -86,7 +86,7 @@ const MyNews = () => {
 
   return (
     <Tracker itemtype="partner.news" id={"news"}>
-      <div className="my-news">
+      <div className="my-news packagesMyNews">
         {showEditor && (
           <Suspense fallback={<div>{t("news.loading")}</div>}>
             <MyNewsEditor id={editItemId} onClose={handleEditorClose} />

@@ -15,7 +15,7 @@ const LandingPage = ({subTitle}) => {
   const pricingRef = useRef();
   const albumRef = useRef();
   return (
-    <Container fluid className="px-2" style={{ minHeight: "85%", maxHeight: "calc(100vh - 160px)", overflowY: "scroll" }}>
+    <Container fluid className="px-2 pagesLandingPage" style={{ minHeight: "85%", maxHeight: "calc(100vh - 160px)", overflowY: "scroll" }}>
       <div ref={heroRef}>
         <Hero />
       </div>

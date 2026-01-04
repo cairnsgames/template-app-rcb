@@ -67,7 +67,7 @@ const KlokoEvents = () => {
 
   return (
     <Tracker itemtype="event" id={"page"}>
-      <div className="my-events">
+      <div className="my-events packagesKlokoEvents">
         <div className="text-center">
           <h3>{t("events.upcomingEvents")}</h3>
         </div>

@@ -21,7 +21,7 @@ const ApplicationPage = (props) => {
   }, [id, applications]);
 
   return (
-    <PageCentered>
+    <PageCentered className="pagesAdminMembershipApplicationPage">
       {application && (
         <>
           <div>

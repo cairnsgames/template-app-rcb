@@ -12,7 +12,7 @@ const ContentPage = ({id}) => {
     }
   };
   return (
-    <PageCentered>
+    <PageCentered className="pagesContentPage">
       <h1>Content Page</h1>
       <div>
         <ContentItem id={id} style={{ maxWidth: "100%", padding: "0.5rem" }} customType={customType} />

@@ -7,7 +7,7 @@ import PageFull from "../../parts/pagelayouts/pagefull";
 
 const FullCalendarPage = () => {
   return (    
-    <PageFull>
+    <PageFull className="pagesFullCalendarPage">
         <h1>Event Calendar</h1>
         <Calendar />
     </PageFull>

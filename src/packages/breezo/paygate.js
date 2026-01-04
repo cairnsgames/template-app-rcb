@@ -95,7 +95,7 @@ const PayGate = ({ onGetOrder, onPaid }) => {
   };
 
   return (
-    <div>
+    <div className="packagesPayGate">
       <PayGateButton
         createOrder={createOrder}
         onApprove={onApprove}

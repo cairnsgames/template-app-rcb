@@ -62,7 +62,7 @@ const News = ({ layout = "default", items = 99999 }) => {
   console.log("News Items:", newsItems);
   return (
     <Tracker itemtype="news" id={"page"}>
-      <div className="news">
+      <div className="news pakagesNews">
         <div className="text-center">
           <h3>{t("news.latestNews")}</h3>
         </div>

@@ -93,7 +93,7 @@ const OrderSummary = ({ order }) => {
   };
 
   return (
-    <Container>
+    <Container className="packagesDocOrderSummary" style={{ marginTop: "20px" }}>
       <Row>
         <Col>
           <Row className="align-items-center mb-4">

@@ -4,7 +4,7 @@ import { startOfDay, endOfDay, startOfHour, addHours } from 'date-fns';
 import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 import LocationSelect from '../../kloko/LocationSelect';
 
-const AddClassModal = ({ isOpen, onClose, classToEdit }) => {
+const AddClassModal = ({ isOpen, onClose, classToEdit, currentDate }) => {
   const { addClass, updateClass } = useClasses();
 
   const [formData, setFormData] = useState({
@@ -44,8 +44,8 @@ const AddClassModal = ({ isOpen, onClose, classToEdit }) => {
         repeatPattern: { ...formData.repeatPattern, enabled: false },
       });
     } else if (isOpen) {
-      const now = new Date();
-      const nextHour = startOfHour(addHours(now, 1));
+      const baseDate = currentDate ? new Date(currentDate) : new Date();
+      const nextHour = startOfHour(addHours(baseDate, 1));
       const startTimeString = nextHour.toISOString().slice(0, 16);
       const endTimeString = addHours(nextHour, 1).toISOString().slice(0, 16);
 
@@ -80,7 +80,7 @@ const AddClassModal = ({ isOpen, onClose, classToEdit }) => {
   };
 
   const handleMultiDayToggle = (checked) => {
-    const now = new Date();
+    const baseDate = currentDate ? new Date(currentDate) : new Date();
     let newStartTime = '';
     let newEndTime = '';
 

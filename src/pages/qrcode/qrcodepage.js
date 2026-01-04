@@ -11,7 +11,7 @@ import QRCodeSample from "../../packages/qrcode/qrcodesample";
 const QRCodePage = ({ id }) => {
   const [text, setText] = useState("This is an example");
   return (
-    <PageCentered style={{ margin: "1rem" }}>
+    <PageCentered style={{ margin: "1rem" }} className="pagesQRCodePage">
         <h1>QR Code</h1>
         <QRCodeSample />
     </PageCentered>

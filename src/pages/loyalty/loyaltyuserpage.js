@@ -4,7 +4,7 @@ import PageFull from "../../parts/pagelayouts/pagefull";
 
 const UserLoyaltyPage = () => {
   return (
-    <PageFull>
+    <PageFull className="pagesUserLoyaltyPage">
       <UserLoyaltyProvider>
         <UserLoyaltyCards />
       </UserLoyaltyProvider>

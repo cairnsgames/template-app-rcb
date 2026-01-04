@@ -18,7 +18,7 @@ const ContentPage = (props) => {
   };
 
   return (
-    <PageFull>
+    <PageFull className="pagesContentPage2">
       <div style={{ padding: "1rem", border: "1px solid green" }}>
         <h1>Choose Content</h1>
         <InputGroup className="mb-3">

@@ -16,7 +16,7 @@ const UserLoyaltyCards = () => {
   };
 
   return (
-    <Tabs defaultActiveKey="home">
+    <Tabs defaultActiveKey="home" className="packagesLoyaltyUserCards">
       <Tab eventKey="home" title={t("loyalty.loyaltyCards")}>
         <Card>
           <Card.Header>{t("loyalty.loyaltyCards")}</Card.Header>

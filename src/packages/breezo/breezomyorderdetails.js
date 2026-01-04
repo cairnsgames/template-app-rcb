@@ -20,7 +20,7 @@ const BreezoMyOrderDetails = (props) => {
   }
 
   return (
-    <PageFull>
+    <PageFull className="packagesBreezoMyOrderDetails">
       <h2>Order Details</h2>
       <p><strong>Order ID:</strong> {activeOrder.id}</p>
       <p><strong>Status:</strong> {activeOrder.status}</p>

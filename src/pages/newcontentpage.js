@@ -5,7 +5,7 @@ import useUser from "../packages/auth/context/useuser";
 const NewContentPage = (props) => {
   const { user } = useUser();
   return (
-    <PageFull>
+    <PageFull className="pagesNewContentPage">
       <h1>New Content</h1>
       <div style={{ position: "relative" }}>
         {user && (

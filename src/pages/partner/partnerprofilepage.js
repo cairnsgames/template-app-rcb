@@ -7,14 +7,14 @@ import { OfferingsProvider, useOfferings } from "../../mobile/pages/partners/off
 const PartnerProfileContent = ({ id, roles }) => {
   const { offerings, loading, error } = useOfferings();
   return (
-    <PageFull>
+    <PageFull >
       <PartnerForm id={id} roles={roles} offerings={offerings} offeringsLoading={loading} offeringsError={error} />
     </PageFull>
   );
 };
 
 const PartnerProfilePage = (props) => (
-  <OfferingsProvider>
+  <OfferingsProvider className="pagesPartnerProfilePage">
     <PartnerProfileContent {...props} />
   </OfferingsProvider>
 );

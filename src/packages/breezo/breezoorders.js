@@ -34,7 +34,7 @@ const BreezoOrders = (props) => {
   }
 
   return (
-    <div className={`d-inline ${props.className}`} style={props.style}>
+    <div className={`d-inline packagesBreezoOrders ${props.className}`} style={props.style}>
       <Button
         variant="primary"
         onClick={handleShow}

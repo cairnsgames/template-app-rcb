@@ -31,7 +31,7 @@ const BreezoMyOrders = () => {
   };
 
   return (
-    <div>
+    <div className="packagesBreezoMyOrders">
       <h2>Accounts</h2>
       <InputGroup>
         <InputGroup.Text>Filter by Status</InputGroup.Text>

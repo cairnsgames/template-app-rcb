@@ -72,7 +72,7 @@ const KlokoMyEvents = () => {
 
   return (
     <Tracker itemtype="partner.events" id={"events"}>
-      <div className="my-events">
+      <div className="my-events packagesKlokoMyEvents">
         {showEditor && (
           <Suspense fallback={<div>{t('events.loading')}</div>}>
             <KlokoEventEditor id={editItemId} onClose={handleEditorClose} />

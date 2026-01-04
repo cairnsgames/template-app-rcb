@@ -19,7 +19,7 @@ import DesktopSearch from "./components/desktopsearch";
 import AddClassModal from "./components/AddClassModal";
 import BookingModal from "./components/BookingModal";
 
-const Classes = ({ role = "dancer"}) => {
+const Classes = ({ role = "dancer", className = ""}) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
@@ -83,7 +83,7 @@ const Classes = ({ role = "dancer"}) => {
   return (
     <Container
       fluid
-      className="d-flex flex-column h-100"
+      className={`d-flex flex-column h-100 ${className}`}
       style={{ padding: "0px" }}
     >
       <DesktopSearch
@@ -123,6 +123,7 @@ const Classes = ({ role = "dancer"}) => {
           setIsAddModalOpen(false);
           setClassToEdit(null);
         }}
+        currentDate={selectedDate}
         classToEdit={classToEdit}
       />
 

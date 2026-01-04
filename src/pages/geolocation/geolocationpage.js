@@ -19,7 +19,7 @@ const GeoLocationPage = () => {
   }, [latlng]);
 
   return (    
-    <PageCentered style={{ margin: "1rem" }}>
+    <PageCentered style={{ margin: "1rem" }} className="pagesGeoLocationPage">
         <h1>Geo Location Page</h1>
         <div style={{ padding: "1rem", border: "2px solid green", borderRadius: "2rem" }}>
           Your Current location is:

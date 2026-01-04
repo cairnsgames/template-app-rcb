@@ -8,7 +8,7 @@ import KlokoSearch from "../../packages/kloko/klokosearch";
 
 const KlokoSearchPage = () => {
   return (    
-    <PageFull>
+    <PageFull className="pagesKlokoSearchPage">
         <KlokoSearch />
     </PageFull>
   );

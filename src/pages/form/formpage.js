@@ -105,7 +105,7 @@ const FormPage = ({ id }) => {
     setvalues(fieldValues);
   };
   return (
-    <PageFull className="p-2">
+    <PageFull className="p-2 pagesFormPage">
       <h1>Form Page</h1>
       <Form config={config} values={values} onSubmit={formSubmit} />
     </PageFull>

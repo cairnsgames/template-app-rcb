@@ -57,7 +57,7 @@ const KlokoSearch = () => {
   };
 
   return (
-    <div>
+    <div className="packagesKlokoSearch">
       <Container fluid style={{overflowY:"hidden"}}>
         <Row
           style={{

@@ -75,7 +75,7 @@ const Loyalty = () => {
 
   if (!system) {
     return (
-      <div className="m-3">
+      <div className="m-3 packagesLoyaltySystem">
         <h2>{t('loyalty.programTitle')}</h2>
         <InfoBox>
           <InfoBox.Header varaint="primary">

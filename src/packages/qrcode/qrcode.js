@@ -21,7 +21,7 @@ const QRCode = ({
   };
   const fullLink = `${link}&t=${type}`;
   return (
-    <div {...props} className={`qrcodecontainer ${className}`}>
+    <div {...props} className={`qrcodecontainer ${className} packagesQRCode`}>
       {code && (
         <div className="shake">
             <QRCodeLogo

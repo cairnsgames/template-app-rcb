@@ -7,7 +7,7 @@ import KlokoMyEvents from "../../packages/kloko/klokomyevents";
 
 const EventListPage = () => {
   return (
-    <Container>
+    <Container className="pagesEventListPage">
       <KlokoMyEvents />
     </Container>
   );

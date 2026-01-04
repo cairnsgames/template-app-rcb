@@ -30,7 +30,7 @@ const KlokoEventDetail = ({ id }) => {
   }
 
   return (
-    <div className="" style={{ marginLeft: "auto", marginRight: "auto", maxWidth: "100%" }}>
+    <div className="packagesKlokoEventDetail" style={{ marginLeft: "auto", marginRight: "auto", maxWidth: "100%" }}>
       <div className="mb-3">
         <h2 className="m-0">{activeEvent.title}</h2>
         {/* <button

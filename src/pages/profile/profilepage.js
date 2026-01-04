@@ -3,7 +3,7 @@ import PageSection from "../../parts/pagelayouts/pagesections";
 
 const ProfilePage = ({ id }) => {
   return (
-    <PageSection>
+    <PageSection className="pagesProfilePage">
       <ProfileForm />
     </PageSection>
   );

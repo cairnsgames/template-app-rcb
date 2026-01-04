@@ -13,7 +13,7 @@ const ReviewPage = (props) => {
     }
   };
   return (
-    <PageCentered style={{ margin: "1rem" }}>
+    <PageCentered style={{ margin: "1rem" }} className="pagesReviewPage">
       <div style={{ position: "relative" }}>
         <h1>HEADER</h1>
         <div style={{ position: "absolute", top: "0px", right: "0px" }}>

@@ -7,7 +7,7 @@ import { orderData } from "../../packages/doc/order";
 const DocsPage = (props) => {
 
   return (
-    <PageFull className="p-2">
+    <PageFull className="p-2 pagesDocsPage">
       <h1>Docs Page</h1>
       <Docs document={orderData} />
     </PageFull>
