@@ -122,16 +122,6 @@ function NavPart() {
                 Events
               </Nav.Link>
             )}
-            {isLoggedIn && (
-              <NavDropdown className="bg-primary" title="App Clones">
-                <Nav.Link className="bg-primary" href="#insta" bg="primary">
-                  InstaClone
-                </Nav.Link>
-                <Nav.Link className="bg-primary" href="#whatsapp" bg="primary">
-                  Whatsapp
-                </Nav.Link>
-              </NavDropdown>
-            )}
 
             {isLoggedIn && (
               <NavDropdown title="Design Elements">

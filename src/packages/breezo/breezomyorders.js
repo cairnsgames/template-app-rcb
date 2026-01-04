@@ -32,7 +32,7 @@ const BreezoMyOrders = () => {
 
   return (
     <div>
-      <h2>My Orders</h2>
+      <h2>Accounts</h2>
       <InputGroup>
         <InputGroup.Text>Filter by Status</InputGroup.Text>
         <Form.Control

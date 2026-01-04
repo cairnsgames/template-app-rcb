@@ -9,8 +9,6 @@ import DesignElements from "./pages/design/designelements";
 import LoginPage from "./pages/auth/loginpage";
 import RegisterPage from "./pages/auth/registerpage";
 import ForgotPasswordPage from "./pages/auth/forgotpasswordpage";
-import InstaClone from "./apps/instaclone/instaclone";
-import WhatsappClone from "./apps/whatsapp/whatsapp";
 import Examples from "./getbootstrapexamples/examples";
 import TenantSummaryPage from "@cairnsgames/tenant/pages/summarypage";
 import AuthSummaryPage from "./pages/auth/summarypage";
@@ -195,20 +193,6 @@ const Routing = () => {
         <Route startsWith={"event"}>
           <EventListPage />
         </Route>
-
-        <Route startsWith={"design"}>
-          <DesignElements />
-        </Route>
-        <Route startsWith={"insta"}>
-          <InstaClone />
-        </Route>
-        <Route startsWith={"whatsapp"}>
-          <WhatsappClone />
-        </Route>
-        <Route startsWith={"examples"}>
-          <Examples />
-        </Route>
-
         <LandingPage />
       </Router>
     </>

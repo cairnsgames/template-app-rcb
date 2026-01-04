@@ -53,7 +53,7 @@ const FaceDropdown = () => {
         {isLoggedIn && <Dropdown.Item href="#profile">{t('faceDropdown.profile')}</Dropdown.Item>}
         {isLoggedIn && <Dropdown.Item href="#partner">{t('faceDropdown.partner')}</Dropdown.Item>}
         {/* {isLoggedIn && <Dropdown.Item href="#settings">{t('faceDropdown.settings')}</Dropdown.Item>} */}
-        {isLoggedIn && <Dropdown.Item href="#orders">{t('faceDropdown.myorders')}</Dropdown.Item>}
+        {isLoggedIn && <Dropdown.Item href="#orders">{t('faceDropdown.accounts')}</Dropdown.Item>}
         {/* <Dropdown.Item
           onClick={() => {
             hardReload(true);

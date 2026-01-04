@@ -1,11 +1,11 @@
 import ProfileForm from "../../packages/profile/profileform";
-import PageFull from "../../parts/pagelayouts/pagefull";
+import PageSection from "../../parts/pagelayouts/pagesections";
 
 const ProfilePage = ({ id }) => {
   return (
-    <PageFull>
+    <PageSection>
       <ProfileForm />
-    </PageFull>
+    </PageSection>
   );
 };
 
