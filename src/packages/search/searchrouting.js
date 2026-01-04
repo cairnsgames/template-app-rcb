@@ -4,7 +4,7 @@ import Search from "./search";
 
 function SearchRouting() {
   return (
-    <PageFull className="my-3">
+    <PageFull className="my-3 packagesSearchRouting">
         <Router>
           {/* <Route is={"news/mynews/{id}"}>
             <MyNewsEditor />

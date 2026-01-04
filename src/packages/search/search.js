@@ -17,6 +17,7 @@ import useTenant from "../tenant/context/usetenant";
 import useUser from "../auth/context/useuser";
 import TilesLayout from "../layout/Tiles";
 import Tile from "../layout/Tile";
+import Filter from "../../components/icons/filter";
 
 const SearchDisplay = ({ item, onClick, layout }) => {
   if (layout === "card") {
@@ -90,8 +91,7 @@ const Partner = ({ item, index }) => {
 const Search = ({ layout = "default", items = 99999 }) => {
   const { t } = useTranslation();
   const { newsItems, location, setLocation: setNewsLocation } = useNews();
-  const { setLocation: setEventLocation } = useEvents();
-  const { events } = useEvents();
+  const { setLocation: setEventLocation, classes, events } = useEvents();
   const { tenant } = useTenant();
   const { token } = useUser();
 
@@ -100,6 +100,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
   };
 
   const handleEventClick = (eventId) => {
+    console.log("Click on Event", eventId);
     window.location.hash = `#events/${eventId}`;
   };
 
@@ -173,12 +174,24 @@ const Search = ({ layout = "default", items = 99999 }) => {
     );
   });
 
+  // Filter out old classes (separate endpoint returns classes)
+  const filteredClasses = (classes || []).filter((ev) => {
+    return (
+      new Date(ev.start_time) >= new Date() ||
+      new Date(ev.end_time) >= new Date()
+    );
+  });
+
   // Merge news and events with a type indicator
   const mergedItems = [
     ...(newsItems || []).map((item) => ({ ...item, itemType: "news" })),
     ...filteredEvents.map((event) => ({ ...event, itemType: "event" })),
+    ...filteredClasses.map((event) => ({ ...event, itemType: "class" })),
     ...partners.map((partner) => ({ ...partner, itemType: "partner" })),
   ];
+
+  console.log("CLasses:", classes);
+  console.log("Filtered Classes:", filteredClasses);
 
   // Apply filters (types and partner roles)
   const typeFilterActive = selectedTypes && selectedTypes.size > 0;
@@ -199,10 +212,10 @@ const Search = ({ layout = "default", items = 99999 }) => {
         const overlap = selectedRoles.some((rid) => roleIds.includes(rid));
         return overlap;
       }
-      // If only type filters are active (news/events) and no role filters, include partners
+      // If only type filters are active (news/events) and no role filters, exclude partners
+      // (When the user explicitly filters to news/events they typically do not want partners.)
       if (typeFilterActive && !roleFilterActive) {
-        // partners are neither 'news' nor 'event' so include partners when types are not restricting them
-        return true;
+        return false;
       }
       // otherwise if some filter active but none matches, exclude
       return false;
@@ -211,7 +224,17 @@ const Search = ({ layout = "default", items = 99999 }) => {
     // Handle news/events
     if (item.itemType === "news" || item.itemType === "event") {
       if (typeFilterActive) {
-        return selectedTypes.has(item.itemType);
+        // If filtering by event type, allow news if selected
+        if (item.itemType === "news") return selectedTypes.has("news");
+
+        // For events, respect the event/class selections
+        if (item.itemType === "event") {
+          const et = (item.event_type || "").toString().toLowerCase();
+          const isClass = et === "class";
+          if (isClass) return selectedTypes.has("class");
+          return selectedTypes.has("event");
+        }
+        return false;
       }
       // If role filter is active but no type filter, exclude news/events
       if (roleFilterActive && !typeFilterActive) return false;
@@ -240,12 +263,17 @@ const Search = ({ layout = "default", items = 99999 }) => {
     <Tracker itemtype="news" id={"page"}>
       <div className="news">
         <Row className="mb-3 align-items-center">
-          <Col xs={11} md={11} className="my-2">
+          <Col xs={8} sm={10} md={11} className="my-2">
             <LocationSearch onSelected={setLocation} />
           </Col>
-          <Col xs={1} md={1} className="text-right">
-            <Button variant="secondary" onClick={() => setShowFilterModal(true)} title="Filters">
-              Filters
+          <Col xs={4} sm={2} md={1} className="text-right">
+            <Button
+              variant="outline-primary"
+              onClick={() => setShowFilterModal(true)}
+              title="Filters"
+              style={{ float: "right" }}
+            >
+              <Filter />
             </Button>
           </Col>
         </Row>
@@ -273,7 +301,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
               case "event":
                 return (
                   <Tile key={item.id}>
-                    {item.itemType} {item.favorite}
                     <EventItem item={item}>
                       <EventThumb event={item} onClick={handleEventClick} />
                       <div className="text-muted small mb-3">
@@ -282,10 +309,20 @@ const Search = ({ layout = "default", items = 99999 }) => {
                     </EventItem>
                   </Tile>
                 );
+              case "class":
+                return (
+                  <Tile key={"class-" + item.id}>
+                    <EventItem item={item}>
+                      <EventThumb event={item} onClick={handleEventClick} />
+                      <div className="text-muted small mb-3">
+                        This Class is {distance} from you
+                      </div>
+                    </EventItem>
+                  </Tile>
+                );
               case "partner":
                 return (
                   <Tile key={item.user_id+"-"+index}>
-                    {item.itemType}
                     <Partner item={item} index={index} />
                     <div className="text-muted small mb-3">
                       This Partner is {distance} from you
@@ -295,7 +332,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
               default:
                 return (
                   <Tile key={item.id}>
-                    {item.itemType}
                     <SearchDisplay item={item} layout={layout} onClick={handleItemClick} />
                     <div className="text-muted small mb-3">
                       This {item.globalNews ? "GLOBAL News" : "News"} is {distance} from you

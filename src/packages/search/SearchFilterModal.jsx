@@ -42,6 +42,13 @@ export default function SearchFilterModal({
                 checked={selectedTypes?.has("event")}
                 onChange={() => toggleType("event")}
               />
+              <Form.Check
+                type="checkbox"
+                id="filter-classes"
+                label="Classes"
+                checked={selectedTypes?.has("class")}
+                onChange={() => toggleType("class")}
+              />
             </div>
           </Form.Group>
 

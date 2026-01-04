@@ -37,6 +37,7 @@ export const KlokoMyEventProvider = ({
   const [ticketTypes, setTicketTypes] = useState([]);
   const [ticketOptions, setTicketOptions] = useState([]);
   const [location, setLocation] = useState();
+  const [classes, setClasses] = useState([]);
 
   if (!process.env.REACT_APP_KLOKO_API) {
     throw new Error(
@@ -103,6 +104,36 @@ export const KlokoMyEventProvider = ({
     }
   };
 
+  const fetchClasses = async () => {
+    console.log("Fetching Classes")
+    const body = {};
+    console.log("Fetching classes with location:", location);
+    if (location && location.lat && location.lon) {
+      body.lat = location.lat;
+      body.lng = location.lon;
+    }
+    // Request classes via the events endpoint
+    body.classes = 1;
+    try {
+      setLoading(true);
+      const response = await fetch(
+        combineUrlAndPath(process.env.REACT_APP_KLOKO_API, `api.php/events`),
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(body),
+        }
+      );
+      const data = await response.json();
+      console.log("Fetched Classes:", data);
+      setClasses(data ?? []);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (canFetch) {
       fetchCalendars();
@@ -116,6 +147,7 @@ export const KlokoMyEventProvider = ({
     if (user) {
       fetchMyEvents(user);
       fetchEvents();
+      fetchClasses();
     }
   }, [user, location]);
 
@@ -838,6 +870,8 @@ export const KlokoMyEventProvider = ({
       ticketTypes,
       ticketOptions,
       toggleFavorite,
+      classes,
+      setClasses,
       location,
       setLocation,
     }),
@@ -848,6 +882,7 @@ export const KlokoMyEventProvider = ({
       bookings,
       userBookings, // Add userBookings to dependencies
       tickets,
+      classes,
       templates,
       activeCalendar,
       activeEvent,
