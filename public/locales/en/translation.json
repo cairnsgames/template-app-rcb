@@ -19,7 +19,7 @@
     "saveButton": "Save",
     "addressDescription": "",
     "cityDescription": "Used to find news and events near you.",
-    "phoneDescription": "",
+    "phoneDescription": "Shared with partners when you buy tickets so they can contact you.",
     "languageDescription": "Select your preferred language.",
     "languageOptions": {
       "english": "English",

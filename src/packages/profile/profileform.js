@@ -180,7 +180,7 @@ const ProfileForm = () => {
             />
           </Form.Group>
         </Col>
-        <Col md={6}>
+        {/* <Col md={6}>
           <Form.Group controlId="homecity">
             <Form.Label>Home City</Form.Label>
             <LocationSearch
@@ -190,7 +190,7 @@ const ProfileForm = () => {
               lng={profile.homelng}
             />
           </Form.Group>
-        </Col>
+        </Col> */}
       </Row>
       <Row>
         <Col md={6}>

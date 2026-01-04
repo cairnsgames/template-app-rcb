@@ -14,7 +14,7 @@ const UserPropertyForm = ({ onSave, optionalLabel = true }) => {
 
   useEffect(() => {
     const defaultProperties = [
-      { name: "address", value: "", type: "text" },
+      // { name: "address", value: "", type: "text" },
       { name: "city", value: "", type: "city_lookup" },
       { name: "phone", value: "", type: "text" },
       {
