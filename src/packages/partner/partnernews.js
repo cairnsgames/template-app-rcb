@@ -29,7 +29,23 @@ function PartnerNews({ items = [], open = true, toggle = () => {}, onClick = nul
             {items.map((item) => (
               <Tile key={item?.id || item?.title || Math.random()}>
                 <Tracker itemtype="news.card" id={item.id}>
-                  <NewsItem key={item.id} item={item} onClick={onClick} />
+                  <NewsItem
+                    key={item.id}
+                    item={item}
+                    onClick={(id) => {
+                      try {
+                        if (id !== undefined && id !== null) {
+                          window.location.hash = `#news/${id}`;
+                        }
+                      } catch (err) {
+                        // ignore in non-browser environments
+                      }
+
+                      if (onClick) {
+                        onClick(id);
+                      }
+                    }}
+                  />
                 </Tracker>
               </Tile>
             ))}
