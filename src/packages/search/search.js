@@ -54,39 +54,59 @@ export const SearchItems = ({ count, layout, onClick }) => {
 };
 
 const Partner = ({ item, index }) => {
-  return (<Card className="partner-card" key={item.user_id+"-"+index}>    
-    <Card.Header><h5>{item.firstname} {item.lastname}</h5></Card.Header>
-    <Card.Body>
-      
-    {item.avatar && (
-      <div className="partner-avatar">
-        <img
-          src={item.avatar}
-          alt={item.firstname + item.lastname|| "Partner avatar"}
-          style={{ maxWidth: "100%", height: "auto", display: "block", marginBottom: 8 }}
-        />
-      </div>
-    )}
-    {Array.isArray(item.offerings) && item.offerings.length > 0 ? (
-        <div>
-          <strong>Offerings:</strong>{" "}
-          {item.offerings.map(o => (o && typeof o === "object" ? o.name : o)).filter(Boolean).join(", ")}
-        </div>
-      ) : null}
-    
-    </Card.Body>
-    {Array.isArray(item.roles) && item.roles.length > 0 ? (
-      <Card.Footer>
-        <strong>Roles:</strong>{" "}
-        {item.roles.map(r => (r && typeof r === "object" ? r.name : r)).filter(Boolean).join(", ")}
-      </Card.Footer>
-    ) : (
-      <Card.Footer><strong>Roles:</strong> None</Card.Footer>
-    )}
-      
-    <p><strong>Distance:</strong> {item.distance ? `${item.distance.toFixed(1)} km` : 'Unknown'}</p>
-  </Card>);
-}
+  return (
+    <Card className="partner-card" key={item.user_id + "-" + index}>
+      <Card.Header>
+        <h5>
+          {item.firstname} {item.lastname}
+        </h5>
+      </Card.Header>
+      <Card.Body>
+        {item.avatar && (
+          <div className="partner-avatar">
+            <img
+              src={item.avatar}
+              alt={item.firstname + item.lastname || "Partner avatar"}
+              style={{
+                maxWidth: "100%",
+                height: "auto",
+                display: "block",
+                marginBottom: 8,
+              }}
+            />
+          </div>
+        )}
+        {Array.isArray(item.offerings) && item.offerings.length > 0 ? (
+          <div>
+            <strong>Offerings:</strong>{" "}
+            {item.offerings
+              .map((o) => (o && typeof o === "object" ? o.name : o))
+              .filter(Boolean)
+              .join(", ")}
+          </div>
+        ) : null}
+      </Card.Body>
+      {Array.isArray(item.roles) && item.roles.length > 0 ? (
+        <Card.Footer>
+          <strong>Roles:</strong>{" "}
+          {item.roles
+            .map((r) => (r && typeof r === "object" ? r.name : r))
+            .filter(Boolean)
+            .join(", ")}
+        </Card.Footer>
+      ) : (
+        <Card.Footer>
+          <strong>Roles:</strong> None
+        </Card.Footer>
+      )}
+
+      <p>
+        <strong>Distance:</strong>{" "}
+        {item.distance ? `${item.distance.toFixed(1)} km` : "Unknown"}
+      </p>
+    </Card>
+  );
+};
 
 const Search = ({ layout = "default", items = 99999 }) => {
   const { t } = useTranslation();
@@ -118,7 +138,11 @@ const Search = ({ layout = "default", items = 99999 }) => {
     fetchPartners(lat, lng, distance);
   }, [location]);
 
-  const fetchPartners = async (lat = -26.096, lng = 28.009, distance = 50000) => {
+  const fetchPartners = async (
+    lat = -26.096,
+    lng = 28.009,
+    distance = 50000
+  ) => {
     const url = combineUrlAndPath(
       process.env.REACT_APP_PARTNER_API,
       "api.php/localpartners"
@@ -257,7 +281,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
     console.log("Search setting location:", location);
     setNewsLocation(location);
     setEventLocation(location);
-  }
+  };
 
   return (
     <Tracker itemtype="news" id={"page"}>
@@ -301,28 +325,24 @@ const Search = ({ layout = "default", items = 99999 }) => {
               case "event":
                 return (
                   <Tile key={item.id}>
-                    <EventItem item={item}>
-                      <EventThumb event={item} onClick={handleEventClick} />
-                      <div className="text-muted small mb-3">
-                        This Event is {distance} from you
-                      </div>
-                    </EventItem>
+                    <EventItem item={item} onClick={handleEventClick} />
+                    <div className="text-muted small mb-3">
+                      This Event is {distance} from you
+                    </div>
                   </Tile>
                 );
               case "class":
                 return (
                   <Tile key={"class-" + item.id}>
-                    <EventItem item={item}>
-                      <EventThumb event={item} onClick={handleEventClick} />
-                      <div className="text-muted small mb-3">
-                        This Class is {distance} from you
-                      </div>
-                    </EventItem>
+                    <EventItem item={item} onClick={handleEventClick} />
+                    <div className="text-muted small mb-3">
+                      This Class is {distance} from you
+                    </div>
                   </Tile>
                 );
               case "partner":
                 return (
-                  <Tile key={item.user_id+"-"+index}>
+                  <Tile key={item.user_id + "-" + index}>
                     <Partner item={item} index={index} />
                     <div className="text-muted small mb-3">
                       This Partner is {distance} from you
@@ -332,9 +352,14 @@ const Search = ({ layout = "default", items = 99999 }) => {
               default:
                 return (
                   <Tile key={item.id}>
-                    <SearchDisplay item={item} layout={layout} onClick={handleItemClick} />
+                    <SearchDisplay
+                      item={item}
+                      layout={layout}
+                      onClick={handleItemClick}
+                    />
                     <div className="text-muted small mb-3">
-                      This {item.globalNews ? "GLOBAL News" : "News"} is {distance} from you
+                      This {item.globalNews ? "GLOBAL News" : "News"} is{" "}
+                      {distance} from you
                     </div>
                   </Tile>
                 );

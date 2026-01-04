@@ -9,6 +9,7 @@ const EventItem = ({ item, onClick }) => {
   const { t } = useTranslation();
 
   const clickOnCard = () => {
+    console.log("Clicked on EventItem:", item.id);
     if (onClick) {
       onClick(item.id);
     }

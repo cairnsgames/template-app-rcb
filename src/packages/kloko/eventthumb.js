@@ -24,10 +24,16 @@ const EventThumb = ({ event, onClick, onEdit, onDelete }) => {
     }
   };
 
+  console.log("Rendering EventThumb:", event.id, "Favorite:", event.favorite);
+
   return (
     <Tracker itemtype="event.card" id={event.id}>
-      <div onClick={clickOnCard}>]
-      <Card className="event-thumb">
+      <Card
+        className="event-thumb"
+        onClick={clickOnCard}
+        role="button"
+        tabIndex={0}
+      >
         {imageLoaded && event.image && (event.image.length > 0) && (
           <div className="event-thumb-image-container">
             <img
@@ -77,7 +83,6 @@ const EventThumb = ({ event, onClick, onEdit, onDelete }) => {
           </div>
         </div>
       </Card>
-      </div>
     </Tracker>
   );
 };
