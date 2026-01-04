@@ -1,0 +1,128 @@
+.pagePartnerDetail {
+  padding: 12px;
+
+  &__header {
+    margin-bottom: 12px;
+  }
+
+  &__wrap {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  &__card {
+    flex: 0 0 320px;
+    padding: 16px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    background: #fff;
+  }
+
+  &__image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #f6f6f6;
+  }
+
+  &__image--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+  }
+
+  &__info {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #222;
+  }
+
+  &__offerings {
+    margin-top: 12px;
+  }
+
+  &__tag {
+    display: inline-block;
+    padding: 6px 10px;
+    margin: 6px 6px 0 0;
+    background: #eef6ff;
+    color: #0366d6;
+    border-radius: 16px;
+    font-size: 13px;
+  }
+
+  &__placeholder {
+    color: #777;
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 280px;
+  }
+}
+
+/* Sections (news/events/classes) */
+.pd-section {
+  margin-bottom: 16px;
+  border: 1px solid #f1f1f1;
+  border-radius: 6px;
+  background: #fff;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid #f1f1f1;
+  }
+
+  &__header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  &__body {
+    padding: 12px;
+    transition: max-height 0.18s ease-in-out, opacity 0.12s ease-in-out;
+  }
+
+  &.closed &__body {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  &.open &__body {
+    max-height: 2000px; /* large value for expansion */
+    opacity: 1;
+  }
+}
+
+.pd-toggle {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #0366d6;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.pd-list { list-style: none; padding-left: 0; margin: 0; }
+.pd-item { padding: 8px 0; border-bottom: 1px dashed #eee; }
+.pd-item__meta { font-size: 13px; color: #555; margin-top: 4px; }
+
+@media (max-width: 700px) {
+  .pagePartnerDetail__wrap { flex-direction: column; }
+  .pagePartnerDetail__card { width: 100%; }
+}
