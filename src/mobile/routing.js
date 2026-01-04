@@ -24,6 +24,7 @@ import PayNowPage from "../pages/breezo/paynowpage";
 import PayNowThankYouPage from "../pages/breezo/paynowthankyoupage";
 import Calendar from "../packages/kloko/kloko";
 import KlokoRouting from "../packages/kloko/klokorouting";
+import PartnerRouting from "../packages/partner/partnerrouting";
 import MagicCodePage from "../pages/auth/magiccodepage";
 import BreezoMyOrders from "../packages/breezo/breezomyorders";
 import BreezoMyOrderDetails from "../packages/breezo/breezomyorderdetails";
@@ -39,7 +40,7 @@ import MyCalendar from "../packages/kloko/mycalendar/mycalendar";
 import Search from "../packages/search/search";
 import SearchRouting from "../packages/search/searchrouting";
 
-const PartnersPage = React.lazy(() => import("./pages/partners/partners"));
+// Partners are routed via `src/packages/partner/partnerrouting.js`
 const MapPage = React.lazy(() => import("../pages/map/mappage"));
 const AdminRoutes = React.lazy(() => import("../pages/admin/admin"));
 
@@ -120,9 +121,7 @@ const Routing = () => {
         <ProfilePage />
       </Route>
       <Route startsWith="partner">
-        <Suspense>
-          <PartnersPage />
-        </Suspense>
+        <PartnerRouting />
       </Route>
       <Route is="finances">
         <FinancesPage />

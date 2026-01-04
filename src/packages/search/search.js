@@ -52,8 +52,30 @@ export const SearchItems = ({ count, layout, onClick }) => {
 };
 
 const Partner = ({ item, index }) => {
+  const handleActivate = () => {
+    const id = item.user_id ?? item.id;
+    if (id !== undefined && id !== null) {
+      window.location.hash = `#partner/${id}`;
+    }
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleActivate();
+    }
+  };
+
   return (
-    <Card className="partner-card" key={item.user_id + "-" + index}>
+    <Card
+      className="partner-card"
+      key={item.user_id + "-" + index}
+      onClick={handleActivate}
+      onKeyDown={onKeyDown}
+      role="button"
+      tabIndex={0}
+      style={{ cursor: "pointer" }}
+    >
       <Card.Header>
         <h5>
           {item.firstname} {item.lastname}
