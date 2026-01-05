@@ -69,3 +69,16 @@ $card-spacer-x: 0.5rem;
 .xxsmall {
   font-size: 0.625rem; // extra extra small
 }
+
+.modal-dialog {
+  height: calc(100% - 3.5rem);
+}
+
+.modal-content {
+  height: 100%;
+  border-radius: .5rem;
+}
+
+.modal-body {
+  overflow-y: auto;
+}

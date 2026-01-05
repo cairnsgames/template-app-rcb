@@ -9,6 +9,7 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import MapDisplay from "../map/mapdisplay";
+import "./selectlocationmodal.scss";
 
 /*
 # USAGE
@@ -102,14 +103,19 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
     if (onSelectAddress) {
       onSelectAddress(address);
     }
-  }
+  };
 
   return (
     <>
       <Button variant="outline-primary" onClick={handleShow}>
         <Map />
       </Button>
-  <Modal show={show} onHide={handleClose} backdropClassName="custom-dark-backdrop">
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdropClassName="custom-dark-backdrop"
+        contentClassName="select-location-modal"
+      >
         <Modal.Header closeButton closeVariant="white">
           <Modal.Title>Select Location</Modal.Title>
         </Modal.Header>
@@ -117,9 +123,7 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
         <Modal.Body
           style={{
             position: "relative",
-            height: "100%",
             width: "100%",
-            minHeight: "60vh",
           }}
         >
           <MapDisplay
