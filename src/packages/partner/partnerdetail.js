@@ -45,7 +45,7 @@ function PartnerDetail(props) {
   return (
     <div className="pagePartnerDetail">
       <div className="pagePartnerDetail__header">
-        <h2>Partner: {fullName || activePartner.username || "Profile"}</h2>
+        <h2>{fullName || activePartner.username || "Profile"}</h2>
       </div>
 
       <div className="pagePartnerDetail__wrap">
@@ -60,7 +60,7 @@ function PartnerDetail(props) {
           <div className="pagePartnerDetail__info">
             <div><strong>Name:</strong> {fullName || "N/A"}</div>
             <div><strong>Email:</strong> {activePartner.email || "N/A"}</div>
-            <div><strong>Location:</strong> {activePartner.location_name || "N/A"} {activePartner.distance ? `• ${activePartner.distance} km` : ""}</div>
+            <div><strong>Location:</strong> {activePartner.location_name || "N/A"} {activePartner.distance ? `• ${activePartner.distance} km from you` : ""}</div>
             <div><strong>Roles:</strong> {Array.isArray(activePartner.roles) ? activePartner.roles.map(r => r && r.name ? r.name : r).join(', ') : 'N/A'}</div>
           </div>
 

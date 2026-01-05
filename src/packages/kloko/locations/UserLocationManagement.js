@@ -105,7 +105,7 @@ const UserLocationManagement = () => {
 
   return (
     <div>
-      <h1>User Location Management</h1>
+      <h1>Location Management</h1>
       <div className="my-3">
         <Button
           variant="primary"
