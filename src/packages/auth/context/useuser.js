@@ -8,7 +8,16 @@ export const useUser = () => {
     throw new Error("useUser was used outside of its Provider");
   }
 
-  const { token, user, saveUser, properties, propertiesLoaded, saveProperties, oldIdToNewMapping } = context;
+  const {
+    token,
+    user,
+    saveUser,
+    properties,
+    propertiesLoaded,
+    saveProperties,
+    oldIdToNewMapping,
+    isPartner,
+  } = context;
 
   const hasAccess = (permission) => {
     const access = user?.permissions?.find((p) => p.name === permission);
@@ -45,16 +54,16 @@ export const useUser = () => {
     if (!fullId || fullId.length < 6) {
       return fullId;
     }
-  
+
     const checksum = parseInt(fullId.slice(0, 2));
     const idStr = fullId.slice(2);
-  
+
     let sum = 0;
     for (let i = 0; i < idStr.length; i++) {
       sum += parseInt(idStr[i]);
     }
     let recalculatedChecksum = (sum % 90) + 10;
-  
+
     if (checksum === recalculatedChecksum) {
       return parseInt(idStr).toString();
     } else {
@@ -71,9 +80,11 @@ export const useUser = () => {
     getIdFromFullId,
     isLoggedIn,
     hasAccess,
-    properties, propertiesLoaded,
+    properties,
+    propertiesLoaded,
     getPropertyValue,
     saveProperties,
+    isPartner,
   };
 };
 

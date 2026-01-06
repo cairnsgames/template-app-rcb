@@ -664,6 +664,10 @@ const AuthenticationProvider = (props) => {
     return data[0].new_user_id;
   };
 
+  
+  const partner = user?.permissions.find((perm) => perm.name === "Partner");
+  const isPartner = partner?.permission === "YES";  
+
   const values = useMemo(
     () => ({
       token,
@@ -682,6 +686,7 @@ const AuthenticationProvider = (props) => {
       propertiesLoaded,
       saveProperties,
       oldIdToNewMapping,
+      isPartner,
     }),
     [
       token,
@@ -725,6 +730,7 @@ const AuthenticationProvider = (props) => {
       }
     }
   }, [propertiesLoaded, properties]);
+
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>

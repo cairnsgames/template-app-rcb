@@ -64,7 +64,7 @@ const PartnerBar = () => {
       <Nav.Link eventKey="#finances">
         <CurrencyDollar className="ms-1" />
       </Nav.Link>
-      <Nav.Link eventKey="#partner">
+      <Nav.Link eventKey="#partner/profile">
         <Gear className="ms-1" />
       </Nav.Link>
     </Bar>

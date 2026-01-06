@@ -21,7 +21,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 const FaceDropdown = () => {
   const { t } = useTranslation();
   const { logout, isLoggedIn } = useAuth();
-  const { user } = useUser();
+  const { user, isPartner } = useUser();
   // const { venues } = useAssistant();
 
   if (!user) {
@@ -51,7 +51,8 @@ const FaceDropdown = () => {
       <Dropdown.Menu>
         {isLoggedIn && <Dropdown.Item disabled>{t('faceDropdown.welcome')} {user.firstname}</Dropdown.Item>}
         {isLoggedIn && <Dropdown.Item href="#profile">{t('faceDropdown.profile')}</Dropdown.Item>}
-        {isLoggedIn && <Dropdown.Item href="#partner">{t('faceDropdown.partner')}</Dropdown.Item>}
+        {isLoggedIn && isPartner && <Dropdown.Item href="#partner/profile">{t('faceDropdown.partner')}</Dropdown.Item>}
+        {isLoggedIn && !isPartner && <Dropdown.Item href="#partner">{t('faceDropdown.partner')}</Dropdown.Item>}
         {/* {isLoggedIn && <Dropdown.Item href="#settings">{t('faceDropdown.settings')}</Dropdown.Item>} */}
         {isLoggedIn && <Dropdown.Item href="#orders">{t('faceDropdown.accounts')}</Dropdown.Item>}
         {/* <Dropdown.Item
