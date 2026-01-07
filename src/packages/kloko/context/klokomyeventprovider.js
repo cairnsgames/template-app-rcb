@@ -80,7 +80,6 @@ export const KlokoMyEventProvider = ({
 
   const fetchEvents = async () => {
     const body = {};
-    console.log("Fetching events with location:", location);
     if (location && location.lat && location.lng) {
       body.lat = location.lat;
       body.lng = location.lng;
@@ -105,9 +104,7 @@ export const KlokoMyEventProvider = ({
   };
 
   const fetchClasses = async () => {
-    console.log("Fetching Classes")
     const body = {};
-    console.log("Fetching classes with location:", location);
     if (location && location.lat && location.lng) {
       body.lat = location.lat;
       body.lng = location.lng;
@@ -125,7 +122,6 @@ export const KlokoMyEventProvider = ({
         }
       );
       const data = await response.json();
-      console.log("Fetched Classes:", data);
       setClasses(data ?? []);
       setLoading(false);
     } catch (error) {
@@ -143,7 +139,6 @@ export const KlokoMyEventProvider = ({
   }, [canFetch]);
 
   useEffect(() => {
-    console.log("ZZZZ Fetch Events - Location", location);
     if (user) {
       fetchMyEvents(user);
       fetchEvents();

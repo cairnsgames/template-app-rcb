@@ -287,7 +287,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
     .slice(0, items);
 
   const setLocation = (location) => {
-    console.log("ZZZZ Search setting location:", location);
     setNewsLocation(location);
     setEventLocation(location);
     setPartnerLocation(location);

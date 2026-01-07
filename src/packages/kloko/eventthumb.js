@@ -24,8 +24,6 @@ const EventThumb = ({ event, onClick, onEdit, onDelete }) => {
     }
   };
 
-  console.log("Rendering EventThumb:", event.id, "Favorite:", event.favorite);
-
   return (
     <Tracker itemtype="event.card" id={event.id}>
       <Card
@@ -52,7 +50,6 @@ const EventThumb = ({ event, onClick, onEdit, onDelete }) => {
           style={{ width: event.image ? "75%" : "100%" }}
         >
           
-        Fav {event.favorite}
           <div className="event-thumb-header">
             <strong className="event-thumb-title">{event.title}</strong>
             <ButtonGroup>
@@ -79,7 +76,7 @@ const EventThumb = ({ event, onClick, onEdit, onDelete }) => {
             <small>{formatEventDate(event.start_time, event.end_time)}</small>
           </div>
           <div className="event-thumb-details">
-            {event.location && `${event.location}`}{event.location && event.max_participants && ' • '}{event.max_participants && `Max: ${event.max_participants}`}
+            {event.location && `${event.location}`}{event.location && (event.max_participants > 0) && ' • '}{(event.max_participants > 0) && `Max: ${event.max_participants}`}
           </div>
         </div>
       </Card>

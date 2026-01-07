@@ -37,7 +37,6 @@ export const NewsProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log("ZZZZ Getting Local News for location change:", location);    
     const lat = location?.lat ?? location?.latitude ?? -26.096;
     const lng = location?.lon ?? location?.lng ?? location?.longitude ?? 28.009;
     const distance = location?.distance ?? 50000;
@@ -201,7 +200,6 @@ export const NewsProvider = ({ children }) => {
   // Auto-fetch local news when location changes
   useEffect(() => {
     if (location && location.lat && location.lng) {
-      console.log("Fetching local news with location:", location);
       fetchLocalNews(location.lat, location.lng, location.distance || 50000);
     }
   }, [location]);

@@ -19,7 +19,6 @@ export const PartnerProvider = ({ children }) => {
   const [activePartner, setActivePartner] = useState(null);
 
   useEffect(() => {
-    console.log("ZZZZ PartnerProvider fetching partners with location:", location);
     const lat = location?.lat ?? location?.latitude ?? -26.096;
     const lng = location?.lng ?? location?.lon ?? location?.longitude ?? 28.009;
     const distance = location?.distance ?? 50000;

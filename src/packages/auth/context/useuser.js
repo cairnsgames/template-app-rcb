@@ -17,6 +17,7 @@ export const useUser = () => {
     saveProperties,
     oldIdToNewMapping,
     isPartner,
+    defaultLocation,
   } = context;
 
   const hasAccess = (permission) => {
@@ -85,6 +86,7 @@ export const useUser = () => {
     getPropertyValue,
     saveProperties,
     isPartner,
+    defaultLocation,
   };
 };
 

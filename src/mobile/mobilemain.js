@@ -13,7 +13,6 @@ const MobileMain = () => {
 
   const partner = user?.permissions.find((perm) => perm.name === "Partner");
   const isPartner = partner?.permission === "YES";  
-  console.log("Is partner:", isPartner);
 
   return (
     <div className={`app-container ${mobile ? "mobile" : ""} ${user ? "logged-in" : "logged-out"}`}>

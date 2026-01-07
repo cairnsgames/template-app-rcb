@@ -12,6 +12,7 @@ import LoadingSpinner from "../../components/spinner/spinner";
 import useMyEvents from "./context/usemyevents";
 import Tracker from "../tracker/tracker";
 import { useTranslation } from "react-i18next";
+import useUser from "../auth/context/useuser";
 
 const KlokoEventEditor = React.lazy(() => import("./klokoevent"));
 

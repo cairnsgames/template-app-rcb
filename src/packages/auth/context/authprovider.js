@@ -24,6 +24,7 @@ const AuthenticationProvider = (props) => {
   const [properties, setProperties] = useState([]);
   const [propertiesLoaded, setPropertiesLoaded] = useState(false);
   const [roles, setRoles] = useState([]);
+  const [defaultLocation, setDefaultLocation] = useState();
 
   const { tenant } = useTenant();
   const { deviceId } = useDeviceInfo();
@@ -46,6 +47,55 @@ const AuthenticationProvider = (props) => {
     }
     fetchProperties();
   }, [user]);
+
+  // When the user changes, load their Kloko locations and pick the default
+  useEffect(() => {
+    const fetchDefaultLocation = async () => {
+      if (!user?.id) {
+        setDefaultLocation(undefined);
+        return;
+      }
+
+      if (!process.env.REACT_APP_KLOKO_API) {
+        // Kloko API not configured; just clear default
+        setDefaultLocation(undefined);
+        return;
+      }
+
+      try {
+        const resp = await fetch(
+          combineUrlAndPath(
+            process.env.REACT_APP_KLOKO_API,
+            `api.php/user/${user.id}/locations`
+          ),
+          {
+            headers: {
+              APP_ID: tenant,
+              token: token,
+            },
+            method: "GET",
+          }
+        );
+        let data = await resp.json();
+        if (typeof data === "string") {
+          data = JSON.parse(data);
+        }
+        if (Array.isArray(data)) {
+          const def = data.find((l) => l.default === 1 || l.default === true);
+          setDefaultLocation(def || null);
+        } else {
+          setDefaultLocation(null);
+        }
+      } catch (err) {
+        setDefaultLocation(undefined);
+        if (onError) {
+          onError("Auth: Unable to fetch user locations", err);
+        }
+      }
+    };
+
+    fetchDefaultLocation();
+  }, [user, token, tenant]);
 
   const validateToken = (token) => {
     const body = { token: token };
@@ -686,6 +736,7 @@ const AuthenticationProvider = (props) => {
       propertiesLoaded,
       saveProperties,
       oldIdToNewMapping,
+      defaultLocation,
       isPartner,
     }),
     [
@@ -697,9 +748,16 @@ const AuthenticationProvider = (props) => {
       logout,
       forgot,
       user,
+      saveUser,
       setgoogleAccessToken,
       changePassword,
       impersonate,
+      properties,
+      propertiesLoaded,
+      saveProperties,
+      oldIdToNewMapping,
+      defaultLocation,
+      isPartner,
     ]
   );
 

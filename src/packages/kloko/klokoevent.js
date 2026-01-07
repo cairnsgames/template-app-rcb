@@ -16,6 +16,7 @@ import DateAndDuration from "./eventform/dateandduration";
 import PricingOptions from "./eventform/pricingoptions";
 import LocationSection from "./eventform/locationsection";
 import DisplaySettings from "./eventform/displaysettings";
+import useUser from "../auth/context/useuser";
 
 const KlokoEventEditor = ({ id, onClose }) => {
   const { t } = useTranslation();
@@ -27,6 +28,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
     fetchTicketTypesByEventId,fetchTicketOptionsByEventId ,
   } = useMyEvents();
   const { addToast } = useToast();
+  
+  const { defaultLocation } = useUser();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -36,7 +39,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const [keywords, setKeywords] = useState("");
   const [eventType, setEventType] = useState("event");
   const [duration, setDuration] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(defaultLocation || {});
   const [maxParticipants, setMaxParticipants] = useState("");
   const [event, setEvent] = useState({});
   const [startTime, setStartTime] = useState(() => {
@@ -91,6 +94,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
   useEffect(() => {
     if (id) {
       const eventToEdit = fetchEventById(id); // Fetch event data by ID
+
+      console.log("Event to Edit", {name: eventToEdit.location, lat: eventToEdit.lat, lng: eventToEdit.lng});
       setEvent(eventToEdit);
       if (eventToEdit) {
         setTitle(eventToEdit.title);
@@ -103,7 +108,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
         setKeywords(eventToEdit.keywords);
         setEventType(eventToEdit.event_type);
         setDuration(eventToEdit.duration);
-        setLocation(eventToEdit.location);
+        setLocation({name: eventToEdit?.location, lat: eventToEdit.lat, lng: eventToEdit.lng});
         setMaxParticipants(eventToEdit.max_participants);
         setOverlayText(eventToEdit.overlay_text === "Y");
         setEnableBookings(eventToEdit.enable_bookings === "Y");
@@ -143,6 +148,13 @@ const KlokoEventEditor = ({ id, onClose }) => {
 
     const startTimePlus1Hour = new Date(new Date(startTime).getTime() + 60 * 60 * 1000).toISOString().slice(0, 16);
 
+    const locationName =
+      location && typeof location === "object" && location.name
+      ? location.name
+      : typeof location === "string"
+      ? location
+      : "";
+
     const eventData = {
       ...event,
       title,
@@ -152,7 +164,15 @@ const KlokoEventEditor = ({ id, onClose }) => {
       keywords: keywords,
       event_type: eventType,
       duration,
-      location,
+      location: locationName,
+      lat:
+      location && typeof location === "object" && location.lat != null
+        ? location.lat
+        : latlng.lat,
+      lng:
+      location && typeof location === "object" && location.lng != null
+        ? location.lng
+        : latlng.lng,
       max_participants: maxParticipants,
       start_time: startTime,
       end_time: endTime < startTime ? startTimePlus1Hour : endTime,
@@ -240,7 +260,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
         <PricingOptions
           hasTicketTypes={hasTicketTypes}
           setHasTicketTypes={setHasTicketTypes}
-          hasTicketOptions={hasTicketOptions}
+          hasTicketOptions={hasTicketOptions === "yes" ? "yes" : "no"}
           setHasTicketOptions={setHasTicketOptions}
           currency={currency}
           setCurrency={setCurrency}
@@ -252,7 +272,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
           setTicketOptions={setTicketOptions}
         />
 
-        <LocationSection value={""} setLocation={selectLocation} />
+        <LocationSection location={location} setLocation={selectLocation} />
 
         <DisplaySettings
           enableBookings={enableBookings}
