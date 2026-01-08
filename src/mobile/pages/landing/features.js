@@ -23,7 +23,7 @@ const Features = () => {
             </div>
             <h3 className="mb-0 ms-3">Join Loyalty Programs</h3>
           </div>
-          <p>Earn rewards and discounts by joining our venue partners' loyalty programs.</p>
+          <p>Earn rewards and discounts by joining our partners' loyalty programs.</p>
         </Col>
         <Col>
           <div className="d-flex align-items-center mb-2">
