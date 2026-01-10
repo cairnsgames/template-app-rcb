@@ -6,16 +6,16 @@ import "../news/news.scss";
 import NewsCard from "../news/newscard";
 import Tracker from "../tracker/tracker";
 import { useTranslation } from "react-i18next";
-import { Row, Col, Button, Card } from "react-bootstrap";
+import { Row, Col, Button, Card, Form } from "react-bootstrap";
 import LocationSearch from "../../external/LocationSearch";
 import SearchFilterModal from "./SearchFilterModal";
+import { useUser } from "../auth/context/useuser";
 import useEvents from "../kloko/context/useevents";
-import EventThumb from "../kloko/eventthumb";
 import EventItem from "../kloko/eventitem";
 import { usePartner } from "../partner/context/partnercontext";
+import Filter from "../../components/icons/filter";
 import TilesLayout from "../layout/Tiles";
 import Tile from "../layout/Tile";
-import Filter from "../../components/icons/filter";
 
 const SearchDisplay = ({ item, onClick, layout }) => {
   if (layout === "card") {
@@ -127,9 +127,11 @@ const Partner = ({ item, index }) => {
     </Card>
   );
 };
+ 
 
 const Search = ({ layout = "default", items = 99999 }) => {
   const { t } = useTranslation();
+  const { defaultLocation } = useUser();
   const { newsItems, location, setLocation: setNewsLocation } = useNews();
   const { setLocation: setEventLocation, classes, events } = useEvents();
   const { partners, setLocation: setPartnerLocation } = usePartner();
@@ -188,20 +190,56 @@ const Search = ({ layout = "default", items = 99999 }) => {
     setSelectedTypes(next);
   };
 
+  // Local state for initial search form
+  const [showResults, setShowResults] = React.useState(false);
+  const [tempTypes, setTempTypes] = React.useState(new Set());
+  const [tempLocation, setTempLocation] = React.useState(null);
+  const [tempPartnerRoles, setTempPartnerRoles] = React.useState(new Set());
+  const [tempFromDate, setTempFromDate] = React.useState("");
+  const [tempToDate, setTempToDate] = React.useState("");
+
+  const [dateFrom, setDateFrom] = React.useState(null);
+  const [dateTo, setDateTo] = React.useState(null);
+
+  const toggleTempType = (type) => {
+    const next = new Set(tempTypes);
+    if (next.has(type)) next.delete(type);
+    else next.add(type);
+    setTempTypes(next);
+  };
+
+  const toggleTempPartnerRole = (roleId) => {
+    const next = new Set(tempPartnerRoles);
+    if (next.has(roleId)) next.delete(roleId);
+    else next.add(roleId);
+    setTempPartnerRoles(next);
+  };
+
+  // Whether the date selectors should be shown (only for events or classes)
+  const dateSelectorVisible = tempTypes && (tempTypes.has("event") || tempTypes.has("class"));
+
   // Filter out old events
   const filteredEvents = (events || []).filter((event) => {
-    return (
-      new Date(event.start_time) >= new Date() ||
-      new Date(event.end_time) >= new Date()
-    );
+    const now = new Date();
+    const start = new Date(event.start_time);
+    const end = new Date(event.end_time);
+    // remove events that are fully in the past
+    if (end < now && start < now) return false;
+    // apply date range filters if present
+    if (dateFrom && end < dateFrom) return false;
+    if (dateTo && start > dateTo) return false;
+    return true;
   });
 
   // Filter out old classes (separate endpoint returns classes)
   const filteredClasses = (classes || []).filter((ev) => {
-    return (
-      new Date(ev.start_time) >= new Date() ||
-      new Date(ev.end_time) >= new Date()
-    );
+    const now = new Date();
+    const start = new Date(ev.start_time);
+    const end = new Date(ev.end_time);
+    if (end < now && start < now) return false;
+    if (dateFrom && end < dateFrom) return false;
+    if (dateTo && start > dateTo) return false;
+    return true;
   });
 
   // Merge news and events with a type indicator
@@ -286,95 +324,226 @@ const Search = ({ layout = "default", items = 99999 }) => {
     })
     .slice(0, items);
 
-  const setLocation = (location) => {
+  const applyLocation = (location) => {
     setNewsLocation(location);
     setEventLocation(location);
     setPartnerLocation(location);
   };
 
+  const submitInitialSearch = () => {
+    // require at least one category selected before showing results
+    if (!tempTypes || tempTypes.size === 0) return;
+    // apply the temp selection to the main filters
+    setSelectedTypes(new Set(tempTypes));
+    if (tempLocation) applyLocation(tempLocation);
+    else if (defaultLocation) applyLocation(defaultLocation);
+    // map temp partner role keys (26,28,30) into selectedRoles
+    if (tempPartnerRoles && tempPartnerRoles.size > 0) {
+      setSelectedRoles(Array.from(tempPartnerRoles));
+    }
+
+    // Set date filters if provided
+    if (tempFromDate) setDateFrom(new Date(tempFromDate));
+    else setDateFrom(null);
+    if (tempToDate) setDateTo(new Date(tempToDate));
+    else setDateTo(null);
+
+    setShowResults(true);
+  };
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+
   return (
     <Tracker itemtype="news" id={"page"}>
       <div className="news">
-        <Row className="mb-3 align-items-center">
-          <Col xs={8} sm={10} md={11} className="my-2">
-            <LocationSearch onSelected={setLocation} />
-          </Col>
-          <Col xs={4} sm={2} md={1} className="text-right">
-            <Button
-              variant="outline-primary"
-              onClick={() => setShowFilterModal(true)}
-              title="Filters"
-              style={{ float: "right" }}
-            >
-              <Filter />
-            </Button>
-          </Col>
-        </Row>
+        {!showResults ? (
+          <Card className="p-3 mb-3">
+            <h4>{t("Search")}</h4>
+            <Row className="mb-2">
+              <Col>
+                <LocationSearch onSelected={setTempLocation} />
+              </Col>
+            </Row>
 
-        <SearchFilterModal
-          show={showFilterModal}
-          onHide={() => setShowFilterModal(false)}
-          selectedTypes={selectedTypes}
-          toggleType={toggleType}
-          selectedRoles={selectedRoles}
-          toggleRole={toggleRole}
-          clearFilters={() => {
-            setSelectedTypes(new Set());
-            setSelectedRoles([]);
-          }}
-        />
-        <TilesLayout>
-          {sortedItems.map((item, index) => {
-            const distance =
-              item.distance !== undefined && item.distance !== null
-                ? `${item.distance.toFixed(1)}km`
-                : "Unknown distance";
-
-            switch (item.itemType) {
-              case "event":
-                return (
-                  <Tile key={item.id}>
-                    <EventItem item={item} onClick={handleEventClick} />
-                    <div className="text-muted small mb-3">
-                      This Event is {distance} from you
-                    </div>
-                  </Tile>
-                );
-              case "class":
-                return (
-                  <Tile key={"class-" + item.id}>
-                    <EventItem item={item} onClick={handleEventClick} />
-                    <div className="text-muted small mb-3">
-                      This Class is {distance} from you
-                    </div>
-                  </Tile>
-                );
-              case "partner":
-                return (
-                  <Tile key={item.user_id + "-" + index}>
-                    <Partner item={item} index={index} />
-                    <div className="text-muted small mb-3">
-                      This Partner is {distance} from you
-                    </div>
-                  </Tile>
-                );
-              default:
-                return (
-                  <Tile key={item.id}>
-                    <SearchDisplay
-                      item={item}
-                      layout={layout}
-                      onClick={handleItemClick}
+            <Row className="mb-2">
+              <Col>
+                <Form.Group>
+                  {["news", "event", "class"].map((type) => (
+                    <Form.Check
+                      inline
+                      key={`type-${type}`}
+                      id={`type-${type}`}
+                      type="checkbox"
+                      label={type.charAt(0).toUpperCase() + type.slice(1)}
+                      checked={tempTypes.has(type)}
+                      onChange={() => toggleTempType(type)}
+                      className="mr-3"
                     />
-                    <div className="text-muted small mb-3">
-                      This {item.globalNews ? "GLOBAL News" : "News"} is{" "}
-                      {distance} from you
-                    </div>
-                  </Tile>
-                );
-            }
-          })}
-        </TilesLayout>
+                  ))}
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Form.Group className="mb-2">
+              <Form.Label><strong>Partner Roles:</strong></Form.Label>
+              <div>
+                <Form.Check
+                  inline
+                  id="role-26"
+                  type="checkbox"
+                  label="Teacher"
+                  checked={tempPartnerRoles.has(26)}
+                  onChange={() => toggleTempPartnerRole(26)}
+                  className="mr-3"
+                />
+                <Form.Check
+                  inline
+                  id="role-28"
+                  type="checkbox"
+                  label="Venue"
+                  checked={tempPartnerRoles.has(28)}
+                  onChange={() => toggleTempPartnerRole(28)}
+                  className="mr-3"
+                />
+                <Form.Check
+                  inline
+                  id="role-30"
+                  type="checkbox"
+                  label="Supplier"
+                  checked={tempPartnerRoles.has(30)}
+                  onChange={() => toggleTempPartnerRole(30)}
+                />
+              </div>
+            </Form.Group>
+
+            
+
+            {dateSelectorVisible && (
+              <Row className="mb-2">
+                <Form.Group as={Col} xs={12} sm={6} controlId="search-from">
+                  <Form.Label>From</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={tempFromDate}
+                    min={todayStr}
+                    onChange={(e) => setTempFromDate(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group as={Col} xs={12} sm={6} controlId="search-to">
+                  <Form.Label>To</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={tempToDate}
+                    min={tempFromDate || todayStr}
+                    onChange={(e) => setTempToDate(e.target.value)}
+                  />
+                </Form.Group>
+              </Row>
+            )}
+
+            <Row>
+              <Col>
+                <Button
+                  onClick={submitInitialSearch}
+                  disabled={
+                    !tempTypes ||
+                    tempTypes.size === 0 ||
+                    (dateSelectorVisible && tempFromDate && new Date(tempFromDate) < new Date(todayStr))
+                  }
+                >
+                  {t("Search")}
+                </Button>
+              </Col>
+            </Row>
+          </Card>
+        ) : (
+          <>
+            <Row className="mb-3 align-items-center">
+              <Col xs={8} sm={10} md={11} className="my-2">
+                <LocationSearch onSelected={applyLocation} />
+              </Col>
+              <Col xs={4} sm={2} md={1} className="text-right">
+                <Button
+                  variant="outline-primary"
+                  onClick={() => setShowFilterModal(true)}
+                  title="Filters"
+                  style={{ float: "right" }}
+                >
+                  <Filter />
+                </Button>
+              </Col>
+            </Row>
+
+            
+
+            <SearchFilterModal
+              show={showFilterModal}
+              onHide={() => setShowFilterModal(false)}
+              selectedTypes={selectedTypes}
+              toggleType={toggleType}
+              selectedRoles={selectedRoles}
+              toggleRole={toggleRole}
+              clearFilters={() => {
+                setSelectedTypes(new Set());
+                setSelectedRoles([]);
+              }}
+            />
+
+            <TilesLayout>
+              {sortedItems.map((item, index) => {
+                const distance =
+                  item.distance !== undefined && item.distance !== null
+                    ? `${item.distance.toFixed(1)}km`
+                    : "Unknown distance";
+
+                switch (item.itemType) {
+                  case "event":
+                    return (
+                      <Tile key={item.id}>
+                        <EventItem item={item} onClick={handleEventClick} />
+                        <div className="text-muted small mb-3">
+                          This Event is {distance} from you
+                        </div>
+                      </Tile>
+                    );
+                  case "class":
+                    return (
+                      <Tile key={"class-" + item.id}>
+                        <EventItem item={item} onClick={handleEventClick} />
+                        <div className="text-muted small mb-3">
+                          This Class is {distance} from you
+                        </div>
+                      </Tile>
+                    );
+                  case "partner":
+                    return (
+                      <Tile key={item.user_id + "-" + index}>
+                        <Partner item={item} index={index} />
+                        <div className="text-muted small mb-3">
+                          This Partner is {distance} from you
+                        </div>
+                      </Tile>
+                    );
+                  default:
+                    return (
+                      <Tile key={item.id}>
+                        <SearchDisplay
+                          item={item}
+                          layout={layout}
+                          onClick={handleItemClick}
+                        />
+                        <div className="text-muted small mb-3">
+                          This {item.globalNews ? "GLOBAL News" : "News"} is{" "}
+                          {distance} from you
+                        </div>
+                      </Tile>
+                    );
+                }
+              })}
+            </TilesLayout>
+          </>
+        )}
       </div>
     </Tracker>
   );
