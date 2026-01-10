@@ -325,6 +325,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
     .slice(0, items);
 
   const applyLocation = (location) => {
+    console.log("YYYY Applying location to all contexts:", location);
     setNewsLocation(location);
     setEventLocation(location);
     setPartnerLocation(location);
@@ -332,7 +333,8 @@ const Search = ({ layout = "default", items = 99999 }) => {
 
   const submitInitialSearch = () => {
     // require at least one category selected before showing results
-    if (!tempTypes || tempTypes.size === 0) return;
+    // allow search if either types or partner roles are selected
+    if ((!tempTypes || tempTypes.size === 0) && (!tempPartnerRoles || tempPartnerRoles.size === 0)) return;
     // apply the temp selection to the main filters
     setSelectedTypes(new Set(tempTypes));
     if (tempLocation) applyLocation(tempLocation);
@@ -447,8 +449,8 @@ const Search = ({ layout = "default", items = 99999 }) => {
                 <Button
                   onClick={submitInitialSearch}
                   disabled={
-                    !tempTypes ||
-                    tempTypes.size === 0 ||
+                    // disabled unless a type or a partner role is selected
+                    ((!tempTypes || tempTypes.size === 0) && (!tempPartnerRoles || tempPartnerRoles.size === 0)) ||
                     (dateSelectorVisible && tempFromDate && new Date(tempFromDate) < new Date(todayStr))
                   }
                 >

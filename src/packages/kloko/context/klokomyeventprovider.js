@@ -80,12 +80,17 @@ export const KlokoMyEventProvider = ({
 
   const fetchEvents = async () => {
     const body = {};
-    if (location && location.lat && location.lng) {
-      body.lat = location.lat;
-      body.lng = location.lng;
+    console.log("Fetching events with location:", location);
+    if (location) {
+      if (location.lat) body.lat = location.lat;
+      // support both 'lng' and 'lon' property names
+      if (location.lng) body.lng = location.lng;
+      else if (location.lon) body.lng = location.lon;
     }
+    body.distance = 50000;
     try {
       setLoading(true);
+      console.log("YYYY Fetching events with location:", location);
       const response = await fetch(
         combineUrlAndPath(process.env.REACT_APP_KLOKO_API, `api.php/events`),
         {
@@ -105,12 +110,16 @@ export const KlokoMyEventProvider = ({
 
   const fetchClasses = async () => {
     const body = {};
-    if (location && location.lat && location.lng) {
-      body.lat = location.lat;
-      body.lng = location.lng;
+    if (location) {
+      if (location.lat) body.lat = location.lat;
+      // support both 'lng' and 'lon' property names
+      if (location.lng) body.lng = location.lng;
+      else if (location.lon) body.lng = location.lon;
     }
+    body.distance = 50000;
     // Request classes via the events endpoint
     body.classes = 1;
+    console.log("YYYY Fetching classes with location:", location);
     try {
       setLoading(true);
       const response = await fetch(
@@ -139,6 +148,7 @@ export const KlokoMyEventProvider = ({
   }, [canFetch]);
 
   useEffect(() => {
+    console.log("YYYY Location changed:", location);
     if (user) {
       fetchMyEvents(user);
       fetchEvents();
