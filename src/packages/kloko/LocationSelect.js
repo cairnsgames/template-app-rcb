@@ -19,6 +19,10 @@ const LocationSelect = ({ onChange, ...props }) => {
     lng: '',
   });
 
+  useEffect(() => {
+    console.log("CCCC Setting location details", details)
+  }, [details]);
+
   const handleAddLocation = async () => {
     await createUserLocation(details);
     setShowModal(false);

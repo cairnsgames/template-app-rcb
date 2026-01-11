@@ -10,11 +10,22 @@
     padding: 0.5rem;
     background-color: white;
     // border: 1px solid grey;
-    z-index: 450;
+    z-index: 2000;
 
     .places {
         overflow-y: auto;
         max-height: 70%; 
         padding-bottom: 1rem;
     }
+}
+
+/* Ensure the search panel is interactive when rendered inside the Leaflet map
+     (Leaflet may add .leaflet-grab / pointer styles to the map container). */
+.mapsearch {
+    cursor: auto; /* override leaflet grab cursor */
+    pointer-events: auto; /* ensure clicks reach controls inside the panel */
+}
+
+.mapsearch .btn-close {
+    cursor: pointer; /* make the close button show pointer on hover */
 }

@@ -3,22 +3,34 @@ import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 import SelectLocationModal from "../gps/selectlocationmodal";
 
 const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
+
   const selectLocation = (latlng) => {
-    setDetails({ ...details, lat: latlng[0], lng: latlng[1] });
-  }
+    console.log("CCCC Setting location from map selection:", latlng);
+    setDetails({ ...details, lat: latlng.lat, lng: latlng.lng });
+  };
 
   const setAddress = (address) => {
     const newDetails = {
       ...details,
+      lat: address.lat,
+      lng: address.lng,
       address_line1: address.street,
       town: address.city || address.town || address.village,
       country: address.country,
     };
     setDetails(newDetails);
-  }
+  };
 
-  const hasLat = details && details.lat !== undefined && details.lat !== null && String(details.lat).trim() !== '';
-  const hasLng = details && details.lng !== undefined && details.lng !== null && String(details.lng).trim() !== '';
+  const hasLat =
+    details &&
+    details.lat !== undefined &&
+    details.lat !== null &&
+    String(details.lat).trim() !== "";
+  const hasLng =
+    details &&
+    details.lng !== undefined &&
+    details.lng !== null &&
+    String(details.lng).trim() !== "";
   const canSave = Boolean(hasLat && hasLng);
 
   return (
@@ -39,6 +51,32 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
               }
             />
           </Form.Group>
+
+          <InputGroup className="my-3">
+            <InputGroup.Text>Location</InputGroup.Text>
+            <Form.Control
+              type="text"
+              placeholder="lat"
+              value={details.lat}
+              onChange={(ev) =>
+                setDetails({ ...details, lat: ev.target.value })
+              }
+            />
+            <Form.Control
+              type="text"
+              placeholder="lng"
+              value={details.lng}
+              onChange={(ev) =>
+                setDetails({ ...details, lng: ev.target.value })
+              }
+            />
+
+            <SelectLocationModal
+              onSelectLocation={selectLocation}
+              onSelectAddress={setAddress}
+            />
+          </InputGroup>
+
           <Form.Group controlId="formAddressLine1">
             <Form.Label>Address Line 1</Form.Label>
             <Form.Control
@@ -72,27 +110,6 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
               }
             />
           </Form.Group>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>Location</InputGroup.Text>
-            <Form.Control
-              type="text"
-              placeholder="lat"
-              value={details.lat}
-              onChange={(ev) =>
-                setDetails({ ...details, lat: ev.target.value })
-              }
-            />
-            <Form.Control
-              type="text"
-              placeholder="lng"
-              value={details.lng}
-              onChange={(ev) =>
-                setDetails({ ...details, lng: ev.target.value })
-              }
-            />
-
-            <SelectLocationModal onSelectLocation={selectLocation} onSelectAddress={setAddress} />
-          </InputGroup>
         </Form>
       </Modal.Body>
       <Modal.Footer>

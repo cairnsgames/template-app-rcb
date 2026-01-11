@@ -43,7 +43,7 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }
   const markers = marker ? [marker] : [];
 
   const selectMapLocation = (e) => {
-    console.log("AAAA ============ Map location selected:", e);
+    console.log("CCCC ============ Map location selected:", e);
     const latlng = e.latlng || e;
     setPosition([latlng.lat.toFixed(3), latlng.lng.toFixed(3)]);
     const newMarker = {
@@ -55,10 +55,11 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }
       subcategory: [],
       color: "blue",
     }
-    console.log("AAAA Setting new marker:", newMarker);
+    console.log("CCCC Setting new marker:", newMarker);
     setMarker(newMarker);
     setPosition([latlng.lat, latlng.lng]);
     setCenter([latlng.lat, latlng.lng]);
+    onSelectLocation(latlng);
   };
 
   useEffect(() => {
@@ -127,29 +128,10 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }
 
   const setSelectedAddress = (address) => {
     if (onSelectAddress) {
-      // Transform the selected address into { lat, lng, name } format
-      const lat = (address && (address.lat !== undefined && address.lat !== null))
-        ? Number(address.lat)
-        : marker
-        ? marker.lat
-        : Array.isArray(position)
-        ? Number(position[0])
-        : (position && position.lat)
-        ? Number(position.lat)
-        : JOHANNESBURG_CBD.lat;
-
-      const lng = (address && (address.lng !== undefined && address.lng !== null))
-        ? Number(address.lng)
-        : marker
-        ? marker.lng
-        : Array.isArray(position)
-        ? Number(position[1])
-        : (position && position.lng)
-        ? Number(position.lng)
-        : JOHANNESBURG_CBD.lng;
+      console.log("CCCC Selected address:", address);
 
       const name = address?.fullAddress || address?.display_name || `${address?.street || ""} ${address?.city || address?.town || address?.village || ""}`.trim();
-      onSelectAddress({ lat, lng, name });
+      onSelectAddress({ lat: position.lat, lng: position.lng, name, ...address });
     }
   };
 
@@ -177,7 +159,7 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }
           <MapDisplay
             offsetTop="0px"
             markers={markers}
-            defaultStart={defaultStart || { lat: JOHANNESBURG_CBD.lat, lng: JOHANNESBURG_CBD.lng }}
+            defaultStart={defaultStart}
             onClick={selectMapLocation}
             onAddressSelected={setSelectedAddress}
             isModal={true}

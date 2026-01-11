@@ -26,13 +26,10 @@ function ChangeView({ center, zoom }) {
 
 const MapControls = (props) => {
   console.log("AAAA MapDisplay: MapControls rendered with props:", props);
-  const [isSecondColBelow, setIsSecondColBelow] = useState(false);
   const [isMapSearchVisible, setIsMapSearchVisible] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
-  const [firstLoad, setFirstLoad] = useState(true);
 
   const isModal = props.isModal ?? false;
-  const { searchMapArea } = useMapContext();
   const map = useMap();
 
   const { getPosition } = useGeoLocation();
@@ -47,11 +44,18 @@ const MapControls = (props) => {
       }
     });
   };
+  const gotoNewLocation = (lat, lng) => {
+    map.flyTo([lat, lng], 15);
+  };
 
   return (
-    <div style={{ position: "relative", zIndex: "1100" }}>
+    <div
+      style={{ position: "relative", zIndex: "1100" }}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div
         className="mapwrapper"
+        onClick={(e) => e.stopPropagation()}
         style={{
           position: "relative",
           left: "80px",
@@ -88,7 +92,12 @@ const MapControls = (props) => {
       {!isModal && (
         <>
           {isMapSearchVisible && (
-            <MapSearch onClose={() => setIsMapSearchVisible(false)} />
+            <MapSearch
+              onClose={() => {
+                setIsMapSearchVisible(false);
+              }}
+              gotoLocation={gotoNewLocation}
+            />
           )}
           {showFilter && (
             <MapFilterModal
@@ -98,7 +107,9 @@ const MapControls = (props) => {
           )}
         </>
       )}
-      {isModal && isMapSearchVisible && <MapSearch />}
+      {isModal && isMapSearchVisible && (
+        <MapSearch gotoLocation={gotoNewLocation} />
+      )}
     </div>
   );
 };
@@ -135,7 +146,10 @@ const MapDisplay = (props) => {
       const lat = start.lat ?? start.latitude ?? start[0];
       const lng = start.lng ?? start.lon ?? start.longitude ?? start[1];
       if (lat !== undefined && lng !== undefined) {
-        console.log("AAAA MapDisplay: Normalized defaultStart:", [Number(lat), Number(lng)]);
+        console.log("AAAA MapDisplay: Normalized defaultStart:", [
+          Number(lat),
+          Number(lng),
+        ]);
         return [Number(lat), Number(lng)];
       }
     }
@@ -179,7 +193,7 @@ const MapDisplay = (props) => {
         }
       );
     }
-  // Re-run if startAtMyLocation, defaultStart or zoom changes
+    // Re-run if startAtMyLocation, defaultStart or zoom changes
   }, [props.startAtMyLocation, defaultStart, zoom]);
 
   const handleMapLoad = () => {
@@ -195,8 +209,40 @@ const MapDisplay = (props) => {
     }
   };
 
+  // When the shared context `center` changes (for example via LocationSearch),
+  // update the map view so the map follows the new center.
+  useEffect(() => {
+    if (!mapRef.current) return;
+    if (!center || !Array.isArray(center) || center.length < 2) return;
+    const lat = Number(center[0]);
+    const lng = Number(center[1]);
+    if (Number.isFinite(lat) && Number.isFinite(lng)) {
+      try {
+        mapRef.current.flyTo([lat, lng], zoom);
+      } catch (err) {
+        console.warn("Unable to fly to new center:", err);
+      }
+    }
+  }, [center, zoom]);
+
   const mapClick = async (e) => {
-    // console.log("Map clicked event triggered", e); // Debugging log
+    // Ignore clicks that originate from our map controls/overlays so
+    // child components don't trigger the underlying Leaflet map click.
+    // Leaflet MouseEvent exposes the original browser event as `originalEvent`.
+    const origEvent = e?.originalEvent || e?.sourceEvent || null;
+    const target = origEvent && (origEvent.target || origEvent.srcElement);
+    const isInsideControl =
+      target &&
+      typeof target.closest === "function" &&
+      (target.closest(".mapwrapper") ||
+        target.closest("[data-ignore-map-click]") ||
+        target.closest(".map-control"));
+
+    if (isInsideControl) {
+      console.log("AAAA MapDisplay: click was inside a control — ignoring map click");
+      return;
+    }
+
     console.log("AAAA MapDisplay: mapClick event with:", e);
     if (props.onClick) {
       console.log("AAAA MapDisplay: Calling onClick with:", e.latlng);
@@ -282,9 +328,7 @@ const MapDisplay = (props) => {
             mapClick(e);
           }}
         />
-        {normalizedDefault && (
-          <Marker position={normalizedDefault} />
-        )}
+        {normalizedDefault && <Marker position={normalizedDefault} />}
         <Markers markers={props.markers ?? markers} />
       </MapContainer>
       {mustSelect && (
