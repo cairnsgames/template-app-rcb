@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocations } from './context/uselocations';
+import { useLocations } from '../../packages/kloko/context/uselocations';
 import { Button, InputGroup, Form } from 'react-bootstrap';
 import { Plus } from 'react-bootstrap-icons';
 import LocationSelectModal from './LocationSelectModal';

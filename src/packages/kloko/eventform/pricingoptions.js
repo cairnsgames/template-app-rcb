@@ -23,11 +23,12 @@ const PricingOptions = ({
   return (
     <div className="border p-2 my-3">
       <h3>{t('pricingOptions.title')}</h3>
+      PRICING OPTIONS {hasTicketTypes ?? "X"} {hasTicketOptions ?? "Y"}
       <Form.Group controlId="hasTicketTypes">
         <InputGroup>
           <Form.Check
             type="checkbox"
-            enabled={hasTicketTypes === "different" ? true : false}
+            enabled={hasTicketTypes === "different" ? "true" : "false"}
             label={t('pricingOptions.withAdditionalOptions')}
             className="ms-3"
             value="options"
@@ -42,7 +43,7 @@ const PricingOptions = ({
         </InputGroup>
       </Form.Group>
 
-      {hasTicketTypes === "fixed" && (
+      {(hasTicketTypes === "fixed" || hasTicketTypes === "no")&& (
         <Form.Group controlId="price">
           <InputGroup>
             <InputGroup.Text>{t('pricingOptions.price')}</InputGroup.Text>
@@ -66,7 +67,7 @@ const PricingOptions = ({
         </Form.Group>
       )}
 
-      {hasTicketTypes === "different" && (
+      {(!hasTicketTypes || hasTicketTypes === "different") && (
         <TicketLines
           header={t('pricingOptions.typesOfTickets')}
           lines={tickets}

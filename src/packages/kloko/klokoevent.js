@@ -226,7 +226,6 @@ const KlokoEventEditor = ({ id, onClose }) => {
   return (
     <Div className="packagesKlokoEvent">
       <Form onSubmit={handleSubmit}>
-
         <EventDetails
           title={title}
           setTitle={setTitle}

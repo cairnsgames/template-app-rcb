@@ -4,6 +4,7 @@ import { Search } from "react-bootstrap-icons";
 import { useDebounce } from "../../hooks/usedebounce";
 import "./mapsearch.scss";
 import useMapContext from "./context/usemapcontext";
+import LocationSearch from "../../external/LocationSearch";
 
 export function MapSearch(props) {
   function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -75,6 +76,11 @@ export function MapSearch(props) {
     getSuburbs("Johannesburg");
   }, []);
 
+  const selectSuburb = (place) => {
+    console.log("BBBB Selected place:", place);
+    setCenter([place.lat, place.lon]);
+  }
+
   return (
     <div className="mapsearch">
       <div style={{ width: "100%", display: "block" }}>
@@ -82,7 +88,9 @@ export function MapSearch(props) {
           style={{ float: "right", marginTop: "0.5rem" }}
           onClick={() => props.onClose(false)}
         />
-        <InputGroup
+        
+      <LocationSearch onSelected={selectSuburb}/>
+        {/* <InputGroup
           className="mb-3 me-5"
           style={{ width: "calc(100% - 55px)" }}
         >
@@ -95,9 +103,9 @@ export function MapSearch(props) {
           <InputGroup.Text>
             <Search />
           </InputGroup.Text>
-        </InputGroup>
+        </InputGroup> */}
       </div>
-      <div style={{ width: "100%", overflowY: "auto", height: "90%" }}>
+      {/* <div style={{ width: "100%", overflowY: "auto", height: "90%" }}>
         <div className="places">
           {places?.map((place) => (
             <div
@@ -112,7 +120,7 @@ export function MapSearch(props) {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

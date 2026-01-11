@@ -32,7 +32,7 @@ const TicketLines = ({ header, lines, setLines, FormText }) => {
           </tr>
         </thead>
         <tbody>
-          {lines.map((line, index) => (
+          {lines && lines.map((line, index) => (
             <tr key={index}>
               <td>
                 <Form.Control

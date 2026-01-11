@@ -16,6 +16,7 @@ const DateAndDuration = ({
 
   return (
     <div className="border p-2 my-3">
+      {durationType ?? "X"} {startTime}, {duration}, {endTime}
       <h3>{t('dateAndDuration.title')}</h3>
       <Form.Group controlId="duration">
         <Form.Group controlId="durationType">
@@ -27,7 +28,7 @@ const DateAndDuration = ({
               name="durationType"
               className="ms-3"
               value="duration"
-              checked={durationType === "duration"}
+              checked={durationType === "duration" || !durationType}
               onChange={() => setDurationType("duration")}
             />
             <Form.Check
@@ -60,7 +61,7 @@ const DateAndDuration = ({
           </InputGroup>
         </Form.Group>
 
-        {durationType === "duration" && (
+        {(!durationType || durationType === "duration") && (
           <>
             <Form.Group controlId="startTime">
               <Form.Label>{t('dateAndDuration.startTime')}</Form.Label>

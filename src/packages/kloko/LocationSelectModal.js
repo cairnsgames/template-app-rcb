@@ -17,6 +17,10 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
     setDetails(newDetails);
   }
 
+  const hasLat = details && details.lat !== undefined && details.lat !== null && String(details.lat).trim() !== '';
+  const hasLng = details && details.lng !== undefined && details.lng !== null && String(details.lng).trim() !== '';
+  const canSave = Boolean(hasLat && hasLng);
+
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -95,7 +99,7 @@ const LocationSelectModal = ({ show, onHide, onSave, details, setDetails }) => {
         <Button variant="secondary" onClick={onHide}>
           Close
         </Button>
-        <Button variant="primary" onClick={onSave}>
+        <Button variant="primary" onClick={onSave} disabled={!canSave}>
           Save Changes
         </Button>
       </Modal.Footer>

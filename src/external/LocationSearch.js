@@ -1,205 +1,56 @@
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
+import { eventTupleToStore } from "@fullcalendar/core/internal";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
-// node_modules/classnames/index.js
-var require_classnames = __commonJS({
-  "node_modules/classnames/index.js"(exports, module) {
-    (function() {
-      "use strict";
-      var hasOwn = {}.hasOwnProperty;
-      function classNames2() {
-        var classes = "";
-        for (var i = 0; i < arguments.length; i++) {
-          var arg = arguments[i];
-          if (arg) {
-            classes = appendClass(classes, parseValue(arg));
-          }
-        }
-        return classes;
-      }
-      function parseValue(arg) {
-        if (typeof arg === "string" || typeof arg === "number") {
-          return arg;
-        }
-        if (typeof arg !== "object") {
-          return "";
-        }
-        if (Array.isArray(arg)) {
-          return classNames2.apply(null, arg);
-        }
-        if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes("[native code]")) {
-          return arg.toString();
-        }
-        var classes = "";
-        for (var key in arg) {
-          if (hasOwn.call(arg, key) && arg[key]) {
-            classes = appendClass(classes, key);
-          }
-        }
-        return classes;
-      }
-      function appendClass(value, newClass) {
-        if (!newClass) {
-          return value;
-        }
-        if (value) {
-          return value + " " + newClass;
-        }
-        return value + newClass;
-      }
-      if (typeof module !== "undefined" && module.exports) {
-        classNames2.default = classNames2;
-        module.exports = classNames2;
-      } else if (typeof define === "function" && typeof define.amd === "object" && define.amd) {
-        define("classnames", [], function() {
-          return classNames2;
-        });
-      } else {
-        window.classNames = classNames2;
-      }
-    })();
-  }
-});
+const DEBOUNCE_DELAY = 500;
 
-// src/components/LocationSearch.tsx
-import {
-  useState,
-  useEffect,
-  useRef,
-  useCallback
-} from "react";
-
-// node_modules/react-bootstrap/esm/ThemeProvider.js
-import * as React from "react";
-import { useContext, useMemo } from "react";
-import { jsx as _jsx } from "react/jsx-runtime";
-var DEFAULT_BREAKPOINTS = ["xxl", "xl", "lg", "md", "sm", "xs"];
-var DEFAULT_MIN_BREAKPOINT = "xs";
-var ThemeContext = /* @__PURE__ */ React.createContext({
-  prefixes: {},
-  breakpoints: DEFAULT_BREAKPOINTS,
-  minBreakpoint: DEFAULT_MIN_BREAKPOINT
-});
-var {
-  Consumer,
-  Provider
-} = ThemeContext;
-function useBootstrapPrefix(prefix, defaultPrefix) {
-  const {
-    prefixes
-  } = useContext(ThemeContext);
-  return prefix || prefixes[defaultPrefix] || defaultPrefix;
+function SearchIcon({ className }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={className} viewBox="0 0 16 16">
+      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+    </svg>
+  );
 }
 
-// node_modules/react-bootstrap/esm/Spinner.js
-var import_classnames = __toESM(require_classnames());
-import * as React2 from "react";
-import { jsx as _jsx2 } from "react/jsx-runtime";
-var Spinner = /* @__PURE__ */ React2.forwardRef(({
-  bsPrefix,
-  variant,
-  animation = "border",
-  size,
-  // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
-  as: Component = "div",
-  className,
-  ...props
-}, ref) => {
-  bsPrefix = useBootstrapPrefix(bsPrefix, "spinner");
-  const bsSpinnerPrefix = `${bsPrefix}-${animation}`;
-  return /* @__PURE__ */ _jsx2(Component, {
-    ref,
-    ...props,
-    className: (0, import_classnames.default)(className, bsSpinnerPrefix, size && `${bsSpinnerPrefix}-${size}`, variant && `text-${variant}`)
-  });
-});
-Spinner.displayName = "Spinner";
-var Spinner_default = Spinner;
+function MapPinIcon({ className }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={className} viewBox="0 0 16 16">
+      <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
+      <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+    </svg>
+  );
+}
 
-// src/components/LocationSearch.tsx
-import { jsx, jsxs } from "react/jsx-runtime";
-var DEBOUNCE_DELAY = 500;
-var USER_AGENT = "LocationSearch/1.0 (cairnswm@gmail.com)";
-var SearchIcon = ({ className }) => /* @__PURE__ */ jsx(
-  "svg",
-  {
-    xmlns: "http://www.w3.org/2000/svg",
-    width: "16",
-    height: "16",
-    fill: "currentColor",
-    className,
-    viewBox: "0 0 16 16",
-    children: /* @__PURE__ */ jsx("path", { d: "M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" })
-  }
-);
-var MapPinIcon = ({ className }) => /* @__PURE__ */ jsxs(
-  "svg",
-  {
-    xmlns: "http://www.w3.org/2000/svg",
-    width: "16",
-    height: "16",
-    fill: "currentColor",
-    className,
-    viewBox: "0 0 16 16",
-    children: [
-      /* @__PURE__ */ jsx("path", { d: "M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" }),
-      /* @__PURE__ */ jsx("path", { d: "M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" })
-    ]
-  }
-);
-var NavigationIcon = ({ className }) => /* @__PURE__ */ jsxs(
-  "svg",
-  {
-    xmlns: "http://www.w3.org/2000/svg",
-    width: "16",
-    height: "16",
-    fill: "currentColor",
-    className,
-    viewBox: "0 0 16 16",
-    children: [
-      /* @__PURE__ */ jsx("path", { d: "m7.665 6.982-.8 1.386a.25.25 0 0 1-.451-.039l-1.06-2.882a.25.25 0 0 1 .192-.333l3.026-.523a.25.25 0 0 1 .26.371l-.667 1.154.621.373A2.5 2.5 0 0 1 10 8.632V11H9V8.632a1.5 1.5 0 0 0-.728-1.286z" }),
-      /* @__PURE__ */ jsx(
-        "path",
-        {
-          fillRule: "evenodd",
-          d: "M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134Z"
-        }
-      )
-    ]
-  }
-);
-function LocationSearch({
+function NavigationIcon({ className }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={className} viewBox="0 0 16 16">
+      <path d="m7.665 6.982-.8 1.386a.25.25 0 0 1-.451-.039l-1.06-2.882a.25.25 0 0 1 .192-.333l3.026-.523a.25.25 0 0 1 .26.371l-.667 1.154.621.373A2.5 2.5 0 0 1 10 8.632V11H9V8.632a1.5 1.5 0 0 0-.728-1.286z" />
+      <path fillRule="evenodd" d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134Z" />
+    </svg>
+  );
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371; // km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+const LocationSearch =({
   value,
   onSelected,
   lat,
   lng,
   className,
   style,
-  debounceDelay = DEBOUNCE_DELAY
-} = {}) {
+  debounceDelay = DEBOUNCE_DELAY,
+} = {}) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -207,35 +58,33 @@ function LocationSearch({
   const [searching, setSearching] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
+
   const hasTypedRef = useRef(false);
   const debounceTimer = useRef(null);
-  const searchContainerRef = useRef(null);
+  const containerRef = useRef(null);
 
-  console.log("Location Value", value);
   useEffect(() => {
     if (value && typeof value === "object") {
-      const addr = value.address;
-      const searchText = addr?.suburb || addr?.hamlet || addr?.village || addr?.town || addr?.city || "";
+      const addr = value.address || {};
+      const searchText = addr.suburb || addr.hamlet || addr.village || addr.town || addr.city || "";
       if (searchText) {
         setQuery(searchText);
         setSelectedLocation(value);
       }
     }
   }, [value]);
+
   useEffect(() => {
     let cancelled = false;
-    if (navigator.geolocation) {
+    if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           if (cancelled) return;
-          setUserLocation({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude
-          });
+          setUserLocation({ lat: position.coords.latitude, lon: position.coords.longitude });
         },
-        (error) => {
+        (err) => {
           if (cancelled) return;
-          console.log("Geolocation not available or denied:", error);
+          // fallback to provided lat/lng
           if (typeof lat === "number" && typeof lng === "number") {
             setUserLocation({ lat, lon: lng });
           }
@@ -248,97 +97,68 @@ function LocationSearch({
       cancelled = true;
     };
   }, [lat, lng]);
+
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
         setShowResults(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  };
+
   const processResults = useCallback(
     (data, searchLower) => {
       const processed = [];
-      const allowedTypes = [
-        "city",
-        "town",
-        "suburb",
-        "village",
-        "hamlet",
-        "administrative"
-      ];
+      const allowedTypes = ["city", "town", "suburb", "village", "hamlet", "administrative"];
       const normalizeParent = (val) => {
-        if (!val) return void 0;
+        if (!val) return undefined;
         const lower = val.toLowerCase();
-        if (lower.includes("ward") || lower.includes("municipality") || lower.includes("metropolitan"))
-          return void 0;
+        if (lower.includes("ward") || lower.includes("municipality") || lower.includes("metropolitan")) return undefined;
         return val;
       };
+
       for (const item of data) {
         const { address } = item;
+        if (!address || !address.country) continue;
         if (item.class === "highway" || item.class === "road") continue;
         if (!allowedTypes.includes(item.type)) continue;
-        if (!address || !address.country) continue;
+
         const suburb = address.suburb;
         const city = address.city || address.town || address.village;
         const town = address.town;
         const village = address.village;
         const hamlet = address.hamlet;
-        const getAddr = (k) => address[k];
-        const county = getAddr("county");
-        const state = getAddr("state");
+
         const matchesQuery = (field) => field && field.toLowerCase().includes(searchLower);
-        if (!(matchesQuery(suburb) || matchesQuery(city) || matchesQuery(town) || matchesQuery(village) || matchesQuery(hamlet)))
-          continue;
+        if (!(matchesQuery(suburb) || matchesQuery(city) || matchesQuery(town) || matchesQuery(village) || matchesQuery(hamlet))) continue;
+
         let displayText = "";
         if (item.type === "suburb") {
-          const parent = normalizeParent(city) || normalizeParent(town) || normalizeParent(county) || normalizeParent(state);
+          const parent = normalizeParent(city) || normalizeParent(town) || normalizeParent(address.county) || normalizeParent(address.state);
           displayText = [suburb || city, parent || city, address.country].filter(Boolean).join(", ");
         } else if (item.type === "town") {
           displayText = [town || city || village, address.country].filter(Boolean).join(", ");
         } else if (item.type === "village" || item.type === "hamlet") {
-          const parentCity = normalizeParent(city) || normalizeParent(town) || normalizeParent(county);
+          const parentCity = normalizeParent(city) || normalizeParent(town) || normalizeParent(address.county);
           displayText = [village || hamlet || city, parentCity, address.country].filter(Boolean).join(", ");
         } else if (item.type === "city") {
           displayText = [city || suburb || village, address.country].filter(Boolean).join(", ");
         } else {
           displayText = [city || suburb || village || hamlet, address.country].filter(Boolean).join(", ");
         }
-        let resolvedType = "city";
+
         const rawType = String(item.type);
-        if (["city", "town", "suburb", "village", "hamlet"].includes(rawType)) {
-          resolvedType = rawType;
-        }
-        processed.push({
-          id: item.place_id,
-          displayText,
-          type: resolvedType,
-          raw: item
-        });
+        const resolvedType = ["city", "town", "suburb", "village", "hamlet"].includes(rawType) ? rawType : "city";
+
+        processed.push({ id: item.place_id, displayText, type: resolvedType, raw: item });
       }
+
       if (userLocation) {
         processed.sort((a, b) => {
-          const distA = calculateDistance(
-            userLocation.lat,
-            userLocation.lon,
-            parseFloat(a.raw.lat),
-            parseFloat(a.raw.lon)
-          );
-          const distB = calculateDistance(
-            userLocation.lat,
-            userLocation.lon,
-            parseFloat(b.raw.lat),
-            parseFloat(b.raw.lon)
-          );
+          const distA = calculateDistance(userLocation.lat, userLocation.lon, parseFloat(a.raw.lat), parseFloat(a.raw.lon));
+          const distB = calculateDistance(userLocation.lat, userLocation.lon, parseFloat(b.raw.lat), parseFloat(b.raw.lon));
           return distA - distB;
         });
       }
@@ -346,6 +166,7 @@ function LocationSearch({
     },
     [userLocation]
   );
+
   const fetchLocations = useCallback(
     async (searchQuery) => {
       try {
@@ -354,28 +175,22 @@ function LocationSearch({
           format: "json",
           addressdetails: "1",
           featureType: "settlement",
-          limit: "75"
+          limit: "75",
         };
         if (userLocation) {
-          params.lat = userLocation.lat.toString();
-          params.lon = userLocation.lon.toString();
+          params.lat = String(userLocation.lat);
+          params.lon = String(userLocation.lon);
         }
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?` + new URLSearchParams(params),
-          {
-            headers: {
-              Accept: "application/json",
-              "User-Agent": USER_AGENT
-            }
-          }
-        );
-        if (!response.ok) throw new Error("Failed to fetch locations");
-        const data = await response.json();
-        const filtered = processResults(data, searchQuery.toLowerCase().trim());
+        const url = "https://nominatim.openstreetmap.org/search?" + new URLSearchParams(params).toString();
+        setIsLoading(true);
+        const resp = await fetch(url, { headers: { Accept: "application/json" } });
+        if (!resp.ok) throw new Error("Failed to fetch locations");
+        const data = await resp.json();
+        const filtered = processResults(data, String(searchQuery).toLowerCase().trim());
         setResults(filtered);
         setShowResults(true);
-      } catch (error) {
-        console.error("Error fetching locations:", error);
+      } catch (err) {
+        console.error("Error fetching locations:", err);
         setResults([]);
       } finally {
         setIsLoading(false);
@@ -383,145 +198,127 @@ function LocationSearch({
     },
     [userLocation, processResults]
   );
+
   useEffect(() => {
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     if (!searching || query.trim().length < 2) {
       setResults([]);
       setShowResults(false);
+      setIsLoading(false);
       return;
     }
     setIsLoading(true);
-    debounceTimer.current = setTimeout(
-      () => fetchLocations(query),
-      debounceDelay
-    );
+    debounceTimer.current = setTimeout(() => fetchLocations(query), debounceDelay);
     return () => {
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
   }, [query, fetchLocations, debounceDelay, searching]);
-  const handleSelect = (result) => {
+
+  const handleSelect = (event, result) => {
+    event.preventDefault();
+    event.stopPropagation();
     setShowResults(false);
     setSelectedLocation(result.raw);
     if (onSelected) onSelected(result.raw);
   };
-  return /* @__PURE__ */ jsx(
-    "div",
-    {
-      className: className ? `w-100 ${className}` : "w-100",
-      ref: searchContainerRef,
-      style,
-      children: /* @__PURE__ */ jsxs("div", { className: "position-relative", children: [
-        /* @__PURE__ */ jsxs("div", { className: "position-relative", children: [
-          /* @__PURE__ */ jsx(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                inset: "0 auto 0 0",
-                paddingLeft: 16,
-                display: "flex",
-                alignItems: "center",
-                pointerEvents: "none"
-              },
-              children: /* @__PURE__ */ jsx(SearchIcon, { className: "text-muted" })
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            "input",
-            {
-              type: "text",
-              value: query,
-              onKeyDown: () => setSearching(true),
-              onChange: (e) => {
-                hasTypedRef.current = true;
-                setQuery(e.target.value);
-                setSelectedLocation(null);
-              },
-              onFocus: () => results.length > 0 && hasTypedRef.current && setShowResults(true),
-              placeholder: "Search for cities, suburbs, towns, villages, or hamlets...",
-              className: "form-control form-control-lg ps-5 pe-4"
-            }
-          ),
-          isLoading && /* @__PURE__ */ jsx(
-            "div",
-            {
-              style: {
+
+  return (
+    <div className={className ? `w-100 ${className}` : "w-100"} ref={containerRef} style={style}>
+      <div className="position-relative">
+        <div className="position-relative">
+          <div
+            style={{
+              position: "absolute",
+              inset: "0 auto 0 0",
+              paddingLeft: 16,
+              display: "flex",
+              alignItems: "center",
+              pointerEvents: "none",
+            }}
+          >
+            <SearchIcon className="text-muted" />
+          </div>
+
+          <input
+            type="text"
+            value={query}
+            onKeyDown={() => setSearching(true)}
+            onChange={(e) => {
+              hasTypedRef.current = true;
+              setQuery(e.target.value);
+              setSelectedLocation(null);
+            }}
+            onFocus={() => results.length > 0 && hasTypedRef.current && setShowResults(true)}
+            placeholder="Search for cities, suburbs, towns, villages, or hamlets..."
+            className="form-control form-control-lg ps-5 pe-4"
+          />
+
+          {isLoading && (
+            <div
+              style={{
                 position: "absolute",
                 inset: "0 0 0 auto",
                 paddingRight: 16,
                 display: "flex",
                 alignItems: "center",
-                pointerEvents: "none"
-              },
-              children: /* @__PURE__ */ jsx(Spinner_default, { animation: "border", size: "sm", className: "text-primary" })
-            }
-          )
-        ] }),
-        selectedLocation && /* @__PURE__ */ jsx("div", { className: "mt-2 text-muted small", children: selectedLocation.display_name }),
-        showResults && results.length > 0 && /* @__PURE__ */ jsxs(
-          "div",
-          {
-            className: "position-absolute w-100 mt-2 bg-white border rounded-xl shadow overflow-auto",
-            style: { maxHeight: "24rem", zIndex: 1050 },
-            children: [
-              userLocation && /* @__PURE__ */ jsxs("div", { className: "px-3 py-2 bg-light border-bottom d-flex align-items-center text-sm text-primary", children: [
-                /* @__PURE__ */ jsx(NavigationIcon, { className: "me-2" }),
-                /* @__PURE__ */ jsx("span", { className: "fw-medium", children: "Sorted by distance from you" })
-              ] }),
-              results.map((result) => {
-                const distance = userLocation ? calculateDistance(
-                  userLocation.lat,
-                  userLocation.lon,
-                  parseFloat(result.raw.lat),
-                  parseFloat(result.raw.lon)
-                ) : null;
-                return /* @__PURE__ */ jsxs(
-                  "button",
-                  {
-                    onClick: () => handleSelect(result),
-                    className: "list-group-item list-group-item-action d-flex align-items-start",
-                    children: [
-                      /* @__PURE__ */ jsx("div", { className: "me-3 mt-1 text-muted", children: /* @__PURE__ */ jsx(MapPinIcon, {}) }),
-                      /* @__PURE__ */ jsxs("div", { className: "flex-fill", children: [
-                        /* @__PURE__ */ jsx("div", { className: "fw-medium text-dark", children: result.displayText }),
-                        /* @__PURE__ */ jsxs("div", { className: "mt-1 d-flex align-items-center gap-2 flex-wrap small text-muted", children: [
-                          /* @__PURE__ */ jsx("span", { className: `badge rounded-pill text-bg-light`, children: result.type.charAt(0).toUpperCase() + result.type.slice(1) }),
-                          distance !== null && /* @__PURE__ */ jsx("span", { children: distance < 1 ? `${Math.round(distance * 1e3)}m away` : `${Math.round(distance)}km away` })
-                        ] })
-                      ] })
-                    ]
-                  },
-                  result.id
-                );
-              })
-            ]
-          }
-        ),
-        showResults && results.length === 0 && !isLoading && query.trim().length >= 2 && /* @__PURE__ */ jsxs(
-          "div",
-          {
-            className: "position-absolute w-100 mt-2 bg-white border rounded-xl shadow p-4 text-center",
-            style: { zIndex: 1050 },
-            children: [
-              /* @__PURE__ */ jsx("div", { className: "text-muted mb-2", children: /* @__PURE__ */ jsx(SearchIcon, { className: "fs-1" }) }),
-              /* @__PURE__ */ jsx("p", { className: "fw-medium", children: "No locations found" }),
-              /* @__PURE__ */ jsx("p", { className: "text-muted small mt-1", children: "Try searching for a different location" })
-            ]
-          }
-        )
-      ] })
-    }
+                pointerEvents: "none",
+              }}
+            >
+              <div className="spinner-border spinner-border-sm text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {selectedLocation && <div className="mt-2 text-muted small">{selectedLocation.display_name}</div>}
+
+        {showResults && results.length > 0 && (
+          <div className="position-absolute w-100 mt-2 bg-white border rounded-xl shadow overflow-auto" style={{ maxHeight: "24rem", zIndex: 1050 }}>
+            {userLocation && (
+              <div className="px-3 py-2 bg-light border-bottom d-flex align-items-center text-sm text-primary">
+                <NavigationIcon className="me-2" />
+                <span className="fw-medium">Sorted by distance from you</span>
+              </div>
+            )}
+            {results.map((result) => {
+              const distance = userLocation
+                ? calculateDistance(userLocation.lat, userLocation.lon, parseFloat(result.raw.lat), parseFloat(result.raw.lon))
+                : null;
+              return (
+                <button
+                  key={result.id}
+                  onClick={(event) => handleSelect(event, result)}
+                  className="list-group-item list-group-item-action d-flex align-items-start"
+                >
+                  <div className="me-3 mt-1 text-muted">
+                    <MapPinIcon />
+                  </div>
+                  <div className="flex-fill">
+                    <div className="fw-medium text-dark">{result.displayText}</div>
+                    <div className="mt-1 d-flex align-items-center gap-2 flex-wrap small text-muted">
+                      <span className={`badge rounded-pill text-bg-light`}>{result.type.charAt(0).toUpperCase() + result.type.slice(1)}</span>
+                      {distance !== null && <span>{distance < 1 ? `${Math.round(distance * 1e3)}m away` : `${Math.round(distance)}km away`}</span>}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {showResults && results.length === 0 && !isLoading && query.trim().length >= 2 && (
+          <div className="position-absolute w-100 mt-2 bg-white border rounded-xl shadow p-4 text-center" style={{ zIndex: 1050 }}>
+            <div className="text-muted mb-2">
+              <SearchIcon className="fs-1" />
+            </div>
+            <p className="fw-medium">No locations found</p>
+            <p className="text-muted small mt-1">Try searching for a different location</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
-export {
-  LocationSearch as default
-};
-/*! Bundled license information:
 
-classnames/index.js:
-  (*!
-  	Copyright (c) 2018 Jed Watson.
-  	Licensed under the MIT License (MIT), see
-  	http://jedwatson.github.io/classnames
-  *)
-*/
+export default LocationSearch;

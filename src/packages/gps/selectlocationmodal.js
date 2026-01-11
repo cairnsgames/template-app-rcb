@@ -27,8 +27,14 @@ import "./selectlocationmodal.scss";
 
 const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }) => {
   const [show, setShow] = useState(false);
-  const [position, setPosition] = useState([defaultStart.lat, defaultStart.lng]);
-  const [center, setCenter] = useState([defaultStart.lat, defaultStart.lng]);
+  const JOHANNESBURG_CBD = { lat: -26.2041, lng: 28.0473 };
+
+  const initialStart = (defaultStart && defaultStart.lat !== undefined && defaultStart.lng !== undefined)
+    ? [defaultStart.lat, defaultStart.lng]
+    : [JOHANNESBURG_CBD.lat, JOHANNESBURG_CBD.lng];
+
+  const [position, setPosition] = useState(initialStart);
+  const [center, setCenter] = useState(initialStart);
 
   const [map, setMap] = useState(null);
 
@@ -56,10 +62,22 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }
   };
 
   useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setCenter([position.coords.latitude, position.coords.longitude]);
-      });
+    // If no explicit defaultStart was provided, try to use current geolocation
+    if (!defaultStart) {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const coords = [pos.coords.latitude, pos.coords.longitude];
+            setCenter(coords);
+            setPosition(coords);
+          },
+          (err) => {
+            // Couldn't get geolocation; keep Johannesburg CBD as fallback (already set)
+            console.warn("Geolocation unavailable, using fallback:", err);
+          },
+          { timeout: 5000 }
+        );
+      }
     }
   }, []);
 
@@ -74,8 +92,8 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }
     console.log("AAAA Selecting location:", position, marker);
     if (onSelectLocation) {
       // Always send object in { lat, lng, name } format
-      const lat = marker ? marker.lat : Array.isArray(position) ? Number(position[0]) : position.lat;
-      const lng = marker ? marker.lng : Array.isArray(position) ? Number(position[1]) : position.lng;
+      const lat = marker ? marker.lat : Array.isArray(position) ? Number(position[0]) : (position && position.lat) ? Number(position.lat) : JOHANNESBURG_CBD.lat;
+      const lng = marker ? marker.lng : Array.isArray(position) ? Number(position[1]) : (position && position.lng) ? Number(position.lng) : JOHANNESBURG_CBD.lng;
       const name = null; // name may be provided via onSelectAddress callback
       console.log("AAAA Calling onSelectLocation with:", { lat, lng, name });
       onSelectLocation({ lat, lng, name });
@@ -110,8 +128,26 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }
   const setSelectedAddress = (address) => {
     if (onSelectAddress) {
       // Transform the selected address into { lat, lng, name } format
-      const lat = address.lat ?? marker ? marker.lat : Array.isArray(position) ? Number(position[0]) : position.lat;
-      const lng = address.lng ?? marker ? marker.lng : Array.isArray(position) ? Number(position[1]) : position.lng;
+      const lat = (address && (address.lat !== undefined && address.lat !== null))
+        ? Number(address.lat)
+        : marker
+        ? marker.lat
+        : Array.isArray(position)
+        ? Number(position[0])
+        : (position && position.lat)
+        ? Number(position.lat)
+        : JOHANNESBURG_CBD.lat;
+
+      const lng = (address && (address.lng !== undefined && address.lng !== null))
+        ? Number(address.lng)
+        : marker
+        ? marker.lng
+        : Array.isArray(position)
+        ? Number(position[1])
+        : (position && position.lng)
+        ? Number(position.lng)
+        : JOHANNESBURG_CBD.lng;
+
       const name = address?.fullAddress || address?.display_name || `${address?.street || ""} ${address?.city || address?.town || address?.village || ""}`.trim();
       onSelectAddress({ lat, lng, name });
     }
@@ -141,7 +177,7 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }
           <MapDisplay
             offsetTop="0px"
             markers={markers}
-            defaultStart={defaultStart}
+            defaultStart={defaultStart || { lat: JOHANNESBURG_CBD.lat, lng: JOHANNESBURG_CBD.lng }}
             onClick={selectMapLocation}
             onAddressSelected={setSelectedAddress}
             isModal={true}
