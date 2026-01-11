@@ -25,10 +25,10 @@ import "./selectlocationmodal.scss";
   }
 */
 
-const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
+const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }) => {
   const [show, setShow] = useState(false);
-  const [position, setPosition] = useState([26, 26]);
-  const [center, setCenter] = useState([26, 26]);
+  const [position, setPosition] = useState([defaultStart.lat, defaultStart.lng]);
+  const [center, setCenter] = useState([defaultStart.lat, defaultStart.lng]);
 
   const [map, setMap] = useState(null);
 
@@ -37,16 +37,22 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
   const markers = marker ? [marker] : [];
 
   const selectMapLocation = (e) => {
+    console.log("AAAA ============ Map location selected:", e);
     const latlng = e.latlng || e;
     setPosition([latlng.lat.toFixed(3), latlng.lng.toFixed(3)]);
-    setMarker({
-      id: "NEWMARKER",
+    const newMarker = {
+      id: 0,
+      pinid: "New"+Date.now(),
       lat: latlng.lat,
       lng: latlng.lng,
       category: "",
       subcategory: [],
       color: "blue",
-    });
+    }
+    console.log("AAAA Setting new marker:", newMarker);
+    setMarker(newMarker);
+    setPosition([latlng.lat, latlng.lng]);
+    setCenter([latlng.lat, latlng.lng]);
   };
 
   useEffect(() => {
@@ -65,12 +71,14 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
   };
 
   const selectLocation = () => {
+    console.log("AAAA Selecting location:", position, marker);
     if (onSelectLocation) {
-      if (marker) {
-        onSelectLocation([marker.lat, marker.lng]);
-      } else {
-        onSelectLocation(position);
-      }
+      // Always send object in { lat, lng, name } format
+      const lat = marker ? marker.lat : Array.isArray(position) ? Number(position[0]) : position.lat;
+      const lng = marker ? marker.lng : Array.isArray(position) ? Number(position[1]) : position.lng;
+      const name = null; // name may be provided via onSelectAddress callback
+      console.log("AAAA Calling onSelectLocation with:", { lat, lng, name });
+      onSelectLocation({ lat, lng, name });
     }
     setShow(false);
   };
@@ -101,7 +109,11 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
 
   const setSelectedAddress = (address) => {
     if (onSelectAddress) {
-      onSelectAddress(address);
+      // Transform the selected address into { lat, lng, name } format
+      const lat = address.lat ?? marker ? marker.lat : Array.isArray(position) ? Number(position[0]) : position.lat;
+      const lng = address.lng ?? marker ? marker.lng : Array.isArray(position) ? Number(position[1]) : position.lng;
+      const name = address?.fullAddress || address?.display_name || `${address?.street || ""} ${address?.city || address?.town || address?.village || ""}`.trim();
+      onSelectAddress({ lat, lng, name });
     }
   };
 
@@ -129,6 +141,7 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress }) => {
           <MapDisplay
             offsetTop="0px"
             markers={markers}
+            defaultStart={defaultStart}
             onClick={selectMapLocation}
             onAddressSelected={setSelectedAddress}
             isModal={true}

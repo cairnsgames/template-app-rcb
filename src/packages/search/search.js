@@ -141,7 +141,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
   };
 
   const handleEventClick = (eventId) => {
-    console.log("Click on Event", eventId);
     window.location.hash = `#events/${eventId}`;
   };
 
@@ -180,7 +179,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
       const next = current.filter((r) => r !== roleId && r !== "ALL_PARTNERS");
       setSelectedRoles(next);
     }
-    console.log("Toggled role:", roleId, selectedRoles);
   };
 
   const toggleType = (type) => {
@@ -250,8 +248,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
     ...partners.map((partner) => ({ ...partner, itemType: "partner" })),
   ];
 
-  console.log("XXXX CLasses:", classes);
-  console.log("XXXX Filtered Classes:", filteredClasses);
 
   // Apply filters (types and partner roles)
   const typeFilterActive = selectedTypes && selectedTypes.size > 0;
@@ -325,7 +321,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
     .slice(0, items);
 
   const applyLocation = (location) => {
-    console.log("YYYY Applying location to all contexts:", location);
     setNewsLocation(location);
     setEventLocation(location);
     setPartnerLocation(location);

@@ -3,20 +3,29 @@ import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 import SelectLocationModal from "../../gps/selectlocationmodal";
 
 const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave }) => {
-  const selectLocation = (latlng) => {
-    setDetails({ ...details, lat: latlng[0], lng: latlng[1] });
+  console.log("AAAA LocationEditModal rendered with details:", details);
+  const selectLocation = (pos) => {
+    // Expect pos in { lat, lng, name } format
+    console.log("AAAA Location selected:", pos);
+    if (!pos) return;
+    setDetails({ ...details, lat: pos.lat, lng: pos.lng });
   }
 
   const setAddress = (address) => {
+    // Expect address in { lat, lng, name } format
+    if (!address) return;
     const newDetails = {
       ...details,
-      address_line1: address.street,
-      town: address.city || address.town || address.village,
-      country: address.country,
+      lat: address.lat,
+      lng: address.lng,
+      address_line1: address.name,
+      town: details.town,
+      country: details.country,
     };
-    if (newDetails.name === "") {
-      newDetails.name = address.street || address.city || address.town || address.village;
+    if (!newDetails.name || newDetails.name === "") {
+      newDetails.name = address.name;
     }
+    console.log("AAAA Address selected:", address, "-> updating details to:", newDetails);
     setDetails(newDetails);
   }
 
@@ -58,7 +67,11 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
               value={details.lng}
               onChange={(ev) => setDetails({ ...details, lng: ev.target.value })}
             />
-            <SelectLocationModal onSelectLocation={selectLocation} onSelectAddress={setAddress} />
+            <SelectLocationModal
+              onSelectLocation={selectLocation}
+              onSelectAddress={setAddress}
+              defaultStart={{ lat: details.lat, lng: details.lng, name: details.name }}
+            />
             
           </InputGroup>
           {!details.lat && (

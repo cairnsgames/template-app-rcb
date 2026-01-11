@@ -3,6 +3,7 @@ import { useLocations } from "../context/uselocations";
 import { Button, ButtonGroup, Spinner, Table } from "react-bootstrap";
 import { Pencil, Trash } from "react-bootstrap-icons"; // Importing icons
 import LocationEditModal from "./LocationEditModal";
+import useUser from "../../auth/context/useuser";
 
 const UserLocationManagement = () => {
   const {
@@ -12,6 +13,7 @@ const UserLocationManagement = () => {
     updateUserLocation,
     deleteUserLocation,
   } = useLocations();
+  const { defaultLocation } = useUser();
   const [showModal, setShowModal] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [details, setDetails] = useState({
@@ -84,6 +86,7 @@ const UserLocationManagement = () => {
   };
 
   const handleEdit = (location) => {
+    console.log("AAAA Editing location:", location);
     setSelectedLocation(location);
     setShowModal(true);
   };

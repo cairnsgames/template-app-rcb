@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMap, Marker } from "react-leaflet";
 import useMapContext from "./context/usemapcontext";
 import { Button, ButtonGroup, Row, Col } from "react-bootstrap";
 import { Map, Pin, Search } from "react-bootstrap-icons";
@@ -25,6 +25,7 @@ function ChangeView({ center, zoom }) {
 }
 
 const MapControls = (props) => {
+  console.log("AAAA MapDisplay: MapControls rendered with props:", props);
   const [isSecondColBelow, setIsSecondColBelow] = useState(false);
   const [isMapSearchVisible, setIsMapSearchVisible] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -120,14 +121,47 @@ const AddressPanel = ({ address, isLoading }) => (
 );
 
 const MapDisplay = (props) => {
-  const { mustSelect = true, onMapChange, onMapClick } = props;
+  const { mustSelect = true, onMapChange, onMapClick, defaultStart } = props;
   const { center, zoom, searchMapArea, markers, onClick } = useMapContext();
-  const [initialCenter, setInitialCenter] = useState(center); // State for initial center
+
+  // normalize defaultStart into [lat, lng] or null
+  const normalizeStart = (start) => {
+    console.log("AAAA MapDisplay: Normalizing defaultStart:", start);
+    if (!start) return null;
+    if (Array.isArray(start) && start.length >= 2) {
+      return [Number(start[0]), Number(start[1])];
+    }
+    if (typeof start === "object") {
+      const lat = start.lat ?? start.latitude ?? start[0];
+      const lng = start.lng ?? start.lon ?? start.longitude ?? start[1];
+      if (lat !== undefined && lng !== undefined) {
+        console.log("AAAA MapDisplay: Normalized defaultStart:", [Number(lat), Number(lng)]);
+        return [Number(lat), Number(lng)];
+      }
+    }
+    return null;
+  };
+
+  const normalizedDefault = normalizeStart(defaultStart);
+
+  const [initialCenter, setInitialCenter] = useState(
+    normalizedDefault ?? center
+  ); // State for initial center
   const [selectedAddress, setSelectedAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false); // State for loading spinner
   const mapRef = useRef(null);
 
   useEffect(() => {
+    // If a default start is provided, prioritize it and update view
+    if (normalizedDefault) {
+      setInitialCenter(normalizedDefault);
+      if (mapRef.current) {
+        mapRef.current.setView(normalizedDefault, zoom);
+      }
+      return;
+    }
+
+    // Only try geolocation if default start is not provided
     if (props.startAtMyLocation !== false && "geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -145,7 +179,8 @@ const MapDisplay = (props) => {
         }
       );
     }
-  }, [props.startAtMyLocation]);
+  // Re-run if startAtMyLocation, defaultStart or zoom changes
+  }, [props.startAtMyLocation, defaultStart, zoom]);
 
   const handleMapLoad = () => {
     const map = mapRef.current;
@@ -162,7 +197,9 @@ const MapDisplay = (props) => {
 
   const mapClick = async (e) => {
     // console.log("Map clicked event triggered", e); // Debugging log
+    console.log("AAAA MapDisplay: mapClick event with:", e);
     if (props.onClick) {
+      console.log("AAAA MapDisplay: Calling onClick with:", e.latlng);
       props.onClick(e);
     }
 
@@ -182,6 +219,8 @@ const MapDisplay = (props) => {
 
       const formattedAddress = {
         street: data.address?.road || "Unknown Street",
+        lat: lat,
+        lng: lng,
         city:
           data.address?.city ||
           data.address?.town ||
@@ -190,6 +229,8 @@ const MapDisplay = (props) => {
         country: data.address?.country || "Unknown Country",
         fullAddress: data.display_name || "Address not found",
       };
+
+      console.log("AAAA MapDisplay: Formatted address:", formattedAddress);
 
       setSelectedAddress(formattedAddress.fullAddress);
 
@@ -241,6 +282,9 @@ const MapDisplay = (props) => {
             mapClick(e);
           }}
         />
+        {normalizedDefault && (
+          <Marker position={normalizedDefault} />
+        )}
         <Markers markers={props.markers ?? markers} />
       </MapContainer>
       {mustSelect && (
@@ -248,10 +292,6 @@ const MapDisplay = (props) => {
       )}
     </div>
   );
-};
-
-MapDisplay.defaultProps = {
-  startAtMyLocation: true, // Default value for the prop
 };
 
 export default MapDisplay;
