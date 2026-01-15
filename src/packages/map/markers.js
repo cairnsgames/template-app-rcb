@@ -21,6 +21,10 @@ const Markers = ({ markers }) => {
           // Group IDs to check
           const specialGroupIds = [1, 2, 3, 4, 5, 6, 7, 22];
 
+          if (marker.category === "event" || marker.category === "class") {
+            console.log("DDDD Event marker:", marker);
+          }
+
           return (
             <Tracker key={marker.pinid} itemtype="map.pin" id={marker.id}>
               <Marker
@@ -71,6 +75,15 @@ const Markers = ({ markers }) => {
                         >
                           {cat}
                         </div>
+                        {marker.category === "event" ||
+                        marker.category === "class" ? (
+                          <div>
+                            <strong>When:</strong>{" "}
+                            {marker.start_time
+                              ? new Date(marker.start_time).toLocaleString()
+                              : "N/A"}
+                          </div>
+                        ) : null}
                         {Array.isArray(marker.offerings) &&
                           marker.offerings.length > 0 && (
                             <div

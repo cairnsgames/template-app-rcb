@@ -73,6 +73,8 @@ export const MapProvider = ({ children }) => {
         );
         const data = await response.json();
 
+        console.log("DDDD fetched markers:", data);
+
         // Set color based on category
         const updatedMarkers = data.map((marker) => {
           if (marker.title === "My Pin" && !!marker.name ) {
@@ -81,7 +83,7 @@ export const MapProvider = ({ children }) => {
           switch (marker.category.toLowerCase()) {
             case "event":
               const eventtype = marker.subcategory.length > 0 ? marker.subcategory[0].toLowerCase() : "event";
-              marker.color = "orange";
+              marker.color = "rgb(0, 153, 132)";
               switch (eventtype) {
                 case "class":
                   marker.color = "lightblue";
@@ -154,7 +156,7 @@ export const MapProvider = ({ children }) => {
     // Default to today and one week ahead if no date range is set
     const today = new Date();
     const defaultStartDate = today.toISOString().split("T")[0];
-    const defaultEndDate = new Date(today.setDate(today.getDate() + 7))
+    const defaultEndDate = new Date(today.setDate(today.getDate() + 70))
       .toISOString()
       .split("T")[0];
 
@@ -162,20 +164,20 @@ export const MapProvider = ({ children }) => {
     const endDateFilter = filters.dateRange?.end || defaultEndDate;
 
     return rawMarkers.filter((marker) => {
-      const { startDate, endDate, category, event_type, keywords, subcategory } = marker;
+      const { start_time: startDate, category, event_type, keywords, subcategory } = marker;
+
+      console.log("DDDD Filter by date", marker, startDate)
 
       // Respect the `oldEvents` toggle: if it's false, filter out past items.
-      if (!filters.oldEvents && endDate && new Date(endDate) < new Date()) {
+      if (!filters.oldEvents && startDate && new Date(startDate) < new Date()) {
         return false;
       }
 
       // Check if the marker falls within the date range (only when dates exist)
       try {
-        if (startDate || endDate) {
+        if (startDate) {
           const markerStart = startDate ? new Date(startDate) : null;
-          const markerEnd = endDate ? new Date(endDate) : null;
           if (markerStart && markerStart > new Date(endDateFilter)) return false;
-          if (markerEnd && markerEnd < new Date(startDateFilter)) return false;
         }
       } catch (err) {
         // If date parsing fails, skip date-based exclusion (be permissive)
