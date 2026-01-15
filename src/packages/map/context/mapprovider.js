@@ -162,31 +162,54 @@ export const MapProvider = ({ children }) => {
     const endDateFilter = filters.dateRange?.end || defaultEndDate;
 
     return rawMarkers.filter((marker) => {
-      const { startDate, endDate, category, event_type, keywords } = marker;
+      const { startDate, endDate, category, event_type, keywords, subcategory } = marker;
 
-      // Filter out historical items
-      if (new Date(endDate) < new Date()) {
+      // Respect the `oldEvents` toggle: if it's false, filter out past items.
+      if (!filters.oldEvents && endDate && new Date(endDate) < new Date()) {
         return false;
       }
 
-      // Check if the marker falls within the date range
-      if (
-        new Date(startDate) > new Date(endDateFilter) ||
-        new Date(endDate) < new Date(startDateFilter)
-      ) {
-        return false;
+      // Check if the marker falls within the date range (only when dates exist)
+      try {
+        if (startDate || endDate) {
+          const markerStart = startDate ? new Date(startDate) : null;
+          const markerEnd = endDate ? new Date(endDate) : null;
+          if (markerStart && markerStart > new Date(endDateFilter)) return false;
+          if (markerEnd && markerEnd < new Date(startDateFilter)) return false;
+        }
+      } catch (err) {
+        // If date parsing fails, skip date-based exclusion (be permissive)
+        console.warn("Error parsing marker dates", err);
       }
 
       // Check categories, include all if no categories are selected
       const categoryKeys = Object.keys(filters.categories);
-      const anyCategorySelected = categoryKeys.some(
-        (cat) => filters.categories[cat]
-      );
+      const anyCategorySelected = categoryKeys.some((cat) => filters.categories[cat]);
       if (anyCategorySelected) {
-        const lcategory = category.toLowerCase();
-        const lsubcategory = event_type?.toLowerCase();
+        const lcategory = category ? String(category).toLowerCase() : "";
+        const lsubcategory = event_type ? String(event_type).toLowerCase() : "";
+
+        // Derive partner role from `subcategory` field when applicable
+        let partnerRole = "";
+        if (Array.isArray(subcategory) && subcategory.length > 0) {
+          partnerRole = String(subcategory[0]).toLowerCase();
+        } else if (typeof subcategory === "string" && subcategory.trim()) {
+          try {
+            const parsed = JSON.parse(subcategory);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              partnerRole = String(parsed[0]).toLowerCase();
+            } else {
+              partnerRole = String(subcategory).toLowerCase();
+            }
+          } catch {
+            partnerRole = String(subcategory).toLowerCase();
+          }
+        }
+
         const matchesCategory =
-          filters.categories[lcategory] || filters.categories[lsubcategory];
+          !!filters.categories[lcategory] ||
+          !!filters.categories[lsubcategory] ||
+          !!filters.categories[partnerRole];
 
         if (!matchesCategory) {
           return false;
@@ -196,12 +219,13 @@ export const MapProvider = ({ children }) => {
       // Check keywords, include all if no keywords are provided
       if (filters.keywords) {
         const markerKeywords = keywords
-          ? keywords.toLowerCase().split(", ")
+          ? String(keywords).toLowerCase().split(",").map((s) => s.trim())
           : [];
-        const filterKeywords = filters.keywords.toLowerCase().split(", ");
-        if (
-          !filterKeywords.some((keyword) => markerKeywords.includes(keyword))
-        ) {
+        const filterKeywords = String(filters.keywords)
+          .toLowerCase()
+          .split(",")
+          .map((s) => s.trim());
+        if (!filterKeywords.some((keyword) => markerKeywords.includes(keyword))) {
           return false;
         }
       }
