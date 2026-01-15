@@ -385,32 +385,24 @@ const Search = ({ layout = "default", items = 99999 }) => {
             <Form.Group className="mb-2">
               <Form.Label><strong>Partner Roles:</strong></Form.Label>
               <div>
-                <Form.Check
-                  inline
-                  id="role-26"
-                  type="checkbox"
-                  label="Teacher"
-                  checked={tempPartnerRoles.has(26)}
-                  onChange={() => toggleTempPartnerRole(26)}
-                  className="mr-3"
-                />
-                <Form.Check
-                  inline
-                  id="role-28"
-                  type="checkbox"
-                  label="Venue"
-                  checked={tempPartnerRoles.has(28)}
-                  onChange={() => toggleTempPartnerRole(28)}
-                  className="mr-3"
-                />
-                <Form.Check
-                  inline
-                  id="role-30"
-                  type="checkbox"
-                  label="Supplier"
-                  checked={tempPartnerRoles.has(30)}
-                  onChange={() => toggleTempPartnerRole(30)}
-                />
+                {[
+                  { id: 26, label: "Teacher" },
+                  { id: 27, label: "DJ" },
+                  { id: 28, label: "Venue" },
+                  { id: 29, label: "Event Coordinator" },
+                  { id: 30, label: "Supplier" },
+                ].map((role) => (
+                  <Form.Check
+                    inline
+                    key={`role-${role.id}`}
+                    id={`role-${role.id}`}
+                    type="checkbox"
+                    label={role.label}
+                    checked={tempPartnerRoles.has(role.id)}
+                    onChange={() => toggleTempPartnerRole(role.id)}
+                    className="mr-3"
+                  />
+                ))}
               </div>
             </Form.Group>
 
