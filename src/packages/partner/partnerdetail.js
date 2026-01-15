@@ -8,8 +8,6 @@ import PartnerClasses from "./partnerclasses";
 
 function PartnerDetail(props) {
   const { match, id } = props;
-
-  console.log("AAAA PartnerDetail props:", props);
   
   const partnerId = match?.params?.id ?? id ?? props?.id ?? null;
   const {
@@ -19,6 +17,21 @@ function PartnerDetail(props) {
     events,
     news,
   } = usePartner();
+
+    console.log("AAAA PartnerDetail activePartner:", activePartner);
+
+  // Helper to read named properties from the partner's `properties` array.
+  // Usage: getProperty(partner, 'phone', defaultValue)
+  const getProperty = (partner, name, defaultValue = null) => {
+    if (!partner) return defaultValue;
+    const props = Array.isArray(partner.properties) ? partner.properties : [];
+    const prop = props.find((p) => p && (p.name === name || String(p.id) === String(name)));
+    if (prop && (prop.value !== undefined && prop.value !== null)) {
+      return typeof prop.value === "string" ? prop.value.trim() : prop.value;
+    }
+    return defaultValue;
+  };
+
 
   useEffect(() => {
     if (partnerId) {
@@ -61,6 +74,7 @@ function PartnerDetail(props) {
             <div><strong>Name:</strong> {fullName || "N/A"}</div>
             <div><strong>Email:</strong> {activePartner.email || "N/A"}</div>
             <div><strong>Location:</strong> {activePartner.location_name || "N/A"} {activePartner.distance ? `• ${activePartner.distance} km from you` : ""}</div>
+            <div><strong>Phone:</strong> {getProperty(activePartner, 'phone', activePartner.phone) || "N/A"}</div>
             <div><strong>Roles:</strong> {Array.isArray(activePartner.roles) ? activePartner.roles.map(r => r && r.name ? r.name : r).join(', ') : 'N/A'}</div>
           </div>
 
