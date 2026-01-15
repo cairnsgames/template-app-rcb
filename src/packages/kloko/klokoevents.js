@@ -97,7 +97,7 @@ const KlokoEvents = () => {
         <TilesLayout>
           {filteredEvents.map((event) => (
             <Tile key={event.id}>
-              <EventItem item={event}>
+              <EventItem item={event} onClick={showEvent}>
                 <EventThumb key={event.id} event={event} onClick={showEvent} />
               </EventItem>
             </Tile>
