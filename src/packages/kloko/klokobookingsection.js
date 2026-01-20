@@ -223,7 +223,7 @@ const BookingSection = (props) => {
             <Button
               variant="primary"
               onClick={handleAddToCart}
-              disabled={isButtonDisabled}
+              // disabled={isButtonDisabled} // Decide later if this is required - do not delete
             >
               Add to Cart
             </Button>
