@@ -43,6 +43,7 @@ const BookingSection = (props) => {
   useEffect(() => {
     if (alertMessage) {
       const timer = setTimeout(() => {
+        console.log("Clear Message");
         setAlertMessage("");
       }, 3000);
       return () => clearTimeout(timer);

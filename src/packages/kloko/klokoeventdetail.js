@@ -30,7 +30,10 @@ const KlokoEventDetail = ({ id }) => {
   }
 
   return (
-    <div className="packagesKlokoEventDetail" style={{ marginLeft: "auto", marginRight: "auto", maxWidth: "100%" }}>
+    <div
+      className="packagesKlokoEventDetail"
+      style={{ marginLeft: "auto", marginRight: "auto", maxWidth: "100%" }}
+    >
       <div className="mb-3">
         <h2 className="m-0">{activeEvent.title}</h2>
         {/* <button
@@ -39,18 +42,27 @@ const KlokoEventDetail = ({ id }) => {
         >
           X
         </button>*/}
-      </div> 
+      </div>
 
       <Tracker itemtype="event.detail" id={activeEvent.id}>
         <Card className="news-item">
-          {/* Image with Favorite Star Button overlay */}
           <div style={{ position: "relative" }}>
-            <Card.Img
-              variant="top"
-              src={combineUrlAndPath(process.env.REACT_APP_FILES, activeEvent.image)}
-              style={{ height: "100%", width: "100%", maxHeight: "50vh", objectFit: 'contain' }}
-              className=""
-            />
+            {activeEvent.image && activeEvent.image.trim() ? (
+              <Card.Img
+                variant="top"
+                src={combineUrlAndPath(
+                  process.env.REACT_APP_FILES,
+                  activeEvent.image,
+                )}
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  maxHeight: "50vh",
+                  objectFit: "contain",
+                }}
+                className=""
+              />
+            ) : null}
             <FavoriteIcon
               event_id={activeEvent.id}
               favorite={activeEvent.favorite}
@@ -59,7 +71,7 @@ const KlokoEventDetail = ({ id }) => {
           </div>
           <Card.Body>
             {activeEvent.description}
-            {/* <div>Price: {formatPrice(activeEvent.currency, activeEvent.price)}</div> */}
+            {/* <div>Price: {formatPrice(activeEvent.currency, activeEvent.price)}</div> */}            
           </Card.Body>
           <Card.Footer>
             <small className="text-muted">
@@ -79,4 +91,3 @@ const KlokoEventDetail = ({ id }) => {
 };
 
 export default KlokoEventDetail;
-                    
