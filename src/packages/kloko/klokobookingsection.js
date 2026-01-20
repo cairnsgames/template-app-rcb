@@ -40,6 +40,15 @@ const BookingSection = (props) => {
     fetchCart();
   }, [user]);
 
+  useEffect(() => {
+    if (alertMessage) {
+      const timer = setTimeout(() => {
+        setAlertMessage("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMessage]);
+
   if (event.paid >= 1) {
     return <strong>You have Paid!</strong>;
   }
