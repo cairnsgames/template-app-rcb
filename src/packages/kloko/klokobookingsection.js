@@ -17,7 +17,7 @@ const BookingSection = (props) => {
   const { event } = props;
   const [quantity, setQuantity] = useState(1);
   const [selectedTicketType, setSelectedTicketType] = useState(
-    ticketTypes?.length > 0 ? ticketTypes[0].id : null
+    ticketTypes?.length > 0 ? ticketTypes[0].id : null,
   );
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -75,7 +75,7 @@ const BookingSection = (props) => {
       // Add ticket type or event price
       if (ticketTypes?.length > 0) {
         const selectedType = ticketTypes.find(
-          (t) => t.id === selectedTicketType
+          (t) => t.id === selectedTicketType,
         );
         if (selectedType) {
           await addItemToCart(cart.id, {
@@ -199,7 +199,16 @@ const BookingSection = (props) => {
               {alertMessage}
             </Alert>
           )}
-          <div className="d-flex align-items-center justify-content-end gap-3">
+          <div className="klokoBookings d-flex align-items-center justify-content-end gap-3">
+            <Form.Group className="mb-3">
+              <Form.Label>Quantity</Form.Label>
+              <Form.Control
+                type="number"
+                min="1"
+                value={quantity}
+                onChange={(e) => setQuantity(parseInt(e.target.value))}
+              />
+            </Form.Group>
             <div>
               Total:{" "}
               {ticketTypes?.length > 0
@@ -212,9 +221,9 @@ const BookingSection = (props) => {
                       selectedOptions.reduce(
                         (sum, optId) =>
                           sum +
-                          (ticketOptions.find((opt) => opt.id === optId)?.price ||
-                            0),
-                        0
+                          (ticketOptions.find((opt) => opt.id === optId)
+                            ?.price || 0),
+                        0,
                       )) *
                     quantity
                   }`
@@ -223,9 +232,9 @@ const BookingSection = (props) => {
                       selectedOptions.reduce(
                         (sum, optId) =>
                           sum +
-                          (ticketOptions.find((opt) => opt.id === optId)?.price ||
-                            0),
-                        0
+                          (ticketOptions.find((opt) => opt.id === optId)
+                            ?.price || 0),
+                        0,
                       )) *
                     quantity
                   }`}

@@ -16,7 +16,12 @@ const BreezoCart = (props) => {
   // Assuming the first cart is the active one
   const activeCart = carts.length > 0 ? carts[0] : null;
   const itemCount = activeCart ? activeCart.count : 0;
-  const cartTotal = activeCart ? Number(activeCart.total) ?? 0 : 0;
+  const cartTotal = Array.isArray(cartItems)
+    ? cartItems.reduce(
+        (sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 0),
+        0
+      )
+    : 0;
 
   const handleClose = () => {
     setShow(false);
@@ -29,7 +34,7 @@ const BreezoCart = (props) => {
   };
 
   return (
-    <div className={`d-inline ${props.className}`} style={props.style}>
+    <div className={`breezoCart d-inline ${props.className}`} style={props.style}>
       <Button
         variant="primary"
         onClick={handleShow}
@@ -51,13 +56,13 @@ const BreezoCart = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>Cart Items</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="breezoCardModal">
           {cartItems.length > 0 ? (
             <ListGroup>
               {cartItems.map((item, index) => (
                 <ListGroup.Item key={index}>
                   <div>
-                    {item.quantity} x {item.title} - R {Number(item.price).toFixed(2)}
+                    {item.quantity} x {item.title} - R {Number(item.price * item.quantity).toFixed(2)}
                     <Button variant="outline-primary" className="float-end">
                       <TrashFill
                         onClick={() => {
