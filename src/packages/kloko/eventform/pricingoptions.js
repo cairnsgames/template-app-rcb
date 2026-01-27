@@ -23,7 +23,6 @@ const PricingOptions = ({
   return (
     <div className="border p-2 my-3">
       <h3>{t('pricingOptions.title')}</h3>
-      PRICING OPTIONS {hasTicketTypes ?? "X"} {hasTicketOptions ?? "Y"}
       <Form.Group controlId="hasTicketTypes">
         <InputGroup>
           <Form.Check

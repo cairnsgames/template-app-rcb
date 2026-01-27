@@ -25,7 +25,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
     updateEvent,
     fetchEventById,
     loading,
-    fetchTicketTypesByEventId,fetchTicketOptionsByEventId ,
+    fetchTicketTypesByEventId,
+    fetchTicketOptionsByEventId,
   } = useMyEvents();
   const { addToast } = useToast();
   
@@ -121,6 +122,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
         const fetchTicketTypes = async () => {
           // Fetch ticket types based on the event ID
           const ticketTypes = await fetchTicketTypesByEventId(id);
+          console.log("Fetched Ticket Types", ticketTypes);
           setTickets(ticketTypes);
         };
         fetchTicketTypes();
@@ -129,6 +131,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
         const fetchTicketOptions = async () => {
           // Fetch ticket options based on the event ID
           const options = await fetchTicketOptionsByEventId(id);
+          console.log("Fetched Ticket Options", options);
           setTicketOptions(options);
         };
         fetchTicketOptions();
@@ -223,6 +226,10 @@ const KlokoEventEditor = ({ id, onClose }) => {
   //   console.log("LOCATION", location);
   // }, [location]);
 
+  console.log("BBBB Rendering KlokoEventEditor", event);
+  console.log("BBBB Tickets", tickets);
+  console.log("BBBB TicketOptions", ticketOptions);
+
   return (
     <Div className="packagesKlokoEvent">
       <Form onSubmit={handleSubmit}>
@@ -290,7 +297,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
           {loading || fileLoading ? (
             <Spinner animation="border" size="sm" />
           ) : id ? (
-            t('updateEvent')
+            t('events.updateEvent')
           ) : (
             t('events.createEvent')
           )}

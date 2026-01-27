@@ -3,10 +3,8 @@ import { Button, Modal, Form, InputGroup } from "react-bootstrap";
 import SelectLocationModal from "../../gps/selectlocationmodal";
 
 const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave }) => {
-  console.log("AAAA LocationEditModal rendered with details:", details);
   const selectLocation = (pos) => {
     // Expect pos in { lat, lng, name } format
-    console.log("AAAA Location selected:", pos);
     if (!pos) return;
     setDetails({ ...details, lat: pos.lat, lng: pos.lng });
   }
@@ -25,7 +23,6 @@ const LocationEditModal = ({ show, handleClose, details, setDetails, handleSave 
     if (!newDetails.name || newDetails.name === "") {
       newDetails.name = address.name;
     }
-    console.log("AAAA Address selected:", address, "-> updating details to:", newDetails);
     setDetails(newDetails);
   }
 

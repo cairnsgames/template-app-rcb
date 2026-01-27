@@ -86,7 +86,6 @@ const UserLocationManagement = () => {
   };
 
   const handleEdit = (location) => {
-    console.log("AAAA Editing location:", location);
     setSelectedLocation(location);
     setShowModal(true);
   };

@@ -18,8 +18,6 @@ function PartnerDetail(props) {
     news,
   } = usePartner();
 
-    console.log("AAAA PartnerDetail activePartner:", activePartner);
-
   // Helper to read named properties from the partner's `properties` array.
   // Usage: getProperty(partner, 'phone', defaultValue)
   const getProperty = (partner, name, defaultValue = null) => {

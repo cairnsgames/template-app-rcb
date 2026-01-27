@@ -151,7 +151,7 @@ const BookingSection = (props) => {
               />
             ))}
           </Form.Group>
-          <Form.Group className="mb-3">
+          {/* <Form.Group className="mb-3">
             <Form.Label>Quantity</Form.Label>
             <Form.Control
               type="number"
@@ -159,7 +159,7 @@ const BookingSection = (props) => {
               value={quantity}
               onChange={(e) => setQuantity(parseInt(e.target.value))}
             />
-          </Form.Group>
+          </Form.Group> */}
         </>
       ) : (
         <Form.Group className="mb-3">

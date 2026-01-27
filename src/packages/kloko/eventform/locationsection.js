@@ -10,10 +10,6 @@ const LocationSection = ({ location, setLocation }) => {
   const { defaultLocation} = useUser();
     const { userLocations } = useLocations();
 
-  console.log("AAAA LocationSection defaultLocation:", defaultLocation);
-  console.log("AAAA LocationSection location prop:", location);
-  console.log("AAAA LocationSection userLocations from useLocations():", userLocations);
-
   return (
     <div className="border p-2 my-3">
       <h3>{t('locationSection.title')}</h3>

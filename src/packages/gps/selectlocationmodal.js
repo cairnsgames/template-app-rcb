@@ -90,13 +90,11 @@ const SelectLocationModal = ({ onSelectLocation, onSelectAddress, defaultStart }
   };
 
   const selectLocation = () => {
-    console.log("AAAA Selecting location:", position, marker);
     if (onSelectLocation) {
       // Always send object in { lat, lng, name } format
       const lat = marker ? marker.lat : Array.isArray(position) ? Number(position[0]) : (position && position.lat) ? Number(position.lat) : JOHANNESBURG_CBD.lat;
       const lng = marker ? marker.lng : Array.isArray(position) ? Number(position[1]) : (position && position.lng) ? Number(position.lng) : JOHANNESBURG_CBD.lng;
       const name = null; // name may be provided via onSelectAddress callback
-      console.log("AAAA Calling onSelectLocation with:", { lat, lng, name });
       onSelectLocation({ lat, lng, name });
     }
     setShow(false);

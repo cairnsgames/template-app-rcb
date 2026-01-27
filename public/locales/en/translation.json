@@ -183,7 +183,7 @@
   },
   "events": {
     "createEvent": "Create a new event",
-    "updateEvent": "Update the existing event",
+    "updateEvent": "Update event",
     "upcomingEvents": "Upcoming Events",
     "date": "Event Date: {{date}}",
     "addEvent": "Add Event",

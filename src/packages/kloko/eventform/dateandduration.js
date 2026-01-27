@@ -16,7 +16,6 @@ const DateAndDuration = ({
 
   return (
     <div className="border p-2 my-3">
-      {durationType ?? "X"} {startTime}, {duration}, {endTime}
       <h3>{t('dateAndDuration.title')}</h3>
       <Form.Group controlId="duration">
         <Form.Group controlId="durationType">
@@ -83,10 +82,11 @@ const DateAndDuration = ({
                   required
                 >
                   <option value="">{t('dateAndDuration.selectDuration')}</option>
-                  <option value="20">20 minutes</option>
+                  <option value="30">30 minutes</option>
                   <option value="60">60 minutes</option>
                   <option value="90">90 minutes</option>
                   <option value="120">120 minutes</option>
+                  <option value="180">3 hours</option>
                 </Form.Select>
               </InputGroup>
             </Form.Group>

@@ -276,6 +276,7 @@ export const KlokoMyEventProvider = ({
       );
       const data = await response.json();
       setTicketTypes(data);
+      return data;
     } catch (error) {
       console.error("Error fetching ticket types:", error);
       setTicketTypes([]);
@@ -295,6 +296,7 @@ export const KlokoMyEventProvider = ({
       );
       const data = await response.json();
       setTicketOptions(data);
+      return data;
     } catch (error) {
       console.error("Error fetching ticket options:", error);
       setTicketOptions([]);
@@ -593,11 +595,33 @@ export const KlokoMyEventProvider = ({
           body: JSON.stringify(event),
         }
       );
-      const updatedEvent = await response.json();
-      setMyEvents((prev) =>
-        prev.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
-      );
+      let updatedEvent = await response.json();
+      // normalize response if it's an array
+      if (Array.isArray(updatedEvent)) updatedEvent = updatedEvent[0];
 
+      if (!updatedEvent || !updatedEvent.id) {
+        console.error("updateEvent: invalid response from server", updatedEvent);
+        setLoading(false);
+        return [];
+      }
+
+      setMyEvents((prev) => {
+        const idx = prev.findIndex((e) => Number(e.id) === Number(updatedEvent.id));
+        if (idx === -1) {
+          console.log(`updateEvent: event id ${updatedEvent.id} not found in myEvents`);
+          return prev;
+        }
+        const newEvents = [...prev];
+        // merge existing event with updated fields to avoid losing other properties
+        const merged = { ...newEvents[idx], ...updatedEvent };
+        // keep compatibility with other code that expects start/end
+        if (merged.start_time) merged.start = merged.start_time;
+        if (merged.end_time) merged.end = merged.end_time;
+        newEvents[idx] = merged;
+        return newEvents;
+      });
+
+      // update ticket types/options (fire-and-forget)
       ticketTypes.map((t) => {
         createOrUpdateTicket(t);
       });

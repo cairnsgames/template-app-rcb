@@ -25,7 +25,6 @@ function ChangeView({ center, zoom }) {
 }
 
 const MapControls = (props) => {
-  console.log("AAAA MapDisplay: MapControls rendered with props:", props);
   const [isMapSearchVisible, setIsMapSearchVisible] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
@@ -137,7 +136,6 @@ const MapDisplay = (props) => {
 
   // normalize defaultStart into [lat, lng] or null
   const normalizeStart = (start) => {
-    console.log("AAAA MapDisplay: Normalizing defaultStart:", start);
     if (!start) return null;
     if (Array.isArray(start) && start.length >= 2) {
       return [Number(start[0]), Number(start[1])];
@@ -146,10 +144,6 @@ const MapDisplay = (props) => {
       const lat = start.lat ?? start.latitude ?? start[0];
       const lng = start.lng ?? start.lon ?? start.longitude ?? start[1];
       if (lat !== undefined && lng !== undefined) {
-        console.log("AAAA MapDisplay: Normalized defaultStart:", [
-          Number(lat),
-          Number(lng),
-        ]);
         return [Number(lat), Number(lng)];
       }
     }
@@ -239,13 +233,10 @@ const MapDisplay = (props) => {
         target.closest(".map-control"));
 
     if (isInsideControl) {
-      console.log("AAAA MapDisplay: click was inside a control — ignoring map click");
       return;
     }
 
-    console.log("AAAA MapDisplay: mapClick event with:", e);
     if (props.onClick) {
-      console.log("AAAA MapDisplay: Calling onClick with:", e.latlng);
       props.onClick(e);
     }
 
@@ -275,8 +266,6 @@ const MapDisplay = (props) => {
         country: data.address?.country || "Unknown Country",
         fullAddress: data.display_name || "Address not found",
       };
-
-      console.log("AAAA MapDisplay: Formatted address:", formattedAddress);
 
       setSelectedAddress(formattedAddress.fullAddress);
 

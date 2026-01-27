@@ -45,13 +45,6 @@ const LocationSelect = ({ onChange, ...props }) => {
     const targetLat = incoming?.lat;
     const targetLng = incoming?.lng;
 
-    console.log('default-selection useEffect - incoming prop object', incoming);
-
-    if (!targetNameRaw && (targetLat == null || targetLng == null)) {
-      console.log('default-selection - no usable incoming location info');
-      return;
-    }
-
     const targetName = targetNameRaw ? String(targetNameRaw).trim().toLowerCase() : null;
 
     // If already selected and names match (case-insensitive), do nothing
@@ -61,23 +54,18 @@ const LocationSelect = ({ onChange, ...props }) => {
       targetName &&
       String(selectedLocation.name).trim().toLowerCase() === targetName
     ) {
-      console.log('default-selection - already selected and matches, skipping');
       return;
     }
 
     if (!Array.isArray(userLocations) || userLocations.length === 0) {
-      console.log('default-selection - userLocations empty or not array yet');
       return;
     }
-
-    console.log('default-selection - searching userLocations', userLocations);
 
     let match = null;
     if (targetName) {
       match = userLocations.find((loc) =>
         loc.name && String(loc.name).trim().toLowerCase() === targetName
       );
-      console.log('default-selection - name match result', match);
     }
 
     // Fallback: try matching by lat/lng if no name match
@@ -89,7 +77,6 @@ const LocationSelect = ({ onChange, ...props }) => {
         if (Number.isNaN(lat) || Number.isNaN(lng)) return false;
         return Math.abs(lat - Number(targetLat)) < eps && Math.abs(lng - Number(targetLng)) < eps;
       });
-      console.log('default-selection - lat/lng match result', match);
     }
 
     if (match) {
@@ -100,9 +87,7 @@ const LocationSelect = ({ onChange, ...props }) => {
 
   const handleSelectChange = (e) => {
     const value = e.target.value;
-    console.log('handleSelectChange - raw value', value);
     const loc = userLocations.find((location) => location.id === Number(value));
-    console.log('handleSelectChange - resolved loc', loc);
     setSelectedLocation(loc);
     if (typeof onChange === 'function') onChange(loc); // Call the onChange prop with the new value
   };
