@@ -715,7 +715,7 @@ const AuthenticationProvider = (props) => {
   };
 
   
-  const partner = user?.permissions.find((perm) => perm.name === "Partner");
+  const partner = user?.permissions?.find((perm) => perm.name === "Partner");
   const isPartner = partner?.permission === "YES";  
 
   const values = useMemo(

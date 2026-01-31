@@ -41,9 +41,7 @@ function RegisterForm({ language, onSuccess }) {
       validationErrors.push("First name is required.");
     }
     
-    if (!lastName.trim()) {
-      validationErrors.push("Last name is required.");
-    }
+    // Last name is optional (some places use a single name in first name)
     
     if (password !== confirm) {
       validationErrors.push("Passwords do not match.");
@@ -122,11 +120,9 @@ function RegisterForm({ language, onSuccess }) {
             <Form.Control
               type="text"
               placeholder={t("registerForm.lastNamePlaceholder")}
-              required
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               autoComplete="family-name"
-              isInvalid={validated && !lastName.trim()}
             />
             <Form.Control.Feedback type="invalid">
               {t("registerForm.lastNameValidation")}
