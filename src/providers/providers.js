@@ -9,6 +9,7 @@ import MapProvider from "../packages/map/context/mapprovider";
 import TranslationProvider from "../packages/translation/translationprovider";
 import { GPSProvider } from "../packages/gps/gpsprovider";
 import ProvidersWithUser from "./providerswithuser";
+import { SearchProvider } from "../packages/search/context/searchcontext";
 
 // import all providers here, so that in app.js only a single providers file need be imported
 const Providers = ({ children }) => {
@@ -29,10 +30,11 @@ const Providers = ({ children }) => {
             >
               <ToastsProvider>
                 <ProvidersWithUser>
-                  {" "}
-                  <GPSProvider>
-                    <MapProvider>{children}</MapProvider>
-                  </GPSProvider>
+                  <SearchProvider>
+                    <GPSProvider>
+                      <MapProvider>{children}</MapProvider>
+                    </GPSProvider>
+                  </SearchProvider>
                 </ProvidersWithUser>
               </ToastsProvider>
             </AuthenticationProvider>
