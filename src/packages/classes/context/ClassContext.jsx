@@ -1,9 +1,15 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { mockClasses } from '../mockData';
-import { addDays, addMonths, addWeeks, isBefore, startOfDay } from 'date-fns';
-import { useTenant } from '../../tenant/context/usetenant';
-import { useUser } from '../../auth/context/useuser';
-import { combineUrlAndPath } from '../../../functions/combineurlandpath';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+import { mockClasses } from "../mockData";
+import { addDays, addMonths, addWeeks, isBefore, startOfDay } from "date-fns";
+import { useTenant } from "../../tenant/context/usetenant";
+import { useUser } from "../../auth/context/useuser";
+import { combineUrlAndPath } from "../../../functions/combineurlandpath";
 
 const ClassContext = createContext(undefined);
 
@@ -33,33 +39,40 @@ const useDebounce = (callback, delay) => {
 
 export const ClassProvider = ({ children, currentRole }) => {
   const [classes, setClasses] = useState([]);
-  const [search, setSearch] = useState(''); // Add search state
+  const [search, setSearch] = useState(""); // Add search state
   const [role, setRole] = useState(currentRole);
   const { tenant } = useTenant();
   const { token } = useUser();
 
+  if (!process.env.REACT_APP_KLOKO_API) {
+    throw new Error(
+      "ClassProvider: REACT_APP_KLOKO_API environment variable is required",
+    );
+  }
+
   const fetchClasses = async (searchValue) => {
     const body = { search: searchValue };
     try {
-      const url = combineUrlAndPath(process.env.REACT_APP_KLOKO_API, role === "teacher" ? "api.php/myclasses" : "api.php/classes");
-      const response = await fetch(url,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            app_id: tenant,
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(body), // Include search in the body
-        }
+      const url = combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,
+        role === "teacher" ? "api.php/myclasses" : "api.php/classes",
       );
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          app_id: tenant,
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body), // Include search in the body
+      });
       if (!response.ok) {
-        throw new Error('Failed to fetch classes');
+        throw new Error("Failed to fetch classes");
       }
       const data = await response.json();
       setClasses(data);
     } catch (error) {
-      console.error('Error fetching classes:', error);
+      console.error("Error fetching classes:", error);
     }
   };
 
@@ -70,8 +83,7 @@ export const ClassProvider = ({ children, currentRole }) => {
     return () => {}; // Cleanup handled in useDebounce
   }, [search, tenant, token, role]);
 
-  useEffect(() => {
-  }, [classes]);
+  useEffect(() => {}, [classes]);
 
   const generateRepeatedClasses = (newClass) => {
     if (!newClass.repeatPattern) return [newClass];
@@ -85,13 +97,13 @@ export const ClassProvider = ({ children, currentRole }) => {
     while (isBefore(startOfDay(currentDate), startOfDay(untilDate))) {
       let nextDate;
       switch (newClass.repeatPattern.type) {
-        case 'daily':
+        case "daily":
           nextDate = addDays(currentDate, 1);
           break;
-        case 'weekly':
+        case "weekly":
           nextDate = addWeeks(currentDate, 1);
           break;
-        case 'monthly':
+        case "monthly":
           nextDate = addMonths(currentDate, 1);
           break;
       }
@@ -116,17 +128,20 @@ export const ClassProvider = ({ children, currentRole }) => {
 
     try {
       const responses = await Promise.all(
-        repeatedClasses.map(cls =>
-          fetch('http://localhost/cairnsgames/php/kloko/api.php/event', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              app_id: tenant,
-              Authorization: `Bearer ${token}`,
+        repeatedClasses.map((cls) =>
+          fetch(
+            combineUrlAndPath(process.env.REACT_APP_KLOKO_API, "api.php/event"),
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                app_id: tenant,
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify(cls),
             },
-            body: JSON.stringify(cls),
-          })
-        )
+          ),
+        ),
       );
 
       const successfulClasses = [];
@@ -135,38 +150,52 @@ export const ClassProvider = ({ children, currentRole }) => {
           const data = await response.json();
           successfulClasses.push({ ...repeatedClasses[index], ...data });
         } else {
-          console.error(`Failed to post class with id ${repeatedClasses[index].id}`);
+          console.error(
+            `Failed to post class with id ${repeatedClasses[index].id}`,
+          );
         }
       }
 
       const newClasses = [...classes, ...successfulClasses];
       setClasses(newClasses);
     } catch (error) {
-      console.error('Error adding classes:', error);
+      console.error("Error adding classes:", error);
     }
   };
 
   const updateClass = (id, updatedClass) => {
-    fetch(`http://localhost/cairnsgames/php/kloko/api.php/event/${id}`, {
-      method: 'PUT',
+    fetch(combineUrlAndPath(
+        process.env.REACT_APP_KLOKO_API,`api.php/event/${id}`), {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         app_id: tenant,
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(updatedClass),
-    })
-    setClasses(prev =>
-      prev.map(cls => (cls.id === id ? { ...cls, ...updatedClass } : cls))
+    });
+    setClasses((prev) =>
+      prev.map((cls) => (cls.id === id ? { ...cls, ...updatedClass } : cls)),
     );
   };
 
   const deleteClass = (id) => {
-    setClasses(prev => prev.filter(cls => cls.id !== id));
+    setClasses((prev) => prev.filter((cls) => cls.id !== id));
   };
 
   return (
-    <ClassContext.Provider value={{ classes, addClass, updateClass, deleteClass, search, setSearch, role, setRole }}>
+    <ClassContext.Provider
+      value={{
+        classes,
+        addClass,
+        updateClass,
+        deleteClass,
+        search,
+        setSearch,
+        role,
+        setRole,
+      }}
+    >
       {children}
     </ClassContext.Provider>
   );
@@ -175,7 +204,7 @@ export const ClassProvider = ({ children, currentRole }) => {
 export const useClasses = () => {
   const context = useContext(ClassContext);
   if (context === undefined) {
-    throw new Error('useClasses must be used within a ClassProvider');
+    throw new Error("useClasses must be used within a ClassProvider");
   }
   return context;
 };
