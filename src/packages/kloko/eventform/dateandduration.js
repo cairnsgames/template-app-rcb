@@ -86,7 +86,7 @@ const DateAndDuration = ({
                   <option value="60">60 minutes</option>
                   <option value="90">90 minutes</option>
                   <option value="120">120 minutes</option>
-                  <option value="180">3 hours</option>
+                  <option value="180">3 hours +</option>
                 </Form.Select>
               </InputGroup>
             </Form.Group>
