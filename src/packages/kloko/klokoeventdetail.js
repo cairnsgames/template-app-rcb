@@ -7,9 +7,10 @@ import { combineUrlAndPath } from "../../functions/combineurlandpath";
 import { formatEventDate, formatPrice } from "./eventfunctions";
 import BookingSection from "./klokobookingsection";
 import Tracker from "../tracker/tracker";
+import EventClassCard from "./klokoeventclasscard";
 
 const KlokoEventDetail = ({ id }) => {
-  const { activeEvent, setEventId } = useEvents();
+  const { activeEvent, setEventId, eventClasses } = useEvents();
 
   useEffect(() => {
     if (id) {
@@ -43,7 +44,6 @@ const KlokoEventDetail = ({ id }) => {
           X
         </button>*/}
       </div>
-
       <Tracker itemtype="event.detail" id={activeEvent.id}>
         <Card className="news-item">
           <div style={{ position: "relative" }}>
@@ -71,7 +71,7 @@ const KlokoEventDetail = ({ id }) => {
           </div>
           <Card.Body>
             {activeEvent.description}
-            {/* <div>Price: {formatPrice(activeEvent.currency, activeEvent.price)}</div> */}            
+            {/* <div>Price: {formatPrice(activeEvent.currency, activeEvent.price)}</div> */}
           </Card.Body>
           <Card.Footer>
             <small className="text-muted">
@@ -85,6 +85,14 @@ const KlokoEventDetail = ({ id }) => {
             </Card.Footer>
           )}
         </Card>
+        {eventClasses && eventClasses.length > 0 && (
+          <div className="mt-3">
+            <h4>Classes for this Event</h4>
+            {eventClasses.map((cls) => (
+              <EventClassCard key={cls.id} cls={cls} />
+            ))}
+          </div>
+        )}
       </Tracker>
     </div>
   );

@@ -38,6 +38,7 @@ export const KlokoMyEventProvider = ({
   const [ticketOptions, setTicketOptions] = useState([]);
   const [location, setLocation] = useState();
   const [classes, setClasses] = useState([]);
+  const [eventClasses, setEventClasses] = useState([]);
 
   if (!process.env.REACT_APP_KLOKO_API) {
     throw new Error(
@@ -169,9 +170,10 @@ export const KlokoMyEventProvider = ({
 
   useEffect(() => {
     if (activeEvent) {
-      fetchBookings(activeEvent);
+      fetchBookings(activeEvent.id);
       fetchTicketTypesByEventId(activeEvent.id);
       fetchTicketOptionsByEventId(activeEvent.id);
+      fetchEventClassesByEventId(activeEvent.id);
     }
   }, [activeEvent]);
 
@@ -300,6 +302,34 @@ export const KlokoMyEventProvider = ({
     } catch (error) {
       console.error("Error fetching ticket options:", error);
       setTicketOptions([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchEventClassesByEventId = async (eventId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_KLOKO_API,
+          `api.php/event/${eventId}/classes`
+        ),
+        { headers }
+      );
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        data.sort((a, b) => {
+          const aTime = a?.start_time ? new Date(a.start_time).getTime() : Infinity;
+          const bTime = b?.start_time ? new Date(b.start_time).getTime() : Infinity;
+          return aTime - bTime;
+        });
+      }
+      setEventClasses(data ?? []);
+      return data;
+    } catch (error) {
+      console.error("Error fetching event classes:", error);
+      setEventClasses([]);
     } finally {
       setLoading(false);
     }
@@ -897,9 +927,13 @@ export const KlokoMyEventProvider = ({
       ticketOptions,
       toggleFavorite,
       classes,
+      eventClasses,
+      setEventClasses,
+      fetchEventClassesByEventId,
       setClasses,
       location,
       setLocation,
+      eventClasses
     }),
     [
       calendars,
@@ -909,6 +943,7 @@ export const KlokoMyEventProvider = ({
       userBookings, // Add userBookings to dependencies
       tickets,
       classes,
+      eventClasses,
       templates,
       activeCalendar,
       activeEvent,
@@ -917,6 +952,7 @@ export const KlokoMyEventProvider = ({
       toggleFavorite,
       location,
       setLocation,
+      eventClasses
     ]
   );
 

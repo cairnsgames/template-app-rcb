@@ -10,9 +10,9 @@ export const useEvents = () => {
     throw new Error("useEvents was used outside of its Provider");
   }
 
-  const { classes, events, setEventId, activeEvent, ticketTypes, ticketOptions, toggleFavorite, location, setLocation } = context;
+  const { classes, events, setEventId, activeEvent, ticketTypes, ticketOptions, eventClasses, toggleFavorite, location, setLocation } = context;
 
-  return { classes, events, setEventId, activeEvent, ticketTypes, ticketOptions, toggleFavorite, location, setLocation };
+  return { classes, events, setEventId, activeEvent, ticketTypes, ticketOptions, eventClasses,toggleFavorite, location, setLocation };
 }
 
 export default useEvents;
