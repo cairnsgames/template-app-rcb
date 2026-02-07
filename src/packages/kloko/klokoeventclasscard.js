@@ -65,7 +65,7 @@ const EventClassCard = ({ cls, variant }) => {
             borderRadius: 2,
           }}
         >
-          Unavailable
+          Sold Out
         </div>
       )}
     </div>
