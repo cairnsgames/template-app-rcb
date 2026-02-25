@@ -13,6 +13,9 @@ import useMyEvents from "./context/usemyevents";
 import Tracker from "../tracker/tracker";
 import { useTranslation } from "react-i18next";
 import useUser from "../auth/context/useuser";
+import EventItem from "./eventitem";
+import TilesLayout from "../layout/Tiles";
+import Tile from "../layout/Tile";
 
 const KlokoEventEditor = React.lazy(() => import("./klokoevent"));
 
@@ -36,6 +39,7 @@ const KlokoMyEvents = () => {
   };
 
   const handleEditorClose = () => {
+    console.log("AAAA Editor closed");
     setShowEditor(false);
   };
 
@@ -107,7 +111,17 @@ const KlokoMyEvents = () => {
                 />
               </Col>
             </Row>
-            <Row className="mx-1">
+            <Row>
+              <TilesLayout>
+          {filteredEvents.map((event) => (
+            <Tile key={event.id}>
+              <EventItem item={event} onClick={() => handleEdit(event.id)} 
+                  onEdit={() => handleEdit(event.id)} />
+            </Tile>
+          ))}
+        </TilesLayout>
+            </Row>
+            {/* <Row className="mx-1">
               {filteredEvents.map((event) => (
                 <EventThumb
                   key={event.id}
@@ -116,7 +130,7 @@ const KlokoMyEvents = () => {
                   onEdit={() => handleEdit(event.id)}
                 />
               ))}
-            </Row>
+            </Row> */}
           </>
         )}
       </div>

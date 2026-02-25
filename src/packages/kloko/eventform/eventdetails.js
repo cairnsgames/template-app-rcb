@@ -11,19 +11,16 @@ const EventDetails = ({
   setKeywords,
   maxParticipants,
   setMaxParticipants,
+  onClose
 }) => {
   const { t } = useTranslation();
-
-  const handleHomeRedirect = () => {
-    window.location.hash = "#home";
-  };
 
   return (
     <div className="border p-2 my-3 position-relative">
       <button
         className="btn position-absolute"
         style={{ top: "10px", right: "10px" }}
-        onClick={handleHomeRedirect}
+        onClick={onClose}
       >
         {t('eventDetails.closeButton')}
       </button>

@@ -223,16 +223,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
     onClose();
   };
 
-  // useEffect(() => {
-  //   console.log("LOCATION", location);
-  // }, [location]);
-
-  console.log("BBBB Rendering KlokoEventEditor", event);
-  console.log("BBBB Tickets", tickets);
-  console.log("BBBB TicketOptions", ticketOptions);
-
   return (
-    <Div className="packagesKlokoEvent">
+    <div className="packagesKlokoEvent">
       <Form onSubmit={handleSubmit}>
         <EventDetails
           title={title}
@@ -243,6 +235,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
           setKeywords={setKeywords}
           maxParticipants={maxParticipants}
           setMaxParticipants={setMaxParticipants}
+          onClose={onClose}
         />
 
         <CoverImage
@@ -306,7 +299,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
           )}
         </Button>
       </Form>
-    </Div>
+    </div>
   );
 };
 

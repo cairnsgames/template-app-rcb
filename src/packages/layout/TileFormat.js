@@ -34,8 +34,6 @@ const TileFormat = ({ data, onClick }) => {
 
   const link = "https://juzt.dance#ticket?event=" + raw?.event_id;
 
-  console.log("EVENT CARD", data);
-
   const size = 128,
     logoPadding = 4,
     logoWidth = 64,
