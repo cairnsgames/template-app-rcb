@@ -16,6 +16,7 @@ import DateAndDuration from "./eventform/dateandduration";
 import PricingOptions from "./eventform/pricingoptions";
 import LocationSection from "./eventform/locationsection";
 import DisplaySettings from "./eventform/displaysettings";
+import EventQRCode from "./eventform/EventQRCode";
 import useUser from "../auth/context/useuser";
 
 const KlokoEventEditor = ({ id, onClose }) => {
@@ -288,6 +289,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
           overlayText={overlayText}
           setOverlayText={setOverlayText}
         />
+
+        <EventQRCode event={event} />
 
         <Button
           variant="primary"
