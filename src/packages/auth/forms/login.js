@@ -17,6 +17,8 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
   const [errors, setErrors] = useState();
   const [warning, setWarning] = useState();
 
+  const link = new URLSearchParams(window.location.search).get('link') || '#home'
+
   const handleSubmit = (event) => {
     const form = event.currentTarget;
 
@@ -37,6 +39,7 @@ const LoginForm = ({ onSuccess, onClose, rememberMe }) => {
         }
         if (result && onSuccess) {
           onSuccess(true);
+            window.location.replace(`${window.location.pathname}#${link}`);
         }
       })
       .catch((error) => {

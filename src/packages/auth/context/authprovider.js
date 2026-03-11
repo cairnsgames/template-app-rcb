@@ -368,7 +368,6 @@ const AuthenticationProvider = (props) => {
         };
         setUser(userDetails);
 
-        window.location.hash = "#";
         return data;
       })
       .catch((err) => {

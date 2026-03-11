@@ -6,8 +6,10 @@ import useUser from "../auth/context/useuser";
 import eventing from "../eventing/eventing";
 import useTenant from "../tenant/context/usetenant";
 import useCart from "../breezo/context/usecart";
+import { useTranslation } from "react-i18next";
 
 const BookingSection = (props) => {
+  const { t } = useTranslation();
   const { cancelBooking } = useBookings();
   const { user } = useUser();
   const { tenant } = useTenant();
@@ -199,6 +201,13 @@ const BookingSection = (props) => {
               {alertMessage}
             </Alert>
           )}
+          {!user?.id && (
+            <Alert variant="warning" className="mb-0">
+              Please log in to book tickets.
+              <Button 
+              href={`?link=events/${event.id}#login`} className="ms-3">{t("Login")}</Button>
+            </Alert>
+          )}
           <div className="klokoBookings d-flex align-items-center justify-content-end gap-3">
             <Form.Group className="mb-3">
               <Form.Label>Quantity</Form.Label>
@@ -239,11 +248,6 @@ const BookingSection = (props) => {
                     quantity
                   }`}
             </div>
-            {!user?.id && (
-              <Alert variant="warning" className="mb-0">
-                Please log in to book tickets.
-              </Alert>
-            )}
             <Button
               variant="primary"
               onClick={handleAddToCart}

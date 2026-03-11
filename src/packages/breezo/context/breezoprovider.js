@@ -269,6 +269,7 @@ export const BreezoProvider = ({
   };
 
   const fetchOrCreateCart = async () => {
+    if (!user?.id) return null;
     setLoading(true);
     try {
       const response = await fetch(
