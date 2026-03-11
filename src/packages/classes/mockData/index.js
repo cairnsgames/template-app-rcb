@@ -1,5 +1,9 @@
 import { addDays } from 'date-fns';
 
+// Sequential ID generator
+let idCounter = 1;
+const generateId = () => `class-${idCounter++}`;
+
 const generateTimeSlots = (date) => {
   const times = [];
   for (let hour = 8; hour <= 20; hour += 3) {
@@ -12,7 +16,7 @@ const generateTimeSlots = (date) => {
 const generateClassesForDay = (date) => {
   const timeSlots = generateTimeSlots(date);
   return timeSlots.map((startTime, index) => ({
-    id: crypto.randomUUID(),
+    id: generateId(),
     title: `Class ${index + 1}`,
     startTime,
     endTime: new Date(new Date(startTime).setHours(new Date(startTime).getHours() + 1)).toISOString(),
@@ -31,7 +35,7 @@ const generateClassesForDay = (date) => {
 // Add some multiday events
 const multiDayEvents = [
   {
-    id: crypto.randomUUID(),
+    id: generateId(),
     title: 'Yoga Retreat',
     startTime: new Date().toISOString(),
     endTime: addDays(new Date(), 3).toISOString(),
@@ -41,7 +45,7 @@ const multiDayEvents = [
     isMultiDay: true
   },
   {
-    id: crypto.randomUUID(),
+    id: generateId(),
     title: 'Dance Workshop',
     startTime: addDays(new Date(), 2).toISOString(),
     endTime: addDays(new Date(), 4).toISOString(),
