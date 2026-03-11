@@ -239,9 +239,15 @@ const BookingSection = (props) => {
                     quantity
                   }`}
             </div>
+            {!user?.id && (
+              <Alert variant="warning" className="mb-0">
+                Please log in to book tickets.
+              </Alert>
+            )}
             <Button
               variant="primary"
               onClick={handleAddToCart}
+              disabled={!user?.id}
               // disabled={isButtonDisabled} // Decide later if this is required - do not delete
             >
               Add to Cart

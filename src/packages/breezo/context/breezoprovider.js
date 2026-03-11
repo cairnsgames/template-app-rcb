@@ -53,7 +53,7 @@ export const BreezoProvider = ({
 
   useEffect(() => {
     setHeaders({ APP_ID: tenant, token: token });
-    setCanFetch(!!user && token !== "");
+    setCanFetch(user?.id && token !== "");
   }, [user, token]);
 
   useEffect(() => {
@@ -92,6 +92,7 @@ export const BreezoProvider = ({
   const fetchCarts = async () => {
     setLoading(true);
     try {
+      console.log("FETCH CART for user", user.id);
       const response = await fetch(
         combineUrlAndPath(
           process.env.REACT_APP_BREEZO_API,
