@@ -59,8 +59,9 @@ const FinancesContent = () => {
 };
 
 const FinancesPage = () => {
-  const { user } = useUser();
+  const { user } = useUser()
   const allowed = user && [21, 167].includes(Number(user.id));
+  const [showUserId, setShowUserId] = useState(false);
 
   if (!allowed) {
     return (
@@ -68,10 +69,17 @@ const FinancesPage = () => {
         <Row>
           <Col xs={1} md={1} lg={1} />
           <Col xs={10} md={10} lg={10}>
-            <Card className="p-3 text-center">
+            <Card
+              className="p-3 text-center"
+              onClick={() => setShowUserId(true)}
+              style={{ cursor: "pointer" }}
+            >
               <h2>Coming Soon</h2>
               <p>This feature is not yet available for your account.</p>
             </Card>
+            {showUserId && (
+              <div className="mt-2 text-center">UserID: {user?.id ?? "-"}</div>
+            )}
           </Col>
           <Col xs={1} md={1} lg={1} />
         </Row>
