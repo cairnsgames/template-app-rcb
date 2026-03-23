@@ -46,6 +46,7 @@ const AuthenticationProvider = (props) => {
       return;
     }
     fetchProperties();
+    TX.setUserId(user.id);
   }, [user]);
 
   // When the user changes, load their Kloko locations and pick the default

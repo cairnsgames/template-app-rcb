@@ -1,11 +1,88 @@
+import React, { useState, useContext } from "react";
 import PageCentered from "../../../parts/pagelayouts/pagecentered";
+import { Container, Row, Col } from "react-bootstrap";
+import TxProvider, { TxContext } from "./txContext";
+import { Tabs, Tab, Card } from "react-bootstrap";
+import DetailsTab from "./DetailsTab";
+import PayoutsTab from "./PayoutsTab";
+import TransactionsTab from "./TransactionsTab";
+import ReportsTab from "./ReportsTab";
+import useUser from "../../../packages/auth/context/useuser";
+
+const FinancesContent = () => {
+  const { balance } = useContext(TxContext);
+  const [active, setActive] = useState("details");
+
+  return (
+    <Container fluid className="my-3">
+      <Row>
+        <Col xs={1} md={1} lg={1} />
+        <Col xs={10} md={10} lg={10}>
+          <h1>Finances (Under development)</h1>
+
+          <Card className="mb-3 p-3">
+            <div>Balance: <strong>£{balance}</strong></div>
+          </Card>
+
+          <Tabs
+            id="finances-tabs"
+            activeKey={active}
+            onSelect={(k) => setActive(k)}
+            className="mb-3"
+          >
+            <Tab eventKey="details" title="Details">
+              <Card className="p-3">
+                <DetailsTab />
+              </Card>
+            </Tab>
+            <Tab eventKey="payouts" title="Payouts">
+              <Card className="p-3">
+                <PayoutsTab />
+              </Card>
+            </Tab>
+            <Tab eventKey="transactions" title="Transactions">
+              <Card className="p-3">
+                <TransactionsTab />
+              </Card>
+            </Tab>
+            <Tab eventKey="reports" title="Reports">
+              <Card className="p-3">
+                <ReportsTab />
+              </Card>
+            </Tab>
+          </Tabs>
+        </Col>
+        <Col xs={1} md={1} lg={1} />
+      </Row>
+    </Container>
+  );
+};
 
 const FinancesPage = () => {
+  const { user } = useUser();
+  const allowed = user && [21, 167].includes(Number(user.id));
+
+  if (!allowed) {
+    return (
+      <Container fluid className="my-3">
+        <Row>
+          <Col xs={1} md={1} lg={1} />
+          <Col xs={10} md={10} lg={10}>
+            <Card className="p-3 text-center">
+              <h2>Coming Soon</h2>
+              <p>This feature is not yet available for your account.</p>
+            </Card>
+          </Col>
+          <Col xs={1} md={1} lg={1} />
+        </Row>
+      </Container>
+    );
+  }
+
   return (
-    <PageCentered className="my-3">
-      <h1>Finances</h1>
-      <p>This page is under construction.</p>
-    </PageCentered>
+    <TxProvider>
+      <FinancesContent />
+    </TxProvider>
   );
 };
 
