@@ -15,7 +15,9 @@ export const KlokoEventsProvider = ({ children, user, tenant, token }) => {
     );
   }
 
-  const headers = { APP_ID: tenant, token: token };
+  const headers = { APP_ID: tenant, token: token,
+    'Content-Type': 'application/json; charset=utf-8'
+   };
 
   useEffect(() => {
     if (eventId) {
@@ -40,6 +42,7 @@ export const KlokoEventsProvider = ({ children, user, tenant, token }) => {
         {
           method: "POST",
           headers: headers,
+          body: JSON.stringify({})
         }
       );
       const data = await response.json();

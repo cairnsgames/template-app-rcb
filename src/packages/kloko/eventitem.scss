@@ -54,4 +54,11 @@
       }
     }
   }
+
+  /* Ensure newline characters in descriptions render as line breaks */
+  .news-item .card-body {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: inherit, "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Symbol";
+  }
   
