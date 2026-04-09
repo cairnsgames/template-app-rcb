@@ -9,8 +9,8 @@ import TransactionsTab from "./TransactionsTab";
 import ReportsTab from "./ReportsTab";
 import useUser from "../../../packages/auth/context/useuser";
 
-const FinancesContent = () => {
-  const { balance } = useContext(TxContext);
+const FinancesContent = (): JSX.Element => {
+  const { balance } = useContext(TxContext) as any;
   const [active, setActive] = useState("details");
 
   return (
@@ -27,7 +27,7 @@ const FinancesContent = () => {
           <Tabs
             id="finances-tabs"
             activeKey={active}
-            onSelect={(k) => setActive(k)}
+            onSelect={(k: string | null) => setActive(k || "details")}
             className="mb-3"
           >
             <Tab eventKey="details" title="Details">
@@ -58,8 +58,8 @@ const FinancesContent = () => {
   );
 };
 
-const FinancesPage = () => {
-  const { user } = useUser()
+const FinancesPage = (): JSX.Element => {
+  const { user } = useUser();
   const allowed = user && [21, 167].includes(Number(user.id));
   const [showUserId, setShowUserId] = useState(false);
 

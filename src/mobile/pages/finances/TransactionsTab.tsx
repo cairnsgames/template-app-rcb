@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
 import { ListGroup, Table, Spinner } from "react-bootstrap";
 import { TxContext } from "./txContext";
+import { TxContextValue } from "./finances.types";
 
-export default function TransactionsTab() {
-  const { transactions, loadingTransactions } = useContext(TxContext);
+export default function TransactionsTab(): JSX.Element {
+  const tx = useContext(TxContext) as TxContextValue;
+  const { transactions, loadingTransactions } = tx || ({} as TxContextValue);
 
   if (loadingTransactions)
     return (
@@ -14,7 +16,7 @@ export default function TransactionsTab() {
 
   if (!transactions || transactions.length === 0) return <div>No transactions yet.</div>;
 
-  const fmt = (v) => Number(v || 0).toFixed(2);
+  const fmt = (v: any) => Number(v || 0).toFixed(2);
 
   return (
     <>
@@ -35,7 +37,7 @@ export default function TransactionsTab() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((t) => (
+            {transactions.map((t: any) => (
               <tr key={t.id || t.reference}>
                 <td>{t.id}</td>
                 <td>{t.type}</td>
@@ -55,7 +57,7 @@ export default function TransactionsTab() {
 
       <div className="d-block d-md-none">
         <ListGroup>
-          {transactions.map((t, i) => (
+          {transactions.map((t: any, i: number) => (
             <ListGroup.Item key={i}>
               <div>Price: R{fmt(t.transactionAmount)}</div>
               <div>Amount: R{fmt(t.grossAmount)}</div>

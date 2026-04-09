@@ -1,16 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card, Form, Spinner, Button } from "react-bootstrap";
 import { TxContext } from "./txContext";
+import { TxContextValue } from "./finances.types";
 import useUser from "@cairnsgames/auth/context/useuser";
 import { Save } from "react-bootstrap-icons";
+import Property from "../../../packages/profile/types/property.type";
 
-export default function DetailsTab() {
-  const { vatOwed, loadingBalances } = useContext(TxContext);
+export default function DetailsTab(): JSX.Element {
+  const tx = useContext(TxContext) as TxContextValue;
+  const { vatOwed, loadingBalances } = tx || ({} as TxContextValue);
   const { properties = [], saveProperties } = useUser();
 
-  const [mergedProperties, setMergedProperties] = useState([]);
-  const [vatNumber, setVatNumber] = useState("");
-  const [notVatRegistered, setNotVatRegistered] = useState(false);
+  const [mergedProperties, setMergedProperties] = useState<Property[]>([]);
+  const [vatNumber, setVatNumber] = useState<string>("");
+  const [notVatRegistered, setNotVatRegistered] = useState<boolean>(false);
   const [bankDetails, setBankDetails] = useState({
     accountName: "",
     accountNumber: "",
@@ -18,30 +21,30 @@ export default function DetailsTab() {
     sortCode: "",
   });
 
-  function updateBank(field, value) {
+  function updateBank(field: string, value: string) {
     setBankDetails((b) => ({ ...b, [field]: value }));
     setMergedProperties((prev) => {
       const cp = [...prev];
       const idx = cp.findIndex((p) => p.name === "bank details");
       if (idx > -1) {
-        cp[idx] = { ...cp[idx], value: JSON.stringify({ ...bankDetails, [field]: value }) };
+        cp[idx] = { ...cp[idx], value: JSON.stringify({ ...bankDetails, [field]: value }) } as Property;
       }
       return cp;
     });
   }
 
   useEffect(() => {
-    const defaultProperties = [
+    const defaultProperties: Property[] = [
       { name: "vat number", value: "", type: "text" },
       { name: "bank details", value: "", type: "json" },
     ];
 
     const updatedProperties = defaultProperties.map((defaultProp) => {
-      const existingProp = properties.find((prop) => prop.name === defaultProp.name);
+      const existingProp = properties.find((prop: Property) => prop.name === defaultProp.name);
       if (existingProp) {
-        return { ...defaultProp, ...existingProp };
+        return { ...defaultProp, ...existingProp } as Property;
       }
-      return defaultProp;
+      return defaultProp as Property;
     });
 
     setMergedProperties(updatedProperties);
@@ -101,7 +104,7 @@ export default function DetailsTab() {
                 const cp = [...prev];
                 const idx = cp.findIndex((p) => p.name === "vat number");
                 if (idx > -1) {
-                  cp[idx] = { ...cp[idx], value: checked ? "NO VAT" : vatNumber };
+                  cp[idx] = { ...cp[idx], value: checked ? "NO VAT" : vatNumber } as Property;
                 }
                 return cp;
               });
@@ -119,7 +122,7 @@ export default function DetailsTab() {
                 const cp = [...prev];
                 const idx = cp.findIndex((p) => p.name === "vat number");
                 if (idx > -1) {
-                  cp[idx] = { ...cp[idx], value: e.target.value };
+                  cp[idx] = { ...cp[idx], value: e.target.value } as Property;
                 }
                 return cp;
               });
@@ -171,10 +174,10 @@ export default function DetailsTab() {
           onClick={() => {
             const updated = mergedProperties.map((p) => {
               if (p.name === "vat number") {
-                return { ...p, value: notVatRegistered ? "NO VAT" : vatNumber };
+                return { ...p, value: notVatRegistered ? "NO VAT" : vatNumber } as Property;
               }
               if (p.name === "bank details") {
-                return { ...p, value: JSON.stringify(bankDetails) };
+                return { ...p, value: JSON.stringify(bankDetails) } as Property;
               }
               return p;
             });

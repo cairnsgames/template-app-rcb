@@ -1,12 +1,14 @@
 import React, { useContext, useState } from "react";
 import { Card, Form, InputGroup, Button, ListGroup, Collapse, Spinner } from "react-bootstrap";
 import { TxContext } from "./txContext";
+import { TxContextValue } from "./finances.types";
 
-export default function PayoutsTab() {
-  const { balance, payouts, requestPayout, loadingPayouts, requestingPayout } = useContext(TxContext);
-  const [amount, setAmount] = useState("");
-  const [open, setOpen] = useState(false);
-  const [error, setError] = useState("");
+export default function PayoutsTab(): JSX.Element {
+  const tx = useContext(TxContext) as TxContextValue;
+  const { balance, payouts, requestPayout, loadingPayouts, requestingPayout } = tx || ({} as TxContextValue);
+  const [amount, setAmount] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   if (loadingPayouts)
     return (
@@ -46,7 +48,7 @@ export default function PayoutsTab() {
                 try {
                   await requestPayout("user", amt);
                   setAmount("");
-                } catch (err) {
+                } catch (err: any) {
                   setError(err.message || "Request failed");
                 }
               }}
@@ -74,7 +76,7 @@ export default function PayoutsTab() {
                 <div>No previous payouts.</div>
               ) : (
                 <ListGroup>
-                  {payouts.map((p, i) => (
+                  {payouts.map((p: any, i: number) => (
                     <ListGroup.Item key={i}>
                       <div>Amount: R{p.amount}</div>
                       <div>Date: {p.date}</div>
