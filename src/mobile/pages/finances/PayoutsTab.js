@@ -76,7 +76,7 @@ export default function PayoutsTab() {
                 <ListGroup>
                   {payouts.map((p, i) => (
                     <ListGroup.Item key={i}>
-                      <div>Amount: £{p.amount}</div>
+                      <div>Amount: R{p.amount}</div>
                       <div>Date: {p.date}</div>
                     </ListGroup.Item>
                   ))}

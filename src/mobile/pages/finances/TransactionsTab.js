@@ -14,6 +14,8 @@ export default function TransactionsTab() {
 
   if (!transactions || transactions.length === 0) return <div>No transactions yet.</div>;
 
+  const fmt = (v) => Number(v || 0).toFixed(2);
+
   return (
     <>
       <div className="d-none d-md-block">
@@ -24,8 +26,10 @@ export default function TransactionsTab() {
               <th>Type</th>
               <th>Reference</th>
               <th>Description</th>
+              <th>Price</th>
               <th>Amount</th>
               <th>Tax</th>
+              <th>Platform Fee</th>
               <th>Net</th>
               <th>Date</th>
             </tr>
@@ -36,10 +40,12 @@ export default function TransactionsTab() {
                 <td>{t.id}</td>
                 <td>{t.type}</td>
                 <td>{t.reference}</td>
-                <td>{t.description}</td>
-                <td>£{t.amount}</td>
-                <td>£{t.tax || 0}</td>
-                <td>£{t.net}</td>
+                <td>{t.transaction_description}</td>
+                <td>R{fmt(t.transactionAmount)}</td>
+                <td>R{fmt(t.grossAmount)}</td>
+                <td>R{fmt(t.taxAmount)}</td>
+                <td>R{fmt(t.platformFee)}</td>
+                <td>R{fmt(t.netAmount)}</td>
                 <td>{t.date}</td>
               </tr>
             ))}
@@ -51,9 +57,11 @@ export default function TransactionsTab() {
         <ListGroup>
           {transactions.map((t, i) => (
             <ListGroup.Item key={i}>
-              <div>Amount: £{t.amount}</div>
-              <div>Tax: £{t.tax}</div>
-              <div>Net: £{t.net}</div>
+              <div>Price: R{fmt(t.transactionAmount)}</div>
+              <div>Amount: R{fmt(t.grossAmount)}</div>
+              <div>Tax: R{fmt(t.taxAmount)}</div>
+              <div>Platform Fee: R{fmt(t.platformFee)}</div>
+              <div>Net: R{fmt(t.netAmount)}</div>
               <div>Date: {t.date}</div>
             </ListGroup.Item>
           ))}

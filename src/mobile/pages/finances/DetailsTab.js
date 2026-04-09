@@ -1,22 +1,78 @@
-import React, { useContext } from "react";
-import { Card, Form, Spinner } from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import { Card, Form, Spinner, Button } from "react-bootstrap";
 import { TxContext } from "./txContext";
+import useUser from "@cairnsgames/auth/context/useuser";
+import { Save } from "react-bootstrap-icons";
 
 export default function DetailsTab() {
-  const {
-    vatOwed,
-    vatNumber,
-    setVatNumber,
-    isVatRegistered,
-    setIsVatRegistered,
-    bankDetails,
-    setBankDetails,
-    loadingBalances,
-  } = useContext(TxContext);
+  const { vatOwed, loadingBalances } = useContext(TxContext);
+  const { properties = [], saveProperties } = useUser();
+
+  const [mergedProperties, setMergedProperties] = useState([]);
+  const [vatNumber, setVatNumber] = useState("");
+  const [notVatRegistered, setNotVatRegistered] = useState(false);
+  const [bankDetails, setBankDetails] = useState({
+    accountName: "",
+    accountNumber: "",
+    bankName: "",
+    sortCode: "",
+  });
 
   function updateBank(field, value) {
-    setBankDetails({ ...bankDetails, [field]: value });
+    setBankDetails((b) => ({ ...b, [field]: value }));
+    setMergedProperties((prev) => {
+      const cp = [...prev];
+      const idx = cp.findIndex((p) => p.name === "bank details");
+      if (idx > -1) {
+        cp[idx] = { ...cp[idx], value: JSON.stringify({ ...bankDetails, [field]: value }) };
+      }
+      return cp;
+    });
   }
+
+  useEffect(() => {
+    const defaultProperties = [
+      { name: "vat number", value: "", type: "text" },
+      { name: "bank details", value: "", type: "json" },
+    ];
+
+    const updatedProperties = defaultProperties.map((defaultProp) => {
+      const existingProp = properties.find((prop) => prop.name === defaultProp.name);
+      if (existingProp) {
+        return { ...defaultProp, ...existingProp };
+      }
+      return defaultProp;
+    });
+
+    setMergedProperties(updatedProperties);
+
+    // initialize VAT and bank details derived state
+    const vatProp = updatedProperties.find((p) => p.name === "vat number");
+    if (vatProp) {
+      if (vatProp.value === "NO VAT") {
+        setNotVatRegistered(true);
+        setVatNumber("");
+      } else {
+        setNotVatRegistered(false);
+        setVatNumber(vatProp.value || "");
+      }
+    }
+
+    const bankProp = updatedProperties.find((p) => p.name === "bank details");
+    if (bankProp && bankProp.value) {
+      try {
+        const parsed = typeof bankProp.value === "string" ? JSON.parse(bankProp.value) : bankProp.value;
+        setBankDetails({
+          accountName: parsed.accountName || "",
+          accountNumber: parsed.accountNumber || "",
+          bankName: parsed.bankName || "",
+          sortCode: parsed.sortCode || "",
+        });
+      } catch (e) {
+        setBankDetails({ accountName: "", accountNumber: "", bankName: "", sortCode: "" });
+      }
+    }
+  }, [properties]);
 
   if (loadingBalances)
     return (
@@ -28,7 +84,7 @@ export default function DetailsTab() {
   return (
     <div>
       <h4>Account Details</h4>
-      <div className="mb-3">VAT owed: <strong>£{vatOwed}</strong></div>
+      <div className="mb-3">VAT owed: <strong>R{vatOwed}</strong></div>
 
       <Form>
         <Form.Group className="mb-3">
@@ -37,8 +93,19 @@ export default function DetailsTab() {
             type="checkbox"
             label="I am not VAT registered"
             id="notVat"
-            checked={!isVatRegistered}
-            onChange={(e) => setIsVatRegistered(!e.target.checked)}
+            checked={notVatRegistered}
+            onChange={(e) => {
+              const checked = e.target.checked;
+              setNotVatRegistered(checked);
+              setMergedProperties((prev) => {
+                const cp = [...prev];
+                const idx = cp.findIndex((p) => p.name === "vat number");
+                if (idx > -1) {
+                  cp[idx] = { ...cp[idx], value: checked ? "NO VAT" : vatNumber };
+                }
+                return cp;
+              });
+            }}
           />
         </Form.Group>
 
@@ -46,8 +113,18 @@ export default function DetailsTab() {
           <Form.Control
             placeholder="VAT number"
             value={vatNumber}
-            onChange={(e) => setVatNumber(e.target.value)}
-            disabled={!isVatRegistered}
+            onChange={(e) => {
+              setVatNumber(e.target.value);
+              setMergedProperties((prev) => {
+                const cp = [...prev];
+                const idx = cp.findIndex((p) => p.name === "vat number");
+                if (idx > -1) {
+                  cp[idx] = { ...cp[idx], value: e.target.value };
+                }
+                return cp;
+              });
+            }}
+            disabled={notVatRegistered}
           />
         </Form.Group>
 
@@ -55,6 +132,7 @@ export default function DetailsTab() {
           <Card.Body>
             <Card.Title>Banking details</Card.Title>
             <Form.Group className="mb-2">
+              <Form.Label>Account name</Form.Label>
               <Form.Control
                 placeholder="Account name"
                 value={bankDetails.accountName}
@@ -62,6 +140,7 @@ export default function DetailsTab() {
               />
             </Form.Group>
             <Form.Group className="mb-2">
+              <Form.Label>Account number</Form.Label>
               <Form.Control
                 placeholder="Account number"
                 value={bankDetails.accountNumber}
@@ -69,6 +148,7 @@ export default function DetailsTab() {
               />
             </Form.Group>
             <Form.Group className="mb-2">
+              <Form.Label>Bank name</Form.Label>
               <Form.Control
                 placeholder="Bank name"
                 value={bankDetails.bankName}
@@ -76,6 +156,7 @@ export default function DetailsTab() {
               />
             </Form.Group>
             <Form.Group>
+              <Form.Label>Sort code</Form.Label>
               <Form.Control
                 placeholder="Sort code"
                 value={bankDetails.sortCode}
@@ -84,6 +165,25 @@ export default function DetailsTab() {
             </Form.Group>
           </Card.Body>
         </Card>
+
+        <Button
+          variant="primary"
+          onClick={() => {
+            const updated = mergedProperties.map((p) => {
+              if (p.name === "vat number") {
+                return { ...p, value: notVatRegistered ? "NO VAT" : vatNumber };
+              }
+              if (p.name === "bank details") {
+                return { ...p, value: JSON.stringify(bankDetails) };
+              }
+              return p;
+            });
+            saveProperties(updated);
+            setMergedProperties(updated);
+          }}
+        >
+          <Save className="me-2" /> Save
+        </Button>
       </Form>
     </div>
   );

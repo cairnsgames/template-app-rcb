@@ -21,7 +21,7 @@ const FinancesContent = () => {
           <h1>Finances (Under development)</h1>
 
           <Card className="mb-3 p-3">
-            <div>Balance: <strong>£{balance}</strong></div>
+            <div>Balance: <strong>R{balance}</strong></div>
           </Card>
 
           <Tabs
@@ -87,8 +87,10 @@ const FinancesPage = () => {
     );
   }
 
+  console.log("USER - before TxProvider:", user);
+
   return (
-    <TxProvider>
+    <TxProvider user={user}>
       <FinancesContent />
     </TxProvider>
   );
