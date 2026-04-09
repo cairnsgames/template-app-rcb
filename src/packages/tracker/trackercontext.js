@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useRef } from 'react';
 import { useUser } from '../auth/context/useuser';
+import useTenant from '@cairnsgames/tenant/context/usetenant';
 
 export const TrackerContext = createContext();
 
@@ -7,6 +8,7 @@ const apiBaseUrl = process.env.REACT_APP_TRACKER_API || 'http://localhost/cairns
 
 export const TrackerProvider = ({ children }) => {
   const { user } = useUser();
+  const { tenant } = useTenant();
 
   // Use refs for mutable state to avoid React state race conditions
   const cacheRef = useRef(new Map()); // Map<itemType, Set<itemId>>
@@ -26,7 +28,7 @@ export const TrackerProvider = ({ children }) => {
     try {
       fetch(`${apiBaseUrl}/itemseen.php`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', app_id: tenant },
         body: JSON.stringify(payload),
       }).catch(() => {});
     } catch (e) {
