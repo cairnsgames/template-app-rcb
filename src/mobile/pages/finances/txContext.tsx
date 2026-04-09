@@ -1,10 +1,14 @@
 import React, { createContext, useEffect, useState, ReactNode } from "react";
 import { User } from "../../../packages/auth/types/user.type";
+import { useUser } from "../../../packages/auth/context/useuser";
+import { useTenant } from "../../../packages/tenant/context/usetenant";
 import { BankDetails, TxContextValue } from "./finances.types";
 
 export const TxContext = createContext<TxContextValue | null>(null);
 
 export function TxProvider({ children, user }: { children: ReactNode; user?: User }) {
+  const { token } = useUser() || {};
+  const { tenant } = useTenant() || {};
   const [balance, setBalance] = useState<number>(0);
   const [accountId, setAccountId] = useState<number | null>(null);
   const [vatOwed, setVatOwed] = useState<number>(0);
@@ -18,6 +22,8 @@ export function TxProvider({ children, user }: { children: ReactNode; user?: Use
   });
 
   const [payouts, setPayouts] = useState<any[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
+  const [loadingEvents, setLoadingEvents] = useState<boolean>(false);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loadingBalances, setLoadingBalances] = useState<boolean>(false);
   const [loadingTransactions, setLoadingTransactions] = useState<boolean>(false);
@@ -144,6 +150,34 @@ export function TxProvider({ children, user }: { children: ReactNode; user?: Use
             didSomething = true;
           }
           setLoadingPayouts(false);
+        }
+
+        // fetch events for reports
+        try {
+          const tokenToUse = token || (typeof TX.getAuthToken === "function" ? await TX.getAuthToken().catch(() => null) : (window as any).AUTH_TOKEN);
+          const appIdToUse = tenant || (typeof TX.getAppId === "function" ? TX.getAppId() : (window as any).APP_ID);
+          if (user?.id) {
+            setLoadingEvents(true);
+            const headers: any = { Accept: "application/json" };
+            if (tokenToUse) headers.Authorization = `Bearer ${tokenToUse}`;
+            if (appIdToUse) headers.APP_ID = appIdToUse;
+            try {
+              const url = `http://cairnsgames.co.za/php/finances/api.php/finances/${user.id}`;
+              const resp = await fetch(url, { headers }).catch(() => null);
+              if (resp && resp.ok) {
+                const json = await resp.json().catch(() => null);
+                if (Array.isArray(json)) {
+                  setEvents(json);
+                  didSomething = true;
+                }
+              }
+            } catch (e) {
+              // ignore
+            }
+            setLoadingEvents(false);
+          }
+        } catch (err) {
+          // ignore
         }
 
         return didSomething;
@@ -291,6 +325,26 @@ export function TxProvider({ children, user }: { children: ReactNode; user?: Use
         if (Array.isArray(ph)) setPayouts(ph.map((p: any) => ({ ...p, amount: Number(p.amount) || 0 })));
         setLoadingPayouts(false);
       }
+      // also fetch events on refresh path if possible
+      if (user?.id) {
+        try {
+          setLoadingEvents(true);
+          const tokenToUse = token || (typeof TX.getAuthToken === "function" ? await TX.getAuthToken().catch(() => null) : (window as any).AUTH_TOKEN);
+          const appIdToUse = tenant || (typeof TX.getAppId === "function" ? TX.getAppId() : (window as any).APP_ID);
+          const headers: any = { Accept: "application/json" };
+          if (tokenToUse) headers.Authorization = `Bearer ${tokenToUse}`;
+          if (appIdToUse) headers.APP_ID = appIdToUse;
+          const url = `http://cairnsgames.co.za/php/finances/api.php/finances/${user.id}`;
+          const resp = await fetch(url, { headers }).catch(() => null);
+          if (resp && resp.ok) {
+            const json = await resp.json().catch(() => null);
+            if (Array.isArray(json)) setEvents(json);
+          }
+        } catch (e) {
+          // ignore
+        }
+        setLoadingEvents(false);
+      }
     } catch (err) {
       // ignore
     }
@@ -330,6 +384,9 @@ export function TxProvider({ children, user }: { children: ReactNode; user?: Use
     setBankDetails,
     payouts,
     setPayouts,
+    events,
+    setEvents,
+    loadingEvents,
     transactions,
     setTransactions,
     refresh,

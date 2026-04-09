@@ -59,6 +59,9 @@ export type TxContextValue = {
   loadingTransactions: boolean;
   loadingPayouts: boolean;
   requestingPayout: boolean;
+  events?: any[];
+  setEvents?: (e: any[]) => void;
+  loadingEvents?: boolean;
 };
 
 export default {};
