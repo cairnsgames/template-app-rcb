@@ -16,40 +16,25 @@ export const TrackerProvider = ({ children }) => {
 
   const sendItems = async (itemType, items) => {
     if (!items || items.length === 0) return false;
-
-    console.log('tracker: Sending items to API', { itemType, items });
-
     const payload = {
       type: itemType,
       user_id: user?.id,
       id: items,
     };
 
+    // Fire-and-forget: we do not care about the response or failures.
     try {
-      const response = await fetch(`${apiBaseUrl}/itemseen.php`, {
+      fetch(`${apiBaseUrl}/itemseen.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        const text = await response.text().catch(() => '');
-        throw new Error(`HTTP error! status: ${response.status} body: ${text}`);
-      }
-
-      const ct = response.headers.get('content-type') || '';
-      if (!ct.includes('application/json')) {
-        const text = await response.text().catch(() => '');
-        console.error(`Unexpected non-JSON response for ${itemType}:`, text);
-        return false;
-      }
-
-      await response.json();
-      return true;
-    } catch (error) {
-      console.error(`Failed to send items for type "${itemType}":`, error);
-      return false;
+      }).catch(() => {});
+    } catch (e) {
+      // swallow synchronous errors (very unlikely)
     }
+
+    // Always treat as successful from the caller's perspective
+    return true;
   };
 
   const clearTimer = (itemType) => {
@@ -62,12 +47,10 @@ export const TrackerProvider = ({ children }) => {
   };
 
   const scheduleFlush = (itemType, delay = 3000) => {
-    console.log('Tracker: Schedule Flush', { itemType, delay });
     // Clear existing timer
     clearTimer(itemType);
 
     const timerId = setTimeout(() => {
-      console.log('Tracker: Trigger Flush', { itemType });
       flush(itemType);
     }, delay);
 
@@ -87,7 +70,6 @@ export const TrackerProvider = ({ children }) => {
     const cache = cacheRef.current;
     const set = cache.get(itemType);
     if (!set || set.size === 0) {
-      console.log('Tracker: Processing items', { itemType, itemsToSend: [] });
       processingRef.current.delete(itemType);
       return;
     }
@@ -96,21 +78,19 @@ export const TrackerProvider = ({ children }) => {
     // remove from cache immediately so new items can be collected
     cache.delete(itemType);
 
-    console.log('Tracker: Processing items', { itemType, itemsToSend });
+    
 
     try {
       const ok = await sendItems(itemType, itemsToSend);
       if (!ok) {
         // Failed to send: drop these items (do not retry)
-        console.warn(`Tracker: send failed for ${itemType}, dropping ${itemsToSend.length} items`, { itemType, itemsToSend });
         retriesRef.current.delete(itemType);
       } else {
         // success => reset retries
         retriesRef.current.delete(itemType);
       }
     } catch (err) {
-      // On unexpected error: log and drop (no re-queue)
-      console.error('Tracker flush error (dropping items)', err, { itemType, itemsToSend });
+      // On unexpected error: drop (no re-queue)
       retriesRef.current.delete(itemType);
     } finally {
       processingRef.current.delete(itemType);
@@ -118,14 +98,11 @@ export const TrackerProvider = ({ children }) => {
   };
 
   const trackItem = (itemType, itemId) => {
-    console.log('Tracker, trackItem called', { itemType, itemId });
     if (!user?.id) {
-      console.warn('Cannot track item: user not logged in');
       return;
     }
 
     if (!itemType || itemId === undefined || itemId === null) {
-      console.warn('Cannot track item: itemType and itemId are required');
       return;
     }
 
@@ -208,3 +185,9 @@ export const TrackerProvider = ({ children }) => {
 };
 
 export default TrackerProvider;
+
+// Allow webpack Hot Module Replacement to accept updates to this module
+// so HMR doesn't abort the update propagation chain.
+if (typeof module !== 'undefined' && module.hot && module.hot.accept) {
+  module.hot.accept();
+}
