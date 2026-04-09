@@ -1,24 +1,56 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Button } from "react-bootstrap";
-import { Printer } from "react-bootstrap-icons";
+import { FileEarmarkPdf } from "react-bootstrap-icons";
+import { FinancesEvent } from "./finances.types";
+import generateEventPdf from "./generateEventPdf";
+import { TxContext } from "./txContext";
 
 type Props = {
-  event: any;
+  event: FinancesEvent | null;
   onClose: () => void;
   autoPrint?: boolean;
 };
 
 export default function ReportModal({ event, onClose, autoPrint }: Props): JSX.Element | null {
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ctx = useContext(TxContext);
+  const [summary, setSummary] = useState<any | null>(null);
+  const [loadingSummary, setLoadingSummary] = useState(false);
 
+  // fetch summary when event changes
   useEffect(() => {
-    if (autoPrint) {
-      // give time to render
-      setTimeout(() => {
-        handlePrint();
-      }, 300);
+    let mounted = true;
+    if (!event) return;
+    (async () => {
+      setLoadingSummary(true);
+      try {
+        const s = await ctx?.getEventSummary?.(event.id);
+        if (!mounted) return;
+        setSummary(s ?? null);
+      } catch (e) {
+        // ignore
+        if (mounted) setSummary(null);
+      } finally {
+        if (mounted) setLoadingSummary(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [event, ctx]);
+
+  // autoPrint -> generate PDF using cached summary when available
+  useEffect(() => {
+    if (autoPrint && event) {
+      (async () => {
+        try {
+          const s = summary ?? (await ctx?.getEventSummary?.(event.id));
+          await generateEventPdf(event, s ?? undefined);
+        } catch (e) {
+          // ignore
+        }
+      })();
     }
-  }, [autoPrint]);
+  }, [autoPrint, event, summary, ctx]);
 
   if (!event) return null;
 
@@ -31,37 +63,19 @@ export default function ReportModal({ event, onClose, autoPrint }: Props): JSX.E
     }
   }
 
-  function buildHtmlForPrint() {
-    const styles = `
-      body { font-family: Arial, Helvetica, sans-serif; color: #333; }
-      .header { text-align: center; margin-bottom: 12px }
-      .title { font-size: 28px; color: #7d2b72 }
-      .section { margin: 8px 0 }
-      .row { display:flex; justify-content:space-between; padding:6px 0 }
-      .label { color: #666 }
-      .value { font-weight:600 }
-    `;
-    const content = ref.current ? ref.current.innerHTML : "";
-    return `<html><head><style>${styles}</style></head><body>${content}</body></html>`;
+  function formatCurrency(v?: string | number) {
+    if (v === undefined || v === null || v === "") return "R 0.00";
+    const n = typeof v === "string" ? parseFloat(v) : Number(v);
+    if (Number.isNaN(n)) return String(v);
+    return `R ${n.toFixed(2)}`;
   }
 
-  function handlePrint() {
-    const html = buildHtmlForPrint();
-    const w = window.open("", "_blank", "width=900,height=700");
-    if (!w) return;
-    w.document.open();
-    w.document.write(html);
-    w.document.close();
-    w.focus();
-    setTimeout(() => {
-      w.print();
-    }, 300);
-  }
+  // PDF generation is handled by `generateEventPdf` so modal delegates to it.
 
   return (
     <div style={{ position: "fixed", left: 0, top: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.4)", zIndex: 9999 }} onClick={onClose}>
       <div onClick={(e) => e.stopPropagation()} style={{ width: "780px", maxWidth: "95%", margin: "36px auto", background: "#fff", padding: 20, borderRadius: 6 }}>
-        <div ref={ref}>
+        <div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <div style={{ fontSize: 14, color: "#7d2b72" }}>Event Feedback</div>
@@ -111,11 +125,73 @@ export default function ReportModal({ event, onClose, autoPrint }: Props): JSX.E
               <div className="value">{event.total_price ? `R ${event.total_price}` : "R 0"}</div>
             </div>
           </div>
+
+          <hr />
+
+          <div style={{ marginTop: 8 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>Payment summary</div>
+            {loadingSummary ? (
+              <div>Loading summary…</div>
+            ) : summary ? (
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div className="label">Tickets revenue</div>
+                  <div className="value">{formatCurrency(summary.total_price ?? event.total_price)}</div>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div className="label">Platform fee (incl VAT)</div>
+                  <div className="value">{formatCurrency(summary.platform_gross_total)}</div>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div className="label">Platform VAT</div>
+                  <div className="value">{formatCurrency(summary.platform_tax_total)}</div>
+                </div>
+
+                {summary.other_vat && Number(summary.other_vat) !== 0 ? (
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div className="label">Other VAT payable</div>
+                    <div className="value">{formatCurrency(summary.other_vat)}</div>
+                  </div>
+                ) : null}
+
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+                  <div className="label">Amount to you (incl VAT)</div>
+                  <div className="value">{formatCurrency(summary.user_gross_total)}</div>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div className="label">Your VAT</div>
+                  <div className="value">{formatCurrency(summary.user_tax_total)}</div>
+                </div>
+              </div>
+            ) : (
+              <div>No payment summary available.</div>
+            )}
+          </div>
         </div>
 
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 12 }}>
-          <Button variant="primary" onClick={handlePrint}>
-            <Printer />&nbsp;Print / Export PDF
+          <Button
+            variant="primary"
+            onClick={async () => {
+              if (!event) return;
+              try {
+                let s = summary;
+                if (!s) {
+                  setLoadingSummary(true);
+                  s = await ctx?.getEventSummary?.(event.id);
+                  setSummary(s ?? null);
+                  setLoadingSummary(false);
+                }
+                await generateEventPdf(event, s ?? undefined);
+              } catch (e) {
+                // ignore
+                setLoadingSummary(false);
+              }
+            }}
+          >
+            <FileEarmarkPdf />&nbsp;Export PDF
           </Button>
           <Button variant="secondary" onClick={onClose}>Close</Button>
         </div>

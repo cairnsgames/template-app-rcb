@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState, ReactNode } from "react";
 import { User } from "../../../packages/auth/types/user.type";
 import { useUser } from "../../../packages/auth/context/useuser";
 import { useTenant } from "../../../packages/tenant/context/usetenant";
-import { BankDetails, TxContextValue } from "./finances.types";
+import { BankDetails, TxContextValue, FinancesEvent } from "./finances.types";
 
 export const TxContext = createContext<TxContextValue | null>(null);
 
@@ -22,7 +22,7 @@ export function TxProvider({ children, user }: { children: ReactNode; user?: Use
   });
 
   const [payouts, setPayouts] = useState<any[]>([]);
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<FinancesEvent[]>([]);
   const [loadingEvents, setLoadingEvents] = useState<boolean>(false);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loadingBalances, setLoadingBalances] = useState<boolean>(false);
@@ -387,6 +387,7 @@ export function TxProvider({ children, user }: { children: ReactNode; user?: Use
     events,
     setEvents,
     loadingEvents,
+    getEventSummary,
     transactions,
     setTransactions,
     refresh,
@@ -399,5 +400,26 @@ export function TxProvider({ children, user }: { children: ReactNode; user?: Use
 
   return <TxContext.Provider value={value}>{children}</TxContext.Provider>;
 }
+
+  async function getEventSummary(eventId: number) {
+    try {
+      const TX: any = typeof window !== "undefined" ? (window as any).TX : null;
+      const tokenToUse = token || (typeof TX?.getAuthToken === "function" ? await TX.getAuthToken().catch(() => null) : (window as any).AUTH_TOKEN);
+      const appIdToUse = tenant || (typeof TX?.getAppId === "function" ? TX.getAppId() : (window as any).APP_ID);
+      const headers: any = { Accept: "application/json" };
+      if (tokenToUse) headers.Authorization = `Bearer ${tokenToUse}`;
+      if (appIdToUse) headers.app_id = appIdToUse; // endpoint expects `app_id` header
+
+      const uid = user?.id;
+      if (!uid) return null;
+      const url = `http://tx.cairnsgames.co.za/php/tx/api.php/summary/${uid}/${eventId}`;
+      const resp = await fetch(url, { headers }).catch(() => null);
+      if (!resp || !resp.ok) return null;
+      const json = await resp.json().catch(() => null);
+      return json as any;
+    } catch (err) {
+      return null;
+    }
+  }
 
 export default TxProvider;

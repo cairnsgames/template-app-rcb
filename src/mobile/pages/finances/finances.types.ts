@@ -36,6 +36,58 @@ export type BankDetails = {
   sortCode: string;
 };
 
+export type FinancesEvent = {
+  id: number;
+  calendar_id?: number;
+  parent_id?: number;
+  user_id?: number;
+  event_template_id?: number;
+  app_id?: string;
+  title: string;
+  description?: string;
+  image?: string;
+  event_type?: string;
+  keywords?: string;
+  duration?: number;
+  location?: string;
+  lat?: number;
+  lng?: number;
+  max_participants?: number;
+  period_type?: string;
+  start_time?: string;
+  end_time?: string | null;
+  currency?: string;
+  tickets?: string;
+  tickettypes?: string;
+  options?: string;
+  price?: number;
+  content_id?: number;
+  show_as_news?: string;
+  overlay_text?: string;
+  enable_bookings?: string;
+  created?: string;
+  modified?: string | null;
+  days_displayed?: number;
+  detail_people_views?: number;
+  detail_total_views?: string | number;
+  card_people_views?: number;
+  card_total_views?: string | number;
+  tickets_sold?: number;
+  total_price?: number;
+  [key: string]: any;
+};
+
+export type EventSummary = {
+  total_price?: number;
+  user_gross_total?: string;
+  user_tax_total?: string;
+  user_net_total?: string;
+  platform_gross_total?: string;
+  platform_tax_total?: string;
+  platform_net_total?: string;
+  other_vat?: string;
+};
+
 export type TxContextValue = {
   balance: number;
   accountId: number | null;
@@ -59,9 +111,10 @@ export type TxContextValue = {
   loadingTransactions: boolean;
   loadingPayouts: boolean;
   requestingPayout: boolean;
-  events?: any[];
-  setEvents?: (e: any[]) => void;
+  events?: FinancesEvent[];
+  setEvents?: (e: FinancesEvent[]) => void;
   loadingEvents?: boolean;
+  getEventSummary?: (eventId: number) => Promise<EventSummary | null>;
 };
 
 export default {};
