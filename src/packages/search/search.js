@@ -72,7 +72,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
 
 
   return (
-    <Tracker itemtype="news" id={"page"}>
+    <Tracker itemtype="page" id={"news"}>
       <div className="news">
         {!showResults ? (
           <Card className="p-3 mb-3">

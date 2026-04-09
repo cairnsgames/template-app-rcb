@@ -3,7 +3,7 @@ import Tracker from "../tracker/tracker";
 
 const MapPage = () => {
   return (
-    <Tracker itemtype="map" id={"page"}>
+    <Tracker itemtype="page" id={"map"}>
       <div>
         <MapDisplay />
       </div>

@@ -14,7 +14,7 @@ const Tickets = () => {
   const { tickets } = useBookings(); // Get tickets from useBookings hook
 
   return (
-    <Tracker itemtype="tickets" id={"page"}>
+    <Tracker itemtype="page" id={"tickets"}>
       <div style={{ height: "100%" }}>
         {tickets.length === 0 ? ( // Check if there are no tickets
           <InfoCard

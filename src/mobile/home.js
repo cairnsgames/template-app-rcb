@@ -146,7 +146,7 @@ const Home = () => {
 
   return (
     <Container fluid className="p-3">
-      <Tracker itemtype="home" id={"page"}>
+      <Tracker itemtype="page" id={"home"}>
         <TilesLayout>
           <TileList images={newsCards} onClick={showNews} />
           <TileList images={eventCards} onClick={showEvent} />
