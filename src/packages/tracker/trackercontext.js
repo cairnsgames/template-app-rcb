@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useEffect, useRef } from 'react';
 import { useUser } from '../auth/context/useuser';
 
 export const TrackerContext = createContext();
@@ -6,34 +6,45 @@ export const TrackerContext = createContext();
 const apiBaseUrl = process.env.REACT_APP_TRACKER_API || 'http://localhost/cairnsgames/php/tracker';
 
 export const TrackerProvider = ({ children }) => {
-  const {user} = useUser();
-  const [cache, setCache] = useState(new Map());
-  const [timers, setTimers] = useState(new Map());
-  const [processing, setProcessing] = useState(new Set()); // Track what's currently being processed
+  const { user } = useUser();
+
+  // Use refs for mutable state to avoid React state race conditions
+  const cacheRef = useRef(new Map()); // Map<itemType, Set<itemId>>
+  const timersRef = useRef(new Map()); // Map<itemType, timerId>
+  const processingRef = useRef(new Set()); // Set<itemType>
+  const retriesRef = useRef(new Map()); // Map<itemType, retryCount>
 
   const sendItems = async (itemType, items) => {
     if (!items || items.length === 0) return false;
 
+    console.log('tracker: Sending items to API', { itemType, items });
+
     const payload = {
       type: itemType,
       user_id: user?.id,
-      id: items
+      id: items,
     };
 
     try {
       const response = await fetch(`${apiBaseUrl}/itemseen.php`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const text = await response.text().catch(() => '');
+        throw new Error(`HTTP error! status: ${response.status} body: ${text}`);
       }
 
-      const result = await response.json();
+      const ct = response.headers.get('content-type') || '';
+      if (!ct.includes('application/json')) {
+        const text = await response.text().catch(() => '');
+        console.error(`Unexpected non-JSON response for ${itemType}:`, text);
+        return false;
+      }
+
+      await response.json();
       return true;
     } catch (error) {
       console.error(`Failed to send items for type "${itemType}":`, error);
@@ -41,66 +52,73 @@ export const TrackerProvider = ({ children }) => {
     }
   };
 
-  const processAndClearItems = async (itemType) => {
+  const clearTimer = (itemType) => {
+    const timers = timersRef.current;
+    const t = timers.get(itemType);
+    if (t) {
+      clearTimeout(t);
+      timers.delete(itemType);
+    }
+  };
 
-    // Retrieve items from cache
-    let itemsToSend = [];
-    setCache(prev => {
-      const newCache = new Map(prev);
-      const currentItems = newCache.get(itemType);
-      if (currentItems && currentItems.size > 0) {
-        itemsToSend = Array.from(currentItems);
-        newCache.delete(itemType);
-      }
-      return newCache;
-    });
+  const scheduleFlush = (itemType, delay = 3000) => {
+    console.log('Tracker: Schedule Flush', { itemType, delay });
+    // Clear existing timer
+    clearTimer(itemType);
 
-    // Ensure items are processed even if cache is updated rapidly
-    if (itemsToSend.length === 0) {
-      console.log(`No items to send for ${itemType}, skipping API call`);
+    const timerId = setTimeout(() => {
+      console.log('Tracker: Trigger Flush', { itemType });
+      flush(itemType);
+    }, delay);
+
+    timersRef.current.set(itemType, timerId);
+  };
+
+  const flush = async (itemType) => {
+    if (!itemType) return;
+
+    // prevent concurrent flushes for same type
+    if (processingRef.current.has(itemType)) return;
+    processingRef.current.add(itemType);
+
+    // clear timer right away
+    clearTimer(itemType);
+
+    const cache = cacheRef.current;
+    const set = cache.get(itemType);
+    if (!set || set.size === 0) {
+      console.log('Tracker: Processing items', { itemType, itemsToSend: [] });
+      processingRef.current.delete(itemType);
       return;
     }
 
-    // Clear the timer
-    setTimers(prev => {
-      const newTimers = new Map(prev);
-      const timerId = newTimers.get(itemType);
-      if (timerId) {
-        clearTimeout(timerId);
-        newTimers.delete(itemType);
-      }
-      return newTimers;
-    });
+    const itemsToSend = Array.from(set);
+    // remove from cache immediately so new items can be collected
+    cache.delete(itemType);
 
-    // Send the items
+    console.log('Tracker: Processing items', { itemType, itemsToSend });
+
     try {
-      const result = await sendItems(itemType, itemsToSend);
-    } catch (error) {
-      console.error(`Failed to send items for ${itemType}:`, error);
+      const ok = await sendItems(itemType, itemsToSend);
+      if (!ok) {
+        // Failed to send: drop these items (do not retry)
+        console.warn(`Tracker: send failed for ${itemType}, dropping ${itemsToSend.length} items`, { itemType, itemsToSend });
+        retriesRef.current.delete(itemType);
+      } else {
+        // success => reset retries
+        retriesRef.current.delete(itemType);
+      }
+    } catch (err) {
+      // On unexpected error: log and drop (no re-queue)
+      console.error('Tracker flush error (dropping items)', err, { itemType, itemsToSend });
+      retriesRef.current.delete(itemType);
+    } finally {
+      processingRef.current.delete(itemType);
     }
   };
 
-  const scheduleFlush = (itemType) => {
-    setTimers(prev => {
-      const newTimers = new Map(prev);
-      
-      // Clear existing timer
-      const existingTimer = newTimers.get(itemType);
-      if (existingTimer) {
-        clearTimeout(existingTimer);
-      }
-
-      // Set new timer
-      const timerId = setTimeout(() => {
-        processAndClearItems(itemType);
-      }, 30000); // 30 seconds
-
-      newTimers.set(itemType, timerId);
-      return newTimers;
-    });
-  };
-
-  const trackItem = async (itemType, itemId) => {
+  const trackItem = (itemType, itemId) => {
+    console.log('Tracker, trackItem called', { itemType, itemId });
     if (!user?.id) {
       console.warn('Cannot track item: user not logged in');
       return;
@@ -111,94 +129,81 @@ export const TrackerProvider = ({ children }) => {
       return;
     }
 
-    // Check if this is a different item type than what's currently cached
-    const currentTypes = Array.from(cache.keys());
-    const isDifferentType = currentTypes.length > 0 && !currentTypes.includes(itemType);
-    
-    if (isDifferentType) {
-      // Flush all existing types first, but only if they're not already being processed
-      const typesToFlush = currentTypes.filter(type => !processing.has(type));
-      if (typesToFlush.length > 0) {
-        await Promise.all(typesToFlush.map(type => processAndClearItems(type)));
-      }
+    const cache = cacheRef.current;
+
+    let items = cache.get(itemType);
+    if (!items) {
+      items = new Set();
+      cache.set(itemType, items);
     }
 
-    // Don't add items if this type is currently being processed
-    if (processing.has(itemType)) {
+    // Avoid duplicates: Set will handle it
+    items.add(itemId);
+
+    // If we reached threshold, flush immediately
+    if (items.size >= 100) {
+      clearTimer(itemType);
+      // flush async to avoid blocking caller
+      setTimeout(() => flush(itemType), 0);
       return;
     }
 
-    setCache(prev => {
-      const newCache = new Map(prev);
-      let items = newCache.get(itemType);
-      
-      if (!items) {
-        items = new Set();
-        newCache.set(itemType, items);
-        scheduleFlush(itemType);
-      }
-
-      // Add item to cache
-      items.add(itemId);
-
-      // If we have 100 or more items, flush immediately
-      if (items.size >= 100) {
-        // Use setTimeout to avoid state update conflicts
-        setTimeout(() => processAndClearItems(itemType), 0);
-      }
-
-      return newCache;
-    });
+    // Ensure a timer is set for delayed flush
+    const timers = timersRef.current;
+    if (!timers.has(itemType)) {
+      scheduleFlush(itemType);
+    }
   };
 
   const flushAll = async () => {
-    const types = Array.from(cache.keys());
-    await Promise.all(types.map(itemType => processAndClearItems(itemType)));
+    const types = Array.from(cacheRef.current.keys());
+    await Promise.all(types.map(t => flush(t)));
   };
 
   const getCacheStatus = () => {
     const status = {};
-    cache.forEach((items, itemType) => {
+    cacheRef.current.forEach((items, itemType) => {
       status[itemType] = {
         itemCount: items.size,
         items: Array.from(items),
-        isProcessing: processing.has(itemType)
+        isProcessing: processingRef.current.has(itemType),
       };
     });
-    
+
     return {
       cacheStatus: status,
       userId: user?.id,
-      currentlyProcessing: Array.from(processing)
+      currentlyProcessing: Array.from(processingRef.current),
     };
   };
 
-  // Cleanup on unmount
+  // Cleanup on unmount: clear timers and attempt to send remaining items
   useEffect(() => {
     return () => {
-      // Clear all timers
-      timers.forEach(timerId => clearTimeout(timerId));
-      
-      // Flush remaining items
-      cache.forEach((items, itemType) => {
+      // clear timers
+      timersRef.current.forEach(t => clearTimeout(t));
+      timersRef.current.clear();
+
+      // attempt to send remaining items synchronously (best-effort)
+      cacheRef.current.forEach((items, itemType) => {
         if (items.size > 0) {
+          // fire-and-forget
           sendItems(itemType, Array.from(items));
         }
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const contextValue = {
     trackItem,
     flushAll,
     getCacheStatus,
-    userId: user?.id
+    userId: user?.id,
   };
 
   return (
-    <TrackerContext.Provider value={contextValue}>
-      {children}
-    </TrackerContext.Provider>
+    <TrackerContext.Provider value={contextValue}>{children}</TrackerContext.Provider>
   );
 };
 
