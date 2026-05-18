@@ -283,7 +283,7 @@ const KlokoEventEditor = ({ id, onClose }) => {
           setOverlayText={setOverlayText}
         />
 
-        <EventQRCode event={event} />
+        <EventQRCode event={event} allowDownload allowWhatsapp allowFacebook />
 
         <Button
           variant="primary"
