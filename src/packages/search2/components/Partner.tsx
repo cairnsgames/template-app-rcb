@@ -5,9 +5,10 @@ import type { SearchResultUser } from "../search2.types";
 type PartnerProps = {
   item: SearchResultUser;
   index: number;
+  distanceKm?: number | null;
 };
 
-const Partner: React.FC<PartnerProps> = ({ item, index }) => {
+const Partner: React.FC<PartnerProps> = ({ item, index, distanceKm }) => {
   const handleActivate = () => {
     const id = item.id;
     if (id !== undefined && id !== null) {
@@ -80,9 +81,9 @@ const Partner: React.FC<PartnerProps> = ({ item, index }) => {
       <Card.Footer>
         <strong>Roles:</strong> {rolesDisplay || "None"}
       </Card.Footer>
-      {item.distance !== undefined && item.distance !== null && (
-        <p style={{ padding: "0 1rem 0.5rem" }}>
-          <strong>Distance:</strong> {item.distance.toFixed(1)} km
+      {distanceKm != null && (
+        <p style={{ padding: "0 1rem 0.5rem", margin: 0 }}>
+          <strong>Distance:</strong> {distanceKm.toFixed(1)} km
         </p>
       )}
     </Card>

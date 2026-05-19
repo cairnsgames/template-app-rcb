@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Badge, Button, Card, Spinner } from "react-bootstrap";
 import { useDebounce } from "../../../hooks/usedebounce";
+import useGeoLocation from "../../../hooks/usegeolocation";
 import { useSearch2 } from "../context/search2context";
-import type { SearchSelection } from "../search2.types";
+import type { SearchSelection, UserLocation } from "../search2.types";
 import { filterConfig } from "./filterConfig";
 import SearchDropdown from "./SearchDropdown";
 import Partner from "./Partner";
+import { calcDistance } from "./calcDistance";
 import TilesLayout from "../../layout/Tiles";
 import Tile from "../../layout/Tile";
 
@@ -23,6 +25,13 @@ const SearchTab: React.FC = () => {
     executeSearch,
     hasSearched,
   } = useSearch2();
+
+  // userLocation can be replaced/overridden later (e.g. via a location picker)
+  const { latlng: geoLatlng } = useGeoLocation(null);
+  const [overrideLocation, setOverrideLocation] = useState<UserLocation | null>(null);
+  const userLocation: UserLocation | null =
+    overrideLocation ??
+    (geoLatlng ? { latitude: geoLatlng.latitude, longitude: geoLatlng.longitude } : null);
 
   const [inputValue, setInputValue] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -45,6 +54,22 @@ const SearchTab: React.FC = () => {
   const handleSelect = (item: SearchSelection) => {
     addSelection(item);
   };
+
+  /** Results sorted closest-first; partners with no lat/lng go to the end */
+  const sortedResults = useMemo(() => {
+    if (!userLocation) return searchResults;
+    return [...searchResults].sort((a, b) => {
+      const dA =
+        a.lat != null && a.lng != null
+          ? calcDistance(userLocation.latitude, userLocation.longitude, a.lat, a.lng)
+          : Infinity;
+      const dB =
+        b.lat != null && b.lng != null
+          ? calcDistance(userLocation.latitude, userLocation.longitude, b.lat, b.lng)
+          : Infinity;
+      return dA - dB;
+    });
+  }, [searchResults, userLocation]);
 
   if (configLoading) {
     return (
@@ -145,11 +170,22 @@ const SearchTab: React.FC = () => {
             </Card>
           ) : (
             <TilesLayout>
-              {searchResults.map((user, index) => (
-                <Tile key={`${user.id}-${index}`}>
-                  <Partner item={user} index={index} />
-                </Tile>
-              ))}
+              {sortedResults.map((user, index) => {
+                const distanceKm =
+                  userLocation && user.lat != null && user.lng != null
+                    ? calcDistance(
+                        userLocation.latitude,
+                        userLocation.longitude,
+                        user.lat,
+                        user.lng
+                      )
+                    : null;
+                return (
+                  <Tile key={`${user.id}-${index}`}>
+                    <Partner item={user} index={index} distanceKm={distanceKm} />
+                  </Tile>
+                );
+              })}
             </TilesLayout>
           )}
         </div>

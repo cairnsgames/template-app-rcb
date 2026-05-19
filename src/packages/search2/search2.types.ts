@@ -38,7 +38,13 @@ export type SearchResultUser = {
   avatar: string | null;
   roles: string | { id: number; name: string }[];
   offerings: { id: number; name: string }[] | string[];
-  distance?: number;
+  lat?: number | null;
+  lng?: number | null;
+};
+
+export type UserLocation = {
+  latitude: number;
+  longitude: number;
 };
 
 export type SearchResult = {
