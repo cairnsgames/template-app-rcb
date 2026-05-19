@@ -28,51 +28,6 @@ jobs:
           local-dir: ./dist/
           server-dir: /
 
-  build-zharo:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Install dependencies and build for Zharo project
-      - name: Install Dependencies
-        run: npm ci
-        working-directory: ./packages/zharo
-
-      - name: Build Zharo
-        run: npm run build
-        working-directory: ./packages/zharo
-
-      - name: Deploy Zharo
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
-        with:
-          server: ${{ vars.CG_SERVER }}
-          username: ${{ vars.CG_FTP_USERNAME }}
-          password: ${{ secrets.CG_FTP_PASSWORD }}
-          local-dir: ./packages/zharo/dist/
-          server-dir: /zharo/
-
-  deploy-zharo-test:
-    runs-on: ubuntu-latest
-    needs: build-zharo  # This job depends on build-zharo to finish first
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Modify and deploy Zharo test directory
-      - name: Modify and Deploy Zharo Test Directory
-        run: |
-          sed -i 's|../dist/zharo.js|https://cairnsgames.co.za/zharo/zharo.js|g' ./packages/zharo/test/index.html
-      - name: Deploy Modified Test Directory
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
-        with:
-          server: ${{ vars.CG_SERVER }}
-          username: ${{ vars.CG_FTP_USERNAME }}
-          password: ${{ secrets.CG_FTP_PASSWORD }}
-          local-dir: ./packages/zharo/test/
-          server-dir: /zharo/test/
-
-  build-kloko:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
