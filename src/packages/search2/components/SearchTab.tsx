@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Badge, Button, Card, Spinner } from "react-bootstrap";
+import { Search } from "react-bootstrap-icons";
 import { useDebounce } from "../../../hooks/usedebounce";
 import useGeoLocation from "../../../hooks/usegeolocation";
 import { useSearch2 } from "../context/search2context";
@@ -89,27 +90,45 @@ const SearchTab: React.FC = () => {
 
   return (
     <div>
-      {/* Search input */}
-      <div ref={wrapperRef} style={{ position: "relative" }}>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Type to search (e.g. salsa, teacher...)"
-          value={inputValue}
-          onChange={(e) => {
-            setInputValue(e.target.value);
-            setDropdownOpen(true);
-          }}
-          onFocus={() => setDropdownOpen(true)}
-          autoComplete="off"
-        />
-        {showDropdown && (
-          <SearchDropdown
-            matches={matches}
-            onSelect={handleSelect}
-            selections={selections}
+      {/* Search input + button row */}
+      <div style={{ display: "flex", gap: 8 }}>
+        <div ref={wrapperRef} style={{ position: "relative", flex: 1 }}>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Type to search (e.g. salsa, teacher...)"
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+              setDropdownOpen(true);
+            }}
+            onFocus={() => setDropdownOpen(true)}
+            autoComplete="off"
           />
-        )}
+          {showDropdown && (
+            <SearchDropdown
+              matches={matches}
+              onSelect={handleSelect}
+              selections={selections}
+            />
+          )}
+        </div>
+        <Button
+          variant="primary"
+          disabled={selections.length === 0 || searchLoading}
+          onClick={executeSearch}
+          title="Search"
+        >
+          {searchLoading ? (
+            <Spinner animation="border" size="sm" />
+          ) : (
+            <>
+                  <Search aria-hidden="true" />
+              {/* "Search" label — hidden on mobile, shown on desktop */}
+              <span className="d-none d-md-inline"> Search</span>
+            </>
+          )}
+        </Button>
       </div>
 
       {/* Selection badges */}
@@ -137,23 +156,6 @@ const SearchTab: React.FC = () => {
           ))}
         </div>
       )}
-
-      {/* Search button */}
-      <div className="mt-3">
-        <Button
-          variant="primary"
-          disabled={selections.length === 0 || searchLoading}
-          onClick={executeSearch}
-        >
-          {searchLoading ? (
-            <>
-              <Spinner animation="border" size="sm" className="me-1" /> Searching...
-            </>
-          ) : (
-            "Search"
-          )}
-        </Button>
-      </div>
 
       {/* Search error */}
       {searchError && (
