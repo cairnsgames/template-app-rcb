@@ -10,43 +10,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
       
       # Install dependencies and build for JuztDance project
       - name: Install Dependencies
-        run: npm ci -force
+        run: npm ci --force
 
       - name: Build JuztDance Site
         run: npm run build
 
       - name: Deploy JuztDance Site
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ vars.JD_SERVER }}
           username: ${{ vars.JD_FTP_USERNAME }}
           password: ${{ secrets.JD_FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Install dependencies and build for Kloko project
-      - name: Install Dependencies
-        run: npm ci
-        working-directory: ./packages/kloko
-
-      - name: Build Kloko
-        run: npm run build
-        working-directory: ./packages/kloko
-
-      - name: Deploy Kloko
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
-        with:
-          server: ${{ vars.CG_SERVER }}
-          username: ${{ vars.CG_FTP_USERNAME }}
-          password: ${{ secrets.CG_FTP_PASSWORD }}
-          local-dir: ./packages/kloko/dist/
-          server-dir: /kloko/
