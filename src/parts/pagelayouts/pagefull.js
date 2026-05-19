@@ -12,7 +12,7 @@ const PageFull = ({ className = "", style = {}, position, children }) => {
         padding: "1rem",
         ...style,
         minHeight: "85%",
-        maxHeight: "calc(100vh - 80px)",
+        height: "calc(100vh - 80px)",
         overflowX: "hidden",
       }}
       className="page-full"

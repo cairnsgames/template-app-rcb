@@ -1,6 +1,6 @@
 import Router, { Route, Default } from "../router/router";
 import PageFull from "../../parts/pagelayouts/pagefull";
-import Search from "./search";
+import Search from "../search2/search";
 
 function SearchRouting() {
   return (
