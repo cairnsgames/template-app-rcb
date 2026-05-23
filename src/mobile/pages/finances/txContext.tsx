@@ -334,7 +334,7 @@ export function TxProvider({ children, user }: { children: ReactNode; user?: Use
           const headers: any = { Accept: "application/json" };
           if (tokenToUse) headers.Authorization = `Bearer ${tokenToUse}`;
           if (appIdToUse) headers.APP_ID = appIdToUse;
-          const url = `http://cairnsgames.co.za/php/finances/api.php/finances/${user.id}`;
+          const url = `https://cairnsgames.co.za/php/finances/api.php/finances/${user.id}`;
           const resp = await fetch(url, { headers }).catch(() => null);
           if (resp && resp.ok) {
             const json = await resp.json().catch(() => null);
