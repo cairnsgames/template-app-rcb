@@ -1,6 +1,6 @@
-import { FinancesEvent, EventSummary, TicketType, TicketOption } from "./finances.types";
+import { FinancesEvent, TicketType, TicketOption } from "./finances.types";
 
-export default async function generateEventPdf(ev: FinancesEvent, summary?: EventSummary): Promise<void> {
+export default async function generateEventPdf(ev: FinancesEvent): Promise<void> {
   try {
     const { jsPDF } = await import("jspdf");
     const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
@@ -170,29 +170,6 @@ export default async function generateEventPdf(ev: FinancesEvent, summary?: Even
         `R ${Number(to.total_value ?? 0).toFixed(2)}`,
       ]);
       drawTable(["Name", "Price", "Sold", "Total"], toRows, colWidths, margin);
-    }
-
-    // If we have a summary object, add the requested breakdown
-    if (summary) {
-      y += 4;
-      pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(13);
-      pdf.setTextColor(125, 43, 114);
-      pdf.text("Payment Summary", labelX, y);
-      y += 7;
-      addStat("Tickets revenue", `R ${Number(summary.total_price ?? ev.total_price ?? 0).toFixed(2)}`);
-      addStat("Platform fee (incl VAT)", `R ${Number(summary.platform_gross_total ?? 0).toFixed(2)}`);
-      addStat("Platform VAT", `R ${Number(summary.platform_tax_total ?? 0).toFixed(2)}`);
-      if (summary.other_vat && Number(summary.other_vat) !== 0) {
-        addStat("Other VAT payable", `R ${Number(summary.other_vat).toFixed(2)}`);
-      }
-      addStat("Amount to you (incl VAT)", `R ${Number(summary.user_gross_total ?? 0).toFixed(2)}`);
-      addStat("Your VAT", `R ${Number(summary.user_tax_total ?? 0).toFixed(2)}`);
-    } else {
-      // Fallback: use fields present on event
-      if (typeof ev.platform_fee !== "undefined") {
-        addStat("Platform fee", `R ${ev.platform_fee}`);
-      }
     }
 
     const filename = `${(ev.title || "report").replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 120)}.pdf`;

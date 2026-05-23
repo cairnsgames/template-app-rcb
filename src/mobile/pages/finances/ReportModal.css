@@ -1,0 +1,137 @@
+.report-modal-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+}
+
+.report-modal-container {
+  width: 780px;
+  max-width: 95%;
+  margin: 36px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.report-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.report-modal-header-text .report-modal-subtitle {
+  font-size: 14px;
+  color: #7d2b72;
+}
+
+.report-modal-header-text .report-modal-title {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.report-modal-header-text .report-modal-dates {
+  font-size: 12px;
+  color: #666;
+}
+
+.report-modal-image {
+  max-width: 120px;
+  max-height: 120px;
+}
+
+.report-modal-stat-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.report-modal-section-ticket {
+  margin-top: 16px;
+}
+
+.report-modal-section-heading {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.report-modal-ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.report-modal-ticket-table thead tr {
+  border-bottom: 2px solid #ddd;
+  color: #555;
+}
+
+.report-modal-ticket-table th {
+  padding: 4px 8px;
+}
+
+.report-modal-ticket-table th:first-child {
+  text-align: left;
+}
+
+.report-modal-ticket-table th:not(:first-child) {
+  text-align: right;
+}
+
+.report-modal-ticket-table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.report-modal-ticket-table td {
+  padding: 4px 8px;
+}
+
+.report-modal-ticket-table td:first-child {
+  text-align: left;
+}
+
+.report-modal-ticket-table td:not(:first-child) {
+  text-align: right;
+}
+
+.report-modal-ticket-mobile-row {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 6px 0;
+}
+
+.report-modal-ticket-mobile-name {
+  font-weight: 600;
+}
+
+.report-modal-ticket-mobile-detail {
+  color: #555;
+  font-size: 12px;
+}
+
+.report-modal-payment-section {
+  margin-top: 8px;
+}
+
+.report-modal-payment-heading {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.report-modal-summary-row-top {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.report-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}

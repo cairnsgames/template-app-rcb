@@ -2,9 +2,15 @@ import React, { useContext, useMemo, useState } from "react";
 import { TxContext } from "./txContext";
 import ReportModal from "./ReportModal";
 import { FinancesEvent } from "./finances.types";
-import { Button } from "react-bootstrap";
+import { Button, Form, Row, Col } from "react-bootstrap";
 import { Eye, FileEarmarkPdf } from "react-bootstrap-icons";
 import generateEventPdf from "./generateEventPdf";
+
+function toDateInputValue(d: Date) {
+  return d.toISOString().split("T")[0];
+}
+
+const defaultStart = toDateInputValue(new Date(Date.now() - 365 * 24 * 60 * 60 * 1000));
 
 export default function ReportsTab(): JSX.Element {
   const ctx = useContext(TxContext);
@@ -13,6 +19,8 @@ export default function ReportsTab(): JSX.Element {
 
   const [selected, setSelected] = useState<FinancesEvent | null>(null);
   const [autoPrint, setAutoPrint] = useState(false);
+  const [filterFrom, setFilterFrom] = useState(defaultStart);
+  const [withSalesOnly, setWithSalesOnly] = useState(false);
 
   function isPast(endTime: string | undefined | null) {
     if (!endTime) return false;
@@ -25,107 +33,51 @@ export default function ReportsTab(): JSX.Element {
     setAutoPrint(doPrint);
   }
 
-  async function exportPdf(ev: FinancesEvent) {
-    try {
-      const { jsPDF } = await import("jspdf");
-      const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
-
-      const marginLeft = 15;
-      let y = 15;
-
-      pdf.setFontSize(14);
-      pdf.setTextColor(125, 43, 114);
-      pdf.text("Event Feedback", marginLeft, y);
-
-      y += 8;
-      pdf.setFontSize(18);
-      pdf.setTextColor(0, 0, 0);
-      pdf.text(String(ev.title || ""), marginLeft, y);
-
-      y += 8;
-      pdf.setFontSize(10);
-      pdf.setTextColor(100, 100, 100);
-      pdf.text(`${ev.start_time || ""} ${ev.end_time ? `- ${ev.end_time}` : ""}`, marginLeft, y);
-
-      y += 8;
-      pdf.setDrawColor(0, 0, 0);
-      pdf.line(marginLeft, y, 195 - marginLeft, y);
-
-      y += 8;
-
-      // If image present, attempt to fetch and add to PDF at left
-      if (ev.image) {
-        try {
-          const imgUrl = `https://cairnsgames.co.za/files/${ev.image}`;
-          const resp = await fetch(imgUrl);
-          if (resp.ok) {
-            const blob = await resp.blob();
-            const dataUrl = await new Promise<string>((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(String(reader.result));
-              reader.onerror = reject;
-              reader.readAsDataURL(blob);
-            });
-
-            // create Image to measure
-            await new Promise<void>((res) => {
-              const img = new Image();
-              img.onload = () => {
-                const maxW = 40; // mm
-                const imgWpx = img.width;
-                const imgHpx = img.height;
-                const ratio = imgHpx / imgWpx;
-                const imgWmm = maxW;
-                const imgHmm = imgWmm * ratio;
-                pdf.addImage(dataUrl, "JPEG", marginLeft, y, imgWmm, imgHmm);
-                res();
-              };
-              img.onerror = () => res();
-              img.src = dataUrl;
-            });
-          }
-        } catch (e) {
-          // ignore image errors
-        }
-      }
-
-      // Stats block
-      const statX = ev.image ? marginLeft + 50 : marginLeft;
-      let statY = y;
-      pdf.setFontSize(11);
-      pdf.setTextColor(0, 0, 0);
-
-      pdf.text(`Days displayed: ${ev.days_displayed ?? "-"}`, statX, statY);
-      statY += 7;
-      pdf.text(`Total views: ${ev.detail_total_views ?? ev.card_total_views ?? 0}`, statX, statY);
-      statY += 7;
-      pdf.text(`Tickets bought: ${ev.tickets_sold ?? 0}`, statX, statY);
-      statY += 7;
-      pdf.text(`Ticket price: R ${ev.price ?? 0}`, statX, statY);
-      statY += 7;
-      pdf.setFontSize(12);
-      pdf.text(`Total revenue: R ${ev.total_price ?? 0}`, statX, statY);
-
-      const filename = `${(ev.title || "report").replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 120)}.pdf`;
-      pdf.save(filename);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error("PDF export failed", err);
-      // eslint-disable-next-line no-alert
-      alert('PDF export failed.');
-    }
-  }
-
   function closeModal() {
     setSelected(null);
     setAutoPrint(false);
   }
 
-  const listItems = useMemo(() => events || [], [events]) as FinancesEvent[];
+  const listItems = useMemo(() => {
+    const since = filterFrom ? new Date(filterFrom).getTime() : null;
+    const now = Date.now();
+    return (events as FinancesEvent[]).filter((ev) => {
+      const evTime = new Date(ev.start_time || "").getTime();
+      // future events always show; only filter past events by the "since" date
+      const isFuture = evTime >= now;
+      if (!isFuture && since && evTime < since) return false;
+      if (withSalesOnly && !(ev.tickets_sold && ev.tickets_sold > 0)) return false;
+      return true;
+    });
+  }, [events, filterFrom, withSalesOnly]);
 
   return (
     <div>
       <h4>Reports</h4>
+
+      <Row className="g-2 align-items-end mb-3">
+        <Col xs={12} sm="auto">
+          <Form.Group controlId="filterFrom">
+            <Form.Label className="mb-1" style={{ fontSize: 12 }}>Since</Form.Label>
+            <Form.Control
+              type="date"
+              size="sm"
+              value={filterFrom}
+              onChange={(e) => setFilterFrom(e.target.value)}
+            />
+          </Form.Group>
+        </Col>
+        <Col xs={12} sm className="d-flex align-items-end justify-content-sm-end">
+          <Form.Check
+            type="switch"
+            id="withSalesOnly"
+            label="With sales only"
+            checked={withSalesOnly}
+            onChange={(e) => setWithSalesOnly(e.target.checked)}
+          />
+        </Col>
+      </Row>
+
       {loading ? <div>Loading events…</div> : null}
       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 12 }}>
         {listItems.map((ev: FinancesEvent) => {
@@ -152,10 +104,7 @@ export default function ReportsTab(): JSX.Element {
                       variant="outline-primary"
                       size="sm"
                       title="Export PDF"
-                      onClick={async () => {
-                        const summary = await ctx?.getEventSummary?.(ev.id);
-                        generateEventPdf(ev, summary ?? undefined);
-                      }}
+                      onClick={() => generateEventPdf(ev)}
                     >
                       <FileEarmarkPdf />
                     </Button>
