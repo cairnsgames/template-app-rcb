@@ -36,6 +36,33 @@ export type BankDetails = {
   sortCode: string;
 };
 
+export type TicketType = {
+  id: number;
+  event_id: number;
+  name: string;
+  description?: string;
+  price: number;
+  currency?: string;
+  created?: string;
+  modified?: string | null;
+  tickets_sold?: number;
+  total_value?: number;
+};
+
+export type TicketOption = {
+  id: number;
+  event_id: number;
+  ticket_type_id?: number;
+  name: string;
+  description?: string;
+  price: number;
+  currency?: string;
+  created?: string;
+  modified?: string | null;
+  tickets_sold?: number;
+  total_value?: number;
+};
+
 export type FinancesEvent = {
   id: number;
   calendar_id?: number;
@@ -74,6 +101,8 @@ export type FinancesEvent = {
   card_total_views?: string | number;
   tickets_sold?: number;
   total_price?: number;
+  ticket_types?: TicketType[];
+  ticket_options?: TicketOption[];
   [key: string]: any;
 };
 

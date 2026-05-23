@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 import { FileEarmarkPdf } from "react-bootstrap-icons";
-import { FinancesEvent } from "./finances.types";
+import { FinancesEvent, TicketType, TicketOption } from "./finances.types";
 import generateEventPdf from "./generateEventPdf";
 import { TxContext } from "./txContext";
 
@@ -15,6 +15,13 @@ export default function ReportModal({ event, onClose, autoPrint }: Props): JSX.E
   const ctx = useContext(TxContext);
   const [summary, setSummary] = useState<any | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" && window.innerWidth >= 640);
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 640);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // fetch summary when event changes
   useEffect(() => {
@@ -116,15 +123,93 @@ export default function ReportModal({ event, onClose, autoPrint }: Props): JSX.E
               <div className="label">Tickets bought</div>
               <div className="value">{event.tickets_sold ?? 0}</div>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <div className="label">Ticket price</div>
-              <div className="value">{event.price ? `R ${event.price}` : "R 0"}</div>
-            </div>
+            {event.price && Number(event.price) !== 0 ? (
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div className="label">Ticket price</div>
+                <div className="value">{`R ${event.price}`}</div>
+              </div>
+            ) : null}
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <div className="label">Total revenue:</div>
               <div className="value">{event.total_price ? `R ${event.total_price}` : "R 0"}</div>
             </div>
           </div>
+
+          {/* Ticket Types */}
+          {event.ticket_types && event.ticket_types.length > 0 && (
+            <div style={{ marginTop: 16 }}>
+              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>Ticket Types</div>
+              {isDesktop ? (
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ borderBottom: "2px solid #ddd", color: "#555" }}>
+                      <th style={{ textAlign: "left", padding: "4px 8px" }}>Name</th>
+                      <th style={{ textAlign: "right", padding: "4px 8px" }}>Price</th>
+                      <th style={{ textAlign: "right", padding: "4px 8px" }}>Sold</th>
+                      <th style={{ textAlign: "right", padding: "4px 8px" }}>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {event.ticket_types.map((tt: TicketType) => (
+                      <tr key={tt.id} style={{ borderBottom: "1px solid #f0f0f0" }}>
+                        <td style={{ padding: "4px 8px" }}>{tt.name}</td>
+                        <td style={{ textAlign: "right", padding: "4px 8px" }}>R {Number(tt.price).toFixed(2)}</td>
+                        <td style={{ textAlign: "right", padding: "4px 8px" }}>{tt.tickets_sold ?? 0}</td>
+                        <td style={{ textAlign: "right", padding: "4px 8px" }}>R {Number(tt.total_value ?? 0).toFixed(2)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div>
+                  {event.ticket_types.map((tt: TicketType) => (
+                    <div key={tt.id} style={{ borderBottom: "1px solid #f0f0f0", padding: "6px 0" }}>
+                      <div style={{ fontWeight: 600 }}>{tt.name}</div>
+                      <div style={{ color: "#555", fontSize: 12 }}>@ R {Number(tt.price).toFixed(2)}, {tt.tickets_sold ?? 0} sold, R {Number(tt.total_value ?? 0).toFixed(2)} total</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Ticket Options */}
+          {event.ticket_options && event.ticket_options.length > 0 && (
+            <div style={{ marginTop: 16 }}>
+              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>Ticket Options</div>
+              {isDesktop ? (
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ borderBottom: "2px solid #ddd", color: "#555" }}>
+                      <th style={{ textAlign: "left", padding: "4px 8px" }}>Name</th>
+                      <th style={{ textAlign: "right", padding: "4px 8px" }}>Price</th>
+                      <th style={{ textAlign: "right", padding: "4px 8px" }}>Sold</th>
+                      <th style={{ textAlign: "right", padding: "4px 8px" }}>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {event.ticket_options.map((to: TicketOption) => (
+                      <tr key={to.id} style={{ borderBottom: "1px solid #f0f0f0" }}>
+                        <td style={{ padding: "4px 8px" }}>{to.name}</td>
+                        <td style={{ textAlign: "right", padding: "4px 8px" }}>R {Number(to.price).toFixed(2)}</td>
+                        <td style={{ textAlign: "right", padding: "4px 8px" }}>{to.tickets_sold ?? 0}</td>
+                        <td style={{ textAlign: "right", padding: "4px 8px" }}>R {Number(to.total_value ?? 0).toFixed(2)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div>
+                  {event.ticket_options.map((to: TicketOption) => (
+                    <div key={to.id} style={{ borderBottom: "1px solid #f0f0f0", padding: "6px 0" }}>
+                      <div style={{ fontWeight: 600 }}>{to.name}</div>
+                      <div style={{ color: "#555", fontSize: 12 }}>@ R {Number(to.price).toFixed(2)}, {to.tickets_sold ?? 0} sold, R {Number(to.total_value ?? 0).toFixed(2)} total</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           <hr />
 
