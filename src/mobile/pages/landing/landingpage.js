@@ -32,7 +32,7 @@ const LandingPage = ({ subTitle }) => {
   
       const referBase =
         process.env.REACT_APP_REFERAL_API ||
-        "http://cairnsgames.co.za/php/referals/";
+        "https://cairnsgames.co.za/php/referals/";
       const referUrl = combineUrlAndPath(referBase, "refer.php");
   
       console.log("Landing Page: Sending referral data", payload);

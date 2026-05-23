@@ -92,7 +92,7 @@ const MobileAuth = (props) => {
 
         const referBase =
           process.env.REACT_APP_REFERAL_API ||
-          "http://cairnsgames.co.za/php/referals/";
+          "https://cairnsgames.co.za/php/referals/";
         const referUrl = combineUrlAndPath(referBase, "refer.php");
 
         console.log("####### Registration Page: Sending referral data", payload);
