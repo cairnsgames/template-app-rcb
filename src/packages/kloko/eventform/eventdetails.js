@@ -25,6 +25,7 @@ const EventDetails = ({
         {t('eventDetails.closeButton')}
       </button>
       <h3>{t('eventDetails.eventDetailsTitle')}</h3>
+      
       <Form.Group controlId="title">
         <Form.Label>{t('eventDetails.title')}</Form.Label>
         <InputGroup>

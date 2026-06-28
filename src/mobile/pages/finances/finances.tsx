@@ -20,10 +20,6 @@ const FinancesContent = (): JSX.Element => {
         <Col xs={10} md={10} lg={10}>
           <h1>Finances (Under development)</h1>
 
-          <Card className="mb-3 p-3">
-            <div>Balance: <strong>R{balance}</strong></div>
-          </Card>
-
           <Tabs
             id="finances-tabs"
             activeKey={active}

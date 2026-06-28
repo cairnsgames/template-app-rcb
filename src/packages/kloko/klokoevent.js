@@ -28,6 +28,8 @@ const KlokoEventEditor = ({ id, onClose }) => {
     loading,
     fetchTicketTypesByEventId,
     fetchTicketOptionsByEventId,
+    deleteTicketType,
+    deleteTicketOption,
   } = useMyEvents();
   const { addToast } = useToast();
   
@@ -143,6 +145,24 @@ const KlokoEventEditor = ({ id, onClose }) => {
   const selectLocation = (location) => {
     setLatlng({ lat: location.lat, lng: location.lng });
     setLocation(location);
+  };
+
+  const handleSetTickets = (newTickets) => {
+    tickets.forEach((existing) => {
+      if (existing.id && !newTickets.find((t) => t.id === existing.id)) {
+        deleteTicketType(existing.id);
+      }
+    });
+    setTickets(newTickets);
+  };
+
+  const handleSetTicketOptions = (newOptions) => {
+    ticketOptions.forEach((existing) => {
+      if (existing.id && !newOptions.find((o) => o.id === existing.id)) {
+        deleteTicketOption(existing.id);
+      }
+    });
+    setTicketOptions(newOptions);
   };
 
   const handleSubmit = async (e) => {
@@ -267,9 +287,9 @@ const KlokoEventEditor = ({ id, onClose }) => {
           price={price}
           setPrice={setPrice}
           tickets={tickets}
-          setTickets={setTickets}
+          setTickets={handleSetTickets}
           ticketOptions={ticketOptions}
-          setTicketOptions={setTicketOptions}
+          setTicketOptions={handleSetTicketOptions}
         />
 
         <LocationSection location={location} setLocation={selectLocation} />

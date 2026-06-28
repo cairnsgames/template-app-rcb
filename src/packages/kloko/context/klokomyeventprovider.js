@@ -611,6 +611,34 @@ export const KlokoMyEventProvider = ({
     }
   };
 
+  const deleteTicketType = async (id) => {
+    try {
+      await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_KLOKO_API,
+          `api.php/tickettype/${id}`
+        ),
+        { method: "DELETE", headers }
+      );
+    } catch (error) {
+      console.error("Error deleting ticket type:", error);
+    }
+  };
+
+  const deleteTicketOption = async (id) => {
+    try {
+      await fetch(
+        combineUrlAndPath(
+          process.env.REACT_APP_KLOKO_API,
+          `api.php/ticketoption/${id}`
+        ),
+        { method: "DELETE", headers }
+      );
+    } catch (error) {
+      console.error("Error deleting ticket option:", error);
+    }
+  };
+
   const updateEvent = async (event, ticketTypes, ticketOptions) => {
     setLoading(true);
     try {
@@ -651,12 +679,12 @@ export const KlokoMyEventProvider = ({
         return newEvents;
       });
 
-      // update ticket types/options (fire-and-forget)
-      ticketTypes.map((t) => {
-        createOrUpdateTicket(t);
+      // update ticket types/options — inject event_id for newly added tickets
+      ticketTypes.forEach((t) => {
+        createOrUpdateTicket(t.id ? t : { ...t, event_id: updatedEvent.id });
       });
-      ticketOptions.map((o) => {
-        createOrUpdateTicketOption(o);
+      ticketOptions.forEach((o) => {
+        createOrUpdateTicketOption(o.id ? o : { ...o, event_id: updatedEvent.id });
       });
 
       setLoading(false);
@@ -914,6 +942,8 @@ export const KlokoMyEventProvider = ({
       fetchEventById,
       fetchTicketTypesByEventId,
       fetchTicketOptionsByEventId,
+      deleteTicketType,
+      deleteTicketOption,
       createBooking,
       updateBooking,
       deleteBooking,
