@@ -4,7 +4,7 @@ import { useUser } from "../auth/context/useuser";
 import StampsBarChart from "./stampsbarchart";
 import LoyaltyRewards from "./loyaltyrewards";
 import { Button } from "react-bootstrap";
-import { getImageSrc } from "../../../packages/zharo/src/getimagesrc";
+import { getImageSrc } from "../content/getimagesrc";
 import { Camera, InfoCircleFill } from "react-bootstrap-icons";
 import CapturePhoto from "../photo/capturephoto";
 import { useToast } from "../../packages/toasts/usetoast";
