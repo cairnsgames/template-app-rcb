@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export const useDebounce = (value, delay) => {
+export const useDebounce = <T>(value: T, delay: number): T => {
   // State to store the debounced value
-  const [debouncedValue, setDebouncedValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
     // Set a timer that will update the debounced value after the specified delay
@@ -18,6 +18,6 @@ export const useDebounce = (value, delay) => {
   }, [value, delay]); // Only re-call effect if value or delay changes
 
   return debouncedValue;
-}
+};
 
 export default useDebounce;

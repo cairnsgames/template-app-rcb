@@ -1,7 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
 import { combineUrlAndPath } from "../functions/combineurlandpath";
+import { logUntypedResponse } from "../functions/loguntypedresponse";
 
-const templateString = (str, params) => {
+type GAPIItem = Record<string, unknown>;
+
+type UseGAPIV2Config = {
+  shouldLoad?: boolean;
+  itemKey?: string;
+  updateEndpoint?: string;
+  insertEndpoint?: string;
+  deleteEndpoint?: string;
+  headers?: Record<string, string>;
+  params?: Record<string, string>;
+};
+
+const templateString = (str: string, params?: Record<string, string>): string => {
   if (!params) return str;
 
   const newstr = str.replace(/{(\w+)}/g, (_, key) => {
@@ -10,7 +23,7 @@ const templateString = (str, params) => {
   return newstr;
 };
 
-const useGAPIV2 = (baseurl, configName, config = {}) => {
+const useGAPIV2 = (baseurl: string, configName: string, config: UseGAPIV2Config = {}) => {
   const {
     shouldLoad = true,
     itemKey = "id",
@@ -20,10 +33,10 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     headers = {},
     params = {},
   } = config;
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState<GAPIItem[]>([]);
+  const [error, setError] = useState<unknown>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [childrenData, setChildrenData] = useState({});
+  const [childrenData, setChildrenData] = useState<Record<string, unknown>>({});
 
   const fetchData = useCallback(async () => {
     // if (!shouldLoad) {
@@ -38,7 +51,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
         method: "GET",
         headers: { "Content-Type": "application/json", ...headers },
       });
-      const result = await response.json();
+      const result = logUntypedResponse<GAPIItem[]>("usegapiv2.fetchData", await response.json());
       setData(result);
     } catch (err) {
       console.error(err);
@@ -52,7 +65,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     fetchData();
   }, [fetchData]);
 
-  const getItem = async (id) => {
+  const getItem = async (id: string | number) => {
     const existingItem = data.find((item) => item[itemKey] === id);
     if (existingItem) {
       return existingItem;
@@ -60,9 +73,9 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        combineUrlAndPath(API_BASE_URL, `${configName}/${id}`)
+        combineUrlAndPath(baseurl, `${configName}/${id}`)
       );
-      return await response.json();
+      return logUntypedResponse<GAPIItem>("usegapiv2.getItem", await response.json());
     } catch (err) {
       setError(err);
     } finally {
@@ -70,7 +83,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     }
   };
 
-  const updateItem = async (item) => {
+  const updateItem = async (item: GAPIItem) => {
     setIsLoading(true);
     try {
       const response = await fetch(
@@ -81,7 +94,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
           body: JSON.stringify(item),
         }
       );
-      const updatedItems = await response.json();
+      const updatedItems = logUntypedResponse<GAPIItem[]>("usegapiv2.updateItem", await response.json());
       const updatedData = data.map((d) => {
         const foundItem = updatedItems.find(
           (item) => item[itemKey] === d[itemKey]
@@ -97,7 +110,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     }
   };
 
-  const insertItem = async (item) => {
+  const insertItem = async (item: GAPIItem) => {
     setIsLoading(true);
     try {
       const response = await fetch(insertEndpoint, {
@@ -105,7 +118,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
         headers: { "Content-Type": "application/json", ...headers },
         body: JSON.stringify(item),
       });
-      const newItem = await response.json();
+      const newItem = logUntypedResponse<GAPIItem>("usegapiv2.insertItem", await response.json());
       setData((prevData) => [...prevData, newItem]);
     } catch (err) {
       setError(err);
@@ -114,7 +127,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     }
   };
 
-  const deleteItem = async (id) => {
+  const deleteItem = async (id: string | number) => {
     setIsLoading(true);
     try {
       await fetch(combineUrlAndPath(deleteEndpoint, `${id}`), {
@@ -129,7 +142,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     }
   };
 
-  const getChildren = async (id, subkeyName) => {
+  const getChildren = async (id: string | number, subkeyName: string) => {
     const cacheKey = `${id}-${subkeyName}`;
     if (childrenData[cacheKey]) {
       return childrenData[cacheKey];
@@ -137,9 +150,9 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        combineUrlAndPath(API_BASE_URL, `${configName}/${id}/${subkeyName}`)
+        combineUrlAndPath(baseurl, `${configName}/${id}/${subkeyName}`)
       );
-      const result = await response.json();
+      const result = logUntypedResponse<unknown>("usegapiv2.getChildren", await response.json());
       setChildrenData((prevData) => ({ ...prevData, [cacheKey]: result }));
       return result;
     } catch (err) {
@@ -149,7 +162,7 @@ const useGAPIV2 = (baseurl, configName, config = {}) => {
     }
   };
 
-  const refresh = useCallback((id, subkeyName) => {
+  const refresh = useCallback((id?: string | number, subkeyName?: string) => {
     if (id && subkeyName) {
       const cacheKey = `${id}-${subkeyName}`;
       setChildrenData((prevData) => ({ ...prevData, [cacheKey]: null }));

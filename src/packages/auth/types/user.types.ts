@@ -1,4 +1,4 @@
-import Property from "../../profile/types/property.type";
+import { Property } from "../../profile/types/property.types";
 
 export type Permission = {
   name: string;
@@ -18,7 +18,5 @@ export type User = {
   app_id?: string;
   permissions?: Permission[];
   properties?: Property[];
-  debug?: any;
+  debug?: unknown;
 };
-
-export default User;

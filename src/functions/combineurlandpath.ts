@@ -1,4 +1,4 @@
-export const combineUrlAndPath = (url, path) => {
+export const combineUrlAndPath = (url?: string | null, path?: string | null): string => {
   if (!url || !path) {
     console.error("URL and path are required", url, path);
     return "";

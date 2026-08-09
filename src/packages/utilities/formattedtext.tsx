@@ -1,7 +1,11 @@
-import React from 'react';
+import React from "react";
 const MarkdownEditor = React.lazy(() => import("@uiw/react-markdown-editor"));
 
-const FormattedText = (props) => {
+type FormattedTextProps = {
+  text: string;
+};
+
+const FormattedText = (props: FormattedTextProps) => {
    return props.text;
     // return <MarkdownEditor.Markdown
     //       source={props.text.replace(/\\n/g, "\n")}

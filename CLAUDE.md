@@ -56,8 +56,20 @@ Each domain typically talks to its own backend at `https://cairnsgames.co.za/php
 
 ## Conventions (from `.github/copilot-instructions.md`)
 
-- Prefer TypeScript for new files (the codebase is mixed `.js`/`.ts`); prefer `type` over `interface`; never use `any`.
-- Store types in colocated `*.types.ts` files next to where they're most relevant — usually alongside a domain's `context` file.
+- Prefer TypeScript for new files (the codebase is mixed `.js`/`.ts`, and is being migrated file-by-file to TypeScript — see below); prefer `type` over `interface`; never use `any`.
+- Store types in colocated `*.types.ts` files (plural) next to where they're most relevant — usually alongside a domain's `context` file. Export types by name only (no `export default`).
 - Prefer arrow functions over function declarations.
 - Use `react-bootstrap` components and `react-bootstrap-icons` rather than raw HTML/other icon sets.
 - Custom CSS goes in a same-named `.css` file next to the component; avoid inline styles.
+
+## JavaScript → TypeScript migration
+
+The codebase is being converted from `.js`/`.jsx` to `.ts`/`.tsx` domain-by-domain (not all at once). TS tooling is already fully wired up — `.babelrc` has `@babel/preset-typescript` and `tsconfig.json` has `allowJs: true` — so `.ts`/`.tsx` files need no extra build config. `tsconfig.json` currently has `strict: false`; the target end-state is `noImplicitAny: true` (not full `strict`).
+
+When converting a file that calls an API and the response doesn't have a real type yet, don't type it `any`. Instead use `logUntypedResponse` (`src/functions/loguntypedresponse.ts`):
+
+```ts
+const data = logUntypedResponse<unknown>("tenantprovider.fetchApplication", await res.json());
+```
+
+Gated by `REACT_APP_LOG_UNTYPED_RESPONSES` (`true` in `.env.development`, `false` in `.env.production`), this logs a `console.warn` with the source name and the raw response so missing types are visible during development. Once a domain gets a real `*.types.ts` shape for that response, replace the call with a normal typed assignment — so `grep -r "logUntypedResponse(" src` at any point shows exactly which API responses still need real types.

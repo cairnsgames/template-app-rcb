@@ -1,6 +1,14 @@
-const topic = [];
+type Subscriber = (value: unknown) => void;
 
-const usePubSub = (topicName, initialValue) => {
+type Topic = {
+  name: string;
+  value: unknown;
+  subscribers: Subscriber[];
+};
+
+const topic: Record<string, Topic> = {};
+
+const usePubSub = (topicName: string, initialValue?: unknown) => {
   if (!topic[topicName]) {
     topic[topicName] = {
       name: topicName,
@@ -13,7 +21,7 @@ const usePubSub = (topicName, initialValue) => {
     topic[topicName].value = initialValue;
   }
 
-  const subscribe = (callback) => {
+  const subscribe = (callback: Subscriber) => {
 
     topic[topicName].subscribers.push(callback);
     callback(topic[topicName] ? topic[topicName].value : initialValue)
@@ -26,7 +34,7 @@ const usePubSub = (topicName, initialValue) => {
     };
   };
 
-  const publish = (value) => {
+  const publish = (value: unknown) => {
     if (!topic[topicName]) {
       topic[topicName] = { name: topicName, value: value, subscribers: [] };
     }

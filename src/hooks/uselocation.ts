@@ -1,6 +1,23 @@
 import { useState, useEffect } from "react";
 
-export const loadURLDetails = (valid) => {
+export type LocationParam = {
+  key: string;
+  value: string;
+};
+
+export type LocationDetails = {
+  href: string;
+  hash: string;
+  params: LocationParam[];
+  hostname: string;
+  port: string;
+  pathname: string;
+  path: string[];
+  protocol: string;
+  set: (url: string) => void;
+};
+
+export const loadURLDetails = (valid?: string[]): LocationDetails => {
   let hash = window.location.hash;
   hash = hash.split("?")[0].replace("#", "");
 
@@ -10,7 +27,7 @@ export const loadURLDetails = (valid) => {
       window.location.hash.indexOf("?")
     );
   }
-  const hrefparams = [];
+  const hrefparams: LocationParam[] = [];
   myURL.searchParams.forEach((value, key) => {
     if (!valid || valid.includes(key)) {
       hrefparams.push({ key, value });
@@ -26,12 +43,12 @@ export const loadURLDetails = (valid) => {
     pathname: window.location.pathname,
     path: window.location.pathname.split(/\//).filter((x) => x !== ""),
     protocol: window.location.protocol,
-    set: (url) => {},
+    set: (url: string) => {},
   };
 };
 
-export const useLocation = (valid) => {
-  const [details, setDetails] = useState(loadURLDetails(valid));
+export const useLocation = (valid?: string[]) => {
+  const [details, setDetails] = useState<LocationDetails>(loadURLDetails(valid));
   const [validParams] = useState(valid);
 
   const popstate = () => {
@@ -50,7 +67,7 @@ export const useLocation = (valid) => {
     };
   }, []);
 
-  const set = (url, parms) => {
+  const set = (url: string, parms?: Record<string, string>) => {
     if (parms) {
       url += "?" + new URLSearchParams(parms).toString();
     }
@@ -58,7 +75,7 @@ export const useLocation = (valid) => {
     setDetails(loadURLDetails(validParams));
   };
 
-  const setHash = (hash, parms) => {
+  const setHash = (hash: string, parms?: Record<string, string>) => {
     let url = `#${hash}`;
     if (parms) {
       url += "?" + new URLSearchParams(parms).toString();
@@ -79,7 +96,7 @@ export const useLocation = (valid) => {
     setDetails(loadURLDetails(validParams));
   }, [validParams]);
 
-  const param = (key) => {
+  const param = (key: string): string | null => {
     const item = details.params.find((i) => i.key === key);
     if (!item) return null;
     return item.value;

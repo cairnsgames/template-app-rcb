@@ -1,4 +1,4 @@
-export const extractFileName = (path) => {
+export const extractFileName = (path: string): string | undefined => {
   // If the path is a URL, create a URL object and extract the file name from the pathname.
   if (path.startsWith("http://") || path.startsWith("https://")) {
     const url = new URL(path);

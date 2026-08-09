@@ -4,7 +4,7 @@ import { TxContext } from "./txContext";
 import { TxContextValue } from "./finances.types";
 import useUser from "@cairnsgames/auth/context/useuser";
 import { Save } from "react-bootstrap-icons";
-import Property from "../../../packages/profile/types/property.type";
+import { Property } from "../../../packages/profile/types/property.types";
 
 export default function DetailsTab(): JSX.Element {
   const tx = useContext(TxContext) as TxContextValue;
@@ -57,7 +57,7 @@ export default function DetailsTab(): JSX.Element {
         setVatNumber("");
       } else {
         setNotVatRegistered(false);
-        setVatNumber(vatProp.value || "");
+        setVatNumber(vatProp.value ? String(vatProp.value) : "");
       }
     }
 
