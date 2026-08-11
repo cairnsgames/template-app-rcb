@@ -12,7 +12,7 @@ import LoyaltySystemForm from "./loyaltysystemform";
 import InfoBox from "../../components/infobox/infobox";
 import UserRewardModal from "./userrewardmodal";
 import LoadingSpinner from "../../components/spinner/spinner";
-import QRCodeScanner from "../photo/qrcodescanner.js";
+import QRCodeScanner from "../photo/qrcodescanner";
 import Tracker from "../tracker/tracker";
 import { useTranslation } from 'react-i18next';
 
