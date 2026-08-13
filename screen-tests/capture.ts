@@ -36,48 +36,50 @@ export const capture = async (config: ScreenConfig): Promise<CaptureEntry[]> => 
   const setupFn = await resolveSetup(config);
 
   const browser = await chromium.launch();
-  const context = await browser.newContext();
-  const page = await context.newPage();
+  try {
+    const context = await browser.newContext();
+    const page = await context.newPage();
 
-  const captureScreen = async (screen: ScreenDef): Promise<void> => {
-    const viewportNames = screen.viewports ?? Object.keys(config.viewports);
+    const captureScreen = async (screen: ScreenDef): Promise<void> => {
+      const viewportNames = screen.viewports ?? Object.keys(config.viewports);
 
-    for (const viewportName of viewportNames) {
-      const viewport = config.viewports[viewportName];
-      if (!viewport) {
-        throw new Error(`Screen "${screen.name}" references unknown viewport "${viewportName}".`);
+      for (const viewportName of viewportNames) {
+        const viewport = config.viewports[viewportName];
+        if (!viewport) {
+          throw new Error(`Screen "${screen.name}" references unknown viewport "${viewportName}".`);
+        }
+
+        await page.setViewportSize(viewport);
+        await page.goto(`${config.baseUrl}${screen.path}`, { waitUntil: "load" });
+
+        const currentImagePath = path.join(currentDir, shotFileName(screen.name, viewportName));
+        await page.screenshot({ path: currentImagePath, fullPage: true });
+
+        entries.push({
+          screen,
+          viewport: { name: viewportName, ...viewport },
+          currentImagePath,
+        });
       }
+    };
 
-      await page.setViewportSize(viewport);
-      await page.goto(`${config.baseUrl}${screen.path}`, { waitUntil: "load" });
+    const publicScreens = config.screens.filter((s) => s.public);
+    const authScreens = config.screens.filter((s) => !s.public);
 
-      const currentImagePath = path.join(currentDir, shotFileName(screen.name, viewportName));
-      await page.screenshot({ path: currentImagePath, fullPage: true });
-
-      entries.push({
-        screen,
-        viewport: { name: viewportName, ...viewport },
-        currentImagePath,
-      });
+    for (const screen of publicScreens) {
+      await captureScreen(screen);
     }
-  };
 
-  const publicScreens = config.screens.filter((s) => s.public);
-  const authScreens = config.screens.filter((s) => !s.public);
+    if (setupFn) {
+      await setupFn(page);
+    }
 
-  for (const screen of publicScreens) {
-    await captureScreen(screen);
+    for (const screen of authScreens) {
+      await captureScreen(screen);
+    }
+  } finally {
+    await browser.close();
   }
-
-  if (setupFn) {
-    await setupFn(page);
-  }
-
-  for (const screen of authScreens) {
-    await captureScreen(screen);
-  }
-
-  await browser.close();
 
   return entries;
 };

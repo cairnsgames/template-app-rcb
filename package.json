@@ -7,7 +7,9 @@
     "build:start": "cd dist && PORT=3000 npx serve",
     "start": "webpack serve --open --mode development",
     "start:live": "webpack serve --open --mode development --live-reload --hot",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check-screens": "tsx screen-tests/check-screens.ts",
+    "discover-screens": "tsx screen-tests/discover.ts"
   },
   "license": "MIT",
   "author": {
@@ -15,6 +17,12 @@
     "email": "cairnswm@gmail.com"
   },
   "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/pixelmatch": "^5.2.6",
+    "@types/pngjs": "^6.0.5",
+    "pixelmatch": "^6.0.0",
+    "pngjs": "^7.0.0",
+    "tsx": "^4.19.0",
     "@babel/core": "^7.15.8",
     "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.15.8",

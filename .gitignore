@@ -114,3 +114,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Local screen comparison system (screen-tests/) — generated assets and test-user credentials
+.screens/current/
+.screens/diff/
+.screens/report/
+.screen-auth/

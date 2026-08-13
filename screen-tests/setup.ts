@@ -18,7 +18,13 @@ export const setup = async (page: Page): Promise<void> => {
   await page.fill('input[type="email"]', email);
   await page.fill('input[type="password"]', password);
   await page.click('button[type="submit"]');
-  await page.waitForSelector('input[type="password"]', { state: "detached" });
+  try {
+    await page.waitForSelector('input[type="password"]', { state: "detached", timeout: 10_000 });
+  } catch {
+    throw new Error(
+      "Login did not complete within 10s — check SCREEN_TEST_EMAIL / SCREEN_TEST_PASSWORD in .screen-auth/.env are valid credentials for this app."
+    );
+  }
 };
 
 export default setup;
