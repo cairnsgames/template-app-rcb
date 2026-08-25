@@ -12,6 +12,8 @@ export type ScreenDef = {
   public?: boolean;
   /** Restrict this screen to a subset of the configured viewports. Defaults to all viewports. */
   viewports?: ViewportName[];
+  /** Milliseconds to wait after page load before taking the screenshot. */
+  delay?: number;
 };
 
 export type ComparisonConfig = {

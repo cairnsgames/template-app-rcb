@@ -116,6 +116,7 @@ dist
 .pnp.*
 
 # Local screen comparison system (screen-tests/) — generated assets and test-user credentials
+.screens/
 .screens/current/
 .screens/diff/
 .screens/report/
