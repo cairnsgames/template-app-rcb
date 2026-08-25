@@ -7,10 +7,9 @@
     "build:start": "cd dist && PORT=3000 npx serve",
     "start": "webpack serve --open --mode development",
     "start:live": "webpack serve --open --mode development --live-reload --hot",
-    "sync": "npm run build && npx cap sync && npx capacitor-assets generate && npm run copy:google-services",
-    "copy:google-services": "copy .\\google-services.json .\\android\\app\\google-services.json",
-    "copy": "npx cap copy",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check-screens": "tsx screen-tests/check-screens.ts",
+    "discover-screens": "tsx screen-tests/discover.ts"
   },
   "license": "MIT",
   "author": {
@@ -18,11 +17,18 @@
     "email": "cairnswm@gmail.com"
   },
   "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/pixelmatch": "^5.2.6",
+    "@types/pngjs": "^6.0.5",
+    "pixelmatch": "^6.0.0",
+    "pngjs": "^7.0.0",
+    "tsx": "^4.19.0",
     "@babel/core": "^7.15.8",
     "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.28.5",
+    "@types/node": "^26.2.0",
     "autoprefixer": "^10.1.0",
     "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "^12.0.2",
@@ -34,23 +40,15 @@
     "postcss-loader": "^4.1.0",
     "sass-loader": "^14.1.1",
     "style-loader": "^3.3.0",
-    "typescript": "^6.0.2",
+    "typescript": "^5.9.3",
     "webpack": "^5.57.1",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.3.1"
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "@capacitor-firebase/messaging": "^6.1.0",
-    "@capacitor/android": "^6.1.2",
-    "@capacitor/assets": "^3.0.5",
-    "@capacitor/barcode-scanner": "^1.0.1",
-    "@capacitor/camera": "^6.0.2",
-    "@capacitor/cli": "^6.1.2",
     "@capacitor/core": "^6.1.2",
     "@capacitor/device": "^6.0.1",
-    "@capacitor/local-notifications": "^6.1.0",
-    "@capacitor/push-notifications": "^6.0.2",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
@@ -90,6 +88,9 @@
     "react-leaflet-cluster": "^2.1.0",
     "react-qrcode-logo": "^3.0.0",
     "react-responsive-masonry": "^2.7.1",
-    "sass": "1.77.6"
+    "sass": "1.77.6",
+    "bootstrap-daterangepicker": "^3.1.0",
+    "jquery": "^4.0.0",
+    "moment": "^2.30.1"
   }
 }
