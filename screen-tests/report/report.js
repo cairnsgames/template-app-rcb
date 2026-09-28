@@ -56,13 +56,46 @@ const renderTriptych = (result) => {
   return wrap;
 };
 
+const renderSingleImage = (result) => {
+  const wrap = document.createElement("div");
+  wrap.className = "triptych single";
+  const fig = document.createElement("figure");
+  fig.innerHTML = `<img loading="lazy" src="/screens/${result.currentImage}" alt="Current" /><figcaption>Current</figcaption>`;
+  wrap.appendChild(fig);
+  return wrap;
+};
+
 const renderScreenGroup = (screenName, results) => {
   const group = document.createElement("div");
   group.className = "screen-group";
 
+  const collapsible = results.filter((r) => r.status !== "failed");
+
+  const header = document.createElement("div");
+  header.className = "screen-header";
   const heading = document.createElement("h2");
   heading.textContent = screenName;
-  group.appendChild(heading);
+  header.appendChild(heading);
+
+  let imagesPanel = null;
+  if (collapsible.length > 0) {
+    imagesPanel = document.createElement("div");
+    imagesPanel.className = "images-panel";
+    imagesPanel.hidden = true;
+
+    const toggle = document.createElement("button");
+    toggle.className = "images-toggle";
+    toggle.textContent = "Show images";
+    toggle.addEventListener("click", () => {
+      const open = imagesPanel.hidden;
+      imagesPanel.hidden = !open;
+      toggle.textContent = open ? "Hide images" : "Show images";
+      toggle.classList.toggle("open", open);
+    });
+    header.appendChild(toggle);
+  }
+
+  group.appendChild(header);
 
   for (const result of results) {
     const row = document.createElement("div");
@@ -81,13 +114,23 @@ const renderScreenGroup = (screenName, results) => {
 
     if (result.status === "failed") {
       group.appendChild(renderTriptych(result));
-
       const button = document.createElement("button");
       button.className = "accept-btn";
       button.textContent = "Accept Current as Baseline";
       button.addEventListener("click", () => acceptBaseline(result, button, row));
       group.appendChild(button);
     }
+  }
+
+  if (imagesPanel) {
+    for (const result of collapsible) {
+      const item = document.createElement("div");
+      item.className = "images-panel-item";
+      item.innerHTML = `<span class="name">${result.viewport.name}</span>`;
+      item.appendChild(renderSingleImage(result));
+      imagesPanel.appendChild(item);
+    }
+    group.appendChild(imagesPanel);
   }
 
   return group;

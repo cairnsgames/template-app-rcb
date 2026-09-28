@@ -54,11 +54,58 @@ body {
   font-size: 1.1rem;
 }
 
-.viewport-row {
+.screen-header {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.35rem 0;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.screen-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.images-toggle {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #aaa;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.images-toggle::after {
+  content: " ▶";
+  font-size: 0.6rem;
+}
+
+.images-toggle.open::after {
+  content: " ▼";
+}
+
+.images-panel {
+  margin-top: 0.75rem;
+}
+
+.images-panel-item {
+  margin-bottom: 1rem;
+}
+
+.images-panel-item > .name {
+  display: block;
+  font-size: 0.8rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.triptych.single {
+  margin-left: 90px;
+  max-width: 320px;
 }
 
 .viewport-row .name {
@@ -130,4 +177,10 @@ body {
 .accept-btn:disabled {
   opacity: 0.6;
   cursor: default;
+}
+
+.triptych.single {
+  margin-left: 0;
+  max-width: 320px;
+  padding: 0.5rem 0 0.75rem;
 }
