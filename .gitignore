@@ -120,3 +120,5 @@ dist
 .screens/diff/
 .screens/report/
 .screen-auth/
+screen-tests/
+.screens/*

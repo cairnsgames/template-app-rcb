@@ -38,6 +38,8 @@ const SearchTab: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const debouncedQuery = useDebounce(inputValue, 300);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const trimmedInputValue = inputValue.trim();
+  const canSearch = selections.length > 0 || trimmedInputValue.length >= 3;
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -103,6 +105,12 @@ const SearchTab: React.FC = () => {
               setDropdownOpen(true);
             }}
             onFocus={() => setDropdownOpen(true)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && canSearch && !searchLoading) {
+                event.preventDefault();
+                executeSearch(trimmedInputValue);
+              }
+            }}
             autoComplete="off"
           />
           {showDropdown && (
@@ -115,8 +123,8 @@ const SearchTab: React.FC = () => {
         </div>
         <Button
           variant="primary"
-          disabled={selections.length === 0 || searchLoading}
-          onClick={executeSearch}
+          disabled={!canSearch || searchLoading}
+          onClick={() => executeSearch(trimmedInputValue)}
           title="Search"
         >
           {searchLoading ? (

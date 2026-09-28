@@ -1,0 +1,61 @@
+@baseUrl = http://localhost/cairnsgames/php/search
+
+### Load the current search tree
+GET {{baseUrl}}/config.php
+Accept: application/json
+
+### Search partners by partial name
+
+POST {{baseUrl}}/search.php
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "john"
+}
+
+###
+
+### Search by name and role (name narrows the result set)
+@teacherRoleId = 26
+
+POST {{baseUrl}}/search.php
+Content-Type: application/json
+Accept: application/json
+
+{
+  "roles": [{{teacherRoleId}}],
+  "name": "john"
+}
+
+### Teachers by Dance Genre
+### Use the config response to find the Teacher role id and the relevant dance genre group/offering ids.
+@danceTeacherRoleId = 26
+@danceGenreGroupId = 0
+@danceGenreOfferingId = 0
+
+POST {{baseUrl}}/search.php
+Content-Type: application/json
+Accept: application/json
+
+{
+  "roles": [{{danceTeacherRoleId}}],
+  "groups": [{{danceGenreGroupId}}],
+  "offerings": [{{danceGenreOfferingId}}]
+}
+
+### Events
+### Use the config response to find the role/group/offering ids that represent events in your dataset.
+@eventRoleId = 0
+@eventGroupId = 0
+@eventOfferingId = 0
+
+POST {{baseUrl}}/search.php
+Content-Type: application/json
+Accept: application/json
+
+{
+  "roles": [{{eventRoleId}}],
+  "groups": [{{eventGroupId}}],
+  "offerings": [{{eventOfferingId}}]
+}

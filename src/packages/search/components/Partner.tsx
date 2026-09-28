@@ -1,7 +1,8 @@
 import React from "react";
 import { Card } from "react-bootstrap";
+import type { SearchPartnerProps } from "../search.types";
 
-const Partner = ({ item, index }) => {
+const Partner: React.FC<SearchPartnerProps> = ({ item, index }) => {
   const handleActivate = () => {
     const id = item.user_id ?? item.id;
     if (id !== undefined && id !== null) {
@@ -9,9 +10,9 @@ const Partner = ({ item, index }) => {
     }
   };
 
-  const onKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
       handleActivate();
     }
   };
@@ -19,7 +20,7 @@ const Partner = ({ item, index }) => {
   return (
     <Card
       className="partner-card"
-      key={item.user_id + "-" + index}
+      key={`${item.user_id ?? item.id}-${index}`}
       onClick={handleActivate}
       onKeyDown={onKeyDown}
       role="button"
@@ -36,7 +37,7 @@ const Partner = ({ item, index }) => {
           <div className="partner-avatar">
             <img
               src={item.avatar}
-              alt={item.firstname + item.lastname || "Partner avatar"}
+              alt={`${item.firstname ?? ""}${item.lastname ?? ""}` || "Partner avatar"}
               style={{
                 maxWidth: "100%",
                 height: "auto",
@@ -50,7 +51,7 @@ const Partner = ({ item, index }) => {
           <div>
             <strong>Offerings:</strong>{" "}
             {item.offerings
-              .map((o) => (o && typeof o === "object" ? o.name : o))
+              .map((offering) => (offering && typeof offering === "object" ? offering.name : offering))
               .filter(Boolean)
               .join(", ")}
           </div>
@@ -60,7 +61,7 @@ const Partner = ({ item, index }) => {
         <Card.Footer>
           <strong>Roles:</strong>{" "}
           {item.roles
-            .map((r) => (r && typeof r === "object" ? r.name : r))
+            .map((role) => (role && typeof role === "object" ? role.name : role))
             .filter(Boolean)
             .join(", ")}
         </Card.Footer>
@@ -71,8 +72,7 @@ const Partner = ({ item, index }) => {
       )}
 
       <p>
-        <strong>Distance:</strong>{" "}
-        {item.distance ? `${item.distance.toFixed(1)} km` : "Unknown"}
+        <strong>Distance:</strong> {item.distance ? `${item.distance.toFixed(1)} km` : "Unknown"}
       </p>
     </Card>
   );

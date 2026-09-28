@@ -8,7 +8,11 @@ import ClassesTab from "./components/ClassesTab";
 // Search2Inner (uses context, needs to be inside provider)
 // ---------------------------------------------------------------------------
 
-const Search2Inner: React.FC = () => {
+type Search2Props = {
+  layout?: string;
+};
+
+const Search2Inner: React.FC<Search2Props> = ({ layout }) => {
   const { loadConfig } = useSearch2();
 
   useEffect(() => {
@@ -33,9 +37,9 @@ const Search2Inner: React.FC = () => {
 // Search2 (exported – wraps its own provider so it's self-contained)
 // ---------------------------------------------------------------------------
 
-const Search2: React.FC = () => (
+const Search2: React.FC<Search2Props> = (props) => (
   <Search2Provider>
-    <Search2Inner />
+    <Search2Inner {...props} />
   </Search2Provider>
 );
 

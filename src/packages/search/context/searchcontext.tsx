@@ -1,76 +1,113 @@
-import React from "react";
+import React, { createContext, useContext } from "react";
+import { isUntypedResponseLoggingEnabled } from "../../../functions/loguntypedresponse";
 import { useNews } from "../../news/context/newscontext";
 import useEvents from "../../kloko/context/useevents";
 import { usePartner } from "../../partner/context/partnercontext";
 import { useUser } from "../../auth/context/useuser";
+import type {
+  EventsProviderValue,
+  NewsProviderValue,
+  PartnerProviderValue,
+  SearchContextType,
+  SearchEventResultItem,
+  SearchLocation,
+  SearchPartnerResultItem,
+  SearchResultItem,
+  SearchRoleSelection,
+  SearchTypeFilter,
+  UserProviderValue,
+} from "../search.types";
 
-const SearchContext = React.createContext(null);
+const SearchContext = createContext<SearchContextType | null>(null);
 
-export const useSearch = () => React.useContext(SearchContext);
+export const useSearch = (): SearchContextType => {
+  const context = useContext(SearchContext);
+  if (!context) {
+    throw new Error("useSearch must be used within a SearchProvider");
+  }
+  return context;
+};
 
-export const SearchProvider = ({ children }) => {
-  const { newsItems, location, setLocation: setNewsLocation } = useNews();
-  const { setLocation: setEventLocation, classes, events } = useEvents();
-  const { partners, setLocation: setPartnerLocation } = usePartner();
-  const { defaultLocation } = useUser();
+export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { newsItems, setLocation: setNewsLocation } = useNews() as NewsProviderValue;
+  const { setLocation: setEventLocation, classes, events } = useEvents() as EventsProviderValue;
+  const { partners, setLocation: setPartnerLocation } = usePartner() as PartnerProviderValue;
+  const { defaultLocation } = useUser() as UserProviderValue;
 
-  const [selectedTypes, setSelectedTypes] = React.useState(new Set());
-  const [selectedRoles, setSelectedRoles] = React.useState([]);
-  // Known partner role ids (kept in sync with SearchFilterModal.PARTNER_ROLES)
-  const PARTNER_ROLE_IDS = [26, 27, 28, 29, 30];
+  React.useEffect(() => {
+    if (!isUntypedResponseLoggingEnabled()) {
+      return;
+    }
 
-  const toggleRole = (roleId) => {
+    console.warn(
+      "[untyped-response] search.newsItems: no TypeScript type is declared yet; source should be NEWS API api.php/localnews via NewsProvider"
+    );
+    console.warn(
+      "[untyped-response] search.events/classes: no TypeScript type is declared yet; source should be KLOKO API api.php/events via KlokoMyEventProvider"
+    );
+    console.warn(
+      "[untyped-response] search.partners: no TypeScript type is declared yet; source should be PARTNER API api.php/localpartners via PartnerProvider"
+    );
+  }, []);
+
+  const [selectedTypes, setSelectedTypes] = React.useState<Set<SearchTypeFilter>>(new Set());
+  const [selectedRoles, setSelectedRoles] = React.useState<SearchRoleSelection[]>([]);
+  const partnerRoleIds = [26, 27, 28, 29, 30];
+
+  const toggleRole = (roleId: SearchRoleSelection) => {
     const current = Array.isArray(selectedRoles) ? [...selectedRoles] : [];
     const has = current.includes(roleId);
 
     if (roleId === "ALL_PARTNERS") {
       if (!has) {
-        const next = Array.from(new Set(["ALL_PARTNERS", ...current, ...PARTNER_ROLE_IDS]));
+        const next = Array.from(new Set<SearchRoleSelection>(["ALL_PARTNERS", ...current, ...partnerRoleIds]));
         setSelectedRoles(next);
       } else {
-        const next = current.filter((r) => r !== "ALL_PARTNERS" && !PARTNER_ROLE_IDS.includes(r));
+        const next = current.filter(
+          (role) => role !== "ALL_PARTNERS" && !(typeof role === "number" && partnerRoleIds.includes(role))
+        );
         setSelectedRoles(next);
       }
       return;
     }
 
     if (!has) {
-      const next = Array.from(new Set([...current, roleId]));
-      const allPresent = PARTNER_ROLE_IDS.every((id) => next.includes(id));
+      const next = Array.from(new Set<SearchRoleSelection>([...current, roleId]));
+      const allPresent = partnerRoleIds.every((id) => next.includes(id));
       if (allPresent && !next.includes("ALL_PARTNERS")) next.push("ALL_PARTNERS");
       setSelectedRoles(next);
-    } else {
-      const next = current.filter((r) => r !== roleId && r !== "ALL_PARTNERS");
-      setSelectedRoles(next);
+      return;
     }
+
+    const next = current.filter((role) => role !== roleId && role !== "ALL_PARTNERS");
+    setSelectedRoles(next);
   };
 
-  const toggleType = (type) => {
+  const toggleType = (type: SearchTypeFilter) => {
     const next = new Set(selectedTypes);
     if (next.has(type)) next.delete(type);
     else next.add(type);
     setSelectedTypes(next);
   };
 
-  // Local state for initial search form (temps live here too)
   const [showResults, setShowResults] = React.useState(false);
-  const [tempTypes, setTempTypes] = React.useState(new Set());
-  const [tempLocation, setTempLocation] = React.useState(null);
-  const [tempPartnerRoles, setTempPartnerRoles] = React.useState(new Set());
+  const [tempTypes, setTempTypes] = React.useState<Set<SearchTypeFilter>>(new Set());
+  const [tempLocation, setTempLocation] = React.useState<SearchLocation | null>(null);
+  const [tempPartnerRoles, setTempPartnerRoles] = React.useState<Set<number>>(new Set());
   const [tempFromDate, setTempFromDate] = React.useState("");
   const [tempToDate, setTempToDate] = React.useState("");
 
-  const [dateFrom, setDateFrom] = React.useState(null);
-  const [dateTo, setDateTo] = React.useState(null);
+  const [dateFrom, setDateFrom] = React.useState<Date | null>(null);
+  const [dateTo, setDateTo] = React.useState<Date | null>(null);
 
-  const toggleTempType = (type) => {
+  const toggleTempType = (type: SearchTypeFilter) => {
     const next = new Set(tempTypes);
     if (next.has(type)) next.delete(type);
     else next.add(type);
     setTempTypes(next);
   };
 
-  const toggleTempPartnerRole = (roleId) => {
+  const toggleTempPartnerRole = (roleId: number) => {
     const next = new Set(tempPartnerRoles);
     if (next.has(roleId)) next.delete(roleId);
     else next.add(roleId);
@@ -79,33 +116,35 @@ export const SearchProvider = ({ children }) => {
 
   const dateSelectorVisible = tempTypes && (tempTypes.has("event") || tempTypes.has("class"));
 
-  // Filter out old events
   const filteredEvents = (events || []).filter((event) => {
     const now = new Date();
-    const start = new Date(event.start_time);
-    const end = new Date(event.end_time);
+    const start = new Date(event.start_time ?? now);
+    const end = new Date(event.end_time ?? now);
     if (end < now && start < now) return false;
     if (dateFrom && end < dateFrom) return false;
     if (dateTo && start > dateTo) return false;
     return true;
   });
 
-  const filteredClasses = (classes || []).filter((ev) => {
+  const filteredClasses = (classes || []).filter((event) => {
     const now = new Date();
-    const start = new Date(ev.start_time);
-    const end = new Date(ev.end_time);
+    const start = new Date(event.start_time ?? now);
+    const end = new Date(event.end_time ?? now);
     if (end < now && start < now) return false;
     if (dateFrom && end < dateFrom) return false;
     if (dateTo && start > dateTo) return false;
     return true;
   });
 
-  const mergedItems = React.useMemo(() => [
-    ...(newsItems || []).map((item) => ({ ...item, itemType: "news" })),
-    ...filteredEvents.map((event) => ({ ...event, itemType: "event" })),
-    ...filteredClasses.map((event) => ({ ...event, itemType: "class" })),
-    ...partners.map((partner) => ({ ...partner, itemType: "partner" })),
-  ], [newsItems, filteredEvents, filteredClasses, partners]);
+  const mergedItems = React.useMemo<SearchResultItem[]>(
+    () => [
+      ...(newsItems || []).map((item) => ({ ...item, itemType: "news" as const })),
+      ...(filteredEvents.map((event) => ({ ...event, itemType: "event" as const })) as SearchEventResultItem[]),
+      ...(filteredClasses.map((event) => ({ ...event, itemType: "class" as const })) as SearchEventResultItem[]),
+      ...((partners || []).map((partner) => ({ ...partner, itemType: "partner" as const })) as SearchPartnerResultItem[]),
+    ],
+    [newsItems, filteredEvents, filteredClasses, partners]
+  );
 
   const typeFilterActive = selectedTypes && selectedTypes.size > 0;
   const roleFilterActive = selectedRoles && selectedRoles.length > 0;
@@ -116,14 +155,14 @@ export const SearchProvider = ({ children }) => {
 
       if (item.itemType === "partner") {
         if (roleFilterActive) {
-          if (selectedRoles.includes && selectedRoles.includes("ALL_PARTNERS")) {
+          if (selectedRoles.includes("ALL_PARTNERS")) {
             return true;
           }
           const roles = Array.isArray(item.roles) ? item.roles : [];
           const roleIds = roles
-            .map((r) => (r && typeof r === "object" ? r.id : Number(r)))
+            .map((role) => (role && typeof role === "object" ? role.id : Number(role)))
             .filter(Boolean);
-          const overlap = selectedRoles.some((rid) => roleIds.includes(rid));
+          const overlap = selectedRoles.some((roleId) => roleIds.includes(typeof roleId === "number" ? roleId : -1));
           return overlap;
         }
         if (typeFilterActive && !roleFilterActive) return false;
@@ -135,8 +174,8 @@ export const SearchProvider = ({ children }) => {
           if (item.itemType === "news") return selectedTypes.has("news");
           if (item.itemType === "class") return selectedTypes.has("class");
           if (item.itemType === "event") {
-            const et = (item.event_type || "").toString().toLowerCase();
-            const isClass = et === "class";
+            const eventType = (item.event_type || "").toString().toLowerCase();
+            const isClass = eventType === "class";
             if (isClass) return selectedTypes.has("class");
             return selectedTypes.has("event");
           }
@@ -160,7 +199,7 @@ export const SearchProvider = ({ children }) => {
       });
   }, [filteredMerged]);
 
-  const applyLocation = (location) => {
+  const applyLocation = (location: SearchLocation | null) => {
     setNewsLocation(location);
     setEventLocation(location);
     setPartnerLocation(location);
@@ -181,15 +220,13 @@ export const SearchProvider = ({ children }) => {
     setShowResults(true);
   };
 
-  const value = {
-    // persistent filters
+  const value: SearchContextType = {
     selectedTypes,
     selectedRoles,
     toggleType,
     toggleRole,
     setSelectedTypes,
     setSelectedRoles,
-    // temp UI state
     tempTypes,
     tempLocation,
     tempPartnerRoles,
@@ -201,16 +238,13 @@ export const SearchProvider = ({ children }) => {
     toggleTempType,
     toggleTempPartnerRole,
     dateSelectorVisible,
-    // results
     mergedItems,
     filteredMerged,
     sortedItems,
-    // controls
     applyLocation,
     submitInitialSearch,
     showResults,
     setShowResults,
-    // date filters
     dateFrom,
     dateTo,
     setDateFrom,

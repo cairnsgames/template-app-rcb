@@ -1,8 +1,7 @@
 import React from "react";
-import "../news/news.scss";
-import Tracker from "../tracker/tracker";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Row, Col, Button, Card, Form } from "react-bootstrap";
+import Tracker from "../tracker/tracker";
 import LocationSearch from "../../external/LocationSearch";
 import SearchFilterModal from "./SearchFilterModal";
 import EventItem from "../kloko/eventitem";
@@ -10,13 +9,20 @@ import { useSearch } from "./context/searchcontext";
 import Filter from "../../components/icons/filter";
 import TilesLayout from "../layout/Tiles";
 import Tile from "../layout/Tile";
-
 import SearchDisplay from "./components/SearchDisplay";
 import { SearchItems } from "./components/SearchItems";
 import Partner from "./components/Partner";
- 
+import type { SearchPageProps, SearchResultItem } from "./search.types";
 
-const Search = ({ layout = "default", items = 99999 }) => {
+import "../news/news.scss";
+
+type LocationSearchProps = {
+  onSelected: (location: SearchPageProps extends never ? never : import("./search.types").SearchLocation | null) => void;
+};
+
+const TypedLocationSearch = LocationSearch as React.ComponentType<LocationSearchProps>;
+
+const Search: React.FC<SearchPageProps> = ({ layout = "default", items = 99999 }) => {
   const { t } = useTranslation();
   const {
     selectedTypes,
@@ -43,11 +49,11 @@ const Search = ({ layout = "default", items = 99999 }) => {
     setShowResults,
   } = useSearch();
 
-  const handleItemClick = (id) => {
+  const handleItemClick = (id: number | string) => {
     window.location.hash = `#news/${id}`;
   };
 
-  const handleEventClick = (eventId) => {
+  const handleEventClick = (eventId: number | string) => {
     window.location.hash = `#events/${eventId}`;
   };
 
@@ -58,10 +64,9 @@ const Search = ({ layout = "default", items = 99999 }) => {
   React.useEffect(() => {
     const updateWidth = () => {
       if (typeof window === "undefined") return;
-      const w = window.innerWidth;
-      // desktop (>= 992px): 40vw, tablet (>=768px): 70vw, mobile: 95vw
-      if (w >= 992) setNoResultsWidth("40vw");
-      else if (w >= 768) setNoResultsWidth("70vw");
+      const width = window.innerWidth;
+      if (width >= 992) setNoResultsWidth("40vw");
+      else if (width >= 768) setNoResultsWidth("70vw");
       else setNoResultsWidth("95vw");
     };
 
@@ -70,16 +75,15 @@ const Search = ({ layout = "default", items = 99999 }) => {
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
-
   return (
-    <Tracker itemtype="page" id={"news"}>
+    <Tracker itemtype="page" id="news" itemid="news">
       <div className="news">
         {!showResults ? (
           <Card className="p-3 mb-3">
             <h4>{t("Search")}</h4>
             <Row className="mb-2">
               <Col>
-                <LocationSearch onSelected={setTempLocation} />
+                <TypedLocationSearch onSelected={setTempLocation} />
               </Col>
             </Row>
 
@@ -93,8 +97,8 @@ const Search = ({ layout = "default", items = 99999 }) => {
                       id={`type-${type}`}
                       type="checkbox"
                       label={type.charAt(0).toUpperCase() + type.slice(1)}
-                      checked={tempTypes.has(type)}
-                      onChange={() => toggleTempType(type)}
+                      checked={tempTypes.has(type as "news" | "event" | "class")}
+                      onChange={() => toggleTempType(type as "news" | "event" | "class")}
                       className="mr-3"
                     />
                   ))}
@@ -103,7 +107,9 @@ const Search = ({ layout = "default", items = 99999 }) => {
             </Row>
 
             <Form.Group className="mb-2">
-              <Form.Label><strong>Partner Roles:</strong></Form.Label>
+              <Form.Label>
+                <strong>Partner Roles:</strong>
+              </Form.Label>
               <div>
                 {[
                   { id: 26, label: "Teacher" },
@@ -126,8 +132,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
               </div>
             </Form.Group>
 
-            
-
             {dateSelectorVisible && (
               <Row className="mb-2">
                 <Form.Group as={Col} xs={12} sm={6} controlId="search-from">
@@ -136,7 +140,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
                     type="date"
                     value={tempFromDate}
                     min={todayStr}
-                    onChange={(e) => setTempFromDate(e.target.value)}
+                    onChange={(event) => setTempFromDate(event.target.value)}
                   />
                 </Form.Group>
                 <Form.Group as={Col} xs={12} sm={6} controlId="search-to">
@@ -145,7 +149,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
                     type="date"
                     value={tempToDate}
                     min={tempFromDate || todayStr}
-                    onChange={(e) => setTempToDate(e.target.value)}
+                    onChange={(event) => setTempToDate(event.target.value)}
                   />
                 </Form.Group>
               </Row>
@@ -156,7 +160,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
                 <Button
                   onClick={submitInitialSearch}
                   disabled={
-                    // disabled unless a type or a partner role is selected
                     ((!tempTypes || tempTypes.size === 0) && (!tempPartnerRoles || tempPartnerRoles.size === 0)) ||
                     (dateSelectorVisible && tempFromDate && new Date(tempFromDate) < new Date(todayStr))
                   }
@@ -170,7 +173,7 @@ const Search = ({ layout = "default", items = 99999 }) => {
           <>
             <Row className="mb-3 align-items-center">
               <Col xs={8} sm={10} md={11} className="my-2">
-                <LocationSearch onSelected={applyLocation} />
+                <TypedLocationSearch onSelected={applyLocation} />
               </Col>
               <Col xs={4} sm={2} md={1} className="text-right">
                 <Button
@@ -183,8 +186,6 @@ const Search = ({ layout = "default", items = 99999 }) => {
                 </Button>
               </Col>
             </Row>
-
-            
 
             <SearchFilterModal
               show={showFilterModal}
@@ -217,57 +218,46 @@ const Search = ({ layout = "default", items = 99999 }) => {
               </div>
             ) : (
               <TilesLayout>
-                {sortedItems.slice(0, items).map((item, index) => {
-                const distance =
-                  item.distance !== undefined && item.distance !== null
-                    ? `${item.distance.toFixed(1)}km`
-                    : "Unknown distance";
+                {sortedItems.slice(0, items).map((item: SearchResultItem, index: number) => {
+                  const distance =
+                    item.distance !== undefined && item.distance !== null
+                      ? `${item.distance.toFixed(1)}km`
+                      : "Unknown distance";
 
-                switch (item.itemType) {
-                  case "event":
-                    return (
-                      <Tile key={item.id}>
-                        <EventItem item={item} onClick={handleEventClick} />
-                        <div className="text-muted small mb-3">
-                          This Event is {distance} from you
-                        </div>
-                      </Tile>
-                    );
-                  case "class":
-                    return (
-                      <Tile key={"class-" + item.id}>
-                        <EventItem item={item} onClick={handleEventClick} />
-                        <div className="text-muted small mb-3">
-                          This Class is {distance} from you
-                        </div>
-                      </Tile>
-                    );
-                  case "partner":
-                    return (
-                      <Tile key={item.user_id + "-" + index}>
-                        <Partner item={item} index={index} />
-                        <div className="text-muted small mb-3">
-                          This Partner is {distance} from you
-                        </div>
-                      </Tile>
-                    );
-                  default:
-                    return (
-                      <Tile key={item.id}>
-                        <SearchDisplay
-                          item={item}
-                          layout={layout}
-                          onClick={handleItemClick}
-                        />
-                        <div className="text-muted small mb-3">
-                          This {item.globalNews ? "GLOBAL News" : "News"} is{" "}
-                          {distance} from you
-                        </div>
-                      </Tile>
-                    );
-                }
-              })}
-            </TilesLayout>
+                  switch (item.itemType) {
+                    case "event":
+                      return (
+                        <Tile key={item.id}>
+                          <EventItem item={item} onClick={handleEventClick} />
+                          <div className="text-muted small mb-3">This Event is {distance} from you</div>
+                        </Tile>
+                      );
+                    case "class":
+                      return (
+                        <Tile key={`class-${item.id}`}>
+                          <EventItem item={item} onClick={handleEventClick} />
+                          <div className="text-muted small mb-3">This Class is {distance} from you</div>
+                        </Tile>
+                      );
+                    case "partner":
+                      return (
+                        <Tile key={`${item.user_id ?? item.id}-${index}`}>
+                          <Partner item={item} index={index} />
+                          <div className="text-muted small mb-3">This Partner is {distance} from you</div>
+                        </Tile>
+                      );
+                    default:
+                      return (
+                        <Tile key={item.id}>
+                          <SearchDisplay item={item} layout={layout} onClick={handleItemClick} />
+                          <div className="text-muted small mb-3">
+                            This {item.globalNews ? "GLOBAL News" : "News"} is {distance} from you
+                          </div>
+                        </Tile>
+                      );
+                  }
+                })}
+              </TilesLayout>
             )}
           </>
         )}

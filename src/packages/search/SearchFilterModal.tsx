@@ -1,7 +1,8 @@
 import React from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
+import type { SearchFilterModalProps } from "./search.types";
 
-const PARTNER_ROLES = [
+const partnerRoles = [
   { id: 26, name: "Teacher" },
   { id: 27, name: "DJ" },
   { id: 28, name: "Venue" },
@@ -9,7 +10,7 @@ const PARTNER_ROLES = [
   { id: 30, name: "Supplier" },
 ];
 
-export default function SearchFilterModal({
+const SearchFilterModal: React.FC<SearchFilterModalProps> = ({
   show,
   onHide,
   selectedTypes,
@@ -17,7 +18,7 @@ export default function SearchFilterModal({
   selectedRoles,
   toggleRole,
   clearFilters,
-}) {
+}) => {
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -32,21 +33,21 @@ export default function SearchFilterModal({
                 type="checkbox"
                 id="filter-news"
                 label="News"
-                checked={selectedTypes?.has("news")}
+                checked={selectedTypes.has("news")}
                 onChange={() => toggleType("news")}
               />
               <Form.Check
                 type="checkbox"
                 id="filter-events"
                 label="Events"
-                checked={selectedTypes?.has("event")}
+                checked={selectedTypes.has("event")}
                 onChange={() => toggleType("event")}
               />
               <Form.Check
                 type="checkbox"
                 id="filter-classes"
                 label="Classes"
-                checked={selectedTypes?.has("class")}
+                checked={selectedTypes.has("class")}
                 onChange={() => toggleType("class")}
               />
             </div>
@@ -59,21 +60,18 @@ export default function SearchFilterModal({
                 type="checkbox"
                 id="role-all"
                 label="All partners"
-                checked={Array.isArray(selectedRoles) && selectedRoles.includes("ALL_PARTNERS")}
+                checked={selectedRoles.includes("ALL_PARTNERS")}
                 onChange={() => toggleRole("ALL_PARTNERS")}
               />
               <div style={{ paddingLeft: 18 }}>
-                {PARTNER_ROLES.map((r) => (
+                {partnerRoles.map((role) => (
                   <Form.Check
-                    key={r.id}
+                    key={role.id}
                     type="checkbox"
-                    id={`role-${r.id}`}
-                    label={r.name}
-                    checked={
-                      Array.isArray(selectedRoles) &&
-                      (selectedRoles.includes(r.id) || selectedRoles.includes("ALL_PARTNERS"))
-                    }
-                    onChange={() => toggleRole(r.id)}
+                    id={`role-${role.id}`}
+                    label={role.name}
+                    checked={selectedRoles.includes(role.id) || selectedRoles.includes("ALL_PARTNERS")}
+                    onChange={() => toggleRole(role.id)}
                   />
                 ))}
               </div>
@@ -82,12 +80,7 @@ export default function SearchFilterModal({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          variant="outline-secondary"
-          onClick={() => {
-            if (typeof clearFilters === "function") clearFilters();
-          }}
-        >
+        <Button variant="outline-secondary" onClick={clearFilters}>
           Clear
         </Button>
         <Button variant="primary" onClick={onHide}>
@@ -96,4 +89,6 @@ export default function SearchFilterModal({
       </Modal.Footer>
     </Modal>
   );
-}
+};
+
+export default SearchFilterModal;

@@ -55,6 +55,7 @@ export type SearchPayload = {
   roles: number[];
   groups: number[];
   offerings: number[];
+  name?: string;
 };
 
 export type Search2ContextType = {
@@ -69,6 +70,6 @@ export type Search2ContextType = {
   searchResults: SearchResultUser[];
   searchLoading: boolean;
   searchError: string | null;
-  executeSearch: () => void;
+  executeSearch: (query?: string) => void;
   hasSearched: boolean;
 };
